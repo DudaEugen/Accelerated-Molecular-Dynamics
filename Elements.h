@@ -25,6 +25,7 @@ element convert_to_element(char title)
 element convert_to_element(char title[2])
 {
 		 if (title[0] == 'A' && title[1] == 'l') { return element::Al; }
+	else if (title[0] == 'S' && title[1] == 'i') { return element::Si; }
 	else if (title[0] == 'A' && title[1] == 'r') { return element::Ar; }
 	else if (title[0] == 'T' && title[1] == 'i') { return element::Ti; }
 	else if (title[0] == 'F' && title[1] == 'e') { return element::Fe; }
@@ -38,6 +39,7 @@ element convert_to_element(std::string title)
 {
 		 if (title == "C")  { return element::C;  }
 	else if (title == "Al") { return element::Al; }
+	else if (title == "Si") { return element::Si; }
 	else if (title == "Ar") { return element::Ar; }
 	else if (title == "Ti") { return element::Ti; }
 	else if (title == "Fe") { return element::Fe; }
@@ -51,8 +53,8 @@ int get_atomic_mass(element el)
 {
 		 if (el == element::C)  { return 12; }
 	else if (el == element::Al)	{ return 27; }
-	else if (el == element::Ar) { return 40; }
 	else if (el == element::Si) { return 28; }
+	else if (el == element::Ar) { return 40; }
 	else if (el == element::Ti) { return 48; }
 	else if (el == element::Fe) { return 56; }
 	else if (el == element::Ni) { return 59; }
