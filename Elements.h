@@ -3,6 +3,7 @@
 #define TAHD_ELEMENTS_H
 
 #include <string>
+#include <exception>
 
 enum class element {
 	C  = 6,
@@ -17,9 +18,33 @@ enum class element {
 	Au = 79
 };
 
+class ElementException : public std::runtime_error {
+public:
+	ElementException(const char _Massage) 
+	: std::runtime_error(massage() + _Massage)
+	{
+	}
+
+	ElementException(const char _Massage[2])
+		: std::runtime_error(massage() + _Massage[0] + _Massage[1])
+	{
+	}
+
+	ElementException(const std::string& _Massage)
+	: std::runtime_error(massage() + _Massage)
+	{
+	}
+
+private:
+	const std::string massage() {
+		return "invalid or nondefined element ";
+	}
+};
+
 element convert_to_element(char title)
 {
 	if (title == 'C') { return element::C; }
+	throw ElementException(title);
 }
 
 element convert_to_element(char title[2])
@@ -33,6 +58,7 @@ element convert_to_element(char title[2])
 	else if (title[0] == 'C' && title[1] == 'u') { return element::Cu; }
 	else if (title[0] == 'A' && title[1] == 'g') { return element::Ag; }
 	else if (title[0] == 'A' && title[1] == 'u') { return element::Au; }
+	throw ElementException(title);
 }
 
 element convert_to_element(std::string title)
@@ -47,6 +73,7 @@ element convert_to_element(std::string title)
 	else if (title == "Cu") { return element::Cu; }
 	else if (title == "Ag") { return element::Ag; }
 	else if (title == "Au") { return element::Au; }
+	throw ElementException(title);
 }
 
 int get_atomic_mass(element el)
@@ -61,6 +88,7 @@ int get_atomic_mass(element el)
 	else if (el == element::Cu) { return 64; }
 	else if (el == element::Ag) { return 108;}
 	else if (el == element::Au) { return 197;}
+	throw ElementException(std::string("in function get_atomic_mass(element el)"));
 }
 
 int get_atomic_mass(char title)
