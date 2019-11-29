@@ -3,7 +3,7 @@
 #define TAHD_ELEMENTS_H
 
 #include <string>
-#include <exception>
+#include <stdexcept>
 
 enum class element {
 	C  = 6,
