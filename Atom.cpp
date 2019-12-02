@@ -75,19 +75,3 @@ void Atom::addVelocity(double adding_velocity[DIMENSIONAL_NUMBER])
 		v[i] += adding_velocity[i];
 	}
 }
-
-void Atom::setAccelerationStream(double acceleration[DIMENSIONAL_NUMBER])
-{
-	for (short unsigned int i = 0; i < DIMENSIONAL_NUMBER; i++)
-	{
-		*aStream[i] = acceleration[i];
-	}
-}
-
-void Atom::setAccelerationSystem(double acceleration[DIMENSIONAL_NUMBER])
-{
-	for (short unsigned int i = 0; i < DIMENSIONAL_NUMBER; i++)
-	{
-		*aSystem[stepIndex][i] = acceleration[i];
-	}
-}

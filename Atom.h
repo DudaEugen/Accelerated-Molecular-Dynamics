@@ -11,21 +11,18 @@ class Atom
 {
 private:
 	static unsigned int nextId;
-	static short unsigned int stepIndex;		//indexing steps: in aSystem[stepIndex][] conteining actuality accelerations
+	static short unsigned int stepIndex;		//indexing steps: in a[stepIndex][] conteining actuality accelerations
 	int id;
 	element chemElement;
 	double mass;
 	double r[DIMENSIONAL_NUMBER];
 	double v[DIMENSIONAL_NUMBER];
-	double* aStream[DIMENSIONAL_NUMBER];		//accelerated containing here before accelerations transfer by MPI 
-	double* aSystem[2][DIMENSIONAL_NUMBER];		//accelerations are containing here after accelerations transfer by MPI. 
-												//Accelerations for previous step are containing in previous value of first index (stepIndex)
+	double a[2][DIMENSIONAL_NUMBER];
+
 	void computeMass();
 	int createId() const;
 	void constructing(double coordinates[DIMENSIONAL_NUMBER]);
 	int getPreviousStepIndex() const;
-	void setAccelerationStream(double acceleration[DIMENSIONAL_NUMBER]);
-	void setAccelerationSystem(double acceleration[DIMENSIONAL_NUMBER]);
 
 public:
 	Atom(element element, double coordinates[DIMENSIONAL_NUMBER]);
