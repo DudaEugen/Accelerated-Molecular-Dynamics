@@ -3,73 +3,46 @@
 short unsigned int Atom::stepIndex = 0;
 unsigned int Atom::nextId = 0;
 
-Atom::Atom(element element, double coordinates[DIMENSIONAL_NUMBER])
-	: id(createId()), chemElement(element)
+Atom::Atom(element element, ProjectionTuple coordinates): 
+	id{ ++nextId - 1 }, 
+	chemElement{ element }, 
+	mass{ computeMass(element) },
+	r{ coordinates }, 
+	v{},	
+	a{ ProjectionTuple(), ProjectionTuple() }
 {
-	constructing(coordinates);
 }
 
-Atom::Atom(char element, double coordinates[DIMENSIONAL_NUMBER])
-	: id(createId()), chemElement(convert_to_element(element))
+Atom::Atom(char element, ProjectionTuple coordinates) : Atom{ convert_to_element(element), coordinates }
 {
-	constructing(coordinates);
 }
 
-Atom::Atom(char element[2], double coordinates[DIMENSIONAL_NUMBER])
-	: id(createId()), chemElement(convert_to_element(element))
+Atom::Atom(char element[2], ProjectionTuple coordinates) : Atom{ convert_to_element(element), coordinates }
 {
-	constructing(coordinates);
 }
 
-Atom::Atom(std::string element, double coordinates[DIMENSIONAL_NUMBER])
-	: id(createId()), chemElement(convert_to_element(element))
+Atom::Atom(std::string element, ProjectionTuple coordinates) : Atom{ convert_to_element(element), coordinates }
 {
-	constructing(coordinates);
 }
 
-void Atom::computeMass() { mass = get_atomic_mass(chemElement) * 0.001 / N_AVOGADRO; }
-
-int Atom::createId() const 
-{ 
-	nextId++;
-	return nextId - 1;
-}
-
-void Atom::setCoordinates(double coordinates[DIMENSIONAL_NUMBER])
-{
-	for (short unsigned int i = 0; i < DIMENSIONAL_NUMBER; i++)
-	{
-		r[i] = coordinates[i];
-	}
-}
-
-void Atom::constructing(double coordinates[DIMENSIONAL_NUMBER])
-{
-	setCoordinates(coordinates);
-	computeMass();
-	for (short unsigned int i = 0; i < DIMENSIONAL_NUMBER; i++)
-	{
-		v[i] = 0;
-		a[0][i] = 0;
-		a[1][i] = 0;
-	}
-}
+double Atom::computeMass(element element) { return get_atomic_mass(element) * 0.001 / N_AVOGADRO; }
 
 int Atom::getPreviousStepIndex() const { return  stepIndex == 0 ? 1 : 0; }
+
 void Atom::changeStepIndex() { stepIndex = stepIndex == 0 ? 1 : 0; }
 
-void Atom::setVelocity(double velocity[DIMENSIONAL_NUMBER])
-{
-	for (short unsigned int i = 0; i < DIMENSIONAL_NUMBER; i++)
-	{
-		v[i] = velocity[i];
-	}
-}
+void Atom::setCoordinates(ProjectionTuple coordinates) { r = coordinates; }
 
-void Atom::addVelocity(double adding_velocity[DIMENSIONAL_NUMBER])
-{
-	for (short unsigned int i = 0; i < DIMENSIONAL_NUMBER; i++)
-	{
-		v[i] += adding_velocity[i];
-	}
-}
+void Atom::setVelocity(ProjectionTuple velocity) { v = velocity; }
+
+void Atom::setAcceleration(ProjectionTuple acceleration) { a[stepIndex] = acceleration; }
+
+void Atom::addVelocity(ProjectionTuple addingVelocity) { v += addingVelocity; }
+
+void Atom::addAcceleration(ProjectionTuple addingAcceleratrion) { a[stepIndex] = addingAcceleratrion; }
+
+const ProjectionTuple& Atom::getCoordinates() const { return r; }
+
+const ProjectionTuple& Atom::getVelocity() const { return v; }
+
+const ProjectionTuple& Atom::getAcceleration() const { return a[stepIndex]; }

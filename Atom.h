@@ -2,37 +2,40 @@
 #ifndef TAHD_ATOM_H
 #define TAHD_ATOM_H
 
-#include "Elements.h"
-#include "constants.h"
 #include <string>
 #include <cmath>
+#include "constants.h"
+#include "Elements.h"
+#include "ProjectionTuple.h"
 
 class Atom
 {
 private:
 	static unsigned int nextId;
 	static short unsigned int stepIndex;		//indexing steps: in a[stepIndex][] conteining actuality accelerations
-	int id;
+	unsigned int id;
 	element chemElement;
 	double mass;
-	double r[DIMENSIONAL_NUMBER];
-	double v[DIMENSIONAL_NUMBER];
-	double a[2][DIMENSIONAL_NUMBER];
+	ProjectionTuple r;
+	ProjectionTuple v;
+	ProjectionTuple a[2];
 
-	void computeMass();
-	int createId() const;
-	void constructing(double coordinates[DIMENSIONAL_NUMBER]);
+	double computeMass(element element);
 	int getPreviousStepIndex() const;
-
 public:
-	Atom(element element, double coordinates[DIMENSIONAL_NUMBER]);
-	Atom(char element, double coordinates[DIMENSIONAL_NUMBER]);
-	Atom(char element[2], double coordinates[DIMENSIONAL_NUMBER]);
-	Atom(std::string element, double coordinates[DIMENSIONAL_NUMBER]);
+	Atom(element element, ProjectionTuple coordinates);
+	Atom(char element, ProjectionTuple coordinates);
+	Atom(char element[2], ProjectionTuple coordinates);
+	Atom(std::string element, ProjectionTuple coordinates);
 	static void changeStepIndex();
-	void setCoordinates(double coordinates[DIMENSIONAL_NUMBER]);
-	void setVelocity(double velocity[DIMENSIONAL_NUMBER]);
-	void addVelocity(double adding_velocity[DIMENSIONAL_NUMBER]);
+	void setCoordinates(ProjectionTuple coordinates);
+	void setVelocity(ProjectionTuple velocity);
+	void setAcceleration(ProjectionTuple acceleration);
+	void addVelocity(ProjectionTuple addingVelocity);
+	void addAcceleration(ProjectionTuple addingAcceleratrion);
+	const ProjectionTuple& getCoordinates() const;
+	const ProjectionTuple& getVelocity() const;
+	const ProjectionTuple& getAcceleration() const;
 };
 
 #endif	//TAHD_ATOM_H
