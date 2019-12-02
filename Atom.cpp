@@ -1,6 +1,5 @@
 #include "Atom.h"
 
-bool Atom::isTransferedAccelerations = false;
 short unsigned int Atom::stepIndex = 0;
 unsigned int Atom::nextId = 0;
 
@@ -51,9 +50,8 @@ void Atom::constructing(double coordinates[DIMENSIONAL_NUMBER])
 	for (short unsigned int i = 0; i < DIMENSIONAL_NUMBER; i++)
 	{
 		v[i] = 0;
-		aStream[i] = nullptr;
-		aSystem[0][i] = nullptr;
-		aSystem[1][i] = nullptr;
+		a[0][i] = 0;
+		a[1][i] = 0;
 	}
 }
 
