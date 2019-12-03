@@ -18,19 +18,19 @@ private:
 	ProjectionTuple v;
 	ProjectionTuple a[2];
 
-	double computeMass(element element);
+	double computeMass(const element element);
 	int getPreviousStepIndex() const;
 public:
-	Atom(element element, ProjectionTuple coordinates);
-	Atom(char element, ProjectionTuple coordinates);
-	Atom(char element[2], ProjectionTuple coordinates);
-	Atom(std::string element, ProjectionTuple coordinates);
+	Atom(const element element, const ProjectionTuple coordinates);
+	Atom(const char element, const ProjectionTuple coordinates);
+	Atom(const char element[2], const ProjectionTuple coordinates);
+	Atom(const std::string element, const ProjectionTuple coordinates);
 	static void changeStepIndex();
-	void setCoordinates(ProjectionTuple coordinates);
-	void setVelocity(ProjectionTuple velocity);
-	void setAcceleration(ProjectionTuple acceleration);
-	void addVelocity(ProjectionTuple addingVelocity);
-	void addAcceleration(ProjectionTuple addingAcceleratrion);
+	void setCoordinates(const ProjectionTuple coordinates);
+	void setVelocity(const ProjectionTuple velocity);
+	void setAcceleration(const ProjectionTuple acceleration);
+	void addVelocity(const ProjectionTuple addingVelocity);
+	void addAcceleration(const ProjectionTuple addingAcceleratrion);
 	const ProjectionTuple& getCoordinates() const;
 	const ProjectionTuple& getVelocity() const;
 	const ProjectionTuple& getAcceleration() const;

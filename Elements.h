@@ -27,26 +27,26 @@ private:
 	const std::string massage();
 };
 
-element convert_to_element(char title);
+element convert_to_element(const char title);
 
-element convert_to_element(char title[2]);
+element convert_to_element(const char title[2]);
 
-element convert_to_element(std::string title);
+element convert_to_element(const std::string title);
 
-int get_atomic_mass(element el);
+int get_atomic_mass(const element el);
 
-int get_atomic_mass(char title);
+int get_atomic_mass(const char title);
 
-int get_atomic_mass(char title[2]);
+int get_atomic_mass(const char title[2]);
 
-int get_atomic_mass(std::string title);
+int get_atomic_mass(const std::string title);
 
-int get_atomic_number(element el);
+int get_atomic_number(const element el);
 
-int get_atomic_number(char title);
+int get_atomic_number(const char title);
 
-int get_atomic_number(char title[2]);
+int get_atomic_number(const char title[2]);
 
-int get_atomic_number(std::string title);
+int get_atomic_number(const std::string title);
 
 #endif	//TAHD_ELEMENTS_H

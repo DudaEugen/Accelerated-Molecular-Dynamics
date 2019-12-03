@@ -14,13 +14,13 @@ ElementException::ElementException(const std::string& _Massage) : std::runtime_e
 
 const std::string ElementException::massage() {	return "invalid or nondefined element "; }
 
-element convert_to_element(char title)
+element convert_to_element(const char title)
 {
 	if (title == 'C') { return element::C; }
 	throw ElementException(title);
 }
 
-element convert_to_element(char title[2])
+element convert_to_element(const char title[2])
 {
 	if (title[0] == 'A' && title[1] == 'l') { return element::Al; }
 	else if (title[0] == 'S' && title[1] == 'i') { return element::Si; }
@@ -34,7 +34,7 @@ element convert_to_element(char title[2])
 	throw ElementException(title);
 }
 
-element convert_to_element(std::string title)
+element convert_to_element(const std::string title)
 {
 	if (title == "C") { return element::C; }
 	else if (title == "Al") { return element::Al; }
@@ -49,7 +49,7 @@ element convert_to_element(std::string title)
 	throw ElementException(title);
 }
 
-int get_atomic_mass(element el)
+int get_atomic_mass(const element el)
 {
 	if (el == element::C) { return 12; }
 	else if (el == element::Al) { return 27; }
@@ -64,37 +64,37 @@ int get_atomic_mass(element el)
 	throw ElementException(std::string("in function get_atomic_mass(element el)"));
 }
 
-int get_atomic_mass(char title)
+int get_atomic_mass(const char title)
 {
 	return get_atomic_mass(convert_to_element(title));
 }
 
-int get_atomic_mass(char title[2])
+int get_atomic_mass(const char title[2])
 {
 	return get_atomic_mass(convert_to_element(title));
 }
 
-int get_atomic_mass(std::string title)
+int get_atomic_mass(const std::string title)
 {
 	return get_atomic_mass(convert_to_element(title));
 }
 
-int get_atomic_number(element el)
+int get_atomic_number(const element el)
 {
 	return static_cast<int>(el);
 }
 
-int get_atomic_number(char title)
+int get_atomic_number(const char title)
 {
 	return get_atomic_number(convert_to_element(title));
 }
 
-int get_atomic_number(char title[2])
+int get_atomic_number(const char title[2])
 {
 	return get_atomic_number(convert_to_element(title));
 }
 
-int get_atomic_number(std::string title)
+int get_atomic_number(const std::string title)
 {
 	return get_atomic_number(convert_to_element(title));
 }
