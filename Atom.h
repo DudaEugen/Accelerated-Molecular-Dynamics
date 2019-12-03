@@ -34,6 +34,8 @@ public:
 	const ProjectionTuple& getCoordinates() const;
 	const ProjectionTuple& getVelocity() const;
 	const ProjectionTuple& getAcceleration() const;
+	void doStepEuler(const double dt);
+	void doStepVelocityVerlet(const double dt);
 };
 
 #endif	//TAHD_ATOM_H

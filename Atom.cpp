@@ -44,3 +44,15 @@ const ProjectionTuple& Atom::getCoordinates() const { return r; }
 const ProjectionTuple& Atom::getVelocity() const { return v; }
 
 const ProjectionTuple& Atom::getAcceleration() const { return a[stepIndex]; }
+
+void Atom::doStepEuler(const double dt)
+{
+	r += v * dt + 0.5 * a[stepIndex] * pow(dt, 2);
+	v += a[stepIndex] * dt;
+}
+
+void Atom::doStepVelocityVerlet(const double dt)
+{
+	r += v * dt + 0.5 * a[stepIndex] * pow(dt, 2);
+	v += 0.5 * (a[stepIndex] + a[getPreviousStepIndex()]) * dt;
+}
