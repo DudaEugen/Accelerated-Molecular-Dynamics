@@ -1,10 +1,8 @@
 #include "Atom.h"
 
 short unsigned int Atom::stepIndex = 0;
-unsigned int Atom::nextId = 0;
 
 Atom::Atom(element element, ProjectionTuple coordinates): 
-	id{ ++nextId - 1 }, 
 	chemElement{ element }, 
 	mass{ computeMass(element) },
 	r{ coordinates }, 
