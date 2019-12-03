@@ -22,6 +22,7 @@ public:
 	ProjectionTuple operator / (const double divider) const;
 	friend const ProjectionTuple operator * (const ProjectionTuple &projectionTuple, const double factor);
 	friend const ProjectionTuple operator * (const double factor, const ProjectionTuple &projectionTuple);
+	void convertToArray(double array[DIMENSIONAL_NUMBER]) const;
 };
 
 #endif	//TAHD_PROJECTION_TUPLE_H

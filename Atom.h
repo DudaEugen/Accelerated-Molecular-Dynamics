@@ -14,8 +14,8 @@ private:
 	static unsigned int nextId;
 	static short unsigned int stepIndex;		//indexing steps: in a[stepIndex][] conteining actuality accelerations
 	unsigned int id;
-	element chemElement;
-	double mass;
+	const element chemElement;
+	const double mass;
 	ProjectionTuple r;
 	ProjectionTuple v;
 	ProjectionTuple a[2];

@@ -110,3 +110,11 @@ ProjectionTuple ProjectionTuple::operator / (const double divider) const
 	}
 	return result;
 }
+
+void ProjectionTuple::convertToArray(double array[DIMENSIONAL_NUMBER]) const
+{
+	for (index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	{
+		array[i] = projections[i];
+	}
+}
