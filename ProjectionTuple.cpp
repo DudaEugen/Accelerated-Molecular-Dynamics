@@ -2,15 +2,11 @@
 
 typedef unsigned short int index;
 
-ProjectionTuple::ProjectionTuple()
+ProjectionTuple::ProjectionTuple(): projections{}
 {
-	for (index i = 0; i < DIMENSIONAL_NUMBER; ++i)
-	{
-		projections[i] = 0;
-	}
 }
 
-ProjectionTuple::ProjectionTuple(const double projectionArray[DIMENSIONAL_NUMBER])
+ProjectionTuple::ProjectionTuple(const double projectionArray[DIMENSIONAL_NUMBER]): projections{}
 {
 	for (index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
@@ -18,7 +14,7 @@ ProjectionTuple::ProjectionTuple(const double projectionArray[DIMENSIONAL_NUMBER
 	}
 }
 
-ProjectionTuple::ProjectionTuple(const ProjectionTuple& projectionTuple)
+ProjectionTuple::ProjectionTuple(const ProjectionTuple& projectionTuple): projections{}
 {
 	for (index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
