@@ -11,7 +11,8 @@
 class Atom
 {
 private:
-	static short unsigned int stepIndex;		//indexing steps: in a[stepIndex][] conteining actuality accelerations
+	static short unsigned int stepIndex;		/*indexing steps: a[stepIndex] containing actuality accelerations
+												  a[not stepIndex] containing accelerations corresponding previous step*/
 	const element chemElement;
 	const double mass;
 	ProjectionTuple r;
@@ -25,17 +26,20 @@ public:
 	Atom(const char element, const ProjectionTuple coordinates);
 	Atom(const char element[2], const ProjectionTuple coordinates);
 	Atom(const std::string element, const ProjectionTuple coordinates);
-	static void changeStepIndex();
+	static void changeStepIndex();				/*the class invoking doStepVelocityVerlet method is responsible for calling changeStepIndex()
+												  after ever call doStepVelocityVerlet for all atoms*/
 	void setCoordinates(const ProjectionTuple coordinates);
 	void setVelocity(const ProjectionTuple velocity);
 	void setAcceleration(const ProjectionTuple acceleration);
+												//addQuantity methods are adding argument to actuality value of quantity
 	void addVelocity(const ProjectionTuple addingVelocity);
 	void addAcceleration(const ProjectionTuple addingAcceleratrion);
 	const ProjectionTuple& getCoordinates() const;
 	const ProjectionTuple& getVelocity() const;
 	const ProjectionTuple& getAcceleration() const;
+												//doStepAlhorithm are methods to moving atom corresponding algorithm
 	void doStepEuler(const double dt);
-	void doStepVelocityVerlet(const double dt);
+	void doStepVelocityVerlet(const double dt);	//dont first step
 };
 
 #endif	//TAHD_ATOM_H

@@ -4,6 +4,8 @@
 
 #include "constants.h"
 
+//this class replying for working with vector quantities 
+//name "Vector" is not used  to avoid confusions with std::vector and facilitate reading code this way
 class ProjectionTuple
 {
 private:

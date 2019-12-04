@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include "mpi.h"
 #include "constants.h"
+#include "Atom.h"
 
 using namespace std;
 
