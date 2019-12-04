@@ -1,6 +1,6 @@
 #include "ProjectionTuple.h"
 
-typedef unsigned short int index;
+typedef unsigned short int index;		//this is type of index for this->projections array
 
 ProjectionTuple::ProjectionTuple(): projections{}
 {
@@ -113,4 +113,19 @@ void ProjectionTuple::convertToArray(double array[DIMENSIONAL_NUMBER]) const
 	{
 		array[i] = projections[i];
 	}
+}
+
+double ProjectionTuple::sumSquares() const
+{
+	double result = 0;
+	for (index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	{
+		result += projections[i] * projections[i];
+	}
+	return result;
+}
+
+double ProjectionTuple::absoluteValue() const
+{
+	return sqrt(sumSquares());
 }

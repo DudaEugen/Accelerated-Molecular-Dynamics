@@ -25,6 +25,8 @@ public:
 	friend const ProjectionTuple operator * (const ProjectionTuple &projectionTuple, const double factor);
 	friend const ProjectionTuple operator * (const double factor, const ProjectionTuple &projectionTuple);
 	void convertToArray(double array[DIMENSIONAL_NUMBER]) const;
+	double sumSquares() const;		//sum of squares of elements
+	double absoluteValue() const;			//square root of squares of elements sum
 };
 
 #endif	//TAHD_PROJECTION_TUPLE_H
