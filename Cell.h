@@ -20,16 +20,14 @@ private:
 	~Cell();
 	int neighborCellsNumber();	
 public:
-	Cell(const ProjectionTuple position, const ProjectionTuple size);
+	Cell(const ProjectionTuple& position, const ProjectionTuple& size);
 
 	/*atomsNumber is the approximate number of atoms that will be contained in a cell. 
 	The vector size will be set to zero, but memory will be allocated to atomsNumber of elements.
 	In the future, the number of atoms can decrease and increase.*/
-	Cell(const ProjectionTuple position, const ProjectionTuple size, const double atomsNumber);
+	Cell(const ProjectionTuple& position, const ProjectionTuple& size, const double atomsNumber);
 	void addNeighborCell(Cell* cell);
-	void addNeighborCell(Cell cell);
 	void addAtom(Atom* atom);
-	void addAtom(Atom atom);
 	int getNeighborCellNumber() const;
 	int getAtomNumber() const;
 	Cell& getNeighborCell(int index) const;

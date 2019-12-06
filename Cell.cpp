@@ -11,13 +11,13 @@ int Cell::neighborCellsNumber()
 	return pow(3, DIMENSIONAL_NUMBER);
 }
 
-Cell::Cell(const ProjectionTuple position, const ProjectionTuple size) 
+Cell::Cell(const ProjectionTuple& position, const ProjectionTuple& size) 
 	: position{ position }, size{ size }, neighborCells{}, atoms{}
 {
 	neighborCells.reserve(neighborCellsNumber());
 }
 
-Cell::Cell(const ProjectionTuple position, const ProjectionTuple size, const double atomsNumber) 
+Cell::Cell(const ProjectionTuple& position, const ProjectionTuple& size, const double atomsNumber) 
 	: position{ position }, size{ size }, neighborCells{}, atoms{}
 {
 	neighborCells.reserve(neighborCellsNumber());
@@ -36,11 +36,7 @@ void Cell::addNeighborCell(Cell* cell)
 	}
 }
 
-void Cell::addNeighborCell(Cell cell) {	addNeighborCell(&cell); }
-
 void Cell::addAtom(Atom* atom) { atoms.push_back(atom); }
-
-void Cell::addAtom(Atom atom) {	addAtom(&atom); }
 
 int Cell::getNeighborCellNumber() const { return neighborCells.size(); }
 
