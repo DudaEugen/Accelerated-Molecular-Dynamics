@@ -8,7 +8,12 @@ Cell::~Cell()
 
 int Cell::neighborCellsNumber()
 {
-	return pow(3, DIMENSIONAL_NUMBER);
+	int result = 1;
+	for (unsigned short int i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	{
+		result *= i;
+	}
+	return result;
 }
 
 Cell::Cell(const ProjectionTuple& position, const ProjectionTuple& size) 
@@ -17,7 +22,7 @@ Cell::Cell(const ProjectionTuple& position, const ProjectionTuple& size)
 	neighborCells.reserve(neighborCellsNumber());
 }
 
-Cell::Cell(const ProjectionTuple& position, const ProjectionTuple& size, const double atomsNumber) 
+Cell::Cell(const ProjectionTuple& position, const ProjectionTuple& size, const int atomsNumber) 
 	: position{ position }, size{ size }, neighborCells{}, atoms{}
 {
 	neighborCells.reserve(neighborCellsNumber());
@@ -38,9 +43,9 @@ void Cell::addNeighborCell(Cell* cell)
 
 void Cell::addAtom(Atom* atom) { atoms.push_back(atom); }
 
-int Cell::getNeighborCellNumber() const { return neighborCells.size(); }
+std::size_t Cell::getNeighborCellNumber() const { return neighborCells.size(); }
 
-int Cell::getAtomNumber() const { return atoms.size(); }
+std::size_t Cell::getAtomNumber() const { return atoms.size(); }
 
 Cell& Cell::getNeighborCell(int index) const { return *neighborCells[index]; }
 
