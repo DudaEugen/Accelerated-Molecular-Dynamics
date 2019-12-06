@@ -4,8 +4,9 @@
 
 #include "constants.h"
 
-//this class replying for working with vector quantities 
-//name "Vector" is not used  to avoid confusions with std::vector and facilitate reading code this way
+/*this class replying for working with vector quantities 
+name "Vector" is not used  to avoid confusions with std::vector and facilitate reading code this way
+this class is also used to store the spatial sizes of objects of such classes as the system, cell, etc.*/
 class ProjectionTuple
 {
 private:
@@ -25,7 +26,7 @@ public:
 	friend const ProjectionTuple operator * (const ProjectionTuple &projectionTuple, const double factor);
 	friend const ProjectionTuple operator * (const double factor, const ProjectionTuple &projectionTuple);
 	void convertToArray(double array[DIMENSIONAL_NUMBER]) const;
-	double sumSquares() const;		//sum of squares of elements
+	double sumSquares() const;				//sum of squares of elements
 	double absoluteValue() const;			//square root of squares of elements sum
 };
 
