@@ -107,12 +107,14 @@ ProjectionTuple ProjectionTuple::operator / (const double divider) const
 	return result;
 }
 
-void ProjectionTuple::convertToArray(double array[DIMENSIONAL_NUMBER]) const
+double& ProjectionTuple::operator [] (const int index)
 {
-	for (index i = 0; i < DIMENSIONAL_NUMBER; ++i)
-	{
-		array[i] = projections[i];
-	}
+	return projections[index];
+}
+
+double& ProjectionTuple::operator [] (const const unsigned short int index)
+{
+	return projections[index];
 }
 
 double ProjectionTuple::sumSquares() const

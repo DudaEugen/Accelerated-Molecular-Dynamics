@@ -22,10 +22,11 @@ public:
 	void operator -= (const ProjectionTuple &other);
 	void operator *= (const double factor);
 	void operator /= (const double divider);
+	double& operator [] (int index);
+	double& operator [] (const unsigned short int index);
 	ProjectionTuple operator / (const double divider) const;
 	friend const ProjectionTuple operator * (const ProjectionTuple &projectionTuple, const double factor);
 	friend const ProjectionTuple operator * (const double factor, const ProjectionTuple &projectionTuple);
-	void convertToArray(double array[DIMENSIONAL_NUMBER]) const;
 	double sumSquares() const;				//sum of squares of elements
 	double absoluteValue() const;			//square root of squares of elements sum
 };
