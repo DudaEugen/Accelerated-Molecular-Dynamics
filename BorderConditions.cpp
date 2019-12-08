@@ -3,16 +3,16 @@
 BorderConditions::BorderConditions(ProjectionTuple& size, bool isPeriodicBorders[DIMENSIONAL_NUMBER])
 	: size{ size }, type{}
 {
-	for (unsigned short int i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
 		type[i] = isPeriodicBorders[i] ? borderType::periodic : borderType::none;
 	}
 }
 
-double BorderConditions::computeDistance(ProjectionTuple& projections)
+double BorderConditions::computeDistance(ProjectionTuple& projections) const
 {
 	double squaredDistance = 0;
-	for (unsigned short int i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
 		if (type[i] == borderType::periodic)
 		{

@@ -4,6 +4,8 @@
 
 #include "constants.h"
 
+typedef unsigned short int projection_index;		//this is type of index for this->projections array
+
 /*this class replying for working with vector quantities 
 name "Vector" is not used  to avoid confusions with std::vector and facilitate reading code this way
 this class is also used to store the spatial sizes of objects of such classes as the system, cell, etc.*/
@@ -22,8 +24,8 @@ public:
 	void operator -= (const ProjectionTuple &other);
 	void operator *= (const double factor);
 	void operator /= (const double divider);
-	double& operator [] (int index);
-	double& operator [] (const unsigned short int index);
+	double& operator [] (const projection_index index);
+	double operator [] (const projection_index index) const;
 	ProjectionTuple operator / (const double divider) const;
 	friend const ProjectionTuple operator * (const ProjectionTuple &projectionTuple, const double factor);
 	friend const ProjectionTuple operator * (const double factor, const ProjectionTuple &projectionTuple);

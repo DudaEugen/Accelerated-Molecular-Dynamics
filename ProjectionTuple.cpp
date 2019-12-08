@@ -1,14 +1,12 @@
 #include "ProjectionTuple.h"
 
-typedef unsigned short int index;		//this is type of index for this->projections array
-
 ProjectionTuple::ProjectionTuple(): projections{}
 {
 }
 
 ProjectionTuple::ProjectionTuple(const double projectionArray[DIMENSIONAL_NUMBER]): projections{}
 {
-	for (index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
 		projections[i] = projectionArray[i];
 	}
@@ -16,7 +14,7 @@ ProjectionTuple::ProjectionTuple(const double projectionArray[DIMENSIONAL_NUMBER
 
 ProjectionTuple::ProjectionTuple(const ProjectionTuple& projectionTuple): projections{}
 {
-	for (index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
 		projections[i] = projectionTuple.projections[i];
 	}
@@ -24,7 +22,7 @@ ProjectionTuple::ProjectionTuple(const ProjectionTuple& projectionTuple): projec
 
 void ProjectionTuple::operator = (const ProjectionTuple &other)
 {
-	for (index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
 		projections[i] = other.projections[i];
 	}
@@ -33,7 +31,7 @@ void ProjectionTuple::operator = (const ProjectionTuple &other)
 ProjectionTuple ProjectionTuple::operator + (const ProjectionTuple &other) const
 {
 	ProjectionTuple result = ProjectionTuple();
-	for (index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
 		result.projections[i] = projections[i] + other.projections[i];
 	}
@@ -43,7 +41,7 @@ ProjectionTuple ProjectionTuple::operator + (const ProjectionTuple &other) const
 ProjectionTuple ProjectionTuple::operator - (const ProjectionTuple &other) const
 {
 	ProjectionTuple result = ProjectionTuple();
-	for (index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
 		result.projections[i] = projections[i] - other.projections[i];
 	}
@@ -52,7 +50,7 @@ ProjectionTuple ProjectionTuple::operator - (const ProjectionTuple &other) const
 
 void ProjectionTuple::operator += (const ProjectionTuple &other)
 {
-	for (index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
 		projections[i] += other.projections[i];
 	}
@@ -60,7 +58,7 @@ void ProjectionTuple::operator += (const ProjectionTuple &other)
 
 void ProjectionTuple::operator -= (const ProjectionTuple &other)
 {
-	for (index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
 		projections[i] -= other.projections[i];
 	}
@@ -68,7 +66,7 @@ void ProjectionTuple::operator -= (const ProjectionTuple &other)
 
 void ProjectionTuple::operator *= (const double factor)
 {
-	for (index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
 		projections[i] *= factor;
 	}
@@ -76,7 +74,7 @@ void ProjectionTuple::operator *= (const double factor)
 
 void ProjectionTuple::operator /= (const double divider)
 {
-	for (index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
 		projections[i] /= divider;
 	}
@@ -85,7 +83,7 @@ void ProjectionTuple::operator /= (const double divider)
 const ProjectionTuple operator * (const ProjectionTuple &projectionTuple, const double factor)
 {
 	ProjectionTuple result = ProjectionTuple();
-	for (index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
 		result.projections[i] = projectionTuple.projections[i] * factor;
 	}
@@ -100,19 +98,19 @@ const ProjectionTuple operator * (const double factor, const ProjectionTuple &pr
 ProjectionTuple ProjectionTuple::operator / (const double divider) const
 {
 	ProjectionTuple result = ProjectionTuple();
-	for (index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
 		result.projections[i] = projections[i] / divider;
 	}
 	return result;
 }
 
-double& ProjectionTuple::operator [] (const int index)
+double& ProjectionTuple::operator [] (const projection_index index)
 {
 	return projections[index];
 }
 
-double& ProjectionTuple::operator [] (const const unsigned short int index)
+double ProjectionTuple::operator [] (const projection_index index) const
 {
 	return projections[index];
 }
@@ -120,7 +118,7 @@ double& ProjectionTuple::operator [] (const const unsigned short int index)
 double ProjectionTuple::sumSquares() const
 {
 	double result = 0;
-	for (index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
 		result += projections[i] * projections[i];
 	}
