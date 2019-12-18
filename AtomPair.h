@@ -21,6 +21,8 @@ public:
 	AtomPair(Atom* first, Atom* second, const bool isUsingBorderConditions = false);
 	AtomPair(Atom* first, Atom* second, const double d, const ProjectionTuple& deltaCoordinate, const bool isUsingBorderConditions = false);
 	static void setBorderConditions(BorderConditions* borderConditions);
+	double getDistance() const;
+	double getDistanceProjection(const projection_index index) const;
 	void computeDistance();
 	static double computeDistance(const Atom* first, const Atom* second, const bool isUsingBorderConditions = false);
 	//write to projections difference of coordinates first and second

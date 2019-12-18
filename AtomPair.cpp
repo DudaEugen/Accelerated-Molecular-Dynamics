@@ -17,6 +17,16 @@ void AtomPair::setBorderConditions(BorderConditions* borderConditions)
 	AtomPair::borderConditions = borderConditions;
 }
 
+double AtomPair::getDistance() const
+{
+	return distance;
+}
+
+double AtomPair::getDistanceProjection(const projection_index index) const
+{
+	return dProjections[index];
+}
+
 void AtomPair::computeDistance_ignoringBorderConditions()
 {
 	dProjections = atomPair[0]->getCoordinates() - atomPair[1]->getCoordinates();
