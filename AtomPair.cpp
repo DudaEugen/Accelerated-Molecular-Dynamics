@@ -1,29 +1,47 @@
 #include "AtomPair.h"
 
-AtomPair::AtomPair(Atom* first, Atom* second) : atomPair{ first, second }
+BorderConditions* AtomPair::borderConditions = nullptr;
+
+AtomPair::AtomPair(Atom* first, Atom* second, const bool isUsingBorderConditions) : atomPair{ first, second }, isUsingBorderConditions{ isUsingBorderConditions }
 {
 	computeDistance();
 }
 
-AtomPair::AtomPair(Atom* first, Atom* second, const double d, const ProjectionTuple& deltaCoordinate)
-	: atomPair{ first, second }, distance{d}, dProjections{deltaCoordinate}
+AtomPair::AtomPair(Atom* first, Atom* second, const double d, const ProjectionTuple& deltaCoordinate, const bool isUsingBorderConditions)
+	: atomPair{ first, second }, distance{d}, dProjections{deltaCoordinate}, isUsingBorderConditions{ isUsingBorderConditions }
 {
 }
 
-void AtomPair::computeDistance()
+void AtomPair::setBorderConditions(BorderConditions* borderConditions)
+{
+	AtomPair::borderConditions = borderConditions;
+}
+
+void AtomPair::computeDistance_ignoringBorderConditions()
 {
 	dProjections = atomPair[0]->getCoordinates() - atomPair[1]->getCoordinates();
 	distance = dProjections.absoluteValue();
 }
 
-double AtomPair::computeDistance(const Atom* first, const Atom* second)
+void AtomPair::computeDistance_usingBorderConditions()
 {
-	ProjectionTuple projections = first->getCoordinates() - second->getCoordinates();
-	return projections.absoluteValue();
+	dProjections = atomPair[0]->getCoordinates() - atomPair[1]->getCoordinates();
+	distance = borderConditions->computeDistance(dProjections);
 }
 
-double AtomPair::computeDistance(const Atom* first, const Atom* second, ProjectionTuple& projections)
+void AtomPair::computeDistance()
+{
+	isUsingBorderConditions ? computeDistance_usingBorderConditions() : computeDistance_ignoringBorderConditions();
+}
+
+double AtomPair::computeDistance(const Atom* first, const Atom* second, const bool isUsingBorderConditions)
+{
+	ProjectionTuple projections = first->getCoordinates() - second->getCoordinates();
+	return isUsingBorderConditions ? borderConditions->computeDistance(projections) : projections.absoluteValue();
+}
+
+double AtomPair::computeDistance(const Atom* first, const Atom* second, ProjectionTuple& projections, const bool isUsingBorderConditions)
 {
 	projections = first->getCoordinates() - second->getCoordinates();
-	return projections.absoluteValue();
+	return isUsingBorderConditions ? borderConditions->computeDistance(projections) : projections.absoluteValue();
 }
