@@ -17,21 +17,18 @@ private:
 	std::vector<Cell*> neighborCells;	//this and adjacent Cells
 	std::vector<Atom*> atoms;
 
-	~Cell();
 	int neighborCellsNumber();	
 public:
-	Cell(const ProjectionTuple& position, const ProjectionTuple& size);
-
 	/*atomsNumber is the approximate number of atoms that will be contained in a cell. 
 	The vector size will be set to zero, but memory will be allocated to atomsNumber of elements.
 	In the future, the number of atoms can decrease and increase.*/
-	Cell(const ProjectionTuple& position, const ProjectionTuple& size, const int atomsNumber);
+	Cell(const ProjectionTuple& position, const ProjectionTuple& size, const size_t atomsNumber = 0);
 	void addNeighborCell(Cell* cell);
 	void addAtom(Atom* atom);
 	std::size_t getNeighborCellNumber() const;
 	std::size_t getAtomNumber() const;
-	Cell& getNeighborCell(int index) const;
-	Atom& getAtom(int index) const;
+	Cell& getNeighborCell(const size_t index);
+	Atom& getAtom(const size_t index);
 	void cleanAtomList();
 };
 

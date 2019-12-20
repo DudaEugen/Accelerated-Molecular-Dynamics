@@ -1,10 +1,5 @@
 #include "Cell.h"
 
-Cell::~Cell()
-{
-	std::vector<Atom*>().swap(atoms);
-	std::vector<Cell*>().swap(neighborCells);
-}
 
 int Cell::neighborCellsNumber()
 {
@@ -16,13 +11,7 @@ int Cell::neighborCellsNumber()
 	return result;
 }
 
-Cell::Cell(const ProjectionTuple& position, const ProjectionTuple& size) 
-	: position{ position }, size{ size }, neighborCells{}, atoms{}
-{
-	neighborCells.reserve(neighborCellsNumber());
-}
-
-Cell::Cell(const ProjectionTuple& position, const ProjectionTuple& size, const int atomsNumber) 
+Cell::Cell(const ProjectionTuple& position, const ProjectionTuple& size, const size_t atomsNumber) 
 	: position{ position }, size{ size }, neighborCells{}, atoms{}
 {
 	neighborCells.reserve(neighborCellsNumber());
@@ -47,8 +36,8 @@ std::size_t Cell::getNeighborCellNumber() const { return neighborCells.size(); }
 
 std::size_t Cell::getAtomNumber() const { return atoms.size(); }
 
-Cell& Cell::getNeighborCell(int index) const { return *neighborCells[index]; }
+Cell& Cell::getNeighborCell(const size_t index) { return *neighborCells[index]; }
 
-Atom& Cell::getAtom(int index) const { return *atoms[index]; }
+Atom& Cell::getAtom(const size_t index) { return *atoms[index]; }
 
 void Cell::cleanAtomList() { atoms.resize(0); }
