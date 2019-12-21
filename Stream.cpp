@@ -24,7 +24,6 @@ int Stream::getRank() const { return rank; }
 void Stream::addAtom(Atom* atom) 
 { 
 	atoms.push_back(atom);
-	if (accelerationsSize < atoms.size() * DIMENSIONAL_NUMBER) { changeAccelerationsSize(); }
 }
 
 size_t Stream::getAtomNumber() const { return atoms.size(); }
@@ -33,6 +32,11 @@ Atom& Stream::getAtom(const size_t index) { return *atoms[index]; }
 
 void Stream::preparationForDataExchange()
 {
+	if (accelerationsSize < atoms.size() * DIMENSIONAL_NUMBER) 
+	{
+		changeAccelerationsSize();
+	}
+
 	ProjectionTuple acceleration;
 	for (size_t atomIndex = 0; atomIndex < atoms.size(); ++atomIndex)
 	{
