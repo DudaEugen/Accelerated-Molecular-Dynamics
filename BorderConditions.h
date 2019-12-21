@@ -21,7 +21,7 @@ public:
 	if isPeriodicBorders[i] == false the i-th direction not have borders
 	size[i] is distance between borders in i-th direction. size[i] have sence if isPeriodicBorders[i] == true*/
 	BorderConditions(ProjectionTuple& size, bool isPeriodicBorders[DIMENSIONAL_NUMBER]);
-	double computeDistance(ProjectionTuple& projections) const;
+	double computeDistance(ProjectionTuple& projectionsDifference) const;
 };
 
 #endif	//TAHD_BORDER_CONDITIONS_H
