@@ -32,10 +32,19 @@ void Stream::preparationForDataExchange()
 	for (size_t atomIndex = 0; atomIndex < atomNumber; ++atomIndex)
 	{
 		acceleration = atoms[atomIndex].getAcceleration();
+#if DIMENSIONAL_NUMBER == 3
+		accelerations[atomIndex * DIMENSIONAL_NUMBER + 0] = acceleration[0];
+		accelerations[atomIndex * DIMENSIONAL_NUMBER + 1] = acceleration[1];
+		accelerations[atomIndex * DIMENSIONAL_NUMBER + 2] = acceleration[2];
+#elif DIMENSIONAL_NUMBER == 2
+		accelerations[atomIndex * DIMENSIONAL_NUMBER + 0] = acceleration[0];
+		accelerations[atomIndex * DIMENSIONAL_NUMBER + 1] = acceleration[1];
+#else
 		for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 		{
 			accelerations[atomIndex * DIMENSIONAL_NUMBER + i] = acceleration[i];
 		}
+#endif
 	}
 }
 
