@@ -1,7 +1,7 @@
 #include "Cell.h"
 
 
-int Cell::neighborCellsNumber()
+size_t Cell::neighborCellsNumber()
 {
 	int result = 1;
 	for (unsigned short int i = 0; i < DIMENSIONAL_NUMBER; ++i)
@@ -12,10 +12,9 @@ int Cell::neighborCellsNumber()
 }
 
 Cell::Cell(const ProjectionTuple& position, const ProjectionTuple& size, const size_t atomsNumber) 
-	: position{ position }, size{ size }, neighborCells{}, atoms{}
+	: position{ position }, size{ size }, neighborCells{}, atoms{ atomsNumber }
 {
 	neighborCells.reserve(neighborCellsNumber());
-	atoms.reserve(atomsNumber);
 }
 
 void Cell::addNeighborCell(Cell* cell)
@@ -30,14 +29,6 @@ void Cell::addNeighborCell(Cell* cell)
 	}
 }
 
-void Cell::addAtom(Atom* atom) { atoms.push_back(atom); }
-
 std::size_t Cell::getNeighborCellNumber() const { return neighborCells.size(); }
 
-std::size_t Cell::getAtomNumber() const { return atoms.size(); }
-
 Cell& Cell::getNeighborCell(const size_t index) { return *neighborCells[index]; }
-
-Atom& Cell::getAtom(const size_t index) { return *atoms[index]; }
-
-void Cell::cleanAtomList() { atoms.resize(0); }
