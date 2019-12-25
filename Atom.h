@@ -13,8 +13,10 @@ class Atom
 private:
 	static short unsigned int stepIndex;		/*indexing steps: a[stepIndex] containing actuality accelerations
 												  a[not stepIndex] containing accelerations corresponding previous step*/
+public:
 	const element chemElement;
 	const double mass;
+private:
 	ProjectionTuple r;
 	ProjectionTuple v;
 	ProjectionTuple a[2];
