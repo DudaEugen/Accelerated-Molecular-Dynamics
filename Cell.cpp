@@ -4,14 +4,14 @@
 constexpr std::size_t Cell::maximumNeighborCellsNumber()
 {
 	int result = 1;
-	for (unsigned short int i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
 		result *= DIMENSIONAL_NUMBER;
 	}
 	return result;
 }
 
-Cell::Cell(const Vector& position, const Vector& size, const size_t atomsNumber) 
+Cell::Cell(const Vector position, const Vector size, const size_t atomsNumber) 
 	: position{ position }, size{ size }, neighborCells{}, atoms{ atomsNumber }
 {
 	neighborCells.reserve(maximumNeighborCellsNumber());

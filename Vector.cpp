@@ -38,7 +38,7 @@ Vector::Vector(const Vector& Vector): projections{}
 #endif
 }
 
-void Vector::operator = (const Vector &other)
+void Vector::operator = (const Vector other)
 {
 #if DIMENSIONAL_NUMBER == 3
 	projections[0] = other.projections[0];
@@ -55,7 +55,7 @@ void Vector::operator = (const Vector &other)
 #endif
 }
 
-Vector Vector::operator + (const Vector &other) const
+Vector Vector::operator + (const Vector other) const
 {
 	Vector result = Vector();
 #if DIMENSIONAL_NUMBER == 3
@@ -74,7 +74,7 @@ Vector Vector::operator + (const Vector &other) const
 	return result;
 }
 
-Vector Vector::operator - (const Vector &other) const
+Vector Vector::operator - (const Vector other) const
 {
 	Vector result = Vector();
 #if DIMENSIONAL_NUMBER == 3
@@ -93,7 +93,7 @@ Vector Vector::operator - (const Vector &other) const
 	return result;
 }
 
-void Vector::operator += (const Vector &other)
+void Vector::operator += (const Vector other)
 {
 #if DIMENSIONAL_NUMBER == 3
 	projections[0] += other.projections[0];
@@ -110,7 +110,7 @@ void Vector::operator += (const Vector &other)
 #endif
 }
 
-void Vector::operator -= (const Vector &other)
+void Vector::operator -= (const Vector other)
 {
 #if DIMENSIONAL_NUMBER == 3
 	projections[0] -= other.projections[0];
@@ -161,7 +161,7 @@ void Vector::operator /= (const double divider)
 #endif
 }
 
-const Vector operator * (const Vector &vector, const double factor)
+const Vector operator * (const Vector vector, const double factor)
 {
 	Vector result = Vector();
 #if DIMENSIONAL_NUMBER == 3
@@ -180,7 +180,7 @@ const Vector operator * (const Vector &vector, const double factor)
 	return result;
 }
 
-const Vector operator * (const double factor, const Vector &vector) 
+const Vector operator * (const double factor, const Vector vector) 
 {
 	Vector result = Vector();
 #if DIMENSIONAL_NUMBER == 3

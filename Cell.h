@@ -23,7 +23,7 @@ public:
 	/*atomsNumber is the approximate number of atoms that will be contained in a cell. 
 	The vector size will be set to zero, but memory will be allocated to atomsNumber of elements.
 	In the future, the number of atoms can decrease and increase.*/
-	Cell(const Vector& position, const Vector& size, const size_t atomsNumber = 0);
+	Cell(const Vector position, const Vector size, const size_t atomsNumber = 0);
 	void addNeighborCell(Cell* cell);
 	std::size_t getNeighborCellNumber() const;
 	Cell& getNeighborCell(const size_t index);

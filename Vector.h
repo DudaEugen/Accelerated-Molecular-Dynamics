@@ -15,19 +15,19 @@ private:
 public:
 	Vector();
 	Vector(const double projectionArray[DIMENSIONAL_NUMBER]);
-	Vector(const Vector &Vector);
-	void operator = (const Vector &other);
-	Vector operator + (const Vector &other) const;
-	Vector operator - (const Vector &other) const;
-	void operator += (const Vector &other);
-	void operator -= (const Vector &other);
+	Vector(const Vector &vector);
+	void operator = (const Vector other);
+	Vector operator + (const Vector other) const;
+	Vector operator - (const Vector other) const;
+	void operator += (const Vector other);
+	void operator -= (const Vector other);
 	void operator *= (const double factor);
 	void operator /= (const double divider);
 	double& operator [] (const projection_index index);
 	double operator [] (const projection_index index) const;
 	Vector operator / (const double divider) const;
-	friend const Vector operator * (const Vector &Vector, const double factor);
-	friend const Vector operator * (const double factor, const Vector &Vector);
+	friend const Vector operator * (const Vector vector, const double factor);
+	friend const Vector operator * (const double factor, const Vector vector);
 	double sumSquares() const;				//sum of squares of elements
 	double absoluteValue() const;			//square root of squares of elements sum
 };

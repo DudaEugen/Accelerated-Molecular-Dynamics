@@ -7,7 +7,7 @@ AtomPair::AtomPair(Atom* first, Atom* second, const bool isUsingBorderConditions
 	computeDistance();
 }
 
-AtomPair::AtomPair(Atom* first, Atom* second, const double d, const Vector& deltaCoordinate, const bool isUsingBorderConditions)
+AtomPair::AtomPair(Atom* first, Atom* second, const double d, const Vector deltaCoordinate, const bool isUsingBorderConditions)
 	: atomPair{ first, second }, distance{d}, dProjections{deltaCoordinate}, isUsingBorderConditions{ isUsingBorderConditions }
 {
 }
@@ -50,7 +50,7 @@ double AtomPair::computeDistance(const Atom* first, const Atom* second, const bo
 	return isUsingBorderConditions ? borderConditions->computeDistance(projections) : projections.absoluteValue();
 }
 
-double AtomPair::computeDistance(const Atom* first, const Atom* second, Vector& projections, const bool isUsingBorderConditions)
+double AtomPair::computeDistance(const Atom* first, const Atom* second, Vector projections, const bool isUsingBorderConditions)
 {
 	projections = first->getCoordinates() - second->getCoordinates();
 	return isUsingBorderConditions ? borderConditions->computeDistance(projections) : projections.absoluteValue();
