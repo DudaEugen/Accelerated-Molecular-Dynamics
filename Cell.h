@@ -12,8 +12,8 @@ class Cell
 private:
 	/*a point is considered to be placed inside the Ñell if for i-th coordinate r[i]: 
 	Cell.position[i] <= r[i] < Cell.position[i] + Cell.size[i] */
-	ProjectionTuple position;
-	ProjectionTuple size;				//all values must is positive
+	Vector position;
+	Vector size;				//all values must is positive
 	std::vector<Cell*> neighborCells;	//this and adjacent Cells
 public:
 	AtomGroup atoms;
@@ -23,7 +23,7 @@ public:
 	/*atomsNumber is the approximate number of atoms that will be contained in a cell. 
 	The vector size will be set to zero, but memory will be allocated to atomsNumber of elements.
 	In the future, the number of atoms can decrease and increase.*/
-	Cell(const ProjectionTuple& position, const ProjectionTuple& size, const size_t atomsNumber = 0);
+	Cell(const Vector& position, const Vector& size, const size_t atomsNumber = 0);
 	void addNeighborCell(Cell* cell);
 	std::size_t getNeighborCellNumber() const;
 	Cell& getNeighborCell(const size_t index);

@@ -6,7 +6,7 @@
 #include <cmath>
 #include "constants.h"
 #include "Elements.h"
-#include "ProjectionTuple.h"
+#include "Vector.h"
 
 class Atom
 {
@@ -17,28 +17,28 @@ public:
 	const element chemElement;
 	const double mass;
 private:
-	ProjectionTuple r;
-	ProjectionTuple v;
-	ProjectionTuple a[2];
+	Vector r;
+	Vector v;
+	Vector a[2];
 
 	double computeMass(const element element);
 	int getPreviousStepIndex() const;
 public:
-	Atom(const element element, const ProjectionTuple coordinates);
-	Atom(const char element, const ProjectionTuple coordinates);
-	Atom(const char element[2], const ProjectionTuple coordinates);
-	Atom(const std::string element, const ProjectionTuple coordinates);
+	Atom(const element element, const Vector coordinates);
+	Atom(const char element, const Vector coordinates);
+	Atom(const char element[2], const Vector coordinates);
+	Atom(const std::string element, const Vector coordinates);
 	static void changeStepIndex();				/*the class invoking doStepVelocityVerlet method is responsible for calling changeStepIndex()
 												  after ever call doStepVelocityVerlet for all atoms*/
-	void setCoordinates(const ProjectionTuple coordinates);
-	void setVelocity(const ProjectionTuple velocity);
-	void setAcceleration(const ProjectionTuple acceleration);
+	void setCoordinates(const Vector coordinates);
+	void setVelocity(const Vector velocity);
+	void setAcceleration(const Vector acceleration);
 												//addQuantity methods are adding argument to actuality value of quantity
-	void addVelocity(const ProjectionTuple addingVelocity);
-	void addAcceleration(const ProjectionTuple addingAcceleratrion);
-	const ProjectionTuple& getCoordinates() const;
-	const ProjectionTuple& getVelocity() const;
-	const ProjectionTuple& getAcceleration() const;
+	void addVelocity(const Vector addingVelocity);
+	void addAcceleration(const Vector addingAcceleratrion);
+	const Vector& getCoordinates() const;
+	const Vector& getVelocity() const;
+	const Vector& getAcceleration() const;
 												//doStepAlhorithm are methods to moving atom corresponding algorithm
 	void doStepEuler(const double dt);
 	void doStepVelocityVerlet(const double dt);	//dont first step

@@ -1,10 +1,10 @@
-#include "ProjectionTuple.h"
+#include "Vector.h"
 
-ProjectionTuple::ProjectionTuple(): projections{}
+Vector::Vector(): projections{}
 {
 }
 
-ProjectionTuple::ProjectionTuple(const double projectionArray[DIMENSIONAL_NUMBER]): projections{}
+Vector::Vector(const double projectionArray[DIMENSIONAL_NUMBER]): projections{}
 {
 #if DIMENSIONAL_NUMBER == 3
 	projections[0] = projectionArray[0];
@@ -21,24 +21,24 @@ ProjectionTuple::ProjectionTuple(const double projectionArray[DIMENSIONAL_NUMBER
 #endif
 }
 
-ProjectionTuple::ProjectionTuple(const ProjectionTuple& projectionTuple): projections{}
+Vector::Vector(const Vector& Vector): projections{}
 {
 #if DIMENSIONAL_NUMBER == 3
-	projections[0] = projectionTuple.projections[0];
-	projections[1] = projectionTuple.projections[1];
-	projections[2] = projectionTuple.projections[2];
+	projections[0] = Vector.projections[0];
+	projections[1] = Vector.projections[1];
+	projections[2] = Vector.projections[2];
 #elif DIMENSIONAL_NUMBER == 2
-	projections[0] = projectionTuple.projections[0];
-	projections[1] = projectionTuple.projections[1];
+	projections[0] = Vector.projections[0];
+	projections[1] = Vector.projections[1];
 #else
 	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
-		projections[i] = projectionTuple.projections[i];
+		projections[i] = Vector.projections[i];
 	}
 #endif
 }
 
-void ProjectionTuple::operator = (const ProjectionTuple &other)
+void Vector::operator = (const Vector &other)
 {
 #if DIMENSIONAL_NUMBER == 3
 	projections[0] = other.projections[0];
@@ -55,9 +55,9 @@ void ProjectionTuple::operator = (const ProjectionTuple &other)
 #endif
 }
 
-ProjectionTuple ProjectionTuple::operator + (const ProjectionTuple &other) const
+Vector Vector::operator + (const Vector &other) const
 {
-	ProjectionTuple result = ProjectionTuple();
+	Vector result = Vector();
 #if DIMENSIONAL_NUMBER == 3
 	result.projections[0] = projections[0] + other.projections[0];
 	result.projections[1] = projections[1] + other.projections[1];
@@ -74,9 +74,9 @@ ProjectionTuple ProjectionTuple::operator + (const ProjectionTuple &other) const
 	return result;
 }
 
-ProjectionTuple ProjectionTuple::operator - (const ProjectionTuple &other) const
+Vector Vector::operator - (const Vector &other) const
 {
-	ProjectionTuple result = ProjectionTuple();
+	Vector result = Vector();
 #if DIMENSIONAL_NUMBER == 3
 	result.projections[0] = projections[0] - other.projections[0];
 	result.projections[1] = projections[1] - other.projections[1];
@@ -93,7 +93,7 @@ ProjectionTuple ProjectionTuple::operator - (const ProjectionTuple &other) const
 	return result;
 }
 
-void ProjectionTuple::operator += (const ProjectionTuple &other)
+void Vector::operator += (const Vector &other)
 {
 #if DIMENSIONAL_NUMBER == 3
 	projections[0] += other.projections[0];
@@ -110,7 +110,7 @@ void ProjectionTuple::operator += (const ProjectionTuple &other)
 #endif
 }
 
-void ProjectionTuple::operator -= (const ProjectionTuple &other)
+void Vector::operator -= (const Vector &other)
 {
 #if DIMENSIONAL_NUMBER == 3
 	projections[0] -= other.projections[0];
@@ -127,7 +127,7 @@ void ProjectionTuple::operator -= (const ProjectionTuple &other)
 #endif
 }
 
-void ProjectionTuple::operator *= (const double factor)
+void Vector::operator *= (const double factor)
 {
 #if DIMENSIONAL_NUMBER == 3
 	projections[0] *= factor;
@@ -144,7 +144,7 @@ void ProjectionTuple::operator *= (const double factor)
 #endif
 }
 
-void ProjectionTuple::operator /= (const double divider)
+void Vector::operator /= (const double divider)
 {
 #if DIMENSIONAL_NUMBER == 3
 	projections[0] /= divider;
@@ -161,47 +161,47 @@ void ProjectionTuple::operator /= (const double divider)
 #endif
 }
 
-const ProjectionTuple operator * (const ProjectionTuple &projectionTuple, const double factor)
+const Vector operator * (const Vector &vector, const double factor)
 {
-	ProjectionTuple result = ProjectionTuple();
+	Vector result = Vector();
 #if DIMENSIONAL_NUMBER == 3
-	result.projections[0] = projectionTuple.projections[0] * factor;
-	result.projections[1] = projectionTuple.projections[1] * factor;
-	result.projections[2] = projectionTuple.projections[2] * factor;
+	result.projections[0] = vector.projections[0] * factor;
+	result.projections[1] = vector.projections[1] * factor;
+	result.projections[2] = vector.projections[2] * factor;
 #elif DIMENSIONAL_NUMBER == 2
-	result.projections[0] = projectionTuple.projections[0] * factor;
-	result.projections[1] = projectionTuple.projections[1] * factor;
+	result.projections[0] = Vector.projections[0] * factor;
+	result.projections[1] = Vector.projections[1] * factor;
 #else
 	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
-		result.projections[i] = projectionTuple.projections[i] * factor;
+		result.projections[i] = Vector.projections[i] * factor;
 	}
 #endif
 	return result;
 }
 
-const ProjectionTuple operator * (const double factor, const ProjectionTuple &projectionTuple) 
+const Vector operator * (const double factor, const Vector &vector) 
 {
-	ProjectionTuple result = ProjectionTuple();
+	Vector result = Vector();
 #if DIMENSIONAL_NUMBER == 3
-	result.projections[0] = projectionTuple.projections[0] * factor;
-	result.projections[1] = projectionTuple.projections[1] * factor;
-	result.projections[2] = projectionTuple.projections[2] * factor;
+	result.projections[0] = vector.projections[0] * factor;
+	result.projections[1] = vector.projections[1] * factor;
+	result.projections[2] = vector.projections[2] * factor;
 #elif DIMENSIONAL_NUMBER == 2
-	result.projections[0] = projectionTuple.projections[0] * factor;
-	result.projections[1] = projectionTuple.projections[1] * factor;
+	result.projections[0] = Vector.projections[0] * factor;
+	result.projections[1] = Vector.projections[1] * factor;
 #else
 	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
-		result.projections[i] = projectionTuple.projections[i] * factor;
+		result.projections[i] = Vector.projections[i] * factor;
 	}
 #endif
 	return result;
 }
 
-ProjectionTuple ProjectionTuple::operator / (const double divider) const
+Vector Vector::operator / (const double divider) const
 {
-	ProjectionTuple result = ProjectionTuple();
+	Vector result = Vector();
 #if DIMENSIONAL_NUMBER == 3
 	result.projections[0] = projections[0] / divider;
 	result.projections[1] = projections[1] / divider;
@@ -218,17 +218,17 @@ ProjectionTuple ProjectionTuple::operator / (const double divider) const
 	return result;
 }
 
-double& ProjectionTuple::operator [] (const projection_index index)
+double& Vector::operator [] (const projection_index index)
 {
 	return projections[index];
 }
 
-double ProjectionTuple::operator [] (const projection_index index) const
+double Vector::operator [] (const projection_index index) const
 {
 	return projections[index];
 }
 
-double ProjectionTuple::sumSquares() const
+double Vector::sumSquares() const
 {
 	double result = 0;
 #if DIMENSIONAL_NUMBER == 3
@@ -244,7 +244,7 @@ double ProjectionTuple::sumSquares() const
 	return result;
 }
 
-double ProjectionTuple::absoluteValue() const
+double Vector::absoluteValue() const
 {
 	return sqrt(sumSquares());
 }

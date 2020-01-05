@@ -28,7 +28,7 @@ void Stream::preparationForDataExchange()
 		changeAccelerationsSize();
 	}
 
-	ProjectionTuple acceleration;
+	Vector acceleration;
 	for (size_t atomIndex = 0; atomIndex < atomNumber; ++atomIndex)
 	{
 		acceleration = atoms[atomIndex].getAcceleration();

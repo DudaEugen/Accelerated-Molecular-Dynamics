@@ -2,7 +2,7 @@
 #ifndef TAHD_BORDER_CONDITIONS_H
 #define TAHD_BORDER_CONDITIONS_H
 
-#include "ProjectionTuple.h"
+#include "Vector.h"
 
 /* Borders are surfeces, that have i-th coordionate x[i] such that x[i] == 0 or x[i] == size[i]
 BorderConditions object recalculating istances between atoms
@@ -15,13 +15,13 @@ private:
 		none,
 	};
 	borderType type[DIMENSIONAL_NUMBER];
-	ProjectionTuple size;
+	Vector size;
 public:
 	/*isPeriodic Borders[i] determining whether there are periodic border conditions in i-th direction
 	if isPeriodicBorders[i] == false the i-th direction not have borders
 	size[i] is distance between borders in i-th direction. size[i] have sence if isPeriodicBorders[i] == true*/
-	BorderConditions(ProjectionTuple& size, bool isPeriodicBorders[DIMENSIONAL_NUMBER]);
-	double computeDistance(ProjectionTuple& projectionsDifference) const;
+	BorderConditions(Vector& size, bool isPeriodicBorders[DIMENSIONAL_NUMBER]);
+	double computeDistance(Vector& projectionsDifference) const;
 };
 
 #endif	//TAHD_BORDER_CONDITIONS_H

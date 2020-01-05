@@ -11,7 +11,7 @@ size_t Cell::neighborCellsNumber()
 	return result;
 }
 
-Cell::Cell(const ProjectionTuple& position, const ProjectionTuple& size, const size_t atomsNumber) 
+Cell::Cell(const Vector& position, const Vector& size, const size_t atomsNumber) 
 	: position{ position }, size{ size }, neighborCells{}, atoms{ atomsNumber }
 {
 	neighborCells.reserve(neighborCellsNumber());
