@@ -1,20 +1,25 @@
 #include "Cell.h"
 
 
-size_t Cell::neighborCellsNumber()
+constexpr std::size_t Cell::maximumNeighborCellsNumber()
 {
-	return pow(3, DIMENSIONAL_NUMBER);
+	int result = 1;
+	for (unsigned short int i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	{
+		result *= DIMENSIONAL_NUMBER;
+	}
+	return result;
 }
 
 Cell::Cell(const Vector& position, const Vector& size, const size_t atomsNumber) 
 	: position{ position }, size{ size }, neighborCells{}, atoms{ atomsNumber }
 {
-	neighborCells.reserve(neighborCellsNumber());
+	neighborCells.reserve(maximumNeighborCellsNumber());
 }
 
 void Cell::addNeighborCell(Cell* cell)
 {
-	if (neighborCells.size() < neighborCellsNumber())
+	if (neighborCells.size() < maximumNeighborCellsNumber())
 	{
 		neighborCells.push_back(cell);
 	}

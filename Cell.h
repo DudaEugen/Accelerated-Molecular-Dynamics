@@ -18,7 +18,7 @@ private:
 public:
 	AtomGroup atoms;
 private:
-	size_t neighborCellsNumber();	
+	static constexpr size_t maximumNeighborCellsNumber();
 public:
 	/*atomsNumber is the approximate number of atoms that will be contained in a cell. 
 	The vector size will be set to zero, but memory will be allocated to atomsNumber of elements.
