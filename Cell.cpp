@@ -3,12 +3,7 @@
 
 size_t Cell::neighborCellsNumber()
 {
-	int result = 1;
-	for (unsigned short int i = 0; i < DIMENSIONAL_NUMBER; ++i)
-	{
-		result *= i;
-	}
-	return result;
+	return pow(3, DIMENSIONAL_NUMBER);
 }
 
 Cell::Cell(const Vector& position, const Vector& size, const size_t atomsNumber) 
