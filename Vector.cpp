@@ -55,6 +55,25 @@ void Vector::operator = (const Vector other)
 #endif
 }
 
+Vector Vector::operator - () const
+{
+	Vector result;
+#if DIMENSIONAL_NUMBER == 3
+	result.projections[0] = -projections[0];
+	result.projections[1] = -projections[1];
+	result.projections[2] = -projections[2];
+#elif DIMENSIONAL_NUMBER == 2
+	result.projections[0] = -projections[0];
+	result.projections[1] = -projections[1];
+#else
+	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	{
+		result.projections[i] = -projections[i];
+	}
+#endif
+	return result;
+}
+
 Vector Vector::operator + (const Vector other) const
 {
 	Vector result = Vector();

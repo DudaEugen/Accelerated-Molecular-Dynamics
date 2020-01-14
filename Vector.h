@@ -17,6 +17,7 @@ public:
 	Vector(const double projectionArray[DIMENSIONAL_NUMBER]);
 	Vector(const Vector &vector);
 	void operator = (const Vector other);
+	Vector operator - () const;
 	Vector operator + (const Vector other) const;
 	Vector operator - (const Vector other) const;
 	void operator += (const Vector other);
