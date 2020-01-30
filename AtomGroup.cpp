@@ -5,6 +5,11 @@ AtomGroup::AtomGroup(const size_t reservedNumber) : atoms{}
 	atoms.reserve(reservedNumber);
 }
 
+void AtomGroup::reserve(const size_t number)
+{
+	atoms.reserve(number);
+}
+
 void AtomGroup::addAtom(Atom* atom)
 {
 	atoms.push_back(atom);

@@ -12,6 +12,7 @@ private:
 	std::vector<Atom*> atoms;
 public:
 	AtomGroup(const size_t reservedNumber = 0);
+	void reserve(const size_t number);
 	void addAtom(Atom* atom);
 	size_t getAtomNumber() const;
 	void clearList();
