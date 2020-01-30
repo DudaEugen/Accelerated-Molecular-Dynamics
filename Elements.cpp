@@ -51,17 +51,49 @@ element convert_to_element(const std::string title)
 
 int get_atomic_mass(const element el)
 {
-	if (el == element::C) { return 12; }
-	else if (el == element::Al) { return 27; }
-	else if (el == element::Si) { return 28; }
-	else if (el == element::Ar) { return 40; }
-	else if (el == element::Ti) { return 48; }
-	else if (el == element::Fe) { return 56; }
-	else if (el == element::Ni) { return 59; }
-	else if (el == element::Cu) { return 64; }
-	else if (el == element::Ag) { return 108; }
-	else if (el == element::Au) { return 197; }
-	throw ElementException(std::string("in function get_atomic_mass(element el)"));
+	int result = -1;
+	switch (el)
+	{
+		case element::C:
+			result = 12;
+			break;
+		case element::Al:
+			result = 27;
+			break;
+		case element::Si:
+			result = 28;
+			break;
+		case element::Ar:
+			result = 40;
+			break;
+		case element::Ti:
+			result = 48;
+			break;
+		case element::Fe:
+			result = 56;
+			break;
+		case element::Ni:
+			result = 59;
+			break;
+		case element::Cu:
+			result = 64;
+			break;
+		case element::Ag:
+			result = 108;
+			break;
+		case element::Au:
+			result = 197;
+			break;
+	}
+
+	if (result > 0)
+	{
+		return result;
+	}
+	else
+	{
+		throw ElementException(std::string("in function get_atomic_mass(element el)"));
+	}
 }
 
 int get_atomic_mass(const char title)
