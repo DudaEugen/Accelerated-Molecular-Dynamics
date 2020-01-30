@@ -3,6 +3,7 @@
 #define TAHD_SUBSTANCES_H
 
 #include <stdexcept>
+#include "Elements.h"
 
 enum class substance {
 	Aluminum,
@@ -25,5 +26,9 @@ public:
 private:
 	const std::string massage();
 };
+
+substance convert_to_substance(const std::string& name);
+
+double get_debye_temperature(const substance _substance);
 
 #endif	//TAHD_SUBSTANCES_H
