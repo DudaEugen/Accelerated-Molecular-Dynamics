@@ -10,6 +10,7 @@ class AThermostat
 protected:
 	double T0;							//Temperature of thermostat
 	double T;							//Temperature of System
+	std::vector<Atom>& atomsSystem;		//pointer to all moving atoms of System
 public:
 	AtomGroup dissipativeLeyers;
 	virtual ~AThermostat() = 0;
