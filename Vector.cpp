@@ -38,7 +38,7 @@ Vector::Vector(const Vector& Vector): projections{}
 #endif
 }
 
-void Vector::operator = (const Vector other)
+Vector Vector::operator = (const Vector other)
 {
 #if DIMENSIONAL_NUMBER == 3
 	projections[0] = other.projections[0];
@@ -53,6 +53,7 @@ void Vector::operator = (const Vector other)
 		projections[i] = other.projections[i];
 	}
 #endif
+	return *this;
 }
 
 Vector Vector::operator - () const
@@ -76,18 +77,18 @@ Vector Vector::operator - () const
 
 Vector Vector::operator + (const Vector other) const
 {
-	Vector result = Vector();
+	Vector result = *this;
 #if DIMENSIONAL_NUMBER == 3
-	result.projections[0] = projections[0] + other.projections[0];
-	result.projections[1] = projections[1] + other.projections[1];
-	result.projections[2] = projections[2] + other.projections[2];
+	result.projections[0] += other.projections[0];
+	result.projections[1] += other.projections[1];
+	result.projections[2] += other.projections[2];
 #elif DIMENSIONAL_NUMBER == 2
-	result.projections[0] = projections[0] + other.projections[0];
-	result.projections[1] = projections[1] + other.projections[1];
+	result.projections[0] += other.projections[0];
+	result.projections[1] += other.projections[1];
 #else
 	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
-		result.projections[i] = projections[i] + other.projections[i];
+		result.projections[i] += other.projections[i];
 	}
 #endif
 	return result;
@@ -95,24 +96,24 @@ Vector Vector::operator + (const Vector other) const
 
 Vector Vector::operator - (const Vector other) const
 {
-	Vector result = Vector();
+	Vector result = *this;
 #if DIMENSIONAL_NUMBER == 3
-	result.projections[0] = projections[0] - other.projections[0];
-	result.projections[1] = projections[1] - other.projections[1];
-	result.projections[2] = projections[2] - other.projections[2];
+	result.projections[0] -= other.projections[0];
+	result.projections[1] -= other.projections[1];
+	result.projections[2] -= other.projections[2];
 #elif DIMENSIONAL_NUMBER == 2
-	result.projections[0] = projections[0] - other.projections[0];
-	result.projections[1] = projections[1] - other.projections[1];
+	result.projections[0] -= other.projections[0];
+	result.projections[1] -= other.projections[1];
 #else
 	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
-		result.projections[i] = projections[i] - other.projections[i];
+		result.projections[i] -= other.projections[i];
 	}
 #endif
 	return result;
 }
 
-void Vector::operator += (const Vector other)
+Vector& Vector::operator += (const Vector other)
 {
 #if DIMENSIONAL_NUMBER == 3
 	projections[0] += other.projections[0];
@@ -127,9 +128,10 @@ void Vector::operator += (const Vector other)
 		projections[i] += other.projections[i];
 	}
 #endif
+	return *this;
 }
 
-void Vector::operator -= (const Vector other)
+Vector& Vector::operator -= (const Vector other)
 {
 #if DIMENSIONAL_NUMBER == 3
 	projections[0] -= other.projections[0];
@@ -144,9 +146,10 @@ void Vector::operator -= (const Vector other)
 		projections[i] -= other.projections[i];
 	}
 #endif
+	return *this;
 }
 
-void Vector::operator *= (const double factor)
+Vector& Vector::operator *= (const double factor)
 {
 #if DIMENSIONAL_NUMBER == 3
 	projections[0] *= factor;
@@ -161,9 +164,10 @@ void Vector::operator *= (const double factor)
 		projections[i] *= factor;
 	}
 #endif
+	return *this;
 }
 
-void Vector::operator /= (const double divider)
+Vector& Vector::operator /= (const double divider)
 {
 #if DIMENSIONAL_NUMBER == 3
 	projections[0] /= divider;
@@ -178,22 +182,23 @@ void Vector::operator /= (const double divider)
 		projections[i] /= divider;
 	}
 #endif
+	return *this;
 }
 
 const Vector operator * (const Vector vector, const double factor)
 {
-	Vector result = Vector();
+	Vector result = vector;
 #if DIMENSIONAL_NUMBER == 3
-	result.projections[0] = vector.projections[0] * factor;
-	result.projections[1] = vector.projections[1] * factor;
-	result.projections[2] = vector.projections[2] * factor;
+	result.projections[0] *= factor;
+	result.projections[1] *= factor;
+	result.projections[2] *= factor;
 #elif DIMENSIONAL_NUMBER == 2
-	result.projections[0] = Vector.projections[0] * factor;
-	result.projections[1] = Vector.projections[1] * factor;
+	result.projections[0] *= factor;
+	result.projections[1] *= factor;
 #else
 	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
-		result.projections[i] = Vector.projections[i] * factor;
+		result.projections[i] *= factor;
 	}
 #endif
 	return result;
@@ -201,18 +206,18 @@ const Vector operator * (const Vector vector, const double factor)
 
 const Vector operator * (const double factor, const Vector vector) 
 {
-	Vector result = Vector();
+	Vector result = vector;
 #if DIMENSIONAL_NUMBER == 3
-	result.projections[0] = vector.projections[0] * factor;
-	result.projections[1] = vector.projections[1] * factor;
-	result.projections[2] = vector.projections[2] * factor;
+	result.projections[0] *= factor;
+	result.projections[1] *= factor;
+	result.projections[2] *= factor;
 #elif DIMENSIONAL_NUMBER == 2
-	result.projections[0] = Vector.projections[0] * factor;
-	result.projections[1] = Vector.projections[1] * factor;
+	result.projections[0] *= factor;
+	result.projections[1] *= factor;
 #else
 	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
-		result.projections[i] = Vector.projections[i] * factor;
+		result.projections[i] *= factor;
 	}
 #endif
 	return result;
@@ -220,18 +225,18 @@ const Vector operator * (const double factor, const Vector vector)
 
 Vector Vector::operator / (const double divider) const
 {
-	Vector result = Vector();
+	Vector result = *this;
 #if DIMENSIONAL_NUMBER == 3
-	result.projections[0] = projections[0] / divider;
-	result.projections[1] = projections[1] / divider;
-	result.projections[2] = projections[2] / divider;
+	result.projections[0] /= divider;
+	result.projections[1] /= divider;
+	result.projections[2] /= divider;
 #elif DIMENSIONAL_NUMBER == 2
-	result.projections[0] = projections[0] / divider;
-	result.projections[1] = projections[1] / divider;
+	result.projections[0] /= divider;
+	result.projections[1] /= divider;
 #else
 	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
-		result.projections[i] = projections[i] / divider;
+		result.projections[i] /= divider;
 	}
 #endif
 	return result;
