@@ -6,6 +6,7 @@
 #define DEBUG
 
 #define DIMENSIONAL_NUMBER 3
+#define MAX_DIMENSIONAL_FOR_VALUE_PASSING 3
 constexpr double PI = 3.14159265359;
 //physical constants
 constexpr double power(unsigned int v1, int v2)

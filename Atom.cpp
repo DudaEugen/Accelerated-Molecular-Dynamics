@@ -2,7 +2,7 @@
 
 short unsigned int Atom::stepIndex = 0;
 
-Atom::Atom(const element element, const Vector coordinates):
+Atom::Atom(const element element, Vector::ConstVectorPass coordinates):
 	chemElement{ element }, 
 	mass{ computeMass(element) },
 	r{ coordinates }, 
@@ -11,15 +11,15 @@ Atom::Atom(const element element, const Vector coordinates):
 {
 }
 
-Atom::Atom(const char element, const Vector coordinates) : Atom{ convert_to_element(element), coordinates }
+Atom::Atom(const char element, Vector::ConstVectorPass coordinates) : Atom{ convert_to_element(element), coordinates }
 {
 }
 
-Atom::Atom(const char element[2], const Vector coordinates) : Atom{ convert_to_element(element), coordinates }
+Atom::Atom(const char element[2], Vector::ConstVectorPass coordinates) : Atom{ convert_to_element(element), coordinates }
 {
 }
 
-Atom::Atom(const std::string element, const Vector coordinates) : Atom{ convert_to_element(element), coordinates }
+Atom::Atom(const std::string element, Vector::ConstVectorPass coordinates) : Atom{ convert_to_element(element), coordinates }
 {
 }
 
@@ -29,21 +29,21 @@ int Atom::getPreviousStepIndex() const { return  stepIndex == 0 ? 1 : 0; }
 
 void Atom::changeStepIndex() { stepIndex = stepIndex == 0 ? 1 : 0; }
 
-void Atom::setCoordinates(const Vector coordinates) { r = coordinates; }
+void Atom::setCoordinates(Vector::ConstVectorPass coordinates) { r = coordinates; }
 
-void Atom::setVelocity(const Vector velocity) { v = velocity; }
+void Atom::setVelocity(Vector::ConstVectorPass velocity) { v = velocity; }
 
-void Atom::setAcceleration(const Vector acceleration) { a[stepIndex] = acceleration; }
+void Atom::setAcceleration(Vector::ConstVectorPass acceleration) { a[stepIndex] = acceleration; }
 
-void Atom::addVelocity(const Vector addingVelocity) { v += addingVelocity; }
+void Atom::addVelocity(Vector::ConstVectorPass addingVelocity) { v += addingVelocity; }
 
-void Atom::addAcceleration(const Vector addingAcceleratrion) { a[stepIndex] = addingAcceleratrion; }
+void Atom::addAcceleration(Vector::ConstVectorPass addingAcceleratrion) { a[stepIndex] = addingAcceleratrion; }
 
-const Vector& Atom::getCoordinates() const { return r; }
+Vector::ConstVectorPass Atom::getCoordinates() const { return r; }
 
-const Vector& Atom::getVelocity() const { return v; }
+Vector::ConstVectorPass Atom::getVelocity() const { return v; }
 
-const Vector& Atom::getAcceleration() const { return a[stepIndex]; }
+Vector::ConstVectorPass Atom::getAcceleration() const { return a[stepIndex]; }
 
 void Atom::doStepEuler(const double dt)
 {

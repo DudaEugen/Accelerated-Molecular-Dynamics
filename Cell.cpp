@@ -11,7 +11,7 @@ constexpr std::size_t Cell::maximumNeighborCellsNumber()
 	return result;
 }
 
-Cell::Cell(const Vector position, const Vector size, const size_t atomsNumber) 
+Cell::Cell(Vector::ConstVectorPass position, Vector::ConstVectorPass size, const size_t atomsNumber)
 	: position{ position }, size{ size }, neighborCells{}, atoms{ atomsNumber }
 {
 	neighborCells.reserve(maximumNeighborCellsNumber());

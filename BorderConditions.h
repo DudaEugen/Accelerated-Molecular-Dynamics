@@ -20,8 +20,8 @@ public:
 	/*isPeriodic Borders[i] determining whether there are periodic border conditions in i-th direction
 	if isPeriodicBorders[i] == false the i-th direction not have borders
 	size[i] is distance between borders in i-th direction. size[i] have sence if isPeriodicBorders[i] == true*/
-	BorderConditions(Vector size, bool isPeriodicBorders[DIMENSIONAL_NUMBER]);
-	double computeDistance(Vector projectionsDifference) const;
+	BorderConditions(Vector::ConstVectorPass size, bool isPeriodicBorders[DIMENSIONAL_NUMBER]);
+	double computeDistance(Vector::VectorPass projectionsDifference) const;
 };
 
 #endif	//TAHD_BORDER_CONDITIONS_H

@@ -46,7 +46,7 @@ Vector::Vector(const Vector& Vector): projections{}
 #endif
 }
 
-Vector Vector::operator = (const Vector other)
+Vector::VectorPass Vector::operator = (ConstVectorPass other)
 {
 #if DIMENSIONAL_NUMBER == 3
 	projections[0] = other.projections[0];
@@ -83,7 +83,7 @@ Vector Vector::operator - () const
 	return result;
 }
 
-Vector Vector::operator + (const Vector other) const
+Vector Vector::operator + (ConstVectorPass other) const
 {
 	Vector result = *this;
 #if DIMENSIONAL_NUMBER == 3
@@ -102,7 +102,7 @@ Vector Vector::operator + (const Vector other) const
 	return result;
 }
 
-Vector Vector::operator - (const Vector other) const
+Vector Vector::operator - (ConstVectorPass other) const
 {
 	Vector result = *this;
 #if DIMENSIONAL_NUMBER == 3
@@ -121,7 +121,7 @@ Vector Vector::operator - (const Vector other) const
 	return result;
 }
 
-Vector& Vector::operator += (const Vector other)
+Vector::VectorPass Vector::operator += (ConstVectorPass other)
 {
 #if DIMENSIONAL_NUMBER == 3
 	projections[0] += other.projections[0];
@@ -139,7 +139,7 @@ Vector& Vector::operator += (const Vector other)
 	return *this;
 }
 
-Vector& Vector::operator -= (const Vector other)
+Vector::VectorPass Vector::operator -= (ConstVectorPass other)
 {
 #if DIMENSIONAL_NUMBER == 3
 	projections[0] -= other.projections[0];
@@ -157,7 +157,7 @@ Vector& Vector::operator -= (const Vector other)
 	return *this;
 }
 
-Vector& Vector::operator *= (const double factor)
+Vector::VectorPass Vector::operator *= (const double factor)
 {
 #if DIMENSIONAL_NUMBER == 3
 	projections[0] *= factor;
@@ -175,7 +175,7 @@ Vector& Vector::operator *= (const double factor)
 	return *this;
 }
 
-Vector& Vector::operator /= (const double divider)
+Vector::VectorPass Vector::operator /= (const double divider)
 {
 #if DIMENSIONAL_NUMBER == 3
 	projections[0] /= divider;
@@ -193,7 +193,7 @@ Vector& Vector::operator /= (const double divider)
 	return *this;
 }
 
-const Vector operator * (const Vector vector, const double factor)
+const Vector operator * (Vector::ConstVectorPass vector, const double factor)
 {
 	Vector result = vector;
 #if DIMENSIONAL_NUMBER == 3
@@ -212,7 +212,7 @@ const Vector operator * (const Vector vector, const double factor)
 	return result;
 }
 
-const Vector operator * (const double factor, const Vector vector) 
+const Vector operator * (const double factor, Vector::ConstVectorPass vector)
 {
 	Vector result = vector;
 #if DIMENSIONAL_NUMBER == 3

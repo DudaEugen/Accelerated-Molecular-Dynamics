@@ -24,21 +24,21 @@ private:
 	double computeMass(const element element);
 	int getPreviousStepIndex() const;
 public:
-	Atom(const element element, const Vector coordinates);
-	Atom(const char element, const Vector coordinates);
-	Atom(const char element[2], const Vector coordinates);
-	Atom(const std::string element, const Vector coordinates);
+	Atom(const element element, Vector::ConstVectorPass coordinates);
+	Atom(const char element, Vector::ConstVectorPass coordinates);
+	Atom(const char element[2], Vector::ConstVectorPass coordinates);
+	Atom(const std::string element, Vector::ConstVectorPass coordinates);
 	static void changeStepIndex();				/*the class invoking doStepVelocityVerlet method is responsible for calling changeStepIndex()
 												  after ever call doStepVelocityVerlet for all atoms*/
-	void setCoordinates(const Vector coordinates);
-	void setVelocity(const Vector velocity);
-	void setAcceleration(const Vector acceleration);
+	void setCoordinates(Vector::ConstVectorPass coordinates);
+	void setVelocity(Vector::ConstVectorPass velocity);
+	void setAcceleration(Vector::ConstVectorPass acceleration);
 												//addQuantity methods are adding argument to actuality value of quantity
-	void addVelocity(const Vector addingVelocity);
-	void addAcceleration(const Vector addingAcceleratrion);
-	const Vector& getCoordinates() const;
-	const Vector& getVelocity() const;
-	const Vector& getAcceleration() const;
+	void addVelocity(Vector::ConstVectorPass addingVelocity);
+	void addAcceleration(Vector::ConstVectorPass addingAcceleratrion);
+	Vector::ConstVectorPass getCoordinates() const;
+	Vector::ConstVectorPass getVelocity() const;
+	Vector::ConstVectorPass getAcceleration() const;
 												//doStepAlhorithm are methods to moving atom corresponding algorithm
 	void doStepEuler(const double dt);
 	void doStepVelocityVerlet(const double dt);	//dont first step

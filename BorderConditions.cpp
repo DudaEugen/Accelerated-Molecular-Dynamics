@@ -1,6 +1,6 @@
 #include "BorderConditions.h"
 
-BorderConditions::BorderConditions(Vector size, bool isPeriodicBorders[DIMENSIONAL_NUMBER])
+BorderConditions::BorderConditions(Vector::ConstVectorPass size, bool isPeriodicBorders[DIMENSIONAL_NUMBER])
 	: size{ size }, type{}
 {
 #if DIMENSIONAL_NUMBER == 3
@@ -18,7 +18,7 @@ BorderConditions::BorderConditions(Vector size, bool isPeriodicBorders[DIMENSION
 #endif
 }
 
-double BorderConditions::computeDistance(Vector projectionsDifference) const
+double BorderConditions::computeDistance(Vector::VectorPass projectionsDifference) const
 {
 	double squaredDistance = 0;
 #if DIMENSIONAL_NUMBER == 3
