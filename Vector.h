@@ -3,6 +3,7 @@
 #define TAHD_PROJECTION_TUPLE_H
 
 #include "constants.h"
+#include <initializer_list>
 
 typedef unsigned short int projection_index;		//this is type of index for this->projections array
 
@@ -15,6 +16,7 @@ private:
 public:
 	Vector();
 	Vector(const double projectionArray[DIMENSIONAL_NUMBER]);
+	Vector(const std::initializer_list<double>& init_list);
 	Vector(const Vector &vector);
 	Vector operator = (const Vector other);
 	Vector operator - () const;

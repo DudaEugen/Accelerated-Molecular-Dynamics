@@ -21,6 +21,14 @@ Vector::Vector(const double projectionArray[DIMENSIONAL_NUMBER]): projections{}
 #endif
 }
 
+Vector::Vector(const std::initializer_list<double>& init_list)
+{
+	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	{
+		projections[i] = init_list.size() > i ? *(init_list.begin() + i) : 0;
+	}
+}
+
 Vector::Vector(const Vector& Vector): projections{}
 {
 #if DIMENSIONAL_NUMBER == 3
