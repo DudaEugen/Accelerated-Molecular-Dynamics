@@ -43,3 +43,4 @@ Release/
 *.user
 *.filters
 *.vcxproj
+testing/
