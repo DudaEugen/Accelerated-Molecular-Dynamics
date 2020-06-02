@@ -34,7 +34,7 @@ element convert_to_element(const char title[2])
 	throw ElementException(title);
 }
 
-element convert_to_element(const std::string title)
+element convert_to_element(const std::string& title)
 {
 	if (title == "C") { return element::C; }
 	else if (title == "Al") { return element::Al; }
@@ -126,7 +126,7 @@ int get_atomic_number(const char title[2])
 	return get_atomic_number(convert_to_element(title));
 }
 
-int get_atomic_number(const std::string title)
+int get_atomic_number(const std::string& title)
 {
 	return get_atomic_number(convert_to_element(title));
 }
