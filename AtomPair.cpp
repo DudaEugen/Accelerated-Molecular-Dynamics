@@ -36,7 +36,7 @@ void AtomPair::computeDistance_ignoringBorderConditions()
 void AtomPair::computeDistance_usingBorderConditions()
 {
 	dProjections = atomPair[0]->getCoordinates() - atomPair[1]->getCoordinates();
-	distance = borderConditions->computeDistance(dProjections);
+	distance = borderConditions->operator()(dProjections);
 }
 
 void AtomPair::computeDistance()
@@ -47,11 +47,11 @@ void AtomPair::computeDistance()
 double AtomPair::computeDistance(const Atom* first, const Atom* second, const bool isUsingBorderConditions)
 {
 	Vector projections = first->getCoordinates() - second->getCoordinates();
-	return isUsingBorderConditions ? borderConditions->computeDistance(projections) : projections.absoluteValue();
+	return isUsingBorderConditions ? borderConditions->operator()(projections) : projections.absoluteValue();
 }
 
 double AtomPair::computeDistance(const Atom* first, const Atom* second, Vector projections, const bool isUsingBorderConditions)
 {
 	projections = first->getCoordinates() - second->getCoordinates();
-	return isUsingBorderConditions ? borderConditions->computeDistance(projections) : projections.absoluteValue();
+	return isUsingBorderConditions ? borderConditions->operator()(projections) : projections.absoluteValue();
 }

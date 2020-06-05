@@ -2,6 +2,7 @@
 #ifndef TAHD_BORDER_CONDITIONS_H
 #define TAHD_BORDER_CONDITIONS_H
 
+#include <cstdint>
 #include "Vector.h"
 
 /* Borders are surfeces, that have i-th coordionate x[i] such that x[i] == 0 or x[i] == size[i]
@@ -9,19 +10,17 @@ BorderConditions object recalculating istances between atoms
 This class is realizing periodic borders and "none" borders (if border not defined in this direction)  */
 class BorderConditions
 {
-private:
+public:
 	enum class borderType {
 		periodic,
 		none,
 	};
+private:
 	borderType type[DIMENSIONAL_NUMBER];
 	Vector size;
 public:
-	/*isPeriodic Borders[i] determining whether there are periodic border conditions in i-th direction
-	if isPeriodicBorders[i] == false the i-th direction not have borders
-	size[i] is distance between borders in i-th direction. size[i] have sence if isPeriodicBorders[i] == true*/
-	BorderConditions(Vector::ConstVectorPass size, bool isPeriodicBorders[DIMENSIONAL_NUMBER]);
-	double computeDistance(Vector::VectorPass projectionsDifference) const;
+	BorderConditions(Vector::ConstVectorPass size, borderType borders[DIMENSIONAL_NUMBER]);
+	double operator() (Vector& projectionsDifference) const;
 };
 
 #endif	//TAHD_BORDER_CONDITIONS_H
