@@ -6,7 +6,7 @@ constexpr std::size_t Cell::maximumNeighborCellsNumber()
 	int result = 1;
 	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
-		result *= DIMENSIONAL_NUMBER;
+		result *= 3;
 	}
 	return result;
 }
@@ -31,4 +31,4 @@ void Cell::addNeighborCell(Cell* cell)
 
 std::size_t Cell::getNeighborCellNumber() const { return neighborCells.size(); }
 
-Cell& Cell::getNeighborCell(const size_t index) { return *neighborCells[index]; }
+Cell& Cell::getNeighborCell(const size_t index) { return *(neighborCells[index]); }
