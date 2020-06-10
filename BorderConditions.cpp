@@ -12,14 +12,16 @@ BorderConditions::BorderConditions(Vector::ConstVectorPass size, borderType bord
 double BorderConditions::operator() (Vector& projectionsDifference) const
 {
 	double squaredDistance = 0;
+	double ratioProjToSize;
 	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
 		if (type[i] == borderType::periodic)
 		{
+			ratioProjToSize = projectionsDifference[i] / size[i];
 			projectionsDifference[i] -= size[i] * (
-				((int64_t)(2 * projectionsDifference[i] / size[i])) -
-				(int64_t)(projectionsDifference[i] / size[i])
-				);
+				static_cast<int64_t>(2 * ratioProjToSize) -
+				static_cast<int64_t>(ratioProjToSize)
+			);
 		}
 		squaredDistance += projectionsDifference[i] * projectionsDifference[i];
 	}

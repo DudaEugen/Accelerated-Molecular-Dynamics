@@ -9,24 +9,20 @@
 class AtomPair
 {
 private:
+	Vector dProjections;
 	Atom* atomPair[2];
 	double distance;
-	Vector dProjections;
-	static BorderConditions* borderConditions;
 	bool isUsingBorderConditions;						//method computeDistance() use border conditions if true
+	static BorderConditions* borderConditions;
 
-	void computeDistance_ignoringBorderConditions();	//refresh distance and dProjections fields ignoring border conditions
-	void computeDistance_usingBorderConditions();		//refresh distance and dProjections fields using border conditions
 public:
 	AtomPair(Atom* first, Atom* second, const bool isUsingBorderConditions = false);
-	AtomPair(Atom* first, Atom* second, const double d, const Vector deltaCoordinate, const bool isUsingBorderConditions = false);
+	AtomPair(Atom* first, Atom* second, const double d, const Vector deltaCoordinates, const bool isUsingBorderConditions = false);
 	static void setBorderConditions(BorderConditions* borderConditions);
 	double getDistance() const;
-	double getDistanceProjection(const projection_index index) const;
-	void computeDistance();
-	static double computeDistance(const Atom* first, const Atom* second, const bool isUsingBorderConditions = false);
-	//write to projections difference of coordinates first and second
-	static double computeDistance(const Atom* first, const Atom* second, Vector projections, const bool isUsingBorderConditions = false);
+	Vector::ConstVectorPass getDistanceProjections();
+	void setIsUsingBorderConditions(const bool isUsing);
+	double computeDistance();
 };
 
 #endif	//TAHD_ATOM_PAIR_H
