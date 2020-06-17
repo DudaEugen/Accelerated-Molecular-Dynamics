@@ -5,7 +5,8 @@
 #include "Atom.h"
 #include "BorderConditions.h"
 
-/*AtomPair class is replying for computing and storing: an distances between Atoms and differences of Atoms coordinates*/
+/*AtomPair class is replying for computing and storing: an distances between Atoms and differences of Atoms coordinates;
+it is known Atom Pair: atoms contain in same stream or in different*/
 class AtomPair
 {
 private:
@@ -13,6 +14,7 @@ private:
 	Atom* atomPair[2];
 	double distance;
 	bool isUsingBorderConditions;						//method computeDistance() use border conditions if true
+	bool isAtomsFromSameStream;
 	static BorderConditions* borderConditions;
 
 public:
@@ -21,7 +23,9 @@ public:
 	static void setBorderConditions(BorderConditions* borderConditions);
 	double getDistance() const;
 	Vector::ConstVectorPass getDistanceProjections();
+	bool getIsAtomsFromSameStream();
 	void setIsUsingBorderConditions(const bool isUsing);
+	void setIsAtomsFromSameStream(const bool isSame);
 	double computeDistance();
 };
 
