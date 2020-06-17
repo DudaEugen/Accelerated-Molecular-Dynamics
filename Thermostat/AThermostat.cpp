@@ -1,12 +1,6 @@
 #include "AThermostat.h"
 
-AThermostat::~AThermostat() {
-}
-
-void AThermostat::setTemperature(const double temperature)
-{
-	this->T0 = temperature;
-}
+void AThermostat::setTemperature(const double temperature) { T0 = temperature; }
 
 double AThermostat::computeTemperature()
 {
@@ -16,6 +10,6 @@ double AThermostat::computeTemperature()
 	{
 		T += atomsSystem[i].mass * atomsSystem[i].getVelocity().sumSquares();
 	}
-	T *= 10000 / (K_BOLTZMANN * DIMENSIONAL_NUMBER * atomNumber);	//units of velocity is Angstrom/ps^2
+	T *= 10000 / (K_BOLTZMANN * DIMENSIONAL_NUMBER * atomNumber);	//units of velocity is Angstrom/ps
 	return T;
 }
