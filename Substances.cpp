@@ -6,20 +6,30 @@ SubstanceException::SubstanceException(const std::string& _Massage) : std::runti
 
 const std::string SubstanceException::massage() { return "invalid or nondefined substance "; }
 
+std::string convert_to_lover(const std::string& s)
+{
+	std::string result = "";
+	for (char c : s)
+	{
+		result += tolower(c);
+	}
+	return result;
+}
+
 substance convert_to_substance(const std::string& name)
 {
-	if (name == "Aluminum") { return substance::Aluminum; }
-	else if (name == "Argon") { return substance::Argon; }
-	else if (name == "Copper") { return substance::Copper; }
-	else if (name == "Gold") { return substance::Gold; }
-	else if (name == "Iron") { return substance::Iron; }
-	else if (name == "Nickel") { return substance::Nickel; }
-	else if (name == "Silicon") { return substance::Silicon; }
-	else if (name == "Silver") { return substance::Silver; }
-	else if (name == "Titanium") { return substance::Titanium; }
-	else if (name == "Zink") { return substance::Zink; }
-	else if (name == "diamond") { return substance::diamond; }
-	else if (name == "graphite") { return substance::graphite; }
+	if (convert_to_lover(name) == "aluminum") { return substance::Aluminum; }
+	else if (convert_to_lover(name) == "argon") { return substance::Argon; }
+	else if (convert_to_lover(name) == "copper") { return substance::Copper; }
+	else if (convert_to_lover(name) == "gold") { return substance::Gold; }
+	else if (convert_to_lover(name) == "iron") { return substance::Iron; }
+	else if (convert_to_lover(name) == "nickel") { return substance::Nickel; }
+	else if (convert_to_lover(name) == "silicon") { return substance::Silicon; }
+	else if (convert_to_lover(name) == "silver") { return substance::Silver; }
+	else if (convert_to_lover(name) == "titanium") { return substance::Titanium; }
+	else if (convert_to_lover(name) == "zink") { return substance::Zink; }
+	else if (convert_to_lover(name) == "diamond") { return substance::diamond; }
+	else if (convert_to_lover(name) == "graphite") { return substance::graphite; }
 	throw SubstanceException(name);
 }
 
