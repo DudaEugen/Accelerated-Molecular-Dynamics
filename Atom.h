@@ -11,7 +11,6 @@
 class Atom
 {
 private:
-	bool isFirstStepTaken;
 	char actualStepIndex;						/*indexing steps: a[actualStepIndex] containing actuality accelerations
 												  a[not actualStepIndex] containing accelerations corresponding previous step*/
 
@@ -26,8 +25,7 @@ private:
 	double computeMass(const element element);
 	char getPreviousStepIndex();
 	void changeStepIndex();
-	void doStepEuler(const double dt);
-	void doStepVelocityVerlet(const double dt);	//dont first step
+	void doStepVelocityVerlet(const double dt);
 public:
 	Atom(const element element, Vector::ConstVectorPass coordinates);
 	Atom(const char element, Vector::ConstVectorPass coordinates);
