@@ -8,7 +8,7 @@
 class IPotential
 {
 public:
-	virtual ~IPotential() = 0;
+	virtual ~IPotential() = default;
 	virtual void computeAndSetAccelerations(const std::vector<AtomPair>& pairs) = 0;
 	virtual double getCutRadius() const = 0;
 };
