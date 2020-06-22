@@ -14,11 +14,15 @@ AtomPair::AtomPair(Atom* first, Atom* second, const double d, const Vector delta
 
 void AtomPair::setBorderConditions(BorderConditions* borderConditions) { AtomPair::borderConditions = borderConditions; }
 
+Atom& AtomPair::getFirst() const { return *atomPair[0]; }
+
+Atom& AtomPair::getSecond() const { return *atomPair[1]; }
+
 double AtomPair::getDistance() const { return distance; }
 
-Vector::ConstVectorPass AtomPair::getDistanceProjections() { return dProjections; }
+Vector::ConstVectorPass AtomPair::getDistanceProjections() const { return dProjections; }
 
-bool AtomPair::getIsAtomsFromSameStream() { return isAtomsFromSameStream; }
+bool AtomPair::getIsAtomsFromSameStream() const { return isAtomsFromSameStream; }
 
 void AtomPair::setIsUsingBorderConditions(const bool isUsing) { isUsingBorderConditions = isUsing; }
 

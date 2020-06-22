@@ -21,9 +21,11 @@ public:
 	AtomPair(Atom* first, Atom* second, const bool isUsingBorderConditions = false);
 	AtomPair(Atom* first, Atom* second, const double d, const Vector deltaCoordinates, const bool isUsingBorderConditions = false);
 	static void setBorderConditions(BorderConditions* borderConditions);
+	Atom& getFirst() const;
+	Atom& getSecond() const;
 	double getDistance() const;
-	Vector::ConstVectorPass getDistanceProjections();
-	bool getIsAtomsFromSameStream();
+	Vector::ConstVectorPass getDistanceProjections() const;
+	bool getIsAtomsFromSameStream() const;
 	void setIsUsingBorderConditions(const bool isUsing);
 	void setIsAtomsFromSameStream(const bool isSame);
 	double computeDistance();
