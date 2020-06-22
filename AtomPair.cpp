@@ -18,7 +18,7 @@ double AtomPair::getDistance() const { return distance; }
 
 Vector::ConstVectorPass AtomPair::getDistanceProjections() { return dProjections; }
 
-bool AtomPair::getIsAtomsFromSameStream() { return getIsAtomsFromSameStream; }
+bool AtomPair::getIsAtomsFromSameStream() { return isAtomsFromSameStream; }
 
 void AtomPair::setIsUsingBorderConditions(const bool isUsing) { isUsingBorderConditions = isUsing; }
 
