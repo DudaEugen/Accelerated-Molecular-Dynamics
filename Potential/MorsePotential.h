@@ -11,7 +11,7 @@ class MorsePotential : public IPotential
 	double a;
 	double rc;
 public:
-	MorsePotential(double dissociationEnergy, double equilibriumBondDistance, double a, double cutRadius);
+	MorsePotential(double dissociationEnergy, double equilibriumBondDistance, double a, double cutRadius);	// dissociationEnergy(eV), equilibriumBondDistance(A), a(A^-1), cutradius(A)
 	~MorsePotential() override;
 	virtual void computeAndSetAccelerations(const std::vector<AtomPair>& pairs) override;
 	virtual double getCutRadius() const override;
