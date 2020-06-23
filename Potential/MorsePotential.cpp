@@ -1,27 +1,38 @@
 #include "MorsePotential.h"
 
-MorsePotential::MorsePotential(double dissociationEnergy, double equilibriumBondDistance, double a, double cutRadius)
-: De{  dissociationEnergy }, re{ equilibriumBondDistance }, a{ a }, rc{ cutRadius }
+MorsePotential::MorsePotential(const std::size_t maxAtomPairTypes)
+: APairPotential{ maxAtomPairTypes }
 {
 }
 
 MorsePotential::~MorsePotential() {}
 
-void MorsePotential::computeAndSetAccelerations(const std::vector<AtomPair>& pairs)
+void MorsePotential::addPairType(element first, element second, double dissociationEnergy, double equilibriumBondDistance, double a, double cutRadius)
 {
-	Vector force;
-	for (const AtomPair& pair: pairs)
+	if (APairPotential::addPairType(first, second))
 	{
-		double distance = pair.getDistance();
-		if (distance < rc)
-		{
-			force = 2 * Q_ELEMENTARY * 0.0001 * De * a * (exp(-a * (distance - re)) - exp(-2 * a * (distance - re))) / distance * pair.getDistanceProjections();
-
-			pair.getFirst().addAcceleration(force / pair.getFirst().mass);
-			if (pair.getIsAtomsFromSameStream())
-				pair.getSecond().addAcceleration(-force / pair.getSecond().mass);
-		}
+		De.push_back(dissociationEnergy);
+		re.push_back(equilibriumBondDistance);
+		this->a.push_back(a);
+		rc.push_back(cutRadius);
 	}
 }
 
-double MorsePotential::getCutRadius() const { return rc; }
+void MorsePotential::computeAndSetAccelerations()
+{
+	Vector force;
+	for (std::size_t index = 0; index < atomPairs->size(); ++index)
+	{
+		double distance = (*atomPairs)[index].getDistance();
+		if (distance < rc[index])
+		{
+			force = 2 * Q_ELEMENTARY * 0.0001 * De[index] * a[index] * 
+				( exp(-a[index]*(distance - re[index])) - exp(-2*a[index] * (distance - re[index])) ) / distance * 
+				(*atomPairs)[index].getDistanceProjections();
+
+			(*atomPairs)[index].getFirst().addAcceleration(force / (*atomPairs)[index].getFirst().mass);
+			if ((*atomPairs)[index].getIsAtomsFromSameStream())
+				(*atomPairs)[index].getSecond().addAcceleration(-force / (*atomPairs)[index].getSecond().mass);
+		}
+	}
+}

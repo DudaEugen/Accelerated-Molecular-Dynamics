@@ -2,19 +2,20 @@
 #ifndef TAHD_MORZE_POTENTIAL_H
 #define TAHD_MORZE_POTENTIAL_H
 
-#include "IPotential.h"
+#include "APairPotential.h"
 
-class MorsePotential : public IPotential
+class MorsePotential : public APairPotential
 {
-	double De;
-	double re;
-	double a;
-	double rc;
+	std::vector<double> De;
+	std::vector<double> re;
+	std::vector<double> a;
 public:
-	MorsePotential(double dissociationEnergy, double equilibriumBondDistance, double a, double cutRadius);	// dissociationEnergy(eV), equilibriumBondDistance(A), a(A^-1), cutradius(A)
+	MorsePotential(const std::size_t maxAtomPairTypes);
 	~MorsePotential() override;
-	virtual void computeAndSetAccelerations(const std::vector<AtomPair>& pairs) override;
-	virtual double getCutRadius() const override;
+	void addPairType(element first, element second, double dissociationEnergy, double equilibriumBondDistance, double a, double cutRadius);	
+	// dissociationEnergy(eV), equilibriumBondDistance(A), a(A^-1), cutradius(A)
+
+	void computeAndSetAccelerations() override;
 };
 
 #endif	//TAHD_MORZE_POTENTIAL_H
