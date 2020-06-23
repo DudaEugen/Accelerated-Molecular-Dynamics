@@ -2,16 +2,14 @@
 #ifndef TAHD_ABSTRACT_PAIR_POTENTIAL_H
 #define TAHD_ABSTRACT_PAIR_POTENTIAL_H
 
-#include "IPotential.h"
-#include "../AtomicSystem.h"
+#include "APotential.h"
 
-class APairPotential: public IPotential
+class APairPotential: public APotential
 {
 protected:
 	std::vector<std::size_t> indexes;			// contain indexes of pairTypes for corresponding atomPairs
 	std::vector<std::pair<element, element>> pairTypes;
 	std::vector<double> rc;
-	AtomicSystem* system;
 
 	bool addPairType(const element first, const element second);
 public:

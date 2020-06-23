@@ -1,7 +1,7 @@
 #include "APairPotential.h"
 
 APairPotential::APairPotential(AtomicSystem* s, const std::size_t maxAtomPairTypes)
-: system{ s }, indexes {}
+: APotential{ s }, indexes {}
 {
 	pairTypes.reserve(maxAtomPairTypes);
 }
