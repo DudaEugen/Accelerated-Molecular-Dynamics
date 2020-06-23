@@ -1,23 +1,23 @@
 #pragma once
-#ifndef TAHD_SYSTEM_H
-#define TAHD_SYSTEM_H
+#ifndef TAHD_ATOMIC_SYSTEM_H
+#define TAHD_ATOMIC_SYSTEM_H
 
 #include "AtomPair.h"
 #include "Cell.h"
 #include "Substances.h"
 
-class System
+class AtomicSystem
 {
 	std::vector<Atom> atoms;
 	std::vector<Cell> cells;
 	std::vector<AtomPair> atomPairs;
 	substance substance_;
 public:
-	System(const substance substance);
-	System(const std::string& substance);
+	AtomicSystem(const substance substance);
+	AtomicSystem(const std::string& substance);
 	static void setBorderConditions(BorderConditions* borderCond);
 	std::vector<AtomPair>& getAtomPairs();
 	std::vector<Atom>& getAtoms();
 };
 
-#endif	//TAHD_SYSTEM_H
+#endif	//TAHD_ATOMIC_SYSTEM_H

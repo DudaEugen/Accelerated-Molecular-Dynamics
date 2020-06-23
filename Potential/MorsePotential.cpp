@@ -1,7 +1,7 @@
 #include "MorsePotential.h"
 
-MorsePotential::MorsePotential(const std::size_t maxAtomPairTypes)
-: APairPotential{ maxAtomPairTypes }
+MorsePotential::MorsePotential(AtomicSystem* s, const std::size_t maxAtomPairTypes)
+: APairPotential{ s, maxAtomPairTypes }
 {
 }
 
@@ -21,18 +21,19 @@ void MorsePotential::addPairType(element first, element second, double dissociat
 void MorsePotential::computeAndSetAccelerations()
 {
 	Vector force;
-	for (std::size_t index = 0; index < atomPairs->size(); ++index)
+	std::vector<AtomPair>& atomPairs = system->getAtomPairs();
+	for (std::size_t index = 0; index < atomPairs.size(); ++index)
 	{
-		double distance = (*atomPairs)[index].getDistance();
+		double distance = atomPairs[index].getDistance();
 		if (distance < rc[index])
 		{
 			force = 2 * Q_ELEMENTARY * 0.0001 * De[index] * a[index] * 
 				( exp(-a[index]*(distance - re[index])) - exp(-2*a[index] * (distance - re[index])) ) / distance * 
-				(*atomPairs)[index].getDistanceProjections();
+				atomPairs[index].getDistanceProjections();
 
-			(*atomPairs)[index].getFirst().addAcceleration(force / (*atomPairs)[index].getFirst().mass);
-			if ((*atomPairs)[index].getIsAtomsFromSameStream())
-				(*atomPairs)[index].getSecond().addAcceleration(-force / (*atomPairs)[index].getSecond().mass);
+			atomPairs[index].getFirst().addAcceleration(force / atomPairs[index].getFirst().mass);
+			if (atomPairs[index].getIsAtomsFromSameStream())
+				atomPairs[index].getSecond().addAcceleration(-force / atomPairs[index].getSecond().mass);
 		}
 	}
 }
