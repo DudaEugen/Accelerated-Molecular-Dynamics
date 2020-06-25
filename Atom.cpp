@@ -10,19 +10,19 @@ Atom::Atom(const element element, Vector::ConstVectorPass coordinates):
 {
 }
 
-Atom::Atom(const char element, Vector::ConstVectorPass coordinates) : Atom{ convert_to_element(element), coordinates }
+Atom::Atom(const char element, Vector::ConstVectorPass coordinates) : Atom{ chem_element::parse(element), coordinates }
 {
 }
 
-Atom::Atom(const char element[2], Vector::ConstVectorPass coordinates) : Atom{ convert_to_element(element), coordinates }
+Atom::Atom(const char element[2], Vector::ConstVectorPass coordinates) : Atom{ chem_element::parse(element), coordinates }
 {
 }
 
-Atom::Atom(const std::string element, Vector::ConstVectorPass coordinates) : Atom{ convert_to_element(element), coordinates }
+Atom::Atom(const std::string element, Vector::ConstVectorPass coordinates) : Atom{ chem_element::parse(element), coordinates }
 {
 }
 
-double Atom::computeMass(const element element) { return get_atomic_mass(element) * 0.001 / N_AVOGADRO; }
+double Atom::computeMass(const element element) { return chem_element::get_atomic_mass(element) * 0.001 / N_AVOGADRO; }
 
 char Atom::getPreviousStepIndex()
 {
