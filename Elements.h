@@ -4,7 +4,8 @@
 
 #include <stdexcept>
 #include <string>
-#include <vector>
+#include <set>
+#include <fstream>
 
 class ElementException : public std::runtime_error {
 public:
@@ -23,15 +24,19 @@ namespace chem_element
 	element parse(const std::string& title);
 	element parse(const char title);
 	element parse(const char title[2]);
-	int get_atomic_mass(const element e);
-	int get_atomic_mass(const char title);
-	int get_atomic_mass(const char title[2]);
-	int get_atomic_mass(const std::string title);
+	/*get_atomic_mass functions return weightMean mass if isWeightedMean is true
+	else return mass of random isotope given their prevalence in nature.
+	During calculations, data from the files that placement folder Elements/Isotopes is used.
+	In these files, the first column corresponds to the atomic weight, and the second to the 0 < prevalence <= 1*/
+	int get_atomic_mass(const element e, const bool isWeightedMean = true);
+	int get_atomic_mass(const char title, const bool isWeightedMean = true);
+	int get_atomic_mass(const char title[2], const bool isWeightedMean = true);
+	int get_atomic_mass(const std::string& title, const bool isWeightedMean = true);
 	int get_atomic_number(const element el);
 	int get_atomic_number(const char title);
 	int get_atomic_number(const char title[2]);
 	int get_atomic_number(const std::string& title);
-	std::vector<element> get_all();
+	std::set<element> get_all();
 }
 
 #endif	// TAHD_ELEMENTS_H
