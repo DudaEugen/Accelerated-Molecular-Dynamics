@@ -1,7 +1,6 @@
 #include "Elements.h"
 #include <random>
 #include <ctime>
-#include <iostream>
 
 #define CONVERT_TO_STRING
 #include "Elements/elements_enum.h"
