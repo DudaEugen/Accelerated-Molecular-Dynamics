@@ -44,3 +44,6 @@ Release/
 *.filters
 *.vcxproj
 testing/
+
+# Visual Studio Code directory
+.vscode/
