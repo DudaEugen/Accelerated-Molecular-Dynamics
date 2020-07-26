@@ -1,4 +1,6 @@
 #pragma once
+#ifndef TAHD_SQUARE_MATRIX_H
+#define TAHD_SQUARE_MATRIX_H
 
 #include <cmath>
 #include "ColumnMatrix.h"
@@ -26,9 +28,10 @@ SquareMatrix<N> invertible(const SquareMatrix<N>& m);
 template<std::size_t N>
 class SquareMatrix
 {
-	double** matrix;
+	double* matrix;
 	mutable double determinant;
 
+	constexpr static std::size_t numberCount();
 	void destroy();
 	void resetDeterminant();
 public:
@@ -57,7 +60,7 @@ public:
 	friend SquareMatrix<U> operator*(double k, const SquareMatrix<U>& m);
 
 	double* operator[](std::size_t i);
-	double operator[](std::size_t i) const;
+	const double* operator[](std::size_t i) const;
 	template<std::size_t U>
 	friend std::ostream& operator<<(std::ostream& s, const SquareMatrix<U>& m);
 	template<std::size_t U>
@@ -71,14 +74,16 @@ public:
 };
 
 template<std::size_t N>
+constexpr std::size_t SquareMatrix<N>::numberCount()
+{
+	return N*N;
+}
+
+template<std::size_t N>
 void SquareMatrix<N>::destroy()
 {
 	if (matrix != nullptr)
-	{
-		for (size_t i = 0; i < N; ++i)
-			delete[] matrix[i];
 		delete[] matrix;
-	}
 }
 
 template<std::size_t N>
@@ -91,9 +96,7 @@ template<std::size_t N>
 SquareMatrix<N>::SquareMatrix()
 : determinant(std::nan(""))
 {
-	matrix = new double* [N];
-	for (size_t i = 0; i < N; ++i)
-		matrix[i] = new double[N];
+	matrix = new double[numberCount()];
 }
 
 template<std::size_t N>
@@ -129,9 +132,8 @@ SquareMatrix<N>::~SquareMatrix()
 template<std::size_t N>
 SquareMatrix<N>& SquareMatrix<N>::operator=(const SquareMatrix& other)
 {
-	for (size_t i = 0; i < N; ++i)
-		for (size_t j = 0; j < N; ++j)
-			matrix[i][j] = other.matrix[i][j];
+	for (size_t i = 0; i < numberCount(); ++i)
+		matrix[i] = other.matrix[i];
 	determinant = other.determinant;
 	return *this;
 }
@@ -142,7 +144,7 @@ SquareMatrix<N>::SquareMatrix(std::size_t k)
 {
 	for (size_t i = 0; i < N; ++i)
 		for (size_t j = 0; j < N; ++j)
-			matrix[i][j] = i != j ? 0 : k;
+			matrix[i*N + j] = i != j ? 0 : k;
 	determinant = pow(k, N);
 }
 
@@ -152,15 +154,14 @@ SquareMatrix<N>::SquareMatrix(const std::initializer_list<std::initializer_list<
 {
 	for (size_t i = 0; i < N; ++i)
 		for (size_t j = 0; j < N; ++j)
-			matrix[i][j] = *((init_list.begin() + i)->begin() + j);
+			matrix[i*N + j] = *((init_list.begin() + i)->begin() + j);
 }
 
 template<std::size_t N>
 SquareMatrix<N>& SquareMatrix<N>::operator+=(const SquareMatrix& other)
 {
-	for (size_t i = 0; i < N; ++i)
-		for (size_t j = 0; j < N; ++j)
-			matrix[i][j] += other.matrix[i][j];
+	for (size_t i = 0; i < numberCount(); ++i)
+		matrix[i] += other.matrix[i];
 	resetDeterminant();
 	return *this;
 }
@@ -176,9 +177,8 @@ SquareMatrix<N> SquareMatrix<N>::operator+(const SquareMatrix& other) const
 template<std::size_t N>
 SquareMatrix<N>& SquareMatrix<N>::operator-=(const SquareMatrix& other)
 {
-	for (size_t i = 0; i < N; ++i)
-		for (size_t j = 0; j < N; ++j)
-			matrix[i][j] -= other.matrix[i][j];
+	for (size_t i = 0; i < numberCount(); ++i)
+		matrix[i] -= other.matrix[i];
 	resetDeterminant();
 	return *this;
 }
@@ -207,9 +207,9 @@ SquareMatrix<N> SquareMatrix<N>::operator*(const SquareMatrix& other) const
 	for (size_t i = 0; i < N; ++i)
 		for (size_t j = 0; j < N; ++j)
 		{
-			result[i][j] = 0;
+			result.matrix[i*N + j] = 0;
 			for (size_t k = 0; k < N; ++k)
-				result[i][j] += matrix[i][k] * other.matrix[k][j];
+				result.matrix[i*N + j] += matrix[i*N + k] * other.matrix[k*N + j];
 		}
 	return result;
 }
@@ -217,10 +217,9 @@ SquareMatrix<N> SquareMatrix<N>::operator*(const SquareMatrix& other) const
 template<std::size_t N>
 SquareMatrix<N>& SquareMatrix<N>::operator*=(double k)
 {
-	for (size_t i = 0; i < N; ++i)
-		for (size_t j = 0; j < N; ++j)
-			matrix[i][j] *= k;
-	if (!isnan(determinant))
+	for (size_t i = 0; i < numberCount(); ++i)
+		matrix[i] *= k;
+	if (!std::isnan(determinant))
 		determinant *= pow(k, N);
 	return *this;
 }
@@ -228,10 +227,9 @@ SquareMatrix<N>& SquareMatrix<N>::operator*=(double k)
 template<std::size_t N>
 SquareMatrix<N>& SquareMatrix<N>::operator/=(double k)
 {
-	for (size_t i = 0; i < N; ++i)
-		for (size_t j = 0; j < N; ++j)
-			matrix[i][j] /= k;
-	if (!isnan(determinant))
+	for (size_t i = 0; i < numberCount(); ++i)
+		matrix[i] /= k;
+	if (!std::isnan(determinant))
 		determinant /= pow(k, N);
 	return *this;
 }
@@ -252,7 +250,7 @@ ColumnMatrix<N> SquareMatrix<N>::operator*(const ColumnMatrix<N>& k)
 	{
 		result[i] = 0;
 		for (std::size_t j = 0; j < N; ++j)
-			result[i] += matrix[i][j] * k[j];
+			result[i] += matrix[i*N + j] * k[j];
 	}
 	return result;
 }
@@ -275,13 +273,13 @@ template<std::size_t N>
 double* SquareMatrix<N>::operator[](std::size_t i)
 {
 	resetDeterminant();
-	return matrix[i];
+	return matrix + i*N;
 }
 
 template<std::size_t N>
-double SquareMatrix<N>::operator[](std::size_t i) const
+const double* SquareMatrix<N>::operator[](std::size_t i) const
 {
-	return matrix[i];
+	return matrix + i*N;
 }
 
 template<std::size_t N>
@@ -290,7 +288,7 @@ std::ostream& operator<<(std::ostream& s, const SquareMatrix<N>& m)
 	for (std::size_t i = 0; i < N; ++i)
 	{
 		for (std::size_t j = 0; j < N; ++j)
-			s << m.matrix[i][j] << '\t';
+			s << m.matrix[i*N + j] << '\t';
 		s << std::endl;
 	}
 	return s;
@@ -299,9 +297,8 @@ std::ostream& operator<<(std::ostream& s, const SquareMatrix<N>& m)
 template<std::size_t N>
 std::istream& operator>>(std::istream& s, SquareMatrix<N>& m)
 {
-	for (std::size_t i = 0; i < N; ++i)
-		for (std::size_t j = 0; j < N; ++j)
-			s >> m.matrix[i][j];
+	for (std::size_t i = 0; i < m.numberCount(); ++i)
+		s >> m.matrix[i];
 	m.resetDeterminant();
 	return s;
 }
@@ -310,20 +307,16 @@ template<std::size_t N>
 SquareMatrix<N - 1> smaller(const SquareMatrix<N>& m, std::size_t deleted_row, std::size_t deleted_col)
 {
 	SquareMatrix<N - 1> result;
-	for (std::size_t i = 0; i < deleted_row; ++i)
-	{
-		for (std::size_t j = 0; j < deleted_col; ++j)
-			result.matrix[i][j] = m.matrix[i][j];
-		for (std::size_t j = deleted_col + 1; j < N; ++j)
-			result.matrix[i][j-1] = m.matrix[i][j];
-	}
-	for (std::size_t i = deleted_row + 1; i < N; ++i)
-	{
-		for (std::size_t j = 0; j < deleted_col; ++j)
-			result.matrix[i-1][j] = m.matrix[i][j];
-		for (std::size_t j = deleted_col + 1; j < N; ++j)
-			result.matrix[i-1][j-1] = m.matrix[i][j];
-	}
+	std::size_t row, col;
+	for (std::size_t i = 0; i < N; ++i)
+		for (std::size_t j = 0; j < N; ++j)
+			if ((i!=deleted_row) && (j!=deleted_col))
+			{
+				row = i < deleted_row ? i : (i - 1);
+				col = j < deleted_col ? j : (j - 1);
+
+				result.matrix[row*(N-1) + col] = m.matrix[i*N + j];
+			}
 	return result;
 }
 
@@ -332,28 +325,27 @@ double det(const SquareMatrix<N>& m)
 {
 	if (std::isnan(m.determinant))
 	{
-		double result = 0;
+		m.determinant = 0;
 		std::size_t row = 0;
 		for (std::size_t i = 0; i < N; ++i)
-			result += m.matrix[row][i] * det(smaller(m, row, i)) * ( (row + i) % 2 == 0 ? 1: -1 );
-		m.determinant = result;
+			m.determinant += m.matrix[row*N + i] * det(smaller(m, row, i)) * ( (row + i) % 2 == 0 ? 1: -1 );
 	}
 	return m.determinant;
 }
 
-template<std::size_t N=2>
+template<>
 double det(const SquareMatrix<2>& m)
 {
 	if (std::isnan(m.determinant))
-		m.determinant = m.matrix[0][0] * m.matrix[1][1] - m.matrix[1][0] * m.matrix[0][1];
+		m.determinant = m.matrix[0] * m.matrix[3] - m.matrix[2] * m.matrix[1];
 	return m.determinant;
 }
 
-template<std::size_t N = 1>
+template<>
 double det(const SquareMatrix<1>& m)
 {
 	if (std::isnan(m.determinant))
-		m.determinant = m.matrix[0][0];
+		m.determinant = m.matrix[0];
 	return m.determinant;
 }
 
@@ -363,7 +355,7 @@ SquareMatrix<N> transponse(const SquareMatrix<N>& m)
 	SquareMatrix<N> result;
 	for (std::size_t i = 0; i < N; ++i)
 		for (std::size_t j = 0; j < N; ++j)
-			result.matrix[i][j] = m.matrix[j][i];
+			result.matrix[i*N + j] = m.matrix[j*N + i];
 	result.determinant = m.determinant;
 	return result;
 }
@@ -379,9 +371,9 @@ SquareMatrix<N> invertible(const SquareMatrix<N>& m)
 	for (std::size_t row = 0; row < N; ++row)
 		for (std::size_t col = 0; col < N; ++col)
 		{
-			res.matrix[row][col] = det(smaller(m, row, col)) * ((row + col) % 2 == 0 ? 1 : -1);
+			res.matrix[row*N + col] = det(smaller(m, row, col)) * ((row + col) % 2 == 0 ? 1 : -1);
 			if (row == 0 && std::isnan(m.determinant))
-				minors[col] = res.matrix[row][col];
+				minors[col] = res.matrix[row*N + col];
 		}
 
 	if (std::isnan(m.determinant))
@@ -389,7 +381,7 @@ SquareMatrix<N> invertible(const SquareMatrix<N>& m)
 		double determinant = 0;
 		std::size_t row = 0;
 		for (std::size_t i = 0; i < N; ++i)
-			determinant += m.matrix[row][i] * minors[i];
+			determinant += m.matrix[row*N + i] * minors[i];
 		delete[] minors;
 		m.determinant = determinant;
 	}
@@ -399,11 +391,13 @@ SquareMatrix<N> invertible(const SquareMatrix<N>& m)
 	return transponse(res);
 }
 
-template<std::size_t N=1>
+template<>
 SquareMatrix<1> invertible(const SquareMatrix<1>& m)
 {
 	SquareMatrix<1> res;
-	res.matrix[0][0] = 1 / m.matrix[0][0];
-	res.determinant = res.matrix[0][0];
+	res.matrix[0] = 1 / m.matrix[0];
+	res.determinant = res.matrix[0];
 	return transponse(res);
 }
+
+#endif	//TAHD_SQUARE_MATRIX_H

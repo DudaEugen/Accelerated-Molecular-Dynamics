@@ -1,4 +1,6 @@
 #pragma once
+#ifndef TAHD_COLUMN_MATRIX_H
+#define TAHD_COLUMN_MATRIX_H
 
 #include <utility>
 #include <initializer_list>
@@ -121,3 +123,5 @@ std::istream& operator>>(std::istream& s, ColumnMatrix<N>& c)
 		s >> c.col[i];
 	return s;
 }
+
+#endif	//TAHD_COLUMN_MATRIX_H
