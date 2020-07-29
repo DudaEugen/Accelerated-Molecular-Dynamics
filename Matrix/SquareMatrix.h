@@ -32,8 +32,8 @@ class SquareMatrix
 	mutable double determinant;
 
 	constexpr static std::size_t numberCount();
-	void destroy();
-	void resetDeterminant();
+	void destroy() noexcept;
+	void resetDeterminant() noexcept;
 public:
 	SquareMatrix();
 	SquareMatrix(const SquareMatrix& other);
@@ -43,14 +43,14 @@ public:
 
 	SquareMatrix(std::size_t k);
 	SquareMatrix(const std::initializer_list<std::initializer_list<double>>& init_list);
-	SquareMatrix& operator=(const SquareMatrix& other);
-	SquareMatrix& operator+=(const SquareMatrix& other);
+	SquareMatrix& operator=(const SquareMatrix& other) noexcept;
+	SquareMatrix& operator+=(const SquareMatrix& other) noexcept;
 	SquareMatrix operator+(const SquareMatrix& other) const;
-	SquareMatrix& operator-=(const SquareMatrix& other);
+	SquareMatrix& operator-=(const SquareMatrix& other) noexcept;
 	SquareMatrix operator-(const SquareMatrix& other) const;
-	SquareMatrix& operator*=(const SquareMatrix& other);
+	SquareMatrix& operator*=(const SquareMatrix& other) noexcept;
 	SquareMatrix operator*(const SquareMatrix& other) const;
-	SquareMatrix& operator*=(double k);
+	SquareMatrix& operator*=(double k) noexcept;
 	SquareMatrix& operator/=(double d);
 	SquareMatrix operator/(double d) const;
 	ColumnMatrix<N> operator*(const ColumnMatrix<N>& k);
@@ -80,14 +80,14 @@ constexpr std::size_t SquareMatrix<N>::numberCount()
 }
 
 template<std::size_t N>
-void SquareMatrix<N>::destroy()
+void SquareMatrix<N>::destroy() noexcept
 {
 	if (matrix != nullptr)
 		delete[] matrix;
 }
 
 template<std::size_t N>
-void SquareMatrix<N>::resetDeterminant()
+void SquareMatrix<N>::resetDeterminant() noexcept
 {
 	determinant = std::nan("");
 }
@@ -108,7 +108,6 @@ SquareMatrix<N>::SquareMatrix(const SquareMatrix& other)
 
 template<std::size_t N>
 SquareMatrix<N>::SquareMatrix(SquareMatrix&& other) noexcept
-: SquareMatrix()
 {
 	*this = std::move(other);
 }
@@ -130,7 +129,7 @@ SquareMatrix<N>::~SquareMatrix()
 }
 
 template<std::size_t N>
-SquareMatrix<N>& SquareMatrix<N>::operator=(const SquareMatrix& other)
+SquareMatrix<N>& SquareMatrix<N>::operator=(const SquareMatrix& other) noexcept
 {
 	for (size_t i = 0; i < numberCount(); ++i)
 		matrix[i] = other.matrix[i];
@@ -158,7 +157,7 @@ SquareMatrix<N>::SquareMatrix(const std::initializer_list<std::initializer_list<
 }
 
 template<std::size_t N>
-SquareMatrix<N>& SquareMatrix<N>::operator+=(const SquareMatrix& other)
+SquareMatrix<N>& SquareMatrix<N>::operator+=(const SquareMatrix& other) noexcept
 {
 	for (size_t i = 0; i < numberCount(); ++i)
 		matrix[i] += other.matrix[i];
@@ -175,7 +174,7 @@ SquareMatrix<N> SquareMatrix<N>::operator+(const SquareMatrix& other) const
 }
 
 template<std::size_t N>
-SquareMatrix<N>& SquareMatrix<N>::operator-=(const SquareMatrix& other)
+SquareMatrix<N>& SquareMatrix<N>::operator-=(const SquareMatrix& other) noexcept
 {
 	for (size_t i = 0; i < numberCount(); ++i)
 		matrix[i] -= other.matrix[i];
@@ -192,7 +191,7 @@ SquareMatrix<N> SquareMatrix<N>::operator-(const SquareMatrix& other) const
 }
 
 template<std::size_t N>
-SquareMatrix<N>& SquareMatrix<N>::operator*=(const SquareMatrix& other)
+SquareMatrix<N>& SquareMatrix<N>::operator*=(const SquareMatrix& other) noexcept
 {
 	SquareMatrix<N> tmp;
 	tmp = *this * other;
@@ -215,7 +214,7 @@ SquareMatrix<N> SquareMatrix<N>::operator*(const SquareMatrix& other) const
 }
 
 template<std::size_t N>
-SquareMatrix<N>& SquareMatrix<N>::operator*=(double k)
+SquareMatrix<N>& SquareMatrix<N>::operator*=(double k) noexcept
 {
 	for (size_t i = 0; i < numberCount(); ++i)
 		matrix[i] *= k;

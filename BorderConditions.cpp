@@ -1,6 +1,6 @@
 #include "BorderConditions.h"
 
-BorderConditions::BorderConditions(Vector::ConstVectorPass size, borderType borders[DIMENSIONAL_NUMBER])
+BorderConditions::BorderConditions(Vector::ConstVectorPass size, borderType borders[DIMENSIONAL_NUMBER]) noexcept
 	: size{ size }
 {
 	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
@@ -9,7 +9,7 @@ BorderConditions::BorderConditions(Vector::ConstVectorPass size, borderType bord
 	}
 }
 
-double BorderConditions::operator() (Vector& projectionsDifference) const
+double BorderConditions::operator() (Vector& projectionsDifference) const noexcept
 {
 	double squaredDistance = 0;
 	double ratioProjToSize;

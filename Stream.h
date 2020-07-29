@@ -18,10 +18,10 @@ private:
 	void changeAccelerationsSize();	//change size of accelerations array
 public:
 	Stream(const int rank, const size_t atomsNumber = 0);
-	int getRank() const;
+	int getRank() const noexcept;
 	void preparationForDataExchange();
-	double* getAccelerationsPointer();		//get  vector of accelerations for MPI
-	size_t getAccelerationsNumber() const; // get number of elements, that have acceleration of atoms
+	double* getAccelerationsPointer() noexcept;		//get  vector of accelerations for MPI
+	size_t getAccelerationsNumber() const noexcept; // get number of elements, that have acceleration of atoms
 };
 
 #endif	//TAHD_STREAM_H

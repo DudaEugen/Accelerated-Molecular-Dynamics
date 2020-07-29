@@ -24,25 +24,25 @@ public:
 		typedef const Vector ConstVectorPass;
 	#endif
 
-	Vector();
-	Vector(const double projectionArray[DIMENSIONAL_NUMBER]);
+	Vector() noexcept;
+	Vector(const double projectionArray[DIMENSIONAL_NUMBER]) noexcept;
 	Vector(const std::initializer_list<double>& init_list);
-	Vector(const Vector& vector);
-	VectorPass operator = (ConstVectorPass other);
-	Vector operator - () const;
-	Vector operator + (ConstVectorPass other) const;
-	Vector operator - (ConstVectorPass other) const;
-	VectorPass operator += (ConstVectorPass other);
-	VectorPass operator -= (ConstVectorPass other);
-	VectorPass operator *= (const double factor);
+	Vector(const Vector& vector) noexcept;
+	VectorPass operator = (ConstVectorPass other) noexcept;
+	Vector operator - () const noexcept;
+	Vector operator + (ConstVectorPass other) const noexcept;
+	Vector operator - (ConstVectorPass other) const noexcept;
+	VectorPass operator += (ConstVectorPass other) noexcept;
+	VectorPass operator -= (ConstVectorPass other) noexcept;
+	VectorPass operator *= (const double factor) noexcept;
 	VectorPass operator /= (const double divider);
 	double& operator [] (const projection_index index);
 	double operator [] (const projection_index index) const;
 	Vector operator / (const double divider) const;
-	friend const Vector operator * (ConstVectorPass vector, const double factor);
-	friend const Vector operator * (const double factor, ConstVectorPass vector);
-	double sumSquares() const;				//sum of squares of elements
-	double absoluteValue() const;			//square root of squares of elements sum
+	friend const Vector operator * (ConstVectorPass vector, const double factor) noexcept;
+	friend const Vector operator * (const double factor, ConstVectorPass vector) noexcept;
+	double sumSquares() const noexcept;				//sum of squares of elements
+	double absoluteValue() const noexcept;			//square root of squares of elements sum
 };
 
 #endif	//TAHD_PROJECTION_TUPLE_H

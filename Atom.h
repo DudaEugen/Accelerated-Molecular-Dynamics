@@ -23,26 +23,26 @@ private:
 	Vector a[2];
 
 	double computeMass(const element element);
-	char getPreviousStepIndex();
-	void changeStepIndex();
-	void doStepVelocityVerlet(const double dt);
+	char getPreviousStepIndex() noexcept;
+	void changeStepIndex() noexcept;
+	void doStepVelocityVerlet(const double dt) noexcept;
 public:
 	Atom(const element element, Vector::ConstVectorPass coordinates);
 	Atom(const char element, Vector::ConstVectorPass coordinates);
 	Atom(const char element[2], Vector::ConstVectorPass coordinates);
 	Atom(const std::string element, Vector::ConstVectorPass coordinates);
 					
-	void setCoordinates(Vector::ConstVectorPass coordinates);
-	void setVelocity(Vector::ConstVectorPass velocity);
-	void setAcceleration(Vector::ConstVectorPass acceleration);
+	void setCoordinates(Vector::ConstVectorPass coordinates) noexcept;
+	void setVelocity(Vector::ConstVectorPass velocity) noexcept;
+	void setAcceleration(Vector::ConstVectorPass acceleration) noexcept;
 												//addQuantity methods are adding argument to actuality value of quantity
-	void addVelocity(Vector::ConstVectorPass addingVelocity);
-	void addAcceleration(Vector::ConstVectorPass addingAcceleratrion);
-	Vector::ConstVectorPass getCoordinates() const;
-	Vector::ConstVectorPass getVelocity() const;
-	Vector::ConstVectorPass getAcceleration() const;
+	void addVelocity(Vector::ConstVectorPass addingVelocity) noexcept;
+	void addAcceleration(Vector::ConstVectorPass addingAcceleratrion) noexcept;
+	Vector::ConstVectorPass getCoordinates() const noexcept;
+	Vector::ConstVectorPass getVelocity() const noexcept;
+	Vector::ConstVectorPass getAcceleration() const noexcept;
 												//doStepAlhorithm are methods to moving atom corresponding algorithm
-	void move(const double dt);
+	void move(const double dt) noexcept;
 };
 
 #endif	//TAHD_ATOM_H

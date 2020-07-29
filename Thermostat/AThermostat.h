@@ -14,8 +14,8 @@ protected:
 public:
 	AtomGroup dissipativeLeyers;
 	virtual ~AThermostat() = 0;
-	void setTemperature(const double temperature);
-	double computeTemperature();
+	void setTemperature(const double temperature) noexcept;
+	double computeTemperature();		//units of velocity is Angstrom/ps
 	virtual void heatExchange() = 0;
 };
 

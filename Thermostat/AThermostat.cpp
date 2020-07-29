@@ -1,6 +1,6 @@
 #include "AThermostat.h"
 
-void AThermostat::setTemperature(const double temperature) { T0 = temperature; }
+void AThermostat::setTemperature(const double temperature) noexcept { T0 = temperature; }
 
 double AThermostat::computeTemperature()
 {

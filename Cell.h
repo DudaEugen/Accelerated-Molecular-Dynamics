@@ -10,7 +10,7 @@ Then, to search for atoms that directly interact with each other, you need to us
 class Cell
 {
 private:
-	/*a point is considered to be placed inside the Ñell if for i-th coordinate r[i]: 
+	/*a point is considered to be placed inside the ï¿½ell if for i-th coordinate r[i]: 
 	Cell.position[i] <= r[i] < Cell.position[i] + Cell.size[i] */
 	Vector position;
 	Vector size;				//all values must is positive
@@ -25,8 +25,8 @@ public:
 	In the future, the number of atoms can decrease and increase.*/
 	Cell(Vector::ConstVectorPass position, Vector::ConstVectorPass size, const size_t atomsNumber = 0);
 	void addNeighborCell(Cell* cell);
-	std::size_t getNeighborCellNumber() const;
-	Cell& getNeighborCell(const size_t index);
+	std::size_t getNeighborCellNumber() const noexcept;
+	Cell& getNeighborCell(const size_t index) noexcept;
 };
 
 #endif	//TAHD_CELL_H

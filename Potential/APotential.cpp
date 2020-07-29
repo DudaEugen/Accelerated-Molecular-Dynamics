@@ -1,5 +1,5 @@
 #include "APotential.h"
 
-APotential::APotential(AtomicSystem* s): system{ s }
+APotential::APotential(AtomicSystem* s) noexcept: system{ s }
 {
 }

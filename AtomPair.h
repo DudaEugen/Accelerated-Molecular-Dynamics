@@ -18,17 +18,17 @@ private:
 	static BorderConditions* borderConditions;
 
 public:
-	AtomPair(Atom* first, Atom* second, const bool isUsingBorderConditions = false);
-	AtomPair(Atom* first, Atom* second, const double d, const Vector deltaCoordinates, const bool isUsingBorderConditions = false);
-	static void setBorderConditions(BorderConditions* borderConditions);
-	Atom& getFirst() const;
-	Atom& getSecond() const;
-	double getDistance() const;
-	Vector::ConstVectorPass getDistanceProjections() const;
-	bool getIsAtomsFromSameStream() const;
-	void setIsUsingBorderConditions(const bool isUsing);
-	void setIsAtomsFromSameStream(const bool isSame);
-	double computeDistance();
+	AtomPair(Atom* first, Atom* second, const bool isUsingBorderConditions = false) noexcept;
+	AtomPair(Atom* first, Atom* second, const double d, const Vector deltaCoordinates, const bool isUsingBorderConditions = false) noexcept;
+	static void setBorderConditions(BorderConditions* borderConditions) noexcept;
+	Atom& getFirst() const noexcept;
+	Atom& getSecond() const noexcept;
+	double getDistance() const noexcept;
+	Vector::ConstVectorPass getDistanceProjections() const noexcept;
+	bool getIsAtomsFromSameStream() const noexcept;
+	void setIsUsingBorderConditions(const bool isUsing) noexcept;
+	void setIsAtomsFromSameStream(const bool isSame) noexcept;
+	double computeDistance() noexcept;
 };
 
 #endif	//TAHD_ATOM_PAIR_H

@@ -15,9 +15,9 @@ void AtomGroup::addAtom(Atom* atom)
 	atoms.push_back(atom);
 }
 
-size_t AtomGroup::getAtomNumber() const { return atoms.size(); }
+size_t AtomGroup::getAtomNumber() const noexcept { return atoms.size(); }
 
-void AtomGroup::clearList() { atoms.resize(0); }
+void AtomGroup::clearList() noexcept { atoms.resize(0); }
 
 Atom& AtomGroup::operator [] (const size_t index)
 {

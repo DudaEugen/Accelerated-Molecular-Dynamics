@@ -19,8 +19,8 @@ private:
 	borderType type[DIMENSIONAL_NUMBER];
 	Vector size;
 public:
-	BorderConditions(Vector::ConstVectorPass size, borderType borders[DIMENSIONAL_NUMBER]);
-	double operator() (Vector& projectionsDifference) const;
+	BorderConditions(Vector::ConstVectorPass size, borderType borders[DIMENSIONAL_NUMBER]) noexcept;
+	double operator() (Vector& projectionsDifference) const noexcept;
 };
 
 #endif	//TAHD_BORDER_CONDITIONS_H

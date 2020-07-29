@@ -16,7 +16,7 @@ public:
 	APairPotential(AtomicSystem* s, const std::size_t maxAtomPairTypes = 0);
 	virtual ~APairPotential() = default;
 	void refreshAtomPairs();
-	double getCutRadius() const override;
+	double getCutRadius() const noexcept override;
 };
 
 #endif	//TAHD_ABSTRACT_PAIR_POTENTIAL_H

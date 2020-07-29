@@ -10,11 +10,11 @@ AtomicSystem::AtomicSystem(const std::string& substance)
 {
 }
 
-void AtomicSystem::setBorderConditions(BorderConditions* borderCond)
+void AtomicSystem::setBorderConditions(BorderConditions* borderCond) noexcept
 {
 	AtomPair::setBorderConditions(borderCond);
 }
 
-std::vector<AtomPair>& AtomicSystem::getAtomPairs() { return atomPairs; }
+std::vector<AtomPair>& AtomicSystem::getAtomPairs() noexcept { return atomPairs; }
 
-std::vector<Atom>& AtomicSystem::getAtoms() { return atoms; }
+std::vector<Atom>& AtomicSystem::getAtoms() noexcept { return atoms; }

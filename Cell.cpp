@@ -29,6 +29,6 @@ void Cell::addNeighborCell(Cell* cell)
 	}
 }
 
-std::size_t Cell::getNeighborCellNumber() const { return neighborCells.size(); }
+std::size_t Cell::getNeighborCellNumber() const noexcept { return neighborCells.size(); }
 
-Cell& Cell::getNeighborCell(const size_t index) { return *(neighborCells[index]); }
+Cell& Cell::getNeighborCell(const size_t index) noexcept { return *(neighborCells[index]); }

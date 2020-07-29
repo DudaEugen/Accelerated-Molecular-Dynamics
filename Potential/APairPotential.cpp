@@ -49,7 +49,7 @@ void APairPotential::refreshAtomPairs()
 	}
 }
 
-double APairPotential::getCutRadius() const
+double APairPotential::getCutRadius() const noexcept
 {
 	double max = 0;
 	for (double cutRadius : rc)

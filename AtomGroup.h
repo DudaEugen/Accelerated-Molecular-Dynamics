@@ -14,8 +14,8 @@ public:
 	AtomGroup(const size_t reservedNumber = 0);
 	void reserve(const size_t number);
 	void addAtom(Atom* atom);
-	size_t getAtomNumber() const;
-	void clearList();
+	size_t getAtomNumber() const noexcept;
+	void clearList() noexcept;
 	Atom& operator [] (const size_t index);
 	Atom* remove(const size_t index);
 };

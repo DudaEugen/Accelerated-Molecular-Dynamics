@@ -2,33 +2,46 @@
 
 BorderConditions* AtomPair::borderConditions = nullptr;
 
-AtomPair::AtomPair(Atom* first, Atom* second, const bool isUsingBorderConditions) : atomPair{ first, second }, isUsingBorderConditions{ isUsingBorderConditions }
+AtomPair::AtomPair(Atom* first, Atom* second, const bool isUsingBorderConditions)  noexcept
+	: atomPair{ first, second }, isUsingBorderConditions{ isUsingBorderConditions }
 {
 	computeDistance();
 }
 
-AtomPair::AtomPair(Atom* first, Atom* second, const double d, const Vector deltaCoordinates, const bool isUsingBorderConditions)
+AtomPair::AtomPair(Atom* first, Atom* second, const double d, const Vector deltaCoordinates, const bool isUsingBorderConditions) noexcept
 	: atomPair{ first, second }, distance{d}, dProjections{deltaCoordinates}, isUsingBorderConditions{ isUsingBorderConditions }
 {
 }
 
-void AtomPair::setBorderConditions(BorderConditions* borderConditions) { AtomPair::borderConditions = borderConditions; }
+void AtomPair::setBorderConditions(BorderConditions* borderConditions) noexcept 
+{ 
+	AtomPair::borderConditions = borderConditions; 
+	}
 
-Atom& AtomPair::getFirst() const { return *atomPair[0]; }
+Atom& AtomPair::getFirst() const noexcept { return *atomPair[0]; }
 
-Atom& AtomPair::getSecond() const { return *atomPair[1]; }
+Atom& AtomPair::getSecond() const noexcept { return *atomPair[1]; }
 
-double AtomPair::getDistance() const { return distance; }
+double AtomPair::getDistance() const noexcept { return distance; }
 
-Vector::ConstVectorPass AtomPair::getDistanceProjections() const { return dProjections; }
+Vector::ConstVectorPass AtomPair::getDistanceProjections() const noexcept 
+{ 
+	return dProjections; 
+	}
 
-bool AtomPair::getIsAtomsFromSameStream() const { return isAtomsFromSameStream; }
+bool AtomPair::getIsAtomsFromSameStream() const noexcept { return isAtomsFromSameStream; }
 
-void AtomPair::setIsUsingBorderConditions(const bool isUsing) { isUsingBorderConditions = isUsing; }
+void AtomPair::setIsUsingBorderConditions(const bool isUsing) noexcept 
+{ 
+	isUsingBorderConditions = isUsing; 
+}
 
-void AtomPair::setIsAtomsFromSameStream(const bool isSame) { isAtomsFromSameStream = isSame; }
+void AtomPair::setIsAtomsFromSameStream(const bool isSame) noexcept
+{ 
+	isAtomsFromSameStream = isSame; 
+}
 
-double AtomPair::computeDistance()
+double AtomPair::computeDistance() noexcept
 {
 	dProjections = atomPair[0]->getCoordinates() - atomPair[1]->getCoordinates();
 	if (isUsingBorderConditions)

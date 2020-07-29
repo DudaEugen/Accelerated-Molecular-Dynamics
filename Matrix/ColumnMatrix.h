@@ -19,16 +19,16 @@ class ColumnMatrix
 {
 	double* col;
 
-	void destroy();
+	void destroy() noexcept;
 public:
 	ColumnMatrix();
 	ColumnMatrix(const ColumnMatrix& other);
-	ColumnMatrix(ColumnMatrix&& other);
-	ColumnMatrix& operator=(ColumnMatrix&& other);
+	ColumnMatrix(ColumnMatrix&& other) noexcept;
+	ColumnMatrix& operator=(ColumnMatrix&& other) noexcept;
 	~ColumnMatrix();
 
 	ColumnMatrix(const std::initializer_list<double>& init_list);
-	ColumnMatrix& operator=(const ColumnMatrix& other);
+	ColumnMatrix& operator=(const ColumnMatrix& other) noexcept;
 	double& operator[](std::size_t index);
 	double& operator[](std::size_t index) const;
 
@@ -39,7 +39,7 @@ public:
 };
 
 template<std::size_t N>
-void ColumnMatrix<N>::destroy()
+void ColumnMatrix<N>::destroy() noexcept
 {
 	if (col != nullptr)
 		delete[] col;
@@ -59,18 +59,16 @@ ColumnMatrix<N>::ColumnMatrix(const ColumnMatrix& other)
 }
 
 template<std::size_t N>
-ColumnMatrix<N>::ColumnMatrix(ColumnMatrix&& other)
-: ColumnMatrix()
+ColumnMatrix<N>::ColumnMatrix(ColumnMatrix&& other) noexcept
 {
-	destroy();
-	col = other.col;
-	other.col = nullptr;
+	*this = std::move(other);
 }
 
 template<std::size_t N>
-ColumnMatrix<N>& ColumnMatrix<N>::operator=(ColumnMatrix&& other)
+ColumnMatrix<N>& ColumnMatrix<N>::operator=(ColumnMatrix&& other) noexcept
 {
-	this = std::move(other);
+	col = other.col;
+	other.col = nullptr;
 	return *this;
 }
 
@@ -89,7 +87,7 @@ ColumnMatrix<N>::ColumnMatrix(const std::initializer_list<double>& init_list)
 }
 
 template<std::size_t N>
-ColumnMatrix<N>& ColumnMatrix<N>::operator=(const ColumnMatrix& other)
+ColumnMatrix<N>& ColumnMatrix<N>::operator=(const ColumnMatrix& other) noexcept
 {
 	for (size_t i = 0; i < N; ++i)
 		col[i] = other.col[i];

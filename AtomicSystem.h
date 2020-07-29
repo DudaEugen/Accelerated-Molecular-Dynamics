@@ -15,9 +15,9 @@ class AtomicSystem
 public:
 	AtomicSystem(const substance substance);
 	AtomicSystem(const std::string& substance);
-	static void setBorderConditions(BorderConditions* borderCond);
-	std::vector<AtomPair>& getAtomPairs();
-	std::vector<Atom>& getAtoms();
+	static void setBorderConditions(BorderConditions* borderCond) noexcept;
+	std::vector<AtomPair>& getAtomPairs() noexcept;
+	std::vector<Atom>& getAtoms() noexcept;
 };
 
 #endif	//TAHD_ATOMIC_SYSTEM_H

@@ -18,7 +18,7 @@ void Stream::changeAccelerationsSize()
 	accelerations = new double[atoms.getAtomNumber() * DIMENSIONAL_NUMBER];
 }
 
-int Stream::getRank() const { return rank; }
+int Stream::getRank() const noexcept { return rank; }
 
 void Stream::preparationForDataExchange()
 {
@@ -48,6 +48,6 @@ void Stream::preparationForDataExchange()
 	}
 }
 
-double* Stream::getAccelerationsPointer() { return accelerations; }
+double* Stream::getAccelerationsPointer() noexcept { return accelerations; }
 
-size_t Stream::getAccelerationsNumber() const { return atoms.getAtomNumber() * DIMENSIONAL_NUMBER; }
+size_t Stream::getAccelerationsNumber() const noexcept { return atoms.getAtomNumber() * DIMENSIONAL_NUMBER; }
