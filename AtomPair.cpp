@@ -16,7 +16,18 @@ AtomPair::AtomPair(Atom* first, Atom* second, const double d, const Vector delta
 void AtomPair::setBorderConditions(BorderConditions* borderConditions) noexcept 
 { 
 	AtomPair::borderConditions = borderConditions; 
-	}
+}
+
+Atom& AtomPair::getAtomByIndex(const index i) const noexcept
+{
+	return *atomPair[static_cast<int>(i)];
+}
+
+Atom& AtomPair::getAtomWithAnotherIndex(const index i) const noexcept
+{
+	int ind = static_cast<int>(i) == 0 ? 1 : 0;
+	return *atomPair[ind];
+}
 
 Atom& AtomPair::getFirst() const noexcept { return *atomPair[0]; }
 
@@ -27,7 +38,7 @@ double AtomPair::getDistance() const noexcept { return distance; }
 Vector::ConstVectorPass AtomPair::getDistanceProjections() const noexcept 
 { 
 	return dProjections; 
-	}
+}
 
 bool AtomPair::getIsAtomsFromSameStream() const noexcept { return isAtomsFromSameStream; }
 

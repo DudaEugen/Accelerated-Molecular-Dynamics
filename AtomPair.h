@@ -18,9 +18,16 @@ private:
 	static BorderConditions* borderConditions;
 
 public:
+	enum class index {
+		first = 0,
+		second = 1,
+	};
+
 	AtomPair(Atom* first, Atom* second, const bool isUsingBorderConditions = false) noexcept;
 	AtomPair(Atom* first, Atom* second, const double d, const Vector deltaCoordinates, const bool isUsingBorderConditions = false) noexcept;
 	static void setBorderConditions(BorderConditions* borderConditions) noexcept;
+	Atom& getAtomByIndex(const index i) const noexcept;
+	Atom& getAtomWithAnotherIndex(const index i) const noexcept;
 	Atom& getFirst() const noexcept;
 	Atom& getSecond() const noexcept;
 	double getDistance() const noexcept;
