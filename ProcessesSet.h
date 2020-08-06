@@ -2,6 +2,7 @@
 #ifndef TAHD_PROCESSES_SET_H
 #define TAHD_PROCESSES_SET_H
 
+#include <cstddef>
 #include "mpi.h"
 #include "Process.h"
 #include "AtomicSystem.h"

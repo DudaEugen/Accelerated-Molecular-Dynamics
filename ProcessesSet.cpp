@@ -1,6 +1,6 @@
 #include "ProcessesSet.h"
 
-ProcessesSet::ProcessesSet(AtomicSystem& atomicSystem, MPI_Comm mpiComm = MPI_COMM_WORLD)  
+ProcessesSet::ProcessesSet(AtomicSystem& atomicSystem, MPI_Comm mpiComm)  
     : aSystem{ &atomicSystem }, commutator{ mpiComm }
 {
     int procNumber;
