@@ -8,13 +8,14 @@
 class Process
 {
 private:
-	int rank;
 	double* accelerations;	// vector of projections of accelerations for data exchange by MPI
 	size_t accelerationsSize;
+	int rank;
 public:
 	AtomGroup atoms;
-private:
+
 	~Process();
+private:
 	void changeAccelerationsSize();	//change size of accelerations array
 public:
 	Process(const int rank, const size_t atomsNumber = 0);
