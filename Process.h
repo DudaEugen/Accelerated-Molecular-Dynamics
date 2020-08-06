@@ -5,7 +5,7 @@
 #include "Atom.h"
 #include "AtomGroup.h"
 
-class Stream
+class Process
 {
 private:
 	int rank;
@@ -14,10 +14,10 @@ private:
 public:
 	AtomGroup atoms;
 private:
-	~Stream();
+	~Process();
 	void changeAccelerationsSize();	//change size of accelerations array
 public:
-	Stream(const int rank, const size_t atomsNumber = 0);
+	Process(const int rank, const size_t atomsNumber = 0);
 	int getRank() const noexcept;
 	void preparationForDataExchange();
 	double* getAccelerationsPointer() noexcept;		//get  vector of accelerations for MPI
