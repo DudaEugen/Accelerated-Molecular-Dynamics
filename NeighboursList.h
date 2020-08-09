@@ -6,7 +6,7 @@
 #include "AtomPair.h"
 
 /* All atoms whose neighbors are tracked must be sequentially located in a linear section of memory 
-from firstAtom by lastAtom. Atom-neighbours can be located any where */
+from firstAtom by lastAtom. */
 class NeighboursList
 {
 public:
@@ -23,7 +23,7 @@ public:
         const AtomPair::index neighbourIndex;
 
         friend class NeighboursList;
-        Neighbour(AtomPair* const aPair, const AtomPair::index index) noexcept;
+        Neighbour(AtomPair* const aPair, const AtomPair::index indexOfNeighbour) noexcept;
     public:
         Atom& getNeighbourAtom() const noexcept;
         AtomPair& getPair() const noexcept;
@@ -35,7 +35,7 @@ private:
     void tryAddPairToAtomLine(AtomPair& pair, const AtomPair::index index);
 public:
     void addPair(AtomPair& pair);
-    std::vector<Neighbour>& getNeighboursofAtom(const Atom& atom);
+    std::vector<Neighbour>& getNeighboursOfAtom(const Atom& atom);
 };
 
 #endif  //TAHD_NEIGHBOURS_LIST_H

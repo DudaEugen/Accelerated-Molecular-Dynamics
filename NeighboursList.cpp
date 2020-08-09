@@ -1,7 +1,7 @@
 #include "NeighboursList.h"
 
-NeighboursList::Neighbour::Neighbour(AtomPair* const aPair, const AtomPair::index index) noexcept
-    : pair{ aPair }, neighbourIndex{ index }
+NeighboursList::Neighbour::Neighbour(AtomPair* const aPair, const AtomPair::index indexOfNeighbour) noexcept
+    : pair{ aPair }, neighbourIndex{ indexOfNeighbour }
 {
 }
 
@@ -33,7 +33,11 @@ void NeighboursList::tryAddPairToAtomLine(AtomPair& pair, const AtomPair::index 
 {
     Atom* atom = &(pair.getAtomByIndex(index));
     if (atom >= firstAtom && atom < firstAtom + neighborsTable.size())
-        neighborsTable[atom - firstAtom].push_back(Neighbour(&pair, index));
+    {
+        using apIndex = AtomPair::index;
+        apIndex indexOfNeighbour = index == apIndex::first ? apIndex::second : apIndex::first;
+        neighborsTable[atom - firstAtom].push_back(Neighbour(&pair, indexOfNeighbour));
+    }
 }
 
 void NeighboursList::addPair(AtomPair& pair)
@@ -42,7 +46,7 @@ void NeighboursList::addPair(AtomPair& pair)
     tryAddPairToAtomLine(pair, AtomPair::index::second);
 }
 
-std::vector<NeighboursList::Neighbour>& NeighboursList::getNeighboursofAtom(const Atom& atom)
+std::vector<NeighboursList::Neighbour>& NeighboursList::getNeighboursOfAtom(const Atom& atom)
 {
     return neighborsTable[&atom - firstAtom];
 }
