@@ -10,7 +10,7 @@ Then, to search for atoms that directly interact with each other, you need to us
 class Cell
 {
 private:
-	/*a point is considered to be placed inside the �ell if for i-th coordinate r[i]: 
+	/*a point is considered to be placed inside the Cell if for i-th coordinate r[i]: 
 	Cell.position[i] <= r[i] < Cell.position[i] + Cell.size[i] */
 	Vector position;
 	Vector size;				//all values must is positive
