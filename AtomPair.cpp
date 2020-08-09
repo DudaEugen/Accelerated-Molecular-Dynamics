@@ -2,14 +2,16 @@
 
 BorderConditions* AtomPair::borderConditions = nullptr;
 
-AtomPair::AtomPair(Atom* first, Atom* second, const bool isUsingBorderConditions)  noexcept
-	: atomPair{ first, second }, isUsingBorderConditions{ isUsingBorderConditions }
+AtomPair::AtomPair(Atom& first, Atom& second, const bool isUsingBorderConditions)  noexcept
+	: atomPair{ &first, &second }, isUsingBorderConditions{ isUsingBorderConditions }
 {
 	computeDistance();
 }
 
-AtomPair::AtomPair(Atom* first, Atom* second, const double d, const Vector deltaCoordinates, const bool isUsingBorderConditions) noexcept
-	: atomPair{ first, second }, distance{d}, dProjections{deltaCoordinates}, isUsingBorderConditions{ isUsingBorderConditions }
+AtomPair::AtomPair(Atom& first, Atom& second, const double d, const Vector deltaCoordinates, 
+					const bool isUsingBorderConditions) noexcept
+	: atomPair{ &first, &second }, distance{d}, dProjections{deltaCoordinates}, 
+	  isUsingBorderConditions{ isUsingBorderConditions }
 {
 }
 
@@ -54,7 +56,7 @@ void AtomPair::setIsAtomsFromSameStream(const bool isSame) noexcept
 
 double AtomPair::computeDistance() noexcept
 {
-	dProjections = atomPair[0]->getCoordinates() - atomPair[1]->getCoordinates();
+	dProjections = atomPair[1]->getCoordinates() - atomPair[0]->getCoordinates();
 	if (isUsingBorderConditions)
 		distance = borderConditions->operator()(dProjections);
 	else

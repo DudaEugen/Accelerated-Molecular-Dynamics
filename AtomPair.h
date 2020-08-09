@@ -23,15 +23,17 @@ public:
 		second = 1,
 	};
 
-	AtomPair(Atom* first, Atom* second, const bool isUsingBorderConditions = false) noexcept;
-	AtomPair(Atom* first, Atom* second, const double d, const Vector deltaCoordinates, const bool isUsingBorderConditions = false) noexcept;
+	AtomPair(Atom& first, Atom& second, const bool isUsingBorderConditions = false) noexcept;
+	AtomPair(Atom& first, Atom& second, const double d, const Vector deltaCoordinates, const bool isUsingBorderConditions = false) noexcept;
 	static void setBorderConditions(BorderConditions* borderConditions) noexcept;
 	Atom& getAtomByIndex(const index i) const noexcept;
 	Atom& getAtomWithAnotherIndex(const index i) const noexcept;
 	Atom& getFirst() const noexcept;
 	Atom& getSecond() const noexcept;
 	double getDistance() const noexcept;
-	Vector::ConstVectorPass getDistanceProjections() const noexcept;
+	Vector::ConstVectorPass getDistanceProjections() const noexcept;	/* position of the second atom relative to the first.
+			Get difference between coordinats of atoms: second - first, which was obtained during the 
+			last call to the computeDistance or constructor */ 
 	bool getIsAtomsFromSameStream() const noexcept;
 	void setIsUsingBorderConditions(const bool isUsing) noexcept;
 	void setIsAtomsFromSameStream(const bool isSame) noexcept;
