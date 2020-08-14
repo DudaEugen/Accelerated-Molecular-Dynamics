@@ -5,7 +5,7 @@
 #include "constants.h"
 #include <initializer_list>
 
-typedef unsigned short int projection_index;		//this is type of index for this->projections array
+using projection_index = unsigned short int;		//this is type of index for this->projections array
 
 /*this class replying for working with vector quantities 
 this class is also used to store the spatial sizes of objects of such classes as the system, cell, etc.*/

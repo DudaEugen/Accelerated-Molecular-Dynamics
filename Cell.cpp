@@ -1,5 +1,6 @@
 #include "Cell.h"
 
+Vector Cell::size = Vector{};
 
 constexpr std::size_t Cell::maximumNeighborCellsNumber()
 {
@@ -11,8 +12,8 @@ constexpr std::size_t Cell::maximumNeighborCellsNumber()
 	return result;
 }
 
-Cell::Cell(Vector::ConstVectorPass position, Vector::ConstVectorPass size, const size_t atomsNumber)
-	: position{ position }, size{ size }, neighborCells{}, atoms{ atomsNumber }
+Cell::Cell(Vector::ConstVectorPass position, const size_t atomsNumber)
+	: neighborCells{}, position{ position }, atoms{ atomsNumber }
 {
 	neighborCells.reserve(maximumNeighborCellsNumber());
 }
@@ -32,3 +33,7 @@ void Cell::addNeighborCell(Cell* cell)
 std::size_t Cell::getNeighborCellNumber() const noexcept { return neighborCells.size(); }
 
 Cell& Cell::getNeighborCell(const size_t index) noexcept { return *(neighborCells[index]); }
+
+Vector::ConstVectorPass Cell::getSize() noexcept { return Cell::size; }
+
+void Cell::setSize(Vector::ConstVectorPass cellSize) noexcept { Cell::size = cellSize; }
