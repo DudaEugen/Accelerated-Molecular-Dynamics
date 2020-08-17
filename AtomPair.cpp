@@ -1,23 +1,14 @@
 #include "AtomPair.h"
 
-BorderConditions* AtomPair::borderConditions = nullptr;
-
-AtomPair::AtomPair(Atom& first, Atom& second, const bool isUsingBorderConditions)  noexcept
-	: atomPair{ &first, &second }, isUsingBorderConditions{ isUsingBorderConditions }
+AtomPair::AtomPair(Atom& first, Atom& second)  noexcept
+	: atomPair{ &first, &second }
 {
 	computeDistance();
 }
 
-AtomPair::AtomPair(Atom& first, Atom& second, const double d, const Vector deltaCoordinates, 
-					const bool isUsingBorderConditions) noexcept
-	: atomPair{ &first, &second }, distance{d}, dProjections{deltaCoordinates}, 
-	  isUsingBorderConditions{ isUsingBorderConditions }
+AtomPair::AtomPair(Atom& first, Atom& second, const double d, const Vector deltaCoordinates) noexcept
+	: atomPair{ &first, &second }, distance{d}, dProjections{deltaCoordinates}
 {
-}
-
-void AtomPair::setBorderConditions(BorderConditions* borderConditions) noexcept 
-{ 
-	AtomPair::borderConditions = borderConditions; 
 }
 
 Atom& AtomPair::getAtomByIndex(const index i) const noexcept
@@ -44,11 +35,6 @@ Vector::ConstVectorPass AtomPair::getDistanceProjections() const noexcept
 
 bool AtomPair::getIsAtomsFromSameStream() const noexcept { return isAtomsFromSameStream; }
 
-void AtomPair::setIsUsingBorderConditions(const bool isUsing) noexcept 
-{ 
-	isUsingBorderConditions = isUsing; 
-}
-
 void AtomPair::setIsAtomsFromSameStream(const bool isSame) noexcept
 { 
 	isAtomsFromSameStream = isSame; 
@@ -57,9 +43,13 @@ void AtomPair::setIsAtomsFromSameStream(const bool isSame) noexcept
 double AtomPair::computeDistance() noexcept
 {
 	dProjections = atomPair[1]->getCoordinates() - atomPair[0]->getCoordinates();
-	if (isUsingBorderConditions)
-		distance = borderConditions->operator()(dProjections);
-	else
-		distance = dProjections.absoluteValue();
+	distance = dProjections.absoluteValue();
+	return distance;
+}
+
+double AtomPair::computeDistance(const BorderConditions& borderConditions) noexcept
+{
+	dProjections = atomPair[1]->getCoordinates() - atomPair[0]->getCoordinates();
+	distance = borderConditions(dProjections);
 	return distance;
 }

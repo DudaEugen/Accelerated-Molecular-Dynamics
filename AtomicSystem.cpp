@@ -1,18 +1,13 @@
 #include "AtomicSystem.h"
 
-AtomicSystem::AtomicSystem(const substance substance)
-: substance_(substance)
+AtomicSystem::AtomicSystem(const substance substance, BorderConditions* borderCond)
+: substance_(substance), borderConditions{ borderCond }
 {
 }
 
-AtomicSystem::AtomicSystem(const std::string& substance)
-: substance_(convert_to_substance(substance))
+AtomicSystem::AtomicSystem(const std::string& substance, BorderConditions* borderCond)
+: substance_(convert_to_substance(substance)), borderConditions{ borderCond }
 {
-}
-
-void AtomicSystem::setBorderConditions(BorderConditions* borderCond) noexcept
-{
-	AtomPair::setBorderConditions(borderCond);
 }
 
 std::vector<AtomPair>& AtomicSystem::getAtomPairs() noexcept { return atomPairs; }

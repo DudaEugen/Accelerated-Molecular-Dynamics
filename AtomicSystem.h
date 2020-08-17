@@ -11,11 +11,11 @@ class AtomicSystem
 	std::vector<Atom> atoms;
 	std::vector<Cell> cells;
 	std::vector<AtomPair> atomPairs;
+	BorderConditions* borderConditions;
 	substance substance_;
 public:
-	AtomicSystem(const substance substance);
-	AtomicSystem(const std::string& substance);
-	static void setBorderConditions(BorderConditions* borderCond) noexcept;
+	AtomicSystem(const substance substance, BorderConditions* borderConditions = nullptr);
+	AtomicSystem(const std::string& substance, BorderConditions* borderConditions = nullptr);
 	std::vector<AtomPair>& getAtomPairs() noexcept;
 	std::vector<Atom>& getAtoms() noexcept;
 };
