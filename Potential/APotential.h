@@ -3,14 +3,14 @@
 #define TAHD_ABSTRACT_POTENTIAL_H
 
 #include <vector>
-#include "../AtomicSystem.h"
+#include "../AtomPair.h"
 
 class APotential
 {
 protected:
-	AtomicSystem* system;
+	std::vector<AtomPair>* pairs;
 public:
-	APotential(AtomicSystem* s) noexcept;
+	APotential(std::vector<AtomPair>* atomPairs) noexcept;
 	virtual ~APotential() = default;
 	virtual void computeAndSetAccelerations() = 0;
 	virtual double getCutRadius() const noexcept = 0;

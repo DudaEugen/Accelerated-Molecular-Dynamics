@@ -318,6 +318,8 @@ void funcDebug(int ProcRank, int procNum)
 			AtomPairDebug();
 			BorderConditionsDebug();
 			NeighboursListDebug();
+
+			std::cout << "tests completed\n";
 		}
 	}
 }

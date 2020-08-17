@@ -1,7 +1,7 @@
 #include "LennardJonesPotential.h"
 
-LennardJonesPotential::LennardJonesPotential(AtomicSystem* s, const std::size_t maxAtomPairTypes)
-	: APairPotential{ s, maxAtomPairTypes }
+LennardJonesPotential::LennardJonesPotential(std::vector<AtomPair>* atomPairs, const std::size_t maxAtomPairTypes)
+	: APairPotential{ atomPairs, maxAtomPairTypes }
 {
 }
 
@@ -20,7 +20,7 @@ void LennardJonesPotential::addPairType(element first, element second, double bo
 void LennardJonesPotential::computeAndSetAccelerations()
 {
 	Vector force;
-	std::vector<AtomPair>& atomPairs = system->getAtomPairs();
+	std::vector<AtomPair>& atomPairs = *pairs;
 	for (std::size_t i = 0; i < atomPairs.size(); ++i)
 	{
 		double distance = atomPairs[i].getDistance();

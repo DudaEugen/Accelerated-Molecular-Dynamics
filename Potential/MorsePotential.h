@@ -10,7 +10,7 @@ class MorsePotential : public APairPotential
 	std::vector<double> re;
 	std::vector<double> a;
 public:
-	MorsePotential(AtomicSystem* s, const std::size_t maxAtomPairTypes);
+	MorsePotential(std::vector<AtomPair>* atomPairs, const std::size_t maxAtomPairTypes);
 	~MorsePotential() override;
 	void addPairType(element first, element second, double dissociationEnergy, double equilibriumBondDistance, double a, double cutRadius);	
 	// dissociationEnergy(eV), equilibriumBondDistance(A), a(A^-1), cutradius(A)

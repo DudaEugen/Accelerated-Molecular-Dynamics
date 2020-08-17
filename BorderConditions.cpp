@@ -9,6 +9,10 @@ BorderConditions::BorderConditions(Vector::ConstVectorPass size, borderType bord
 	}
 }
 
+const BorderConditions::borderType* BorderConditions::getBorderTypes() const noexcept { return type; }
+
+Vector::ConstVectorPass BorderConditions::getSize() const noexcept { return size; }
+
 double BorderConditions::operator() (Vector& projectionsDifference) const noexcept
 {
 	double squaredDistance = 0;

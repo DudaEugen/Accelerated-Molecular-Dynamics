@@ -1,5 +1,5 @@
 #include "APotential.h"
 
-APotential::APotential(AtomicSystem* s) noexcept: system{ s }
+APotential::APotential(std::vector<AtomPair>* atomPairs) noexcept: pairs{ atomPairs }
 {
 }

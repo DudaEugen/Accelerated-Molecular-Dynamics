@@ -20,6 +20,8 @@ private:
 	Vector size;
 public:
 	BorderConditions(Vector::ConstVectorPass size, borderType borders[DIMENSIONAL_NUMBER]) noexcept;
+	const borderType* getBorderTypes() const noexcept;
+	Vector::ConstVectorPass getSize() const noexcept;
 	double operator() (Vector& projectionsDifference) const noexcept;
 };
 

@@ -1,7 +1,7 @@
 #include "APairPotential.h"
 
-APairPotential::APairPotential(AtomicSystem* s, const std::size_t maxAtomPairTypes)
-: APotential{ s }, indexes {}
+APairPotential::APairPotential(std::vector<AtomPair>* atomPairs, const std::size_t maxAtomPairTypes)
+: APotential{ atomPairs }, indexes {}
 {
 	pairTypes.reserve(maxAtomPairTypes);
 }
@@ -24,10 +24,9 @@ bool APairPotential::addPairType(const element first, const element second)
 
 void APairPotential::refreshAtomPairs()
 {
-	std::vector<AtomPair>& atomPairs = system->getAtomPairs();
-	indexes.reserve(atomPairs.size());
+	indexes.reserve(pairs->size());
 	indexes.resize(0);
-	for (const auto& atomPair : atomPairs)
+	for (const auto& atomPair : *pairs)
 	{
 		bool notFound = true;
 

@@ -13,7 +13,7 @@ protected:
 
 	bool addPairType(const element first, const element second);
 public:
-	APairPotential(AtomicSystem* s, const std::size_t maxAtomPairTypes = 0);
+	APairPotential(std::vector<AtomPair>* atomPairs, const std::size_t maxAtomPairTypes = 0);
 	virtual ~APairPotential() = default;
 	void refreshAtomPairs();
 	double getCutRadius() const noexcept override;

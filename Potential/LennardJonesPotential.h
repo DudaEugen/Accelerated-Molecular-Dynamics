@@ -9,7 +9,7 @@ class LennardJonesPotential : public APairPotential
 	std::vector<double> eps;
 	std::vector<double> rm;
 public:
-	LennardJonesPotential(AtomicSystem* s, const std::size_t maxAtomPairTypes);
+	LennardJonesPotential(std::vector<AtomPair>* atomPairs, const std::size_t maxAtomPairTypes);
 	~LennardJonesPotential() override;
 	void addPairType(element first, element second, double bondEnergy, double bondRadius, double cutRadius);
 	// bondEnergy(eV), bondRadius(A), cutradius(A)

@@ -10,27 +10,21 @@ Then, to search for atoms that directly interact with each other, you need to us
 class Cell
 {
 private:
-	/*a point is considered to be placed inside the Cell if for i-th coordinate r[i]: 
-	Cell.position[i] <= r[i] < Cell.position[i] + Cell.size[i] */
 	std::vector<Cell*> neighborCells;	//this and adjacent Cells
-	Vector position;
 public:
 	AtomGroup atoms;
 
 private:
-	static Vector size;					//all values must be positive
 	static constexpr size_t maximumNeighborCellsNumber();
 
 public:
 	/*atomsNumber is the approximate number of atoms that will be contained in a cell. 
 	The vector size will be set to zero, but memory will be allocated to atomsNumber of elements.
 	In the future, the number of atoms can decrease and increase.*/
-	Cell(Vector::ConstVectorPass position, const size_t atomsNumber = 0);
+	Cell(const size_t atomsNumber = 0);
 	void addNeighborCell(Cell* cell);
 	std::size_t getNeighborCellNumber() const noexcept;
 	Cell& getNeighborCell(const size_t index) noexcept;
-	static Vector::ConstVectorPass getSize() noexcept;
-	static void setSize(Vector::ConstVectorPass cellSize) noexcept;
 };
 
 #endif	//TAHD_CELL_H

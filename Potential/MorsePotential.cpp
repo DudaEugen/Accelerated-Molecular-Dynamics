@@ -1,7 +1,7 @@
 #include "MorsePotential.h"
 
-MorsePotential::MorsePotential(AtomicSystem* s, const std::size_t maxAtomPairTypes)
-: APairPotential{ s, maxAtomPairTypes }
+MorsePotential::MorsePotential(std::vector<AtomPair>* atomPairs, const std::size_t maxAtomPairTypes)
+: APairPotential{ atomPairs, maxAtomPairTypes }
 {
 }
 
@@ -21,7 +21,7 @@ void MorsePotential::addPairType(element first, element second, double dissociat
 void MorsePotential::computeAndSetAccelerations()
 {
 	Vector force;
-	std::vector<AtomPair>& atomPairs = system->getAtomPairs();
+	std::vector<AtomPair>& atomPairs = *pairs;
 	for (std::size_t index = 0; index < atomPairs.size(); ++index)
 	{
 		double distance = atomPairs[index].getDistance();
