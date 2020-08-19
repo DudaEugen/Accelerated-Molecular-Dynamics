@@ -5,7 +5,7 @@
 #include "constants.h"
 #include <initializer_list>
 
-using projection_index = unsigned short int;		//this is type of index for this->projections array
+using projection_index = unsigned char;		//this is type of index for this->projections array
 
 /*this class replying for working with vector quantities 
 this class is also used to store the spatial sizes of objects of such classes as the system, cell, etc.*/
@@ -17,11 +17,11 @@ public:
 	/* VectorPass is type for pass to fonctions and return from functions by value or reference 
 	depending on the DIMENSIONAL_NUMBER and MAX_DIMENSIONAL_FOR_VALUE_PASSING */
 	#if DIMENSIONAL_NUMBER > MAX_DIMENSIONAL_FOR_VALUE_PASSING
-		typedef Vector& VectorPass;
-		typedef const Vector& ConstVectorPass;
+		using VectorPass = Vector&;
+		using ConstVectorPass = const Vector&;
 	#else
-		typedef Vector VectorPass;
-		typedef const Vector ConstVectorPass;
+		using VectorPass = Vector;
+		using ConstVectorPass = const Vector;
 	#endif
 
 	Vector() noexcept;
