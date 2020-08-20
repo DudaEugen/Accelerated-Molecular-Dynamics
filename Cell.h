@@ -23,8 +23,8 @@ public:
 	In the future, the number of atoms can decrease and increase.*/
 	Cell(const size_t atomsNumber = 0);
 	void addNeighborCell(Cell* cell);
-	std::size_t getNeighborCellNumber() const noexcept;
-	Cell& getNeighborCell(const size_t index) noexcept;
+	std::vector<Cell*>& getNeighborCells () noexcept;
+	const std::vector<Cell*>& getNeighborCells () const noexcept;
 };
 
 #endif	//TAHD_CELL_H

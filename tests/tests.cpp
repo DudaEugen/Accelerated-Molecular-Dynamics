@@ -16,6 +16,7 @@
 #include "../Matrix/SquareMatrix.h"
 #include "../NeighboursList.h"
 #include "../ProcessesSet.h"
+#include "MockPotential.h"
 
 using namespace std;
 
@@ -32,20 +33,22 @@ bool equal(Vector::ConstVectorPass v1, Vector::ConstVectorPass v2, const int sym
 	return result;
 }
 
+template<int MIN = -100, int MAX = 100>
 double random()
 {
 	static auto r =  std::bind( 
-				std :: uniform_real_distribution<double>(-100, 100), 
+				std :: uniform_real_distribution<double>(MIN, MAX), 
 				std::mt19937(std::chrono::system_clock::now().time_since_epoch().count())
 			);
 	return r();
 }
 
+template<int MIN = -100, int MAX = 100>
 Vector randomVector()
 {
 	Vector v;
 	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
-		v[i] = random();
+		v[i] = random<MIN, MAX>();
 	return v;
 }
 
@@ -197,7 +200,7 @@ void matrixDebug()
 	assert(equal(A[2][3], transponse(A)[3][2]));
 }
 
-void AtomPairDebug()
+void atomPairDebug()
 {
 	Atom a("Cu", randomVector());
 	Atom b("Al", randomVector());
@@ -224,7 +227,7 @@ void AtomPairDebug()
 	assert(equal(pair.getDistance(), 0));
 }
 
-void BorderConditionsDebug()
+void borderConditionsDebug()
 {
 #if DIMENSIONAL_NUMBER == 3
 	BorderConditions::borderType bTypes[3] = {
@@ -298,7 +301,7 @@ void BorderConditionsDebug()
 #endif
 }
 
-void NeighboursListDebug()
+void neighboursListDebug()
 {
 	std::vector<Atom> l1;
 	Vector v = randomVector();
@@ -334,6 +337,85 @@ void NeighboursListDebug()
 	assert(nList.getNeighboursOfAtom(l1[1])[1].getPair().getDistance() == 0);
 }
 
+void cellCollectionDebug()
+{
+#if DIMENSIONAL_NUMBER == 3
+	BorderConditions::borderType bTypes[3] = {
+		BorderConditions::borderType::periodic,
+		BorderConditions::borderType::periodic,
+		BorderConditions::borderType::periodic,
+	};
+	BorderConditions bCond(Vector{8, 10, 47}, bTypes);
+	APotential* potential = new MockPotential(4);
+	std::vector<Atom> atoms = { Atom{"Cu", Vector{}}, Atom{"Cu", Vector{13, 12.1, 12}}};
+	CellCollection cc{ atoms, potential, &bCond };
+	assert(cc.getCells().size() == 44);
+
+	CellCollection cellCollection{ atoms, potential};
+	assert(cellCollection.getCells().size() >= 27);
+	int* neighbourCellNumber = new int[30]();	// neighbourCellNumber[i] is number of cell that have i neighbours
+	for(auto& cell: cellCollection.getCells())
+		++neighbourCellNumber[cell.getNeighborCells().size()];
+	for(int i = 0; i < 30; ++i)
+	{
+		if (i == 8)
+			assert(neighbourCellNumber[i] == 8);
+		else if ( i==12 || i==18 || i == 27)
+			assert(neighbourCellNumber[i] > 0);
+		else
+			assert(neighbourCellNumber[i] == 0);	
+	}
+	delete[] neighbourCellNumber;
+	int i = 0;
+	try
+	{
+		cellCollection.findCellContainingVector(Vector{1000, -1000, 0});
+	}
+	catch(const std::range_error& e)
+	{
+		i = 1;
+	}
+	assert(i == 1);	
+#endif
+
+	BorderConditions::borderType bordersType[DIMENSIONAL_NUMBER];
+	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+		bordersType[i] = BorderConditions::borderType::periodic;
+	Vector vect = randomVector<20, 50>();
+	BorderConditions bConditions(vect, bordersType);
+	APotential* pot = new MockPotential(6);
+	std::vector<Atom> twoAtoms = { Atom{"Cu", Vector{}}, Atom{"Cu", vect}};
+
+	CellCollection cColl{ twoAtoms, pot, &bConditions };
+	for(auto& cell: cColl.getCells())
+	{
+		assert(cell.getNeighborCells().size() == static_cast<std::size_t>(round(pow(3, DIMENSIONAL_NUMBER))));
+		bool isFindSelf = false;
+		for(auto c: cell.getNeighborCells())
+			if (c == &cell)
+			{
+				isFindSelf = true;
+				break;
+			}
+		assert(isFindSelf);
+	}
+	Vector v = randomVector();
+	assert(&cColl.findCellContainingVector(v) == &cColl.findCellContainingAtom(Atom{"Cu", v}));
+
+	CellCollection cellColl{ twoAtoms, pot};
+	for(auto& cell: cellColl.getCells())
+	{
+		bool isFindSelf = false;
+		for(auto c: cell.getNeighborCells())
+			if (c == &cell)
+			{
+				isFindSelf = true;
+				break;
+			}
+		assert(isFindSelf);
+	}
+}
+
 void funcDebug(int ProcRank, int procNum)
 {
 	for (int i = 0; i < procNum; ++i)
@@ -345,9 +427,10 @@ void funcDebug(int ProcRank, int procNum)
 			atomDebug();
 			substanceDebug();
 			matrixDebug();
-			AtomPairDebug();
-			BorderConditionsDebug();
-			NeighboursListDebug();
+			atomPairDebug();
+			borderConditionsDebug();
+			neighboursListDebug();
+			cellCollectionDebug();
 
 			std::cout << "tests completed\n";
 		}
