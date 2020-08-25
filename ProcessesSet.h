@@ -17,9 +17,33 @@ class ProcessesSet
     std::vector<Process> processes;
     AtomicSystem* aSystem;
     MPI_Comm commutator;
-    int activeProcessRank;  //control is transferred to this process after data exchange between processes 
+    int activeProcessRank;  //control is transferred to this process after data exchange between processes
+    unsigned int id; 
 public:
-    ProcessesSet(AtomicSystem& atomicSystem, MPI_Comm mpiComm = MPI_COMM_WORLD);
+    ProcessesSet(const unsigned int uniqId = 0, AtomicSystem* atomicSystem = nullptr, 
+                 const MPI_Comm mpiComm = MPI_COMM_WORLD);
+    MPI_Comm getCommutator() const noexcept;
+    unsigned int getId() const noexcept;
+    void addAtomicSystem(AtomicSystem& atomicSystem) noexcept;
 };
+
+// create N ProcessesSets and return active for this process ProcessesSet
+// to i-th ProcessesSet corresponding atomicSystems[i]
+template<std::size_t N>
+ProcessesSet createProcessesSets(MPI_Comm initialComm = MPI_COMM_WORLD, AtomicSystem* atomicSystem = nullptr)
+{
+    MPI_Comm newComm;
+    int ProcRank, ProcNum;
+	MPI_Comm_size(initialComm, &ProcNum);
+	MPI_Comm_rank(initialComm, &ProcRank);
+    int setId = ProcRank % N;
+    
+    if (ProcNum >= N)
+        MPI_Comm_split(initialComm, setId, 0, &newComm);
+    else
+        throw std::invalid_argument("varible 'number' great that Number of processes in commutator");
+    
+    return ProcessesSet(setId, atomicSystem, newComm);
+}
 
 #endif  //TAHD_PROCESSES_SET_H
