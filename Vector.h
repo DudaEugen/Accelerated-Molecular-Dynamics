@@ -43,7 +43,42 @@ public:
 	friend const Vector operator * (const double factor, ConstVectorPass vector) noexcept;
 	double sumSquares() const noexcept;				//sum of squares of elements
 	double absoluteValue() const noexcept;			//square root of squares of elements sum
+
+	class Iterator;
+	class ConstIterator;
+
+	Iterator begin() noexcept;
+	Iterator end() noexcept;
+	ConstIterator begin() const noexcept;
+	ConstIterator end() const noexcept;
+
+	class Iterator
+	{
+	private:
+		double* projection;
+
+		Iterator(double* proj) noexcept;
+	public:
+		Iterator& operator++() noexcept;
+		double& operator*() noexcept;
+		bool operator!=(Iterator it) const noexcept;
+
+		friend class Vector;
+	};
+
+	class ConstIterator
+	{
+	private:
+		const double* projection;
+
+		ConstIterator(const double* proj) noexcept;
+	public:
+		ConstIterator& operator++() noexcept;
+		const double& operator*() const noexcept;
+		bool operator!=(ConstIterator it) const noexcept;
+
+		friend class Vector;
+	};
 };
 
 #endif	//TAHD_PROJECTION_TUPLE_H
-

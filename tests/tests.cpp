@@ -9,6 +9,7 @@
 #include <random>
 #include <chrono>
 #include <functional>
+#include <utility>
 #include "mpi.h"
 #include "../constants.h"
 #include "../Atom.h"
@@ -88,6 +89,27 @@ void vectorDebug()
 	v3 += v2;
 	v2 -= v3;
 	assert(equal(v2 + v1, zero / 6 - v3 * 0));
+
+	Vector vect1 = randomVector();
+	projection_index i = 0;
+	for (double& value: vect1)
+	{
+		assert(value == vect1[i]);
+		value = -vect1[i];
+		assert(value = vect1[i]);
+		vect1[i] *= -1;
+		assert(value == vect1[i]);
+		++i;
+	}
+
+	const Vector vect2;
+	projection_index j = 0;
+	for (const double& value: vect2)
+	{
+		assert(value == 0);
+		++j;
+	}
+
 }
 
 void atomDebug()

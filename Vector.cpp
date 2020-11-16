@@ -142,3 +142,39 @@ double Vector::absoluteValue() const noexcept
 {
 	return sqrt(sumSquares());
 }
+
+Vector::Iterator Vector::begin() noexcept { return Iterator(projections); }
+
+Vector::Iterator Vector::end() noexcept { return Iterator(projections + DIMENSIONAL_NUMBER); }
+
+Vector::ConstIterator Vector::begin() const noexcept { return ConstIterator(projections); }
+
+Vector::ConstIterator Vector::end() const noexcept { return ConstIterator(projections + DIMENSIONAL_NUMBER); }
+
+Vector::Iterator::Iterator(double* proj) noexcept: projection{proj}
+{
+}
+
+Vector::Iterator& Vector::Iterator::operator++() noexcept
+{
+	++projection;
+	return *this;
+}
+
+double& Vector::Iterator::operator*() noexcept { return *projection; }
+
+bool Vector::Iterator::operator!=(Iterator it) const noexcept { return projection != it.projection; }
+
+Vector::ConstIterator::ConstIterator(const double* proj) noexcept: projection{proj}
+{
+}
+
+Vector::ConstIterator& Vector::ConstIterator::operator++() noexcept
+{
+	++projection;
+	return *this;
+}
+
+const double& Vector::ConstIterator::operator*() const noexcept { return *projection; }
+
+bool Vector::ConstIterator::operator!=(ConstIterator it) const noexcept { return projection != it.projection; }
