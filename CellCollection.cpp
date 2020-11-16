@@ -15,7 +15,7 @@ std::array<std::size_t, DIMENSIONAL_NUMBER> CellCollection::getOffsetFactorInDir
 {
     std::array<std::size_t, DIMENSIONAL_NUMBER> offsetFactorInDirection;    
     offsetFactorInDirection[0] = 1;
-    for(projection_index direction = 1; direction < DIMENSIONAL_NUMBER; ++direction)
+    for(Vector::projection_index direction = 1; direction < DIMENSIONAL_NUMBER; ++direction)
         offsetFactorInDirection[direction] = offsetFactorInDirection[direction-1] * cellNumberInDirection[direction-1];
     return offsetFactorInDirection;
 }
@@ -29,7 +29,7 @@ std::array<std::size_t, DIMENSIONAL_NUMBER> CellCollection::getOffsetBySizeInDir
     const std::array<std::size_t, DIMENSIONAL_NUMBER>& offsetFactorInDirection) const noexcept
 {
     std::array<std::size_t, DIMENSIONAL_NUMBER> offsetBySizeInDirection;    
-    for(projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+    for(Vector::projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
     {
         offsetBySizeInDirection[i] = offsetFactorInDirection[i] * cellNumberInDirection[i];
     }
@@ -40,7 +40,7 @@ std::size_t CellCollection::computeAndSetParameters(const std::vector<Atom>& ato
 {
     size_t cellsNumber = 1;
     double minimumSize = potential->getCutRadius();
-    for(projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+    for(Vector::projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
     {
         bool isPeriodic = false;
         if (borderConditions != nullptr)
@@ -86,7 +86,7 @@ void CellCollection::computeAndSetNeighbours()
     {
         std::vector<std::size_t> neighbourCellsIndexes;
         neighbourCellsIndexes.push_back(p);
-        for(projection_index direction = 0; direction < DIMENSIONAL_NUMBER; ++direction)
+        for(Vector::projection_index direction = 0; direction < DIMENSIONAL_NUMBER; ++direction)
         {
             std::size_t initSize = neighbourCellsIndexes.size();
             for (std::size_t k = 0; k < initSize; ++k)
@@ -133,13 +133,13 @@ Cell& CellCollection::findCellContainingVector(Vector::ConstVectorPass vector)
     if (borderConditions != nullptr)
         pos = borderConditions->computePosition(pos);
     
-    for(projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+    for(Vector::projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
         if (borderConditions == nullptr || 
             borderConditions->getBorderTypes()[i] == BorderConditions::borderType::none)
             pos[i] -= firstCellPosition[i];
 
     std::size_t cellIndex = 0;
-    for(projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+    for(Vector::projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
     {
         int64_t cellCoordinate = static_cast<int64_t>(floor(pos[i] / cellSize[i]));
 

@@ -29,7 +29,7 @@ bool equal(double d1, double d2, const int symbolCountAfterPoint = 12)
 bool equal(Vector::ConstVectorPass v1, Vector::ConstVectorPass v2, const int symbolCountAfterPoint = 12)
 {	
 	bool result = true;
-	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (Vector::projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 		result = result && equal(v1[i], v2[i], symbolCountAfterPoint);
 	return result;
 }
@@ -48,8 +48,8 @@ template<int MIN = -100, int MAX = 100>
 Vector randomVector()
 {
 	Vector v;
-	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
-		v[i] = random<MIN, MAX>();
+	for (double& projection: v)
+		projection = random<MIN, MAX>();
 	return v;
 }
 
@@ -91,7 +91,7 @@ void vectorDebug()
 	assert(equal(v2 + v1, zero / 6 - v3 * 0));
 
 	Vector vect1 = randomVector();
-	projection_index i = 0;
+	Vector::projection_index i = 0;
 	for (double& value: vect1)
 	{
 		assert(value == vect1[i]);
@@ -103,7 +103,7 @@ void vectorDebug()
 	}
 
 	const Vector vect2;
-	projection_index j = 0;
+	Vector::projection_index j = 0;
 	for (const double& value: vect2)
 	{
 		assert(value == 0);
@@ -401,7 +401,7 @@ void cellCollectionDebug()
 #endif
 
 	BorderConditions::borderType bordersType[DIMENSIONAL_NUMBER];
-	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (Vector::projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 		bordersType[i] = BorderConditions::borderType::periodic;
 	Vector vect = randomVector<20, 50>();
 	BorderConditions bConditions(vect, bordersType);

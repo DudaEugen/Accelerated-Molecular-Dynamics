@@ -3,7 +3,7 @@
 constexpr std::size_t Cell::maximumNeighborCellsNumber()
 {
 	int result = 1;
-	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (Vector::projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
 		result *= 3;
 	}

@@ -5,8 +5,6 @@
 #include "constants.h"
 #include <initializer_list>
 
-using projection_index = unsigned char;		//this is type of index for this->projections array
-
 /*this class replying for working with vector quantities 
 this class is also used to store the spatial sizes of objects of such classes as the system, cell, etc.*/
 class Vector
@@ -14,6 +12,7 @@ class Vector
 private:
 	double projections[DIMENSIONAL_NUMBER];
 public:
+	using projection_index = unsigned char;		//this is type of index for this->projections array
 	/* VectorPass is type for pass to fonctions and return from functions by value or reference 
 	depending on the DIMENSIONAL_NUMBER and MAX_DIMENSIONAL_FOR_VALUE_PASSING */
 	#if DIMENSIONAL_NUMBER > MAX_DIMENSIONAL_FOR_VALUE_PASSING

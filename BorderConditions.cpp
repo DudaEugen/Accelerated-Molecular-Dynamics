@@ -3,7 +3,7 @@
 BorderConditions::BorderConditions(Vector::ConstVectorPass size, borderType borders[DIMENSIONAL_NUMBER]) noexcept
 	: size{ size }
 {
-	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (Vector::projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 		type[i] = borders[i];
 }
 
@@ -23,7 +23,7 @@ Vector::ConstVectorPass BorderConditions::getZeroPoint() const noexcept { return
 Vector BorderConditions::computePosition(Vector::ConstVectorPass coordinates) const
 {
 	Vector result;
-	for(projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for(Vector::projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
 		result[i] = coordinates[i];
 		if (type[i] == borderType::periodic)
@@ -37,7 +37,7 @@ double BorderConditions::operator() (Vector& projectionsDifference) const
 {
 	double squaredDistance = 0;
 	double ratioProjToSize;
-	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (Vector::projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
 		if (type[i] == borderType::periodic)
 		{

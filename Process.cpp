@@ -42,7 +42,7 @@ void Process::preparationForDataExchange()
 	for (size_t index = 0; index < atomNumber; ++index)
 	{
 		acceleration = (firstAtom + index)->getAcceleration();
-		for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+		for (Vector::projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 			accelerations[index * DIMENSIONAL_NUMBER + i] = acceleration[i];
 	}
 }
