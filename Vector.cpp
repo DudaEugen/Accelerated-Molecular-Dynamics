@@ -81,18 +81,18 @@ Vector::VectorPass Vector::operator -= (ConstVectorPass other) noexcept
 
 Vector::VectorPass Vector::operator *= (const double factor) noexcept
 {
-	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (double& projection: projections)
 	{
-		projections[i] *= factor;
+		projection *= factor;
 	}
 	return *this;
 }
 
 Vector::VectorPass Vector::operator /= (const double divider)
 {
-	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (double& projection: projections)
 	{
-		projections[i] /= divider;
+		projection /= divider;
 	}
 	return *this;
 }
@@ -131,9 +131,9 @@ double Vector::operator [] (const projection_index index) const
 double Vector::sumSquares() const noexcept
 {
 	double result = 0;
-	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (double projection: projections)
 	{
-		result += projections[i] * projections[i];
+		result += projection * projection;
 	}
 	return result;
 }
