@@ -11,14 +11,14 @@
 #include <functional>
 #include <utility>
 #include "mpi.h"
-#include "../constants.hpp"
-#include "../Atom.hpp"
-#include "../Substances.hpp"
-#include "../Matrix/SquareMatrix.hpp"
-#include "../NeighboursList.hpp"
-#include "../ProcessesSet.hpp"
-#include "MockPotential.hpp"
-#include "../utility/Zip.hpp"
+#include "constants.hpp"
+#include "Atom.hpp"
+#include "Substances.hpp"
+#include "Matrix/SquareMatrix.hpp"
+#include "NeighboursList.hpp"
+#include "ProcessesSet.hpp"
+#include "Potential/MockPotential.hpp"
+#include "utility/Zip.hpp"
 
 using namespace std;
 

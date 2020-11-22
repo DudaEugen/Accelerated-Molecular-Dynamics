@@ -1,4 +1,4 @@
-#include "LennardJonesPotential.hpp"
+#include "Potential/LennardJonesPotential.hpp"
 
 LennardJonesPotential::LennardJonesPotential(std::vector<AtomPair>* atomPairs, const std::size_t maxAtomPairTypes)
 	: APairPotential{ atomPairs, maxAtomPairTypes }

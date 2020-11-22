@@ -62,7 +62,7 @@ int chem_element::get_atomic_mass(const std::string& title, const bool isWeighte
 	static bool isNeedSrand = true;
 
 	std::ifstream file;
-	file.open("Elements/Isotopes/" + title);
+	file.open("src/Elements/Isotopes/" + title);
 	if (file.is_open())
 	{
 		if (isWeightedMean)
@@ -98,7 +98,7 @@ int chem_element::get_atomic_mass(const std::string& title, const bool isWeighte
 			return isotopeAtomicMass;
 		}
 	}
-	throw(ElementException("Atomic mass of " + title + " don't know, because file in directory 'Elements/Isotopes' not found"));
+	throw(ElementException("Atomic mass of " + title + " don't know, because file in directory 'src/Elements/Isotopes' not found"));
 }
 
 int chem_element::get_atomic_number(const element el) { return static_cast<int>(el); }

@@ -2,7 +2,7 @@
 #ifndef TAHD_MOCK_POTENTIAL_H
 #define TAHD_MOCK_POTENTIAL_H
 
-#include "../Potential/APotential.hpp"
+#include "Potential/APotential.hpp"
 
 class MockPotential: public APotential
 {

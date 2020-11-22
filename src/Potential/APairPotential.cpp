@@ -1,4 +1,4 @@
-#include "APairPotential.hpp"
+#include "Potential/APairPotential.hpp"
 
 APairPotential::APairPotential(std::vector<AtomPair>* atomPairs, const std::size_t maxAtomPairTypes)
 : APotential{ atomPairs }, indexes {}

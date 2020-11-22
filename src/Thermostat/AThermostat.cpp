@@ -1,4 +1,4 @@
-#include "AThermostat.hpp"
+#include "Thermostat/AThermostat.hpp"
 
 void AThermostat::setTemperature(const double temperature) noexcept { T0 = temperature; }
 

@@ -1,4 +1,4 @@
-#include "MockPotential.hpp"
+#include "Potential/MockPotential.hpp"
 
 MockPotential::MockPotential(const double cutRadius)
     : APotential{ nullptr }, cutR{ cutRadius }
