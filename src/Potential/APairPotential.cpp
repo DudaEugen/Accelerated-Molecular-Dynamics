@@ -18,7 +18,7 @@ bool APairPotential::addPairType(const element first, const element second)
 		}
 
 	if (isNew)
-		pairTypes.push_back(std::make_pair(first, second));
+		pairTypes.push_back(std::pair(first, second));
 	return isNew;
 }
 
