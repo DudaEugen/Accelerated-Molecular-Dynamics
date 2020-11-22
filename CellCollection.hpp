@@ -3,8 +3,8 @@
 #define TAHD_CELL_COLLECTION_H
 
 #include <array>
-#include "Cell.h"
-#include "Potential/APotential.h"
+#include "Cell.hpp"
+#include "Potential/APotential.hpp"
 
 class CellCollection
 {

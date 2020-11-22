@@ -2,8 +2,8 @@
 #ifndef TAHD_CELL_H
 #define TAHD_CELL_H
 
-#include "Atom.h"
-#include "AtomGroup.h"
+#include "Atom.hpp"
+#include "AtomGroup.hpp"
 
 /*the whole space is divided into cubic cells whose dimensions are not less than the cutoff radius of potential. 
 Then, to search for atoms that directly interact with each other, you need to use only atoms that are in the same or adjacent cells.*/

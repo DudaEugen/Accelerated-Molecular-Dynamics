@@ -1,20 +1,20 @@
-#include "Elements.h"
+#include "Elements.hpp"
 #include <random>
 #include <ctime>
 
 #define CONVERT_TO_STRING
-#include "Elements/elements_enum.h"
-#include "Elements/macros_close.h"
+#include "Elements/elements_enum.hpp"
+#include "Elements/macros_close.hpp"
 #undef CONVERT_TO_STRING
 
 #define PARSE_ELEMENT
-#include "Elements/elements_enum.h"
-#include "Elements/macros_close.h"
+#include "Elements/elements_enum.hpp"
+#include "Elements/macros_close.hpp"
 #undef PARSE_ELEMENT
 
 #define ALL_ELEMENTS
-#include "Elements/elements_enum.h"
-#include "Elements/macros_close.h"
+#include "Elements/elements_enum.hpp"
+#include "Elements/macros_close.hpp"
 #undef ALL_ELEMENTS
 #define TAHD_ELEMENT_ENUMERATION_MACROS
 

@@ -13,7 +13,7 @@ public:
 };
 
 #define ENUM_CREATE
-#include "Elements/elements_enum.h"
+#include "Elements/elements_enum.hpp"
 #undef ENUM_CREATE
 
 namespace chem_element

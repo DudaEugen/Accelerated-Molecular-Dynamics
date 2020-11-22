@@ -1,4 +1,4 @@
-#include "Cell.h"
+#include "Cell.hpp"
 
 constexpr std::size_t Cell::maximumNeighborCellsNumber()
 {

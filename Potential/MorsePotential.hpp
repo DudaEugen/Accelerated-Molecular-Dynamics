@@ -2,7 +2,7 @@
 #ifndef TAHD_MORZE_POTENTIAL_H
 #define TAHD_MORZE_POTENTIAL_H
 
-#include "APairPotential.h"
+#include "APairPotential.hpp"
 
 class MorsePotential : public APairPotential
 {

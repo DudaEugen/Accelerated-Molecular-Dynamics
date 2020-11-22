@@ -1,4 +1,4 @@
-#include "NeighboursList.h"
+#include "NeighboursList.hpp"
 
 NeighboursList::Neighbour::Neighbour(AtomPair* const aPair, const AtomPair::index indexOfNeighbour) noexcept
     : pair{ aPair }, neighbourIndex{ indexOfNeighbour }

@@ -2,7 +2,7 @@
 #ifndef TAHD_ABSTRACT_PAIR_POTENTIAL_H
 #define TAHD_ABSTRACT_PAIR_POTENTIAL_H
 
-#include "APotential.h"
+#include "APotential.hpp"
 
 class APairPotential: public APotential
 {

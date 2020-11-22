@@ -2,8 +2,8 @@
 #ifndef TAHD_ATOM_PAIR_H
 #define TAHD_ATOM_PAIR_H
 
-#include "Atom.h"
-#include "BorderConditions.h"
+#include "Atom.hpp"
+#include "BorderConditions.hpp"
 
 /*AtomPair class is replying for computing and storing: an distances between Atoms and differences of Atoms coordinates;
 it is known Atom Pair: atoms contain in same stream or in different*/

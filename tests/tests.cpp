@@ -11,13 +11,13 @@
 #include <functional>
 #include <utility>
 #include "mpi.h"
-#include "../constants.h"
-#include "../Atom.h"
-#include "../Substances.h"
-#include "../Matrix/SquareMatrix.h"
-#include "../NeighboursList.h"
-#include "../ProcessesSet.h"
-#include "MockPotential.h"
+#include "../constants.hpp"
+#include "../Atom.hpp"
+#include "../Substances.hpp"
+#include "../Matrix/SquareMatrix.hpp"
+#include "../NeighboursList.hpp"
+#include "../ProcessesSet.hpp"
+#include "MockPotential.hpp"
 #include "../utility/Zip.hpp"
 
 using namespace std;

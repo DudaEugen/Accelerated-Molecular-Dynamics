@@ -1,4 +1,4 @@
-#include "AtomGroup.h"
+#include "AtomGroup.hpp"
 
 AtomGroup::AtomGroup(const size_t reservedNumber) : atoms{}
 {

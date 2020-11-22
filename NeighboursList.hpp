@@ -3,7 +3,7 @@
 #define TAHD_NEIGHBOURS_LIST_H
 
 #include <vector>
-#include "AtomPair.h"
+#include "AtomPair.hpp"
 
 /* All atoms whose neighbors are tracked must be sequentially located in a linear section of memory 
 from firstAtom by lastAtom. */

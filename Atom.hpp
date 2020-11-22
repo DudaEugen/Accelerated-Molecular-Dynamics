@@ -4,9 +4,9 @@
 
 #include <string>
 #include <cmath>
-#include "constants.h"
-#include "Elements.h"
-#include "Vector.h"
+#include "constants.hpp"
+#include "Elements.hpp"
+#include "Vector.hpp"
 
 class Atom
 {

@@ -3,7 +3,7 @@
 #define TAHD_ABSTRACT_THERMOSTAT_H
 
 #include <vector>
-#include "../AtomGroup.h"
+#include "../AtomGroup.hpp"
 
 class AThermostat
 {

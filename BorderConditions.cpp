@@ -1,4 +1,4 @@
-#include "BorderConditions.h"
+#include "BorderConditions.hpp"
 
 BorderConditions::BorderConditions(Vector::ConstVectorPass size, borderType borders[DIMENSIONAL_NUMBER]) noexcept
 	: size{ size }

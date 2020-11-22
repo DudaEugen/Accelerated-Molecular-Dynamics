@@ -2,8 +2,8 @@
 #ifndef TAHD_ATOMIC_SYSTEM_H
 #define TAHD_ATOMIC_SYSTEM_H
 
-#include "AtomPair.h"
-#include "CellCollection.h"
+#include "AtomPair.hpp"
+#include "CellCollection.hpp"
 
 class AtomicSystem
 {

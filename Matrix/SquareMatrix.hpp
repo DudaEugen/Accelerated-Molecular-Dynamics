@@ -3,7 +3,7 @@
 #define TAHD_SQUARE_MATRIX_H
 
 #include <cmath>
-#include "ColumnMatrix.h"
+#include "ColumnMatrix.hpp"
 
 template<std::size_t N>
 class SquareMatrix;

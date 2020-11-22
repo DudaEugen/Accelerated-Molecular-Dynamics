@@ -1,4 +1,4 @@
-#include "ProcessesSet.h"
+#include "ProcessesSet.hpp"
 #include <exception>
 
 ProcessesSet::ProcessesSet(const unsigned int uniqId, AtomicSystem* atomicSystem, const MPI_Comm mpiComm)  

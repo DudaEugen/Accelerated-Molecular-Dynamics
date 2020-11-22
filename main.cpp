@@ -6,8 +6,8 @@
 #include <ctime>
 #include <stdlib.h>
 #include "mpi.h"
-#include "constants.h"
-#include "Atom.h"
+#include "constants.hpp"
+#include "Atom.hpp"
 
 using namespace std;
 

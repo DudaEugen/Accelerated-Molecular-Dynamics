@@ -3,7 +3,7 @@
 #define TAHD_SUBSTANCES_H
 
 #include <stdexcept>
-#include "Elements.h"
+#include "Elements.hpp"
 
 enum class substance {
 	Aluminum,

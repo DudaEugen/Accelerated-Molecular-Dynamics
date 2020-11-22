@@ -1,4 +1,4 @@
-#include "CellCollection.h"
+#include "CellCollection.hpp"
 #include <algorithm>
 #include <exception>
 

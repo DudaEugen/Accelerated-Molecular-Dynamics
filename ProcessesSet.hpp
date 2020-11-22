@@ -5,8 +5,8 @@
 #include <cstddef>
 #include <cstdlib>
 #include "mpi.h"
-#include "Process.h"
-#include "AtomicSystem.h"
+#include "Process.hpp"
+#include "AtomicSystem.hpp"
 
 /*ProcessesSet is set of processes that working on one system. One program can start several such processes at once, 
 working with different atomic systems or the same systems with different initial conditions. 

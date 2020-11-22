@@ -3,7 +3,7 @@
 #define TAHD_BORDER_CONDITIONS_H
 
 #include <cstdint>
-#include "Vector.h"
+#include "Vector.hpp"
 
 /* Borders are surfeces, that have i-th coordionate x[i] 
 such that x[i] == zeroPoint[i] or x[i] == zeroPoint[i] + size[i] (default all zeroPoint coordinates = 0)

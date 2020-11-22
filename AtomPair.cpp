@@ -1,4 +1,4 @@
-#include "AtomPair.h"
+#include "AtomPair.hpp"
 
 AtomPair::AtomPair(Atom& first, Atom& second)  noexcept
 	: atomPair{ &first, &second }

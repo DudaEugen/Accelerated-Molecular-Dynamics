@@ -2,7 +2,7 @@
 #ifndef TAHD_ATOM_GROUP_H
 #define TAHD_ATOM_GROUP_H
 
-#include "Atom.h"
+#include "Atom.hpp"
 #include <vector>
 
 /*This class is wrapped for dynamic array of pointers to atoms*/
