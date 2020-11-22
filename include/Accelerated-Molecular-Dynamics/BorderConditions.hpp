@@ -2,7 +2,6 @@
 #ifndef TAHD_BORDER_CONDITIONS_H
 #define TAHD_BORDER_CONDITIONS_H
 
-#include <cstdint>
 #include "Vector.hpp"
 
 /* Borders are surfeces, that have i-th coordionate x[i] 

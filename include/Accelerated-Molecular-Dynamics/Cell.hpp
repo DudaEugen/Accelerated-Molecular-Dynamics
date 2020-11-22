@@ -2,7 +2,6 @@
 #ifndef TAHD_CELL_H
 #define TAHD_CELL_H
 
-#include "Atom.hpp"
 #include "AtomGroup.hpp"
 
 /*the whole space is divided into cubic cells whose dimensions are not less than the cutoff radius of potential. 

@@ -1,4 +1,5 @@
 #include "Vector.hpp"
+#include <cmath>
 
 Vector::Vector() noexcept: projections{}
 {

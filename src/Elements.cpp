@@ -1,6 +1,7 @@
 #include "Elements.hpp"
 #include <random>
 #include <ctime>
+#include <fstream>
 
 #define CONVERT_TO_STRING
 #include "Elements/elements_enum.hpp"

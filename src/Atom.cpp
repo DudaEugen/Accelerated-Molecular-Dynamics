@@ -1,4 +1,5 @@
 #include "Atom.hpp"
+#include <cmath>
 
 Atom::Atom(const element element, Vector::ConstVectorPass coordinates):
 	actualStepIndex{ 0 },

@@ -2,9 +2,6 @@
 #ifndef TAHD_ATOM_H
 #define TAHD_ATOM_H
 
-#include <string>
-#include <cmath>
-#include "constants.hpp"
 #include "Elements.hpp"
 #include "Vector.hpp"
 

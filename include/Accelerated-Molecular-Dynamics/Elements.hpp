@@ -5,7 +5,6 @@
 #include <stdexcept>
 #include <string>
 #include <set>
-#include <fstream>
 
 class ElementException : public std::runtime_error {
 public:

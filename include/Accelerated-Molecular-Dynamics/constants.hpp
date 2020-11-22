@@ -2,9 +2,6 @@
 #ifndef TAHD_CONSTANTS_H
 #define TAHD_CONSTANTS_H
 
-#include <cmath>
-#define DEBUG
-
 #define DIMENSIONAL_NUMBER 3
 #define MAX_DIMENSIONAL_FOR_VALUE_PASSING 3
 

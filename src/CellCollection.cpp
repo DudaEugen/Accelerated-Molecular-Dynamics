@@ -1,6 +1,7 @@
 #include "CellCollection.hpp"
 #include <algorithm>
 #include <exception>
+#include <cmath>
 
 CellCollection::CellCollection(const std::vector<Atom>& atoms, const APotential* potential, 
                                BorderConditions* borderCond)

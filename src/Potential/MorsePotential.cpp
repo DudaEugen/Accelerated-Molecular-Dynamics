@@ -1,4 +1,5 @@
 #include "Potential/MorsePotential.hpp"
+#include <cmath>
 
 MorsePotential::MorsePotential(std::vector<AtomPair>* atomPairs, const std::size_t maxAtomPairTypes)
 : APairPotential{ atomPairs, maxAtomPairTypes }
