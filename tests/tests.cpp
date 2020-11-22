@@ -18,6 +18,7 @@
 #include "../NeighboursList.h"
 #include "../ProcessesSet.h"
 #include "MockPotential.h"
+#include "../utility/Zip.hpp"
 
 using namespace std;
 
@@ -438,6 +439,29 @@ void cellCollectionDebug()
 	}
 }
 
+void zipDebug()
+{
+	Vector v1 = randomVector();
+	Vector v2 = randomVector();
+	std::array<int, DIMENSIONAL_NUMBER> arr;
+	for(auto& v: arr)
+		v = random();
+	
+	Vector::projection_index i = 0;
+	for (auto [a, b, c]: Zip(v1, v2, std::as_const(arr)))
+	{
+		assert(equal(a, v1[i]));
+		assert(equal(b, v2[i]));
+		a = 1;
+		assert(equal(v1[i], 1));
+		a = -1;
+		assert(equal(v1[i], -1));
+		assert(c == arr[i]);
+		++i;
+	}
+	assert(i == DIMENSIONAL_NUMBER);
+}
+
 void funcDebug(int ProcRank, int procNum)
 {
 	for (int i = 0; i < procNum; ++i)
@@ -453,6 +477,7 @@ void funcDebug(int ProcRank, int procNum)
 			borderConditionsDebug();
 			neighboursListDebug();
 			cellCollectionDebug();
+			zipDebug();
 
 			std::cout << "tests completed\n";
 		}
