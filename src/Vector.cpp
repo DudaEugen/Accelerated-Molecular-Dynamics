@@ -29,6 +29,8 @@ Vector::Vector(const Vector& Vector) noexcept
 	}
 }
 
+Vector::projection_index Vector::size() const noexcept { return DIMENSIONAL_NUMBER; }
+
 Vector::VectorPass Vector::operator = (ConstVectorPass other) noexcept
 {
 	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)

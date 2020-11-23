@@ -19,6 +19,7 @@
 #include "ProcessesSet.hpp"
 #include "Potential/MockPotential.hpp"
 #include "utility/Zip.hpp"
+#include "utility/IndexedZip.hpp"
 
 using namespace std;
 
@@ -460,6 +461,14 @@ void zipDebug()
 		++i;
 	}
 	assert(i == DIMENSIONAL_NUMBER);
+
+	for (auto [index, a, b, c]: IndexedZip(v1, v2, arr))
+	{
+		assert(index >= 0 && index < DIMENSIONAL_NUMBER);
+		assert(equal(a, v1[index]));
+		assert(equal(b, v2[index]));
+		assert(c == arr[index]);
+	}
 }
 
 void funcDebug(int ProcRank, int procNum)

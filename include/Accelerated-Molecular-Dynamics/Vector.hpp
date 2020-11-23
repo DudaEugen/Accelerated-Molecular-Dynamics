@@ -27,6 +27,7 @@ public:
 	Vector(const double projectionArray[DIMENSIONAL_NUMBER]) noexcept;
 	Vector(const std::initializer_list<double>& init_list);
 	Vector(const Vector& vector) noexcept;
+	projection_index size() const noexcept;
 	VectorPass operator = (ConstVectorPass other) noexcept;
 	Vector operator - () const noexcept;
 	Vector operator + (ConstVectorPass other) const noexcept;
