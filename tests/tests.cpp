@@ -462,13 +462,29 @@ void zipDebug()
 	}
 	assert(i == DIMENSIONAL_NUMBER);
 
-	for (auto [index, a, b, c]: IndexedZip(v1, v2, arr))
+	for (auto [index, a, b]: IndexedZip(v1, arr))
 	{
-		assert(index >= 0 && index < DIMENSIONAL_NUMBER);
 		assert(equal(a, v1[index]));
-		assert(equal(b, v2[index]));
-		assert(c == arr[index]);
+		assert(b == arr[index]);
+		assert(index >= 0 && index < DIMENSIONAL_NUMBER);
 	}
+
+	std::vector<int> v = {10, 20, 30 , 40, 50, 60, 70, 80, 90};
+	i = 0;
+	for (auto [index, p]: IndexedZip(v))
+	{
+		assert(p == 10*(index + 1));
+		++i;
+	}
+	assert(i == v.size());
+
+	for (auto [index, a, b, c]: IndexedZip(v1, arr, v2))
+		assert(index < DIMENSIONAL_NUMBER);
+	for (auto [index, a, b, c, p]: IndexedZip(v1, arr, v2, v))
+		assert(index < DIMENSIONAL_NUMBER);
+	std::array<int, 3> dd = {};
+	for (auto [index, a, b, c, p, d]: IndexedZip(v1, arr, v2, v, dd))
+		assert(index < DIMENSIONAL_NUMBER);
 }
 
 void funcDebug(int ProcRank, int procNum)

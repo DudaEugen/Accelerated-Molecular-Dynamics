@@ -6,8 +6,20 @@
 
 namespace 
 {
-    template<class First, class... Rest>
-    decltype(std::declval<First>().size()) index_type();
+    template<class T>
+    constexpr T min_size_type() { return T(); };
+    
+    template<class First, class Second, class... Rest>
+    constexpr auto min_size_type()
+    {
+        if constexpr (sizeof(First) <= sizeof(min_size_type<Second, Rest...>()))
+            return First();
+        else
+            return min_size_type<Second, Rest...>();
+    }
+
+    template<class... Args>
+    decltype(min_size_type<decltype(std::declval<Args>().size())...>()) min_size();
 }
 
 /* This is a class for iterating over multiple objects of the same length. (Zip + index)
@@ -19,8 +31,8 @@ class IndexedZip
     using tuple_t = std::tuple<Args&...>;
     using tuple_size = std::tuple_size<tuple_t>;
     using tuple_iterator_t = std::tuple<decltype(std::declval<Args>().begin())...>;
-    using index_t = decltype(index_type<Args...>());
-    using dereference_indexed_iterator_tuple_t = std::tuple<index_t, decltype(*std::declval<Args>().begin())&...>;
+    using index_t = decltype(min_size<Args...>());
+    using dereference_indexed_iterator_tuple_t = std::tuple<const index_t, decltype(*std::declval<Args>().begin())&...>;
 
     tuple_t elements;
 
