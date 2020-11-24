@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <exception>
 #include <cmath>
+#include <utility/Zip.hpp>
 
 CellCollection::CellCollection(const std::vector<Atom>& atoms, const APotential* potential, 
                                BorderConditions* borderCond)
@@ -30,10 +31,8 @@ std::array<std::size_t, DIMENSIONAL_NUMBER> CellCollection::getOffsetBySizeInDir
     const std::array<std::size_t, DIMENSIONAL_NUMBER>& offsetFactorInDirection) const noexcept
 {
     std::array<std::size_t, DIMENSIONAL_NUMBER> offsetBySizeInDirection;    
-    for(Vector::projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
-    {
-        offsetBySizeInDirection[i] = offsetFactorInDirection[i] * cellNumberInDirection[i];
-    }
+    for (auto [offsetBySize, offsetFactor, cellNumber]: Zip(offsetBySizeInDirection, offsetFactorInDirection, cellNumberInDirection))
+        offsetBySize = offsetFactor * cellNumber;
     return offsetBySizeInDirection;
 }
 

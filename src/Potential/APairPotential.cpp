@@ -1,4 +1,5 @@
 #include "Potential/APairPotential.hpp"
+#include "utility/IndexedZip.hpp"
 
 APairPotential::APairPotential(std::vector<AtomPair>* atomPairs, const std::size_t maxAtomPairTypes)
 : APotential{ atomPairs }, indexes {}
@@ -30,12 +31,12 @@ void APairPotential::refreshAtomPairs()
 	{
 		bool notFound = true;
 
-		for (std::size_t i = 0; i < pairTypes.size(); ++i)
+		for (auto [index, pairType]: IndexedZip(std::as_const(pairTypes)))
 		{
-			if (pairTypes[i].first == atomPair.getFirst().chemElement && pairTypes[i].second == atomPair.getSecond().chemElement ||
-				pairTypes[i].first == atomPair.getSecond().chemElement && pairTypes[i].second == atomPair.getFirst().chemElement)
+			if (pairType.first == atomPair.getFirst().chemElement && pairType.second == atomPair.getSecond().chemElement ||
+				pairType.first == atomPair.getSecond().chemElement && pairType.second == atomPair.getFirst().chemElement)
 			{
-				indexes.push_back(i);
+				indexes.push_back(index);
 				notFound = false;
 				break;
 			}

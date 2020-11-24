@@ -1,5 +1,6 @@
 #include "Potential/MorsePotential.hpp"
 #include <cmath>
+#include "utility/Zip.hpp"
 
 MorsePotential::MorsePotential(std::vector<AtomPair>* atomPairs, const std::size_t maxAtomPairTypes)
 : APairPotential{ atomPairs, maxAtomPairTypes }
@@ -22,19 +23,19 @@ void MorsePotential::addPairType(element first, element second, double dissociat
 void MorsePotential::computeAndSetAccelerations()
 {
 	Vector force;
-	std::vector<AtomPair>& atomPairs = *pairs;
-	for (std::size_t index = 0; index < atomPairs.size(); ++index)
+	const std::vector<AtomPair>& atomPairs = *pairs;
+	for (auto [atomPair, cutRadius, D_e, alpha]: Zip(atomPairs, std::as_const(rc), std::as_const(De), std::as_const(a)))
 	{
-		double distance = atomPairs[index].getDistance();
-		if (distance < rc[index])
+		double distance = atomPair.getDistance();
+		if (distance < cutRadius)
 		{
-			force = 2 * Q_ELEMENTARY * 0.0001 * De[index] * a[index] * 
-				( exp(-a[index]*(distance - re[index])) - exp(-2*a[index] * (distance - re[index])) ) / distance * 
-				atomPairs[index].getDistanceProjections();
+			force = 2 * Q_ELEMENTARY * 0.0001 * D_e * alpha * 
+				( exp(-alpha*(distance - cutRadius)) - exp(-2*alpha* (distance - cutRadius)) ) / distance * 
+				atomPair.getDistanceProjections();
 
-			atomPairs[index].getFirst().addAcceleration(force / atomPairs[index].getFirst().mass);
-			if (atomPairs[index].getIsAtomsFromSameStream())
-				atomPairs[index].getSecond().addAcceleration(-force / atomPairs[index].getSecond().mass);
+			atomPair.getFirst().addAcceleration(force / atomPair.getFirst().mass);
+			if (atomPair.getIsAtomsFromSameStream())
+				atomPair.getSecond().addAcceleration(-force / atomPair.getSecond().mass);
 		}
 	}
 }

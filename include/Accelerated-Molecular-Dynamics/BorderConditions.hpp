@@ -3,6 +3,7 @@
 #define TAHD_BORDER_CONDITIONS_H
 
 #include "Vector.hpp"
+#include <array>
 
 /* Borders are surfeces, that have i-th coordionate x[i] 
 such that x[i] == zeroPoint[i] or x[i] == zeroPoint[i] + size[i] (default all zeroPoint coordinates = 0)
@@ -16,12 +17,12 @@ public:
 		none,
 	};
 private:
-	borderType type[DIMENSIONAL_NUMBER];
-	Vector size;
+	std::array<borderType, DIMENSIONAL_NUMBER> borderTypes;
+	Vector dimensions;
 	Vector zeroPoint;
 public:
-	BorderConditions(Vector::ConstVectorPass size, borderType borders[DIMENSIONAL_NUMBER]) noexcept;
-	BorderConditions(Vector::ConstVectorPass size, borderType borders[DIMENSIONAL_NUMBER],
+	BorderConditions(Vector::ConstVectorPass size, const std::array<borderType, DIMENSIONAL_NUMBER> borders) noexcept;
+	BorderConditions(Vector::ConstVectorPass size, const std::array<borderType, DIMENSIONAL_NUMBER> borders,
 					 Vector::ConstVectorPass zeroPoint) noexcept;
 	const borderType* getBorderTypes() const noexcept;
 	Vector::ConstVectorPass getSize() const noexcept;

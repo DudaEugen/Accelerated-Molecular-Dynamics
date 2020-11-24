@@ -1,5 +1,6 @@
 #include "Potential/LennardJonesPotential.hpp"
 #include <cmath>
+#include "utility/Zip.hpp"
 
 LennardJonesPotential::LennardJonesPotential(std::vector<AtomPair>* atomPairs, const std::size_t maxAtomPairTypes)
 	: APairPotential{ atomPairs, maxAtomPairTypes }
@@ -21,19 +22,19 @@ void LennardJonesPotential::addPairType(element first, element second, double bo
 void LennardJonesPotential::computeAndSetAccelerations()
 {
 	Vector force;
-	std::vector<AtomPair>& atomPairs = *pairs;
-	for (std::size_t i = 0; i < atomPairs.size(); ++i)
+	const std::vector<AtomPair>& atomPairs = *pairs;
+	for (auto [atomPair, cutRadius, e, r_m]: Zip(atomPairs, std::as_const(rc), std::as_const(eps), std::as_const(rm)))
 	{
-		double distance = atomPairs[i].getDistance();
-		if (distance < rc[i])
+		double distance = atomPair.getDistance();
+		if (distance < cutRadius)
 		{
-			force = 24 * Q_ELEMENTARY * 0.0001 * eps[i] *
-				( 1 - 2*pow(rm[i]/distance, 6) ) * pow(rm[i] / distance, 8) / std::pow(rm[i], 2) *
-				atomPairs[i].getDistanceProjections();
+			force = 24 * Q_ELEMENTARY * 0.0001 * e *
+				( 1 - 2*pow(r_m/distance, 6) ) * pow(r_m / distance, 8) / std::pow(r_m, 2) *
+				atomPair.getDistanceProjections();
 
-			atomPairs[i].getFirst().addAcceleration(force / atomPairs[i].getFirst().mass);
-			if (atomPairs[i].getIsAtomsFromSameStream())
-				atomPairs[i].getSecond().addAcceleration(-force / atomPairs[i].getSecond().mass);
+			atomPair.getFirst().addAcceleration(force / atomPair.getFirst().mass);
+			if (atomPair.getIsAtomsFromSameStream())
+				atomPair.getSecond().addAcceleration(-force / atomPair.getSecond().mass);
 		}
 	}
 }

@@ -254,7 +254,7 @@ void atomPairDebug()
 void borderConditionsDebug()
 {
 #if DIMENSIONAL_NUMBER == 3
-	BorderConditions::borderType bTypes[3] = {
+	std::array<BorderConditions::borderType, DIMENSIONAL_NUMBER> bTypes = {
 		BorderConditions::borderType::none,
 		BorderConditions::borderType::periodic,
 		BorderConditions::borderType::periodic,
@@ -300,7 +300,7 @@ void borderConditionsDebug()
 	assert(equal(bCond(v), a.absoluteValue()));
 	assert(equal(v, a));
 
-	BorderConditions::borderType bTypes2[3] = {
+	std::array<BorderConditions::borderType, DIMENSIONAL_NUMBER> bTypes2 = {
 		BorderConditions::borderType::periodic,
 		BorderConditions::borderType::periodic,
 		BorderConditions::borderType::periodic,
@@ -364,7 +364,7 @@ void neighboursListDebug()
 void cellCollectionDebug()
 {
 #if DIMENSIONAL_NUMBER == 3
-	BorderConditions::borderType bTypes[3] = {
+	std::array<BorderConditions::borderType, DIMENSIONAL_NUMBER> bTypes = {
 		BorderConditions::borderType::periodic,
 		BorderConditions::borderType::periodic,
 		BorderConditions::borderType::periodic,
@@ -402,7 +402,7 @@ void cellCollectionDebug()
 	assert(i == 1);	
 #endif
 
-	BorderConditions::borderType bordersType[DIMENSIONAL_NUMBER];
+	std::array<BorderConditions::borderType, DIMENSIONAL_NUMBER> bordersType;
 	for (Vector::projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 		bordersType[i] = BorderConditions::borderType::periodic;
 	Vector vect = randomVector<20, 50>();
