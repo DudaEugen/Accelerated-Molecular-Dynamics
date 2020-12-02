@@ -5,6 +5,11 @@ Vector::Vector() noexcept: projections{}
 {
 }
 
+Vector::Vector(const std::array<double, DIMENSIONAL_NUMBER> projectionArray) noexcept
+	: projections{ projectionArray }
+{
+}
+
 Vector::Vector(const double projectionArray[DIMENSIONAL_NUMBER]) noexcept
 {
 	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
@@ -146,38 +151,10 @@ double Vector::absoluteValue() const noexcept
 	return sqrt(sumSquares());
 }
 
-Vector::Iterator Vector::begin() noexcept { return Iterator(projections); }
+Vector::iterator Vector::begin() noexcept { return projections.begin(); }
 
-Vector::Iterator Vector::end() noexcept { return Iterator(projections + DIMENSIONAL_NUMBER); }
+Vector::iterator Vector::end() noexcept { return projections.end(); }
 
-Vector::ConstIterator Vector::begin() const noexcept { return ConstIterator(projections); }
+Vector::const_iterator Vector::begin() const noexcept { return projections.begin(); }
 
-Vector::ConstIterator Vector::end() const noexcept { return ConstIterator(projections + DIMENSIONAL_NUMBER); }
-
-Vector::Iterator::Iterator(double* proj) noexcept: projection{proj}
-{
-}
-
-Vector::Iterator& Vector::Iterator::operator++() noexcept
-{
-	++projection;
-	return *this;
-}
-
-double& Vector::Iterator::operator*() noexcept { return *projection; }
-
-bool Vector::Iterator::operator!=(Iterator it) const noexcept { return projection != it.projection; }
-
-Vector::ConstIterator::ConstIterator(const double* proj) noexcept: projection{proj}
-{
-}
-
-Vector::ConstIterator& Vector::ConstIterator::operator++() noexcept
-{
-	++projection;
-	return *this;
-}
-
-const double& Vector::ConstIterator::operator*() const noexcept { return *projection; }
-
-bool Vector::ConstIterator::operator!=(ConstIterator it) const noexcept { return projection != it.projection; }
+Vector::const_iterator Vector::end() const noexcept { return projections.end(); }
