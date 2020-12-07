@@ -514,6 +514,13 @@ void derivativeDebug()
 	auto ee = f_exp(e_v);
 	assert(equal(compute_value(ee, x), exp(exp(v.get_value(x)))));
 	assert(equal(compute_derivative(ee, x), exp(exp(v.get_value(x))) * exp(v.get_value(x))));
+
+	auto p1 = Pow(v, 3);
+	auto p2 = f_exp(Pow(v, 0.5));
+	assert(equal(compute_value(p1, x), pow(x, 3)));
+	assert(equal(compute_value(p2, abs(x)), exp(pow(abs(x), 0.5))));
+	assert(equal(compute_derivative(p1, x), 3 * pow(x, 2)));
+	assert(equal(compute_derivative(p2, abs(x)), exp(pow(abs(x), 0.5)) * 0.5 * pow(abs(x), -0.5)));
 }
 
 void funcDebug(int ProcRank, int procNum)
