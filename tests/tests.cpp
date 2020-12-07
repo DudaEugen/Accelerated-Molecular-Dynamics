@@ -20,6 +20,7 @@
 #include "Potential/MockPotential.hpp"
 #include "utility/Zip.hpp"
 #include "utility/IndexedZip.hpp"
+#include "utility/functions_for_derivative.hpp"
 
 using namespace std;
 
@@ -491,6 +492,30 @@ void zipDebug()
 		assert(index < DIMENSIONAL_NUMBER);
 }
 
+void derivativeDebug()
+{
+	double x = random<-3, 3>();
+
+	Const c{2};
+	assert(equal(compute_value(c, x), 2));
+	assert(equal(compute_derivative(c, x), 0));
+
+	Variable v;
+	assert(equal(compute_value(v, x), x));
+	assert(equal(compute_derivative(v, x), 1));
+
+	auto e_c = Exp(c);
+	auto e_v = Exp(v);
+	assert(equal(compute_value(e_c, x), exp(c.get_value(x))));
+	assert(equal(compute_derivative(e_c, x), 0));
+	assert(equal(compute_value(e_v, x), exp(v.get_value(x))));
+	assert(equal(compute_derivative(e_v, x), exp(v.get_value(x))));
+
+	auto ee = f_exp(e_v);
+	assert(equal(compute_value(ee, x), exp(exp(v.get_value(x)))));
+	assert(equal(compute_derivative(ee, x), exp(exp(v.get_value(x))) * exp(v.get_value(x))));
+}
+
 void funcDebug(int ProcRank, int procNum)
 {
 	for (int i = 0; i < procNum; ++i)
@@ -507,6 +532,7 @@ void funcDebug(int ProcRank, int procNum)
 			neighboursListDebug();
 			cellCollectionDebug();
 			zipDebug();
+			derivativeDebug();
 
 			std::cout << "tests completed\n";
 		}
