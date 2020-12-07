@@ -1,14 +1,14 @@
 #include "utility/functions_for_derivative.hpp"
 
-Const::Const(double v)
+Const::Const(const double v) noexcept
     : value{ v }
 {
 }
 
-double Const::get_value(double x) { return value; }
+double Const::get_value(const double x) const noexcept { return value; }
 
-double Const::compute_derivative(double x) { return 0; }
+double Const::compute_derivative(const double x) const noexcept { return 0; }
 
-double Variable::get_value(double x) { return x; }
+double Variable::get_value(const double x) const noexcept { return x; }
 
-double Variable::compute_derivative(double x) { return 1; }
+double Variable::compute_derivative(const double x) const noexcept { return 1; }

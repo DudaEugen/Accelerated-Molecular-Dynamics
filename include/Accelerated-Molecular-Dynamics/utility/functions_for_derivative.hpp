@@ -6,83 +6,128 @@
 
 class Const
 {
-    double value;
+    const double value;
 public:
-    Const(double v);
+    Const(const double v) noexcept;
 
-    double get_value(double x);
-    double compute_derivative(double x);
+    double get_value(const double x) const noexcept;
+    double compute_derivative(const double x) const noexcept;
 };
 
 class Variable
 {
 public:
-    Variable() = default;
+    Variable() noexcept = default;
 
-    double get_value(double x);
-    double compute_derivative(double x);
+    double get_value(const double x) const noexcept;
+    double compute_derivative(const double x) const noexcept;
 };
 
 template<class T>
 class AFunction
 {
 protected:
-    T inner_function;
+    const T inner_function;
 
-    AFunction(T func): inner_function{ func }
-    {
-    }
-    virtual double self_value(double x) = 0;
-    virtual double self_derivative(double x) = 0;
+    AFunction(const T func) noexcept;
+    virtual double self_value(const double x) const = 0;
+    virtual double self_derivative(const double x) const = 0;
 public:
-    double get_value(double x) { return self_value(inner_function.get_value(x)); }
-    double compute_derivative(double x)
-    {
-        return self_derivative(inner_function.get_value(x)) * inner_function.compute_derivative(x);
-    }
+    double get_value(const double x) const;
+    double compute_derivative(const double x) const;
 };
 
 template<class T>
 class Exp: public AFunction<T>
 {
 protected:
-    double self_value(double x) override { return exp(x); }
-    double self_derivative(double x) override { return exp(x); }
+    double self_value(const double x) const override;
+    double self_derivative(const double x) const override;
 public:
-    Exp(T v): AFunction<T>{ v }
-    {
-    }
+    Exp(const T v) noexcept;
 };
 
 template<class T>
 class Pow: public AFunction<T>
 {
-    float p;
+    const float p;
 protected:
-    double self_value(double x) override { return pow(x, p); }
-    double self_derivative(double x) override { return p * pow(x, p-1); }
+    double self_value(const double x) const override;
+    double self_derivative(const double x) const override;
 public:
-    Pow(T v, float power): AFunction<T>{ v }, p{ power }
-    {
-    }
+    Pow(const T v, const float power) noexcept;
 };
 
 template<class T>
-auto f_exp(T v) { return Exp<decltype(v)>(v); }
+auto f_exp(const T v) noexcept { return Exp<decltype(v)>(v); }
 
 template<class T>
-auto f_pow(T v, float p) { return Pow<decltype(v)>(v, p); }
+auto f_pow(const T v, const float p) noexcept { return Pow<decltype(v)>(v, p); }
 
 template<class T>
-double compute_value(T function, double argument)
+double compute_value(const T function, const double argument)
 {
     return function.get_value(argument);
 }
 
 template<class T>
-double compute_derivative(T function, double argument)
+double compute_derivative(const T function, const double argument)
 {
     return function.compute_derivative(argument);
+}
+
+template<class T>
+AFunction<T>::AFunction(const T func) noexcept
+    : inner_function{ func }
+{
+}
+
+template<class T>
+double AFunction<T>::get_value(const double x) const
+{ 
+    return self_value(inner_function.get_value(x)); 
+}
+
+template<class T>
+double AFunction<T>::compute_derivative(const double x) const
+{
+    return self_derivative(inner_function.get_value(x)) * inner_function.compute_derivative(x);
+}
+
+template<class T>
+Exp<T>::Exp(const T v) noexcept
+    : AFunction<T>{ v }
+{
+}
+
+template<class T>
+double Exp<T>::self_value(const double x) const 
+{ 
+    return exp(x); 
+}
+
+template<class T>
+double Exp<T>::self_derivative(const double x) const 
+{ 
+    return exp(x); 
+}
+
+template<class T>
+Pow<T>::Pow(const T v, const float power) noexcept 
+    : AFunction<T>{ v }, p{ power }
+{
+}
+
+template<class T>
+double Pow<T>::self_value(const double x) const 
+{ 
+    return pow(x, p); 
+}
+
+template<class T>
+double Pow<T>::self_derivative(const double x) const 
+{ 
+    return p * pow(x, p-1); 
 }
 
 #endif  // TAHD_FUNCTIONS_FOR_DERIVATIVE_H
