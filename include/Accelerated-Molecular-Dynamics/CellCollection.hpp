@@ -2,7 +2,6 @@
 #ifndef TAHD_CELL_COLLECTION_H
 #define TAHD_CELL_COLLECTION_H
 
-#include <array>
 #include "Cell.hpp"
 #include "Potential/APotential.hpp"
 
@@ -18,7 +17,7 @@ class CellCollection
     std::array<std::size_t, DIMENSIONAL_NUMBER> getOffsetFactorInDirection() const noexcept;
     // getOffsetBySizeInDirection()[i] element is value that need add for offset by size of cellCollection to i-th direction
     std::array<std::size_t, DIMENSIONAL_NUMBER> getOffsetBySizeInDirection() const noexcept;
-    std::array<std::size_t, DIMENSIONAL_NUMBER> getOffsetBySizeInDirection(const std::array<std::size_t, DIMENSIONAL_NUMBER>& 
+    std::array<std::size_t, DIMENSIONAL_NUMBER> getOffsetBySizeInDirection(ConstPassArrayT<std::size_t> 
                                                                            offsetFactorInDirection) const noexcept;
     // compute and set cellSize, firstCellPosition, return number of cell
     std::size_t computeAndSetParameters(const std::vector<Atom>& atoms, const APotential* potential);
@@ -28,7 +27,7 @@ public:
     CellCollection(const std::vector<Atom>& atoms, const APotential* potential, BorderConditions* borderCond = nullptr);
     std::vector<Cell>& getCells() noexcept;
     const std::vector<Cell>& getCells() const noexcept;
-    Cell& findCellContainingVector(Vector::ConstVectorPass vector);
+    Cell& findCellContainingVector(Vector::ConstPass vector);
     Cell& findCellContainingAtom(const Atom& atom);
 };
 

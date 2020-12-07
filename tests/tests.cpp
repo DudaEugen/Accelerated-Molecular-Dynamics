@@ -28,7 +28,7 @@ bool equal(double d1, double d2, const int symbolCountAfterPoint = 12)
 	return static_cast<int>(abs(d1 - d2) * pow(10, symbolCountAfterPoint)) == 0;
 }
 
-bool equal(Vector::ConstVectorPass v1, Vector::ConstVectorPass v2, const int symbolCountAfterPoint = 12)
+bool equal(Vector::ConstPass v1, Vector::ConstPass v2, const int symbolCountAfterPoint = 12)
 {	
 	bool result = true;
 	for (Vector::projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
@@ -57,14 +57,15 @@ Vector randomVector()
 
 void vectorDebug()
 {
-#if DIMENSIONAL_NUMBER == 3
-	assert(equal(Vector({ 3, 4, 0 }).absoluteValue(), Vector({ -5, 0, 0 }).absoluteValue()));
-	assert(not equal(Vector({ -3, 4.00000001, 0 }).sumSquares(), Vector({ 0, 0, -5 }).sumSquares()));
-	assert(equal(Vector({ 9.8765, -6.789654, 4.324109 }), -Vector({ -9.8765, 6.789654, -4.324109 })));
-	assert(equal(Vector({ 4.5, -3.8, 100.000501 }) / 2, Vector({ 2.25, -1.9, 50.0002505 })));
-	assert(equal(Vector({ 4, 6, 7 })[0], Vector({ 1, 2, 4 })[2]));
-	assert(not equal(Vector({ 4, 6, 7 })[1], Vector({ 1, -6, 4 })[1]));
-#endif
+	if constexpr (DIMENSIONAL_NUMBER == 3)
+	{
+		assert(equal(Vector({ 3, 4, 0 }).absoluteValue(), Vector({ -5, 0, 0 }).absoluteValue()));
+		assert(not equal(Vector({ -3, 4.00000001, 0 }).sumSquares(), Vector({ 0, 0, -5 }).sumSquares()));
+		assert(equal(Vector({ 9.8765, -6.789654, 4.324109 }), -Vector({ -9.8765, 6.789654, -4.324109 })));
+		assert(equal(Vector({ 4.5, -3.8, 100.000501 }) / 2, Vector({ 2.25, -1.9, 50.0002505 })));
+		assert(equal(Vector({ 4, 6, 7 })[0], Vector({ 1, 2, 4 })[2]));
+		assert(not equal(Vector({ 4, 6, 7 })[1], Vector({ 1, -6, 4 })[1]));
+	}
 
 	Vector zero{};
 	Vector v1 = randomVector();
@@ -136,16 +137,17 @@ void atomDebug()
 	assert(equal(a.getCoordinates(), aAl_1.getCoordinates()));
 	assert(equal(a.getAcceleration(), randomVector() * 0));
 
-#if DIMENSIONAL_NUMBER == 3
-	a.setVelocity(v);
-	Vector v2 = { 4, -5.67, 9.23897 };
-	a.addVelocity(v2);
-	assert(equal(a.getVelocity(), v + v2));
+	if constexpr (DIMENSIONAL_NUMBER == 3)
+	{
+		a.setVelocity(v);
+		Vector v2 = { 4, -5.67, 9.23897 };
+		a.addVelocity(v2);
+		assert(equal(a.getVelocity(), v + v2));
 
-	a.setAcceleration(v2);
-	a.addAcceleration(v2 / 2);
-	assert(equal(a.getAcceleration(), 1.5 * v2));
-#endif
+		a.setAcceleration(v2);
+		a.addAcceleration(v2 / 2);
+		assert(equal(a.getAcceleration(), 1.5 * v2));
+	}
 
 	for (int p = 0; p < 3; ++p)
 	{
@@ -253,76 +255,77 @@ void atomPairDebug()
 
 void borderConditionsDebug()
 {
-#if DIMENSIONAL_NUMBER == 3
-	std::array<BorderConditions::borderType, DIMENSIONAL_NUMBER> bTypes = {
-		BorderConditions::borderType::none,
-		BorderConditions::borderType::periodic,
-		BorderConditions::borderType::periodic,
-	};
-	BorderConditions bCond(Vector{0, 5, 11.2}, bTypes);
-	Vector v; 
-	Vector a;
+	if constexpr (DIMENSIONAL_NUMBER == 3)
+	{
+		std::array<BorderConditions::borderType, DIMENSIONAL_NUMBER> bTypes = {
+			BorderConditions::borderType::none,
+			BorderConditions::borderType::periodic,
+			BorderConditions::borderType::periodic,
+		};
+		BorderConditions bCond(Vector{0, 5, 11.2}, bTypes);
+		Vector v; 
+		Vector a;
 
-	v = Vector{20, 20, 20};
-	a = Vector{20, 0, -2.4};
-	assert(not equal(bCond.computePosition(v), Vector{}));
-	assert(equal(bCond.computePosition(v), bCond.computePosition(a)));
-	assert(equal(bCond(v), a.absoluteValue()));
-	assert(equal(v, a));
+		v = Vector{20, 20, 20};
+		a = Vector{20, 0, -2.4};
+		assert(not equal(bCond.computePosition(v), Vector{}));
+		assert(equal(bCond.computePosition(v), bCond.computePosition(a)));
+		assert(equal(bCond(v), a.absoluteValue()));
+		assert(equal(v, a));
 
-	v = Vector{-4.6, 0, 7.6}; 
-	a = Vector{-4.6, 0, -3.6};	
-	assert(equal(bCond.computePosition(v), bCond.computePosition(a)));
-	assert(equal(bCond(v), a.absoluteValue()));
-	assert(equal(v, a));
+		v = Vector{-4.6, 0, 7.6}; 
+		a = Vector{-4.6, 0, -3.6};	
+		assert(equal(bCond.computePosition(v), bCond.computePosition(a)));
+		assert(equal(bCond(v), a.absoluteValue()));
+		assert(equal(v, a));
 
-	v = Vector{0.01, -6, -12.7};
-	a = Vector{0.01, -1, -1.5};
-	assert(equal(bCond.computePosition(v), bCond.computePosition(a)));
-	assert(equal(bCond(v), a.absoluteValue()));
-	assert(equal(v, a));
+		v = Vector{0.01, -6, -12.7};
+		a = Vector{0.01, -1, -1.5};
+		assert(equal(bCond.computePosition(v), bCond.computePosition(a)));
+		assert(equal(bCond(v), a.absoluteValue()));
+		assert(equal(v, a));
 
-	v = Vector{1082, -56.7, 132.4}; 
-	a = Vector{1082, -1.7, -2};
-	assert(equal(bCond.computePosition(v), bCond.computePosition(a)));
-	assert(equal(bCond(v), a.absoluteValue()));
-	assert(equal(v, a));
+		v = Vector{1082, -56.7, 132.4}; 
+		a = Vector{1082, -1.7, -2};
+		assert(equal(bCond.computePosition(v), bCond.computePosition(a)));
+		assert(equal(bCond(v), a.absoluteValue()));
+		assert(equal(v, a));
 
-	v = Vector{0, -4.99, -11.2}; 
-	a = Vector{0, 0.01, 0};
-	assert(equal(bCond.computePosition(v), bCond.computePosition(a)));
-	assert(equal(bCond(v), a.absoluteValue()));
-	assert(equal(v, a));
+		v = Vector{0, -4.99, -11.2}; 
+		a = Vector{0, 0.01, 0};
+		assert(equal(bCond.computePosition(v), bCond.computePosition(a)));
+		assert(equal(bCond(v), a.absoluteValue()));
+		assert(equal(v, a));
 
-	v = Vector{0, 2, -5.5}; 
-	a = Vector{0, 2, -5.5};
-	assert(equal(bCond.computePosition(v), bCond.computePosition(a)));
-	assert(equal(bCond(v), a.absoluteValue()));
-	assert(equal(v, a));
+		v = Vector{0, 2, -5.5}; 
+		a = Vector{0, 2, -5.5};
+		assert(equal(bCond.computePosition(v), bCond.computePosition(a)));
+		assert(equal(bCond(v), a.absoluteValue()));
+		assert(equal(v, a));
 
-	std::array<BorderConditions::borderType, DIMENSIONAL_NUMBER> bTypes2 = {
-		BorderConditions::borderType::periodic,
-		BorderConditions::borderType::periodic,
-		BorderConditions::borderType::periodic,
-	};
-	BorderConditions bCond2(Vector{3, 4, 5}, bTypes2, Vector{-2, 3, 0});
+		std::array<BorderConditions::borderType, DIMENSIONAL_NUMBER> bTypes2 = {
+			BorderConditions::borderType::periodic,
+			BorderConditions::borderType::periodic,
+			BorderConditions::borderType::periodic,
+		};
+		BorderConditions bCond2(Vector{3, 4, 5}, bTypes2, Vector{-2, 3, 0});
 
-	v = Vector{-1.9, -0.9, 0.1};
-	a = Vector{1.1, 7.1, 5.1};	
-	assert(not equal(v, a));
-	assert(equal(bCond2.computePosition(v), bCond2.computePosition(a)));
+		v = Vector{-1.9, -0.9, 0.1};
+		a = Vector{1.1, 7.1, 5.1};	
+		assert(not equal(v, a));
+		assert(equal(bCond2.computePosition(v), bCond2.computePosition(a)));
 
-	v = Vector{8, -9.6, -3};
-	a = Vector{2, 2.4, 2};
-	assert(equal(bCond2.computePosition(v), bCond2.computePosition(a)));
-	assert(not equal(v, a));
+		v = Vector{8, -9.6, -3};
+		a = Vector{2, 2.4, 2};
+		assert(equal(bCond2.computePosition(v), bCond2.computePosition(a)));
+		assert(not equal(v, a));
 
 
-	assert(equal(bCond.computePosition(Vector{}), Vector{}));
-	assert(not equal(bCond2.computePosition(Vector{}), Vector{}));
-	assert(equal(bCond.computePosition(Vector{0.5, 3.5, 2}), bCond2.computePosition(Vector{0.5, 3.5, 2})));
-	assert(not equal(bCond.computePosition(Vector{4, 4, 4}), bCond2.computePosition(Vector{4, 4, 4})));
-#endif
+		assert(equal(bCond.computePosition(Vector{}), Vector{}));
+		assert(not equal(bCond2.computePosition(Vector{}), Vector{}));
+		assert(equal(bCond.computePosition(Vector{0.5, 3.5, 2}), bCond2.computePosition(Vector{0.5, 3.5, 2})));
+		assert(not equal(bCond.computePosition(Vector{4, 4, 4}), bCond2.computePosition(Vector{4, 4, 4})));
+	}
 }
 
 void neighboursListDebug()
@@ -363,44 +366,45 @@ void neighboursListDebug()
 
 void cellCollectionDebug()
 {
-#if DIMENSIONAL_NUMBER == 3
-	std::array<BorderConditions::borderType, DIMENSIONAL_NUMBER> bTypes = {
-		BorderConditions::borderType::periodic,
-		BorderConditions::borderType::periodic,
-		BorderConditions::borderType::periodic,
-	};
-	BorderConditions bCond(Vector{8, 10, 47}, bTypes);
-	APotential* potential = new MockPotential(4);
-	std::vector<Atom> atoms = { Atom{"Cu", Vector{}}, Atom{"Cu", Vector{13, 12.1, 12}}};
-	CellCollection cc{ atoms, potential, &bCond };
-	assert(cc.getCells().size() == 44);
+	if constexpr (DIMENSIONAL_NUMBER == 3)
+	{
+		std::array<BorderConditions::borderType, DIMENSIONAL_NUMBER> bTypes = {
+			BorderConditions::borderType::periodic,
+			BorderConditions::borderType::periodic,
+			BorderConditions::borderType::periodic,
+		};
+		BorderConditions bCond(Vector{8, 10, 47}, bTypes);
+		APotential* potential = new MockPotential(4);
+		std::vector<Atom> atoms = { Atom{"Cu", Vector{}}, Atom{"Cu", Vector{13, 12.1, 12}}};
+		CellCollection cc{ atoms, potential, &bCond };
+		assert(cc.getCells().size() == 44);
 
-	CellCollection cellCollection{ atoms, potential};
-	assert(cellCollection.getCells().size() >= 27);
-	int* neighbourCellNumber = new int[30]();	// neighbourCellNumber[i] is number of cell that have i neighbours
-	for(auto& cell: cellCollection.getCells())
-		++neighbourCellNumber[cell.getNeighborCells().size()];
-	for(int i = 0; i < 30; ++i)
-	{
-		if (i == 8)
-			assert(neighbourCellNumber[i] == 8);
-		else if ( i==12 || i==18 || i == 27)
-			assert(neighbourCellNumber[i] > 0);
-		else
-			assert(neighbourCellNumber[i] == 0);	
+		CellCollection cellCollection{ atoms, potential};
+		assert(cellCollection.getCells().size() >= 27);
+		int* neighbourCellNumber = new int[30]();	// neighbourCellNumber[i] is number of cell that have i neighbours
+		for(auto& cell: cellCollection.getCells())
+			++neighbourCellNumber[cell.getNeighborCells().size()];
+		for(int i = 0; i < 30; ++i)
+		{
+			if (i == 8)
+				assert(neighbourCellNumber[i] == 8);
+			else if ( i==12 || i==18 || i == 27)
+				assert(neighbourCellNumber[i] > 0);
+			else
+				assert(neighbourCellNumber[i] == 0);	
+		}
+		delete[] neighbourCellNumber;
+		int i = 0;
+		try
+		{
+			cellCollection.findCellContainingVector(Vector{1000, -1000, 0});
+		}
+		catch(const std::range_error& e)
+		{
+			i = 1;
+		}
+		assert(i == 1);	
 	}
-	delete[] neighbourCellNumber;
-	int i = 0;
-	try
-	{
-		cellCollection.findCellContainingVector(Vector{1000, -1000, 0});
-	}
-	catch(const std::range_error& e)
-	{
-		i = 1;
-	}
-	assert(i == 1);	
-#endif
 
 	std::array<BorderConditions::borderType, DIMENSIONAL_NUMBER> bordersType;
 	for (Vector::projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)

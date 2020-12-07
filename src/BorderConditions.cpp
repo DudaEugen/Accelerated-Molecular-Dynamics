@@ -3,15 +3,15 @@
 #include <cstdint>
 #include "utility/Zip.hpp"
 
-BorderConditions::BorderConditions(Vector::ConstVectorPass size, const std::array<borderType, DIMENSIONAL_NUMBER> borders) noexcept
+BorderConditions::BorderConditions(Vector::ConstPass size, ConstPassArrayT<borderType> borders) noexcept
 	: dimensions{ size }
 {
 	for (auto [type, border]: Zip(borderTypes, borders))
 		type = border;
 }
 
-BorderConditions::BorderConditions(Vector::ConstVectorPass size, const std::array<borderType, DIMENSIONAL_NUMBER> borders,
-					 			  Vector::ConstVectorPass zeroPoint) noexcept
+BorderConditions::BorderConditions(Vector::ConstPass size, ConstPassArrayT<borderType> borders,
+					 			  Vector::ConstPass zeroPoint) noexcept
 	: BorderConditions{ size, borders }
 {
 	this->zeroPoint = zeroPoint;
@@ -19,11 +19,11 @@ BorderConditions::BorderConditions(Vector::ConstVectorPass size, const std::arra
 
 const BorderConditions::borderType* BorderConditions::getBorderTypes() const noexcept { return borderTypes.data(); }
 
-Vector::ConstVectorPass BorderConditions::getSize() const noexcept { return dimensions; }
+Vector::ConstPass BorderConditions::getSize() const noexcept { return dimensions; }
 
-Vector::ConstVectorPass BorderConditions::getZeroPoint() const noexcept { return zeroPoint; }
+Vector::ConstPass BorderConditions::getZeroPoint() const noexcept { return zeroPoint; }
 
-Vector BorderConditions::computePosition(Vector::ConstVectorPass coordinates) const
+Vector BorderConditions::computePosition(Vector::ConstPass coordinates) const
 {
 	Vector result;
 	for (auto [res, coordinate, type, size, zPoint]: Zip(result, coordinates, borderTypes, dimensions, zeroPoint))

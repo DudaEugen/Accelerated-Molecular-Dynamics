@@ -28,7 +28,7 @@ Atom& AtomPair::getSecond() const noexcept { return *atomPair[1]; }
 
 double AtomPair::getDistance() const noexcept { return distance; }
 
-Vector::ConstVectorPass AtomPair::getDistanceProjections() const noexcept 
+Vector::ConstPass AtomPair::getDistanceProjections() const noexcept 
 { 
 	return dProjections; 
 }

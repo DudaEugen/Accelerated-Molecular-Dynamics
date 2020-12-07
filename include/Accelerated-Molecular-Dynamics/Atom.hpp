@@ -24,20 +24,20 @@ private:
 	void changeStepIndex() noexcept;
 	void doStepVelocityVerlet(const double dt) noexcept;
 public:
-	Atom(const element element, Vector::ConstVectorPass coordinates);
-	Atom(const char element, Vector::ConstVectorPass coordinates);
-	Atom(const char element[2], Vector::ConstVectorPass coordinates);
-	Atom(const std::string element, Vector::ConstVectorPass coordinates);
+	Atom(const element element, Vector::ConstPass coordinates);
+	Atom(const char element, Vector::ConstPass coordinates);
+	Atom(const char element[2], Vector::ConstPass coordinates);
+	Atom(const std::string element, Vector::ConstPass coordinates);
 					
-	void setCoordinates(Vector::ConstVectorPass coordinates) noexcept;
-	void setVelocity(Vector::ConstVectorPass velocity) noexcept;
-	void setAcceleration(Vector::ConstVectorPass acceleration) noexcept;
+	void setCoordinates(Vector::ConstPass coordinates) noexcept;
+	void setVelocity(Vector::ConstPass velocity) noexcept;
+	void setAcceleration(Vector::ConstPass acceleration) noexcept;
 												//addQuantity methods are adding argument to actuality value of quantity
-	void addVelocity(Vector::ConstVectorPass addingVelocity) noexcept;
-	void addAcceleration(Vector::ConstVectorPass addingAcceleratrion) noexcept;
-	Vector::ConstVectorPass getCoordinates() const noexcept;
-	Vector::ConstVectorPass getVelocity() const noexcept;
-	Vector::ConstVectorPass getAcceleration() const noexcept;
+	void addVelocity(Vector::ConstPass addingVelocity) noexcept;
+	void addAcceleration(Vector::ConstPass addingAcceleratrion) noexcept;
+	Vector::ConstPass getCoordinates() const noexcept;
+	Vector::ConstPass getVelocity() const noexcept;
+	Vector::ConstPass getAcceleration() const noexcept;
 												//doStepAlhorithm are methods to moving atom corresponding algorithm
 	void move(const double dt) noexcept;
 };

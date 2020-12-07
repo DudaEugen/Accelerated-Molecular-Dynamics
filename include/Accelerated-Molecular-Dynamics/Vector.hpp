@@ -2,7 +2,6 @@
 #ifndef TAHD_PROJECTION_TUPLE_H
 #define TAHD_PROJECTION_TUPLE_H
 
-#include <array>
 #include "constants.hpp"
 #include <initializer_list>
 
@@ -11,40 +10,38 @@ this class is also used to store the spatial sizes of objects of such classes as
 class Vector
 {
 private:
-	std::array<double, DIMENSIONAL_NUMBER> projections;
+	using element_t = double;
+
+	std::array<element_t, DIMENSIONAL_NUMBER> projections;
 public:
-	using projection_index = unsigned char;		//this is type of index for this->projections array
+	using projection_index = std::remove_const_t<decltype(DIMENSIONAL_NUMBER)>;		//this is type of index for this->projections array
 	using iterator = decltype(projections)::iterator;
 	using const_iterator = decltype(projections)::const_iterator;
-	/* VectorPass is type for pass to fonctions and return from functions by value or reference 
-	depending on the DIMENSIONAL_NUMBER and MAX_DIMENSIONAL_FOR_VALUE_PASSING */
-	#if DIMENSIONAL_NUMBER > MAX_DIMENSIONAL_FOR_VALUE_PASSING
-		using VectorPass = Vector&;
-		using ConstVectorPass = const Vector&;
-	#else
-		using VectorPass = Vector;
-		using ConstVectorPass = const Vector;
-	#endif
+	/* Pass and ConstPass is type for pass to fonctions and return from functions by value or reference 
+	   depending on the DIMENSIONAL_NUMBER and MAX_DIMENSIONAL_FOR_VALUE_PASSING.
+	   Don't use Pass for change Vector in function (pass Vector& or Vector* to function for this) */
+	using Pass = PassT<element_t, Vector>;
+	using ConstPass = PassT<element_t, const Vector>;
 
 	Vector() noexcept;
-	Vector(const std::array<double, DIMENSIONAL_NUMBER> projectionArray) noexcept;
+	Vector(ConstPassArrayT<double> projectionArray) noexcept;
 	Vector(const double projectionArray[DIMENSIONAL_NUMBER]) noexcept;
 	Vector(const std::initializer_list<double>& init_list);
 	Vector(const Vector& vector) noexcept;
 	projection_index size() const noexcept;
-	VectorPass operator = (ConstVectorPass other) noexcept;
+	Pass operator = (ConstPass other) noexcept;
 	Vector operator - () const noexcept;
-	Vector operator + (ConstVectorPass other) const noexcept;
-	Vector operator - (ConstVectorPass other) const noexcept;
-	VectorPass operator += (ConstVectorPass other) noexcept;
-	VectorPass operator -= (ConstVectorPass other) noexcept;
-	VectorPass operator *= (const double factor) noexcept;
-	VectorPass operator /= (const double divider);
+	Vector operator + (ConstPass other) const noexcept;
+	Vector operator - (ConstPass other) const noexcept;
+	Pass operator += (ConstPass other) noexcept;
+	Pass operator -= (ConstPass other) noexcept;
+	Pass operator *= (const double factor) noexcept;
+	Pass operator /= (const double divider);
 	double& operator [] (const projection_index index);
 	double operator [] (const projection_index index) const;
 	Vector operator / (const double divider) const;
-	friend const Vector operator * (ConstVectorPass vector, const double factor) noexcept;
-	friend const Vector operator * (const double factor, ConstVectorPass vector) noexcept;
+	friend const Vector operator * (ConstPass vector, const double factor) noexcept;
+	friend const Vector operator * (const double factor, ConstPass vector) noexcept;
 	double sumSquares() const noexcept;				//sum of squares of elements
 	double absoluteValue() const noexcept;			//square root of squares of elements sum
 

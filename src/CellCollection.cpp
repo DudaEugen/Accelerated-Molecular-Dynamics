@@ -28,7 +28,7 @@ std::array<std::size_t, DIMENSIONAL_NUMBER> CellCollection::getOffsetBySizeInDir
 }
 
 std::array<std::size_t, DIMENSIONAL_NUMBER> CellCollection::getOffsetBySizeInDirection(
-    const std::array<std::size_t, DIMENSIONAL_NUMBER>& offsetFactorInDirection) const noexcept
+    ConstPassArrayT<std::size_t> offsetFactorInDirection) const noexcept
 {
     std::array<std::size_t, DIMENSIONAL_NUMBER> offsetBySizeInDirection;    
     for (auto [offsetBySize, offsetFactor, cellNumber]: Zip(offsetBySizeInDirection, offsetFactorInDirection, cellNumberInDirection))
@@ -125,7 +125,7 @@ std::vector<Cell>& CellCollection::getCells() noexcept { return cells; }
 
 const std::vector<Cell>& CellCollection::getCells() const noexcept { return cells; }
 
-Cell& CellCollection::findCellContainingVector(Vector::ConstVectorPass vector)
+Cell& CellCollection::findCellContainingVector(Vector::ConstPass vector)
 {
     std::array<std::size_t, DIMENSIONAL_NUMBER> offsetFactorInDirection = getOffsetFactorInDirection();
 

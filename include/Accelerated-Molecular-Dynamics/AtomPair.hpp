@@ -28,7 +28,7 @@ public:
 	Atom& getFirst() const noexcept;
 	Atom& getSecond() const noexcept;
 	double getDistance() const noexcept;
-	Vector::ConstVectorPass getDistanceProjections() const noexcept;	/* position of the second atom relative to the first.
+	Vector::ConstPass getDistanceProjections() const noexcept;	/* position of the second atom relative to the first.
 			Get difference between coordinats of atoms: second - first, which was obtained during the 
 			last call to the computeDistance or constructor */ 
 	bool getIsAtomsFromSameStream() const noexcept;

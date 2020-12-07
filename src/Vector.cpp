@@ -5,7 +5,7 @@ Vector::Vector() noexcept: projections{}
 {
 }
 
-Vector::Vector(const std::array<double, DIMENSIONAL_NUMBER> projectionArray) noexcept
+Vector::Vector(ConstPassArrayT<double> projectionArray) noexcept
 	: projections{ projectionArray }
 {
 }
@@ -36,7 +36,7 @@ Vector::Vector(const Vector& Vector) noexcept
 
 Vector::projection_index Vector::size() const noexcept { return DIMENSIONAL_NUMBER; }
 
-Vector::VectorPass Vector::operator = (ConstVectorPass other) noexcept
+Vector::Pass Vector::operator = (ConstPass other) noexcept
 {
 	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
@@ -55,21 +55,21 @@ Vector Vector::operator - () const noexcept
 	return result;
 }
 
-Vector Vector::operator + (ConstVectorPass other) const noexcept
+Vector Vector::operator + (ConstPass other) const noexcept
 {
 	Vector result = *this;
 	result += other;
 	return result;
 }
 
-Vector Vector::operator - (ConstVectorPass other) const noexcept
+Vector Vector::operator - (ConstPass other) const noexcept
 {
 	Vector result = *this;
 	result -= other;
 	return result;
 }
 
-Vector::VectorPass Vector::operator += (ConstVectorPass other) noexcept
+Vector::Pass Vector::operator += (ConstPass other) noexcept
 {
 	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
@@ -78,7 +78,7 @@ Vector::VectorPass Vector::operator += (ConstVectorPass other) noexcept
 	return *this;
 }
 
-Vector::VectorPass Vector::operator -= (ConstVectorPass other) noexcept
+Vector::Pass Vector::operator -= (ConstPass other) noexcept
 {
 	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
 	{
@@ -87,7 +87,7 @@ Vector::VectorPass Vector::operator -= (ConstVectorPass other) noexcept
 	return *this;
 }
 
-Vector::VectorPass Vector::operator *= (const double factor) noexcept
+Vector::Pass Vector::operator *= (const double factor) noexcept
 {
 	for (double& projection: projections)
 	{
@@ -96,7 +96,7 @@ Vector::VectorPass Vector::operator *= (const double factor) noexcept
 	return *this;
 }
 
-Vector::VectorPass Vector::operator /= (const double divider)
+Vector::Pass Vector::operator /= (const double divider)
 {
 	for (double& projection: projections)
 	{
@@ -105,14 +105,14 @@ Vector::VectorPass Vector::operator /= (const double divider)
 	return *this;
 }
 
-const Vector operator * (Vector::ConstVectorPass vector, const double factor) noexcept
+const Vector operator * (Vector::ConstPass vector, const double factor) noexcept
 {
 	Vector result = vector;
 	result *= factor;
 	return result;
 }
 
-const Vector operator * (const double factor, Vector::ConstVectorPass vector) noexcept
+const Vector operator * (const double factor, Vector::ConstPass vector) noexcept
 {
 	Vector result = vector;
 	result *= factor;
