@@ -10,7 +10,7 @@ class Const
 public:
     Const(const double v) noexcept;
 
-    double get_value(const double x) const noexcept;
+    double compute_value(const double x) const noexcept;
     double compute_derivative(const double x) const noexcept;
 };
 
@@ -19,26 +19,57 @@ class Variable
 public:
     Variable() noexcept = default;
 
-    double get_value(const double x) const noexcept;
+    double compute_value(const double x) const noexcept;
     double compute_derivative(const double x) const noexcept;
 };
 
+template<class F, class S>
+class ABinaryFunction
+{
+protected:
+    const F inner_function_first;
+    const S inner_function_second;
+
+    ABinaryFunction(const F func1, const S func2) noexcept;
+public:
+    virtual double compute_value(const double x) const = 0;
+    virtual double compute_derivative(const double x) const = 0;
+};
+
+template<class F, class S>
+class Sum: public ABinaryFunction<F, S>
+{
+public:
+    Sum(const F first, const S second) noexcept;
+    double compute_value(const double x) const override;
+    double compute_derivative(const double x) const override;
+};
+
+template<class F, class S>
+class Product: public ABinaryFunction<F, S>
+{
+public:
+    Product(const F first, const S second) noexcept;
+    double compute_value(const double x) const override;
+    double compute_derivative(const double x) const override;
+};
+
 template<class T>
-class AFunction
+class AUnaryFunction
 {
 protected:
     const T inner_function;
 
-    AFunction(const T func) noexcept;
+    AUnaryFunction(const T func) noexcept;
     virtual double self_value(const double x) const = 0;
     virtual double self_derivative(const double x) const = 0;
 public:
-    double get_value(const double x) const;
+    double compute_value(const double x) const;
     double compute_derivative(const double x) const;
 };
 
 template<class T>
-class Exp: public AFunction<T>
+class Exp: public AUnaryFunction<T>
 {
 protected:
     double self_value(const double x) const override;
@@ -48,7 +79,7 @@ public:
 };
 
 template<class T>
-class Pow: public AFunction<T>
+class Pow: public AUnaryFunction<T>
 {
     const float p;
 protected:
@@ -57,6 +88,18 @@ protected:
 public:
     Pow(const T v, const float power) noexcept;
 };
+
+template<class F, class S>
+auto f_sum(const F first, const S second) noexcept 
+{ 
+    return Sum<decltype(first), decltype(second)>(first, second); 
+}
+
+template<class F, class S>
+auto f_product(const F first, const S second) noexcept 
+{ 
+    return Product<decltype(first), decltype(second)>(first, second); 
+}
 
 template<class T>
 auto f_exp(const T v) noexcept { return Exp<decltype(v)>(v); }
@@ -67,7 +110,7 @@ auto f_pow(const T v, const float p) noexcept { return Pow<decltype(v)>(v, p); }
 template<class T>
 double compute_value(const T function, const double argument)
 {
-    return function.get_value(argument);
+    return function.compute_value(argument);
 }
 
 template<class T>
@@ -76,27 +119,75 @@ double compute_derivative(const T function, const double argument)
     return function.compute_derivative(argument);
 }
 
+template<class F, class S>
+ABinaryFunction<F, S>::ABinaryFunction(const F func1, const S func2) noexcept
+    : inner_function_first{ func1 }, inner_function_second{ func2 }
+{
+}
+
+template<class F, class S>
+Sum<F, S>::Sum(const F first, const S second) noexcept
+    : ABinaryFunction<F, S>{ first, second }
+{
+}
+
+template<class F, class S>
+double Sum<F, S>::compute_value(const double x) const
+{ 
+    return ABinaryFunction<F, S>::inner_function_first.compute_value(x) + 
+           ABinaryFunction<F, S>::inner_function_second.compute_value(x); 
+}
+
+template<class F, class S>
+double Sum<F, S>::compute_derivative(const double x) const
+{ 
+    return ABinaryFunction<F, S>::inner_function_first.compute_derivative(x) + 
+           ABinaryFunction<F, S>::inner_function_second.compute_derivative(x); 
+}
+
+template<class F, class S>
+Product<F, S>::Product(const F first, const S second) noexcept
+    : ABinaryFunction<F, S>{ first, second }
+{
+}
+
+template<class F, class S>
+double Product<F, S>::compute_value(const double x) const
+{ 
+    return ABinaryFunction<F, S>::inner_function_first.compute_value(x) * 
+           ABinaryFunction<F, S>::inner_function_second.compute_value(x); 
+}
+
+template<class F, class S>
+double Product<F, S>::compute_derivative(const double x) const
+{ 
+    return ABinaryFunction<F, S>::inner_function_first.compute_derivative(x)*
+           ABinaryFunction<F, S>::inner_function_second.compute_value(x)  +
+           ABinaryFunction<F, S>::inner_function_first.compute_value(x)*
+           ABinaryFunction<F, S>::inner_function_second.compute_derivative(x); 
+}
+
 template<class T>
-AFunction<T>::AFunction(const T func) noexcept
+AUnaryFunction<T>::AUnaryFunction(const T func) noexcept
     : inner_function{ func }
 {
 }
 
 template<class T>
-double AFunction<T>::get_value(const double x) const
+double AUnaryFunction<T>::compute_value(const double x) const
 { 
-    return self_value(inner_function.get_value(x)); 
+    return self_value(inner_function.compute_value(x)); 
 }
 
 template<class T>
-double AFunction<T>::compute_derivative(const double x) const
+double AUnaryFunction<T>::compute_derivative(const double x) const
 {
-    return self_derivative(inner_function.get_value(x)) * inner_function.compute_derivative(x);
+    return self_derivative(inner_function.compute_value(x)) * inner_function.compute_derivative(x);
 }
 
 template<class T>
 Exp<T>::Exp(const T v) noexcept
-    : AFunction<T>{ v }
+    : AUnaryFunction<T>{ v }
 {
 }
 
@@ -114,7 +205,7 @@ double Exp<T>::self_derivative(const double x) const
 
 template<class T>
 Pow<T>::Pow(const T v, const float power) noexcept 
-    : AFunction<T>{ v }, p{ power }
+    : AUnaryFunction<T>{ v }, p{ power }
 {
 }
 

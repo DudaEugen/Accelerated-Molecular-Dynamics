@@ -506,14 +506,14 @@ void derivativeDebug()
 
 	auto e_c = Exp(c);
 	auto e_v = Exp(v);
-	assert(equal(compute_value(e_c, x), exp(c.get_value(x))));
+	assert(equal(compute_value(e_c, x), exp(c.compute_value(x))));
 	assert(equal(compute_derivative(e_c, x), 0));
-	assert(equal(compute_value(e_v, x), exp(v.get_value(x))));
-	assert(equal(compute_derivative(e_v, x), exp(v.get_value(x))));
+	assert(equal(compute_value(e_v, x), exp(v.compute_value(x))));
+	assert(equal(compute_derivative(e_v, x), exp(v.compute_value(x))));
 
 	auto ee = f_exp(e_v);
-	assert(equal(compute_value(ee, x), exp(exp(v.get_value(x)))));
-	assert(equal(compute_derivative(ee, x), exp(exp(v.get_value(x))) * exp(v.get_value(x))));
+	assert(equal(compute_value(ee, x), exp(exp(v.compute_value(x)))));
+	assert(equal(compute_derivative(ee, x), exp(exp(v.compute_value(x))) * exp(v.compute_value(x))));
 
 	auto p1 = Pow(v, 3);
 	auto p2 = f_exp(Pow(v, 0.5));
@@ -521,6 +521,10 @@ void derivativeDebug()
 	assert(equal(compute_value(p2, abs(x)), exp(pow(abs(x), 0.5))));
 	assert(equal(compute_derivative(p1, x), 3 * pow(x, 2)));
 	assert(equal(compute_derivative(p2, abs(x)), exp(pow(abs(x), 0.5)) * 0.5 * pow(abs(x), -0.5)));
+
+	auto func = f_sum(f_product(Variable(), f_exp(Variable())), f_product(Const(3), f_pow(Variable(), 5)));
+	assert(equal(compute_value(func, x), x*exp(x) + 3 * pow(x, 5)));
+	assert(equal(compute_derivative(func, x), x*exp(x) + exp(x) + 15 * pow(x, 4)));
 }
 
 void funcDebug(int ProcRank, int procNum)
