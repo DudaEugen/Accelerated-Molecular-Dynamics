@@ -504,8 +504,8 @@ void derivativeDebug()
 	assert(equal(compute_value(v, x), x));
 	assert(equal(compute_derivative(v, x), 1));
 
-	auto e_c = Exp(c);
-	auto e_v = Exp(v);
+	auto e_c = f_exp(c);
+	auto e_v = f_exp(v);
 	assert(equal(compute_value(e_c, x), exp(c.compute_value(x))));
 	assert(equal(compute_derivative(e_c, x), 0));
 	assert(equal(compute_value(e_v, x), exp(v.compute_value(x))));
@@ -515,8 +515,8 @@ void derivativeDebug()
 	assert(equal(compute_value(ee, x), exp(exp(v.compute_value(x)))));
 	assert(equal(compute_derivative(ee, x), exp(exp(v.compute_value(x))) * exp(v.compute_value(x))));
 
-	auto p1 = Pow(v, 3);
-	auto p2 = f_exp(Pow(v, 0.5));
+	auto p1 = f_pow(v, 3);
+	auto p2 = f_exp(f_pow(v, 0.5));
 	assert(equal(compute_value(p1, x), pow(x, 3)));
 	assert(equal(compute_value(p2, abs(x)), exp(pow(abs(x), 0.5))));
 	assert(equal(compute_derivative(p1, x), 3 * pow(x, 2)));
