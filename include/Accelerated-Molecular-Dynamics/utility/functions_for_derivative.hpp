@@ -3,6 +3,8 @@
 #define TAHD_FUNCTIONS_FOR_DERIVATIVE_H
 
 #include <cmath>
+#include <cstdint>
+#include <vector>
 
 class Const
 {
@@ -12,6 +14,7 @@ public:
 
     double compute_value(const double x) const noexcept;
     double compute_derivative(const double x) const noexcept;
+    Const set_parameters(const std::vector<double>& params) const;
 };
 
 class Variable
@@ -21,6 +24,18 @@ public:
 
     double compute_value(const double x) const noexcept;
     double compute_derivative(const double x) const noexcept;
+    Variable set_parameters(const std::vector<double>& params) const;
+};
+
+class Parameter
+{
+    const uint8_t index;
+public:
+    Parameter(const uint8_t index) noexcept;
+
+    double compute_value(const double x) const;
+    double compute_derivative(const double x) const noexcept;
+    Const set_parameters(const std::vector<double>& params) const;
 };
 
 namespace
@@ -35,6 +50,25 @@ namespace
     Const f_const(const Const c1, const Const c2) noexcept 
     { 
         return Const(F<Const, Const>(c1, c2).compute_value(0)); 
+    }
+
+    template<template <class> class Func, class T>
+    auto const_folding(const T argument)
+    {
+        if constexpr (std::is_same<T, Const>::value)
+            return f_const<Func>(argument);
+        else
+            return Func<T>(argument);
+    }
+
+    template<template <class, class> class Func, class First, class Second>
+    auto const_folding(const First first_f, const Second second_f)
+    {
+        if constexpr (std::is_same<First, Const>::value && 
+                      std::is_same<Second, Const>::value)
+            return f_const<Func>(first_f, second_f);
+        else
+            return Func<First, Second>(first_f, second_f);
     }
 
     template<class F, class S>
@@ -57,6 +91,13 @@ namespace
         Sum(const F first, const S second) noexcept;
         double compute_value(const double x) const override;
         double compute_derivative(const double x) const override;
+
+        auto set_parameters(const std::vector<double>& params) const
+        {
+            auto first_f = ABinaryFunction<F, S>::inner_function_first.set_parameters(params);                
+            auto second_f = ABinaryFunction<F, S>::inner_function_second.set_parameters(params);
+            return const_folding<Sum, decltype(first_f), decltype(second_f)>(first_f, second_f);            
+        }
     };
 
     template<class F, class S>
@@ -66,6 +107,13 @@ namespace
         Product(const F first, const S second) noexcept;
         double compute_value(const double x) const override;
         double compute_derivative(const double x) const override;
+
+        auto set_parameters(const std::vector<double>& params) const
+        {
+            auto first_f = ABinaryFunction<F, S>::inner_function_first.set_parameters(params);                
+            auto second_f = ABinaryFunction<F, S>::inner_function_second.set_parameters(params);
+            return const_folding<Product, decltype(first_f), decltype(second_f)>(first_f, second_f);            
+        }
     };
 
     template<class T>
@@ -90,6 +138,12 @@ namespace
         double self_derivative(const double x) const override;
     public:
         Exp(const T v) noexcept;
+
+        auto set_parameters(const std::vector<double>& params) const
+        {
+            auto func = AUnaryFunction<T>::inner_function.set_parameters(params);
+            return const_folding<Exp, decltype(func)>(func);            
+        }
     };
 
     template<class T>
@@ -101,6 +155,15 @@ namespace
         double self_derivative(const double x) const override;
     public:
         Pow(const T v, const float power) noexcept;
+
+        auto set_parameters(const std::vector<double>& params) const
+        {
+            auto func = AUnaryFunction<T>::inner_function.set_parameters(params);
+            if constexpr (std::is_same<decltype(func), Const>::value)
+                return Const(Pow<Const>(func, p).compute_value(0));
+            else
+                return Pow<decltype(func)>(func, p);            
+        }
     };
 
 }
@@ -108,28 +171,19 @@ namespace
 template<class F, class S>
 auto f_sum(const F first, const S second) noexcept 
 { 
-    if constexpr(std::is_same<F, Const>::value && std::is_same<S, Const>::value)
-        return f_const<Sum>(first, second);
-    else
-        return Sum<decltype(first), decltype(second)>(first, second); 
+    return const_folding<Sum, decltype(first), decltype(second)>(first, second);
 }
 
 template<class F, class S>
 auto f_product(const F first, const S second) noexcept 
 {
-    if constexpr(std::is_same<F, Const>::value && std::is_same<S, Const>::value)
-        return f_const<Product>(first, second);
-    else
-        return Product<decltype(first), decltype(second)>(first, second); 
+    return const_folding<Product, decltype(first), decltype(second)>(first, second);
 }
 
 template<class T>
 auto f_exp(const T v) noexcept 
 { 
-    if constexpr (std::is_same<T, Const>::value)
-        return f_const<Exp>(v);
-    else
-        return Exp<decltype(v)>(v); 
+    return const_folding<Exp, decltype(v)>(v);
 }
 
 template<class T>

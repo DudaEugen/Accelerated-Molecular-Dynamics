@@ -525,6 +525,14 @@ void derivativeDebug()
 	auto func = f_sum(f_product(Variable(), f_exp(Variable())), f_product(Const(3), f_pow(Variable(), 5)));
 	assert(equal(compute_value(func, x), x*exp(x) + 3 * pow(x, 5)));
 	assert(equal(compute_derivative(func, x), x*exp(x) + exp(x) + 15 * pow(x, 4)));
+
+	auto foo = f_sum(f_sum(f_product(Parameter(0), f_exp(Variable())), 
+					 	   f_product(f_pow(Parameter(1), 1.5), f_pow(Variable(), 3))),
+					 f_product(Parameter(0), f_pow(f_exp(Const(-1)), 2)));
+	std::vector<double> pars = {random<-5, 5>(), random<0, 5>()};
+	auto foo_args = foo.set_parameters(pars);
+	assert(equal(compute_value(foo_args, x), pars[0]*exp(x) + pow(pars[1], 1.5)*pow(x, 3) + pars[0]*pow(exp(-1), 2)));
+	assert(equal(compute_derivative(foo_args, x), pars[0]*exp(x) + 3*pow(pars[1], 1.5)*pow(x, 2)));
 }
 
 void funcDebug(int ProcRank, int procNum)
