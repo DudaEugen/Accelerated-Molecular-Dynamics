@@ -25,6 +25,18 @@ public:
 
 namespace
 {
+    template<template <class> class T>
+    Const f_const(const Const c) noexcept 
+    { 
+        return Const(T<Const>(c).compute_value(0)); 
+    }
+
+    template<template <class, class> class F>
+    Const f_const(const Const c1, const Const c2) noexcept 
+    { 
+        return Const(F<Const, Const>(c1, c2).compute_value(0)); 
+    }
+
     template<class F, class S>
     class ABinaryFunction
     {
@@ -90,25 +102,44 @@ namespace
     public:
         Pow(const T v, const float power) noexcept;
     };
+
 }
 
 template<class F, class S>
 auto f_sum(const F first, const S second) noexcept 
 { 
-    return Sum<decltype(first), decltype(second)>(first, second); 
+    if constexpr(std::is_same<F, Const>::value && std::is_same<S, Const>::value)
+        return f_const<Sum>(first, second);
+    else
+        return Sum<decltype(first), decltype(second)>(first, second); 
 }
 
 template<class F, class S>
 auto f_product(const F first, const S second) noexcept 
-{ 
-    return Product<decltype(first), decltype(second)>(first, second); 
+{
+    if constexpr(std::is_same<F, Const>::value && std::is_same<S, Const>::value)
+        return f_const<Product>(first, second);
+    else
+        return Product<decltype(first), decltype(second)>(first, second); 
 }
 
 template<class T>
-auto f_exp(const T v) noexcept { return Exp<decltype(v)>(v); }
+auto f_exp(const T v) noexcept 
+{ 
+    if constexpr (std::is_same<T, Const>::value)
+        return f_const<Exp>(v);
+    else
+        return Exp<decltype(v)>(v); 
+}
 
 template<class T>
-auto f_pow(const T v, const float p) noexcept { return Pow<decltype(v)>(v, p); }
+auto f_pow(const T v, const float p) noexcept 
+{
+    if constexpr (std::is_same<T, Const>::value)
+        return f_const<Pow>(v);
+    else
+        return Pow<decltype(v)>(v, p); 
+}
 
 template<class T>
 double compute_value(const T function, const double argument)
