@@ -497,42 +497,42 @@ void derivativeDebug()
 	double x = random<-3, 3>();
 
 	Const c{2};
-	assert(equal(compute_value(c, x), 2));
-	assert(equal(compute_derivative(c, x), 0));
+	assert(equal(c.compute_value(x), 2));
+	assert(equal(c.compute_derivative(x), 0));
 
-	Variable v;
-	assert(equal(compute_value(v, x), x));
-	assert(equal(compute_derivative(v, x), 1));
+	Variable<double> v;
+	assert(equal(v.compute_value(x), x));
+	assert(equal(v.compute_derivative(x), 1));
 
 	auto e_c = f_exp(c);
 	auto e_v = f_exp(v);
-	assert(equal(compute_value(e_c, x), exp(c.compute_value(x))));
-	assert(equal(compute_derivative(e_c, x), 0));
-	assert(equal(compute_value(e_v, x), exp(v.compute_value(x))));
-	assert(equal(compute_derivative(e_v, x), exp(v.compute_value(x))));
+	assert(equal(e_c.compute_value(x), exp(c.compute_value(x))));
+	assert(equal(e_c.compute_derivative(x), 0));
+	assert(equal(e_v.compute_value(x), exp(v.compute_value(x))));
+	assert(equal(e_v.compute_derivative(x), exp(v.compute_value(x))));
 
 	auto ee = f_sum(f_exp(e_v), f_exp(c));
-	assert(equal(compute_value(ee, x), exp(exp(x)) + exp(2)));
-	assert(equal(compute_derivative(ee, x), exp(exp(x)) * exp(x)));
+	assert(equal(ee.compute_value(x), exp(exp(x)) + exp(2)));
+	assert(equal(ee.compute_derivative(x), exp(exp(x)) * exp(x)));
 
 	auto p1 = f_sum(f_pow(v, 3), f_product(c, Const(3)));
 	auto p2 = f_exp(f_pow(v, 0.5));
-	assert(equal(compute_value(p1, x), pow(x, 3) + 6));
-	assert(equal(compute_value(p2, abs(x)), exp(pow(abs(x), 0.5))));
-	assert(equal(compute_derivative(p1, x), 3 * pow(x, 2)));
-	assert(equal(compute_derivative(p2, abs(x)), exp(pow(abs(x), 0.5)) * 0.5 * pow(abs(x), -0.5)));
+	assert(equal(p1.compute_value(x), pow(x, 3) + 6));
+	assert(equal(p2.compute_value(abs(x)), exp(pow(abs(x), 0.5))));
+	assert(equal(p1.compute_derivative(x), 3 * pow(x, 2)));
+	assert(equal(p2.compute_derivative(abs(x)), exp(pow(abs(x), 0.5)) * 0.5 * pow(abs(x), -0.5)));
 
-	auto func = f_sum(f_product(Variable(), f_exp(Variable())), f_product(Const(3), f_pow(Variable(), 5)));
-	assert(equal(compute_value(func, x), x*exp(x) + 3 * pow(x, 5)));
-	assert(equal(compute_derivative(func, x), x*exp(x) + exp(x) + 15 * pow(x, 4)));
+	auto func = f_sum(f_product(f_var(), f_exp(f_var())), f_product(Const(3), f_pow(f_var(), 5)));
+	assert(equal(func.compute_value(x), x*exp(x) + 3 * pow(x, 5)));
+	assert(equal(func.compute_derivative(x), x*exp(x) + exp(x) + 15 * pow(x, 4)));
 
-	auto foo = f_sum(f_sum(f_product(Parameter(0), f_exp(Variable())), 
-					 	   f_product(f_pow(Parameter(1), 1.5), f_pow(Variable(), 3))),
-					 f_product(Parameter(0), f_pow(f_exp(Const(-1)), 2)));
+	auto foo = f_sum(f_sum(f_product(f_param(0), f_exp(f_var())), 
+					 	   f_product(f_pow(f_param(1), 1.5), f_pow(f_var(), 3))),
+					 f_product(f_param(0), f_pow(f_exp(Const(-1)), 2)));
 	std::vector<double> pars = {random<-5, 5>(), random<0, 5>()};
 	auto foo_args = foo.set_parameters(pars);
-	assert(equal(compute_value(foo_args, x), pars[0]*exp(x) + pow(pars[1], 1.5)*pow(x, 3) + pars[0]*pow(exp(-1), 2)));
-	assert(equal(compute_derivative(foo_args, x), pars[0]*exp(x) + 3*pow(pars[1], 1.5)*pow(x, 2)));
+	assert(equal(foo_args.compute_value(x), pars[0]*exp(x) + pow(pars[1], 1.5)*pow(x, 3) + pars[0]*pow(exp(-1), 2)));
+	assert(equal(foo_args.compute_derivative(x), pars[0]*exp(x) + 3*pow(pars[1], 1.5)*pow(x, 2)));
 }
 
 void funcDebug(int ProcRank, int procNum)

@@ -5,67 +5,108 @@
 #include <cmath>
 #include <cstdint>
 #include <vector>
+#include <exception>
 
-class Const
+template<class T>
+class Const;
+
+Const(int) -> Const<double>;
+
+template<class T>
+class Variable;
+
+template<class T>
+class Parameter;
+
+template<>
+class Const<double>
 {
     const double value;
 public:
-    Const(const double v) noexcept;
+    Const(double v) noexcept
+        : value{ v }
+    {
+    }
 
-    double compute_value(const double x) const noexcept;
-    double compute_derivative(const double x) const noexcept;
-    Const set_parameters(const std::vector<double>& params) const;
+    static constexpr bool is_const = true;
+    
+    const double compute_value(double x) const noexcept { return value; }
+    const double compute_derivative(double x) const noexcept { return 0; }
+
+    template<class P>
+    const Const& set_parameters(const std::vector<P>& params) const { return *this; };
 };
 
-class Variable
+template<>
+class Variable<double>
 {
 public:
     Variable() noexcept = default;
 
-    double compute_value(const double x) const noexcept;
-    double compute_derivative(const double x) const noexcept;
-    Variable set_parameters(const std::vector<double>& params) const;
+    static constexpr bool is_const = false;
+
+    const double compute_value(const double x) const noexcept { return x; }
+    const double compute_derivative(const double x) const noexcept { return 1; }
+
+    template<class P>
+    const Variable& set_parameters(const std::vector<P>& params) const
+    {
+        return *this;
+    }
 };
 
-class Parameter
+template<>
+class Parameter<double>
 {
     const uint8_t index;
 public:
-    Parameter(const uint8_t index) noexcept;
+    Parameter(uint8_t i) noexcept
+        : index{ i }
+    {
+    }
 
-    double compute_value(const double x) const;
-    double compute_derivative(const double x) const noexcept;
-    Const set_parameters(const std::vector<double>& params) const;
+    static constexpr bool is_const = false;
+
+    const double compute_value(double x) const
+    {
+        throw std::runtime_error("class Parameter can't compute value");
+    }
+    const double compute_derivative(double x) const noexcept { return 0; }
+
+    template<class P>
+    Const<P> set_parameters(const std::vector<P>& params) const 
+    {
+        return Const(params[index]);
+    }
 };
 
 namespace
 {
-    template<template <class> class T>
-    Const f_const(const Const c) noexcept 
+    template<template <class> class T, class A>
+    auto f_const(const A& arg) noexcept 
     { 
-        return Const(T<Const>(c).compute_value(0)); 
+        return Const(T<A>(arg).compute_value(0)); 
     }
 
-    template<template <class, class> class F>
-    Const f_const(const Const c1, const Const c2) noexcept 
+    template<template <class, class> class F, class A>
+    auto f_const(const A& arg1, const A& arg2) noexcept 
     { 
-        return Const(F<Const, Const>(c1, c2).compute_value(0)); 
+        return Const(F<A, A>(arg1, arg2).compute_value(0)); 
     }
 
     template<template <class> class Func, class T>
-    auto const_folding(const T argument)
+    auto const_folding(const T& argument)
     {
-        if constexpr (std::is_same<T, Const>::value)
+        if constexpr (T::is_const)
             return f_const<Func>(argument);
         else
             return Func<T>(argument);
     }
 
     template<template <class, class> class Func, class First, class Second>
-    auto const_folding(const First first_f, const Second second_f)
+    auto const_folding(const First& first_f, const Second& second_f)
     {
-        if constexpr (std::is_same<First, Const>::value && 
-                      std::is_same<Second, Const>::value)
+        if constexpr (First::is_const && Second::is_const)
             return f_const<Func>(first_f, second_f);
         else
             return Func<First, Second>(first_f, second_f);
@@ -78,8 +119,10 @@ namespace
         const F inner_function_first;
         const S inner_function_second;
 
-        ABinaryFunction(const F func1, const S func2) noexcept;
+        ABinaryFunction(const F& func1, const S& func2) noexcept;
     public:
+        static constexpr bool is_const = false;
+
         virtual double compute_value(const double x) const = 0;
         virtual double compute_derivative(const double x) const = 0;
     };
@@ -88,11 +131,12 @@ namespace
     class Sum: public ABinaryFunction<F, S>
     {
     public:
-        Sum(const F first, const S second) noexcept;
-        double compute_value(const double x) const override;
-        double compute_derivative(const double x) const override;
+        Sum(const F& first, const S& second) noexcept;
+        double compute_value(double x) const override;
+        double compute_derivative(double x) const override;
 
-        auto set_parameters(const std::vector<double>& params) const
+        template<class P>
+        auto set_parameters(const std::vector<P>& params) const
         {
             auto first_f = ABinaryFunction<F, S>::inner_function_first.set_parameters(params);                
             auto second_f = ABinaryFunction<F, S>::inner_function_second.set_parameters(params);
@@ -104,11 +148,12 @@ namespace
     class Product: public ABinaryFunction<F, S>
     {
     public:
-        Product(const F first, const S second) noexcept;
-        double compute_value(const double x) const override;
-        double compute_derivative(const double x) const override;
+        Product(const F& first, const S& second) noexcept;
+        double compute_value(double x) const override;
+        double compute_derivative(double x) const override;
 
-        auto set_parameters(const std::vector<double>& params) const
+        template<class P>
+        auto set_parameters(const std::vector<P>& params) const
         {
             auto first_f = ABinaryFunction<F, S>::inner_function_first.set_parameters(params);                
             auto second_f = ABinaryFunction<F, S>::inner_function_second.set_parameters(params);
@@ -122,10 +167,12 @@ namespace
     protected:
         const T inner_function;
 
-        AUnaryFunction(const T func) noexcept;
-        virtual double self_value(const double x) const = 0;
-        virtual double self_derivative(const double x) const = 0;
+        AUnaryFunction(const T& func) noexcept;
+        virtual double self_value(double x) const = 0;
+        virtual double self_derivative(double x) const = 0;
     public:
+        static constexpr bool is_const = false;
+
         double compute_value(const double x) const;
         double compute_derivative(const double x) const;
     };
@@ -134,12 +181,13 @@ namespace
     class Exp: public AUnaryFunction<T>
     {
     protected:
-        double self_value(const double x) const override;
-        double self_derivative(const double x) const override;
+        double self_value(double x) const override;
+        double self_derivative(double x) const override;
     public:
-        Exp(const T v) noexcept;
+        Exp(const T& v) noexcept;
 
-        auto set_parameters(const std::vector<double>& params) const
+        template<class P>
+        auto set_parameters(const std::vector<P>& params) const
         {
             auto func = AUnaryFunction<T>::inner_function.set_parameters(params);
             return const_folding<Exp, decltype(func)>(func);            
@@ -151,16 +199,17 @@ namespace
     {
         const float p;
     protected:
-        double self_value(const double x) const override;
-        double self_derivative(const double x) const override;
+        double self_value(double x) const override;
+        double self_derivative(double x) const override;
     public:
-        Pow(const T v, const float power) noexcept;
+        Pow(const T& v, float power) noexcept;
 
-        auto set_parameters(const std::vector<double>& params) const
+        template<class P>
+        auto set_parameters(const std::vector<P>& params) const
         {
             auto func = AUnaryFunction<T>::inner_function.set_parameters(params);
-            if constexpr (std::is_same<decltype(func), Const>::value)
-                return Const(Pow<Const>(func, p).compute_value(0));
+            if constexpr (decltype(func)::is_const)
+                return Const(Pow<decltype(func)>(func, p).compute_value(0));
             else
                 return Pow<decltype(func)>(func, p);            
         }
@@ -168,86 +217,83 @@ namespace
 
 }
 
+auto f_var()
+{
+    return Variable<double>();
+}
+
+auto f_param(const uint8_t index) { return Parameter<double>(index); }
+
 template<class F, class S>
-auto f_sum(const F first, const S second) noexcept 
+auto f_sum(const F& first, const S& second) noexcept 
 { 
-    return const_folding<Sum, decltype(first), decltype(second)>(first, second);
+    return const_folding<Sum, F, S>(first, second);
 }
 
 template<class F, class S>
-auto f_product(const F first, const S second) noexcept 
+auto f_product(const F& first, const S& second) noexcept 
 {
-    return const_folding<Product, decltype(first), decltype(second)>(first, second);
+    return const_folding<Product, F, S>(first, second);
 }
 
 template<class T>
-auto f_exp(const T v) noexcept 
+auto f_exp(const T& v) noexcept 
 { 
-    return const_folding<Exp, decltype(v)>(v);
+    return const_folding<Exp, T>(v);
 }
 
 template<class T>
-auto f_pow(const T v, const float p) noexcept 
+auto f_pow(const T& v, const float p) noexcept 
 {
-    if constexpr (std::is_same<T, Const>::value)
-        return f_const<Pow>(v);
+    if constexpr (T::is_const)
+        return Const(Pow<T>(v, p).compute_value(0));
     else
-        return Pow<decltype(v)>(v, p); 
+        return Pow<T>(v, p); 
 }
 
-template<class T>
-double compute_value(const T function, const double argument)
-{
-    return function.compute_value(argument);
-}
-
-template<class T>
-double compute_derivative(const T function, const double argument)
-{
-    return function.compute_derivative(argument);
-}
+// definitions of methods
 
 template<class F, class S>
-ABinaryFunction<F, S>::ABinaryFunction(const F func1, const S func2) noexcept
+ABinaryFunction<F, S>::ABinaryFunction(const F& func1, const S& func2) noexcept
     : inner_function_first{ func1 }, inner_function_second{ func2 }
 {
 }
 
 template<class F, class S>
-Sum<F, S>::Sum(const F first, const S second) noexcept
+Sum<F, S>::Sum(const F& first, const S& second) noexcept
     : ABinaryFunction<F, S>{ first, second }
 {
 }
 
 template<class F, class S>
-double Sum<F, S>::compute_value(const double x) const
+double Sum<F, S>::compute_value(double x) const
 { 
     return ABinaryFunction<F, S>::inner_function_first.compute_value(x) + 
            ABinaryFunction<F, S>::inner_function_second.compute_value(x); 
 }
 
 template<class F, class S>
-double Sum<F, S>::compute_derivative(const double x) const
+double Sum<F, S>::compute_derivative(double x) const
 { 
     return ABinaryFunction<F, S>::inner_function_first.compute_derivative(x) + 
            ABinaryFunction<F, S>::inner_function_second.compute_derivative(x); 
 }
 
 template<class F, class S>
-Product<F, S>::Product(const F first, const S second) noexcept
+Product<F, S>::Product(const F& first, const S& second) noexcept
     : ABinaryFunction<F, S>{ first, second }
 {
 }
 
 template<class F, class S>
-double Product<F, S>::compute_value(const double x) const
+double Product<F, S>::compute_value(double x) const
 { 
     return ABinaryFunction<F, S>::inner_function_first.compute_value(x) * 
            ABinaryFunction<F, S>::inner_function_second.compute_value(x); 
 }
 
 template<class F, class S>
-double Product<F, S>::compute_derivative(const double x) const
+double Product<F, S>::compute_derivative(double x) const
 { 
     return ABinaryFunction<F, S>::inner_function_first.compute_derivative(x)*
            ABinaryFunction<F, S>::inner_function_second.compute_value(x)  +
@@ -256,55 +302,55 @@ double Product<F, S>::compute_derivative(const double x) const
 }
 
 template<class T>
-AUnaryFunction<T>::AUnaryFunction(const T func) noexcept
+AUnaryFunction<T>::AUnaryFunction(const T& func) noexcept
     : inner_function{ func }
 {
 }
 
 template<class T>
-double AUnaryFunction<T>::compute_value(const double x) const
+double AUnaryFunction<T>::compute_value(double x) const
 { 
     return self_value(inner_function.compute_value(x)); 
 }
 
 template<class T>
-double AUnaryFunction<T>::compute_derivative(const double x) const
+double AUnaryFunction<T>::compute_derivative(double x) const
 {
     return self_derivative(inner_function.compute_value(x)) * inner_function.compute_derivative(x);
 }
 
 template<class T>
-Exp<T>::Exp(const T v) noexcept
+Exp<T>::Exp(const T& v) noexcept
     : AUnaryFunction<T>{ v }
 {
 }
 
 template<class T>
-double Exp<T>::self_value(const double x) const 
+double Exp<T>::self_value(double x) const 
 { 
     return exp(x); 
 }
 
 template<class T>
-double Exp<T>::self_derivative(const double x) const 
+double Exp<T>::self_derivative(double x) const 
 { 
     return exp(x); 
 }
 
 template<class T>
-Pow<T>::Pow(const T v, const float power) noexcept 
+Pow<T>::Pow(const T& v, float power) noexcept 
     : AUnaryFunction<T>{ v }, p{ power }
 {
 }
 
 template<class T>
-double Pow<T>::self_value(const double x) const 
+double Pow<T>::self_value(double x) const 
 { 
     return pow(x, p); 
 }
 
 template<class T>
-double Pow<T>::self_derivative(const double x) const 
+double Pow<T>::self_derivative(double x) const 
 { 
     return p * pow(x, p-1); 
 }
