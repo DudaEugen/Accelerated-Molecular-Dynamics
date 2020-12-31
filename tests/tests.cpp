@@ -14,7 +14,7 @@
 #include "constants.hpp"
 #include "Atom.hpp"
 #include "Substances.hpp"
-#include "Matrix/SquareMatrix.hpp"
+#include "utility/Matrix/SquareMatrix.hpp"
 #include "NeighboursList.hpp"
 #include "ProcessesSet.hpp"
 #include "Potential/MockPotential.hpp"
