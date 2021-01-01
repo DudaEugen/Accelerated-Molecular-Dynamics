@@ -20,7 +20,7 @@
 #include "Potential/MockPotential.hpp"
 #include "utility/Zip.hpp"
 #include "utility/IndexedZip.hpp"
-#include "utility/functions_for_derivative.hpp"
+#include "utility/functions for derivative/functions.hpp"
 
 using namespace std;
 
