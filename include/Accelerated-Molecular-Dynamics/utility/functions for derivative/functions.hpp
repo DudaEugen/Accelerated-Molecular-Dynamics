@@ -34,22 +34,32 @@ auto f_exp(const T& v) noexcept
     return const_folding<Exp, T>(v);
 }
 
-template<class T>
-auto f_pow(const T& v, const float p) noexcept 
-{
-    if constexpr (T::is_const)
-        return Const(Pow<T>(v, p).compute_value(0));
-    else
-        return Pow<T>(v, p); 
-}
-
-template<unsigned int I, class T>
+template<int I, class T>
 auto f_pow(const T& v) noexcept
 {
-    if constexpr(T::is_const)
-        return Const(IntegralPow<T, I>(v).compute_value(0));
+    static_assert(I != 0, "power of f_pow can't be equal 0");
+
+    if constexpr (I == 1)
+        return v;
+    else if constexpr (I == -1)
+        if constexpr(T::is_const)
+            return Const<typename T::value_type>(v.compute_value(typename T::value_type{}));
+        else
+            return MinusFirstDegree<T>(v);
+    else if constexpr (I > 1)
+        if constexpr(T::is_const)
+            return Const<typename T::value_type>(
+                        UnsignedIntegralPow<T, I>(v).compute_value(typename T::value_type{})
+                );
+        else
+            return UnsignedIntegralPow<T, I>(v);
     else
-        return IntegralPow<T, I>(v);
+        if constexpr(T::is_const)
+            return Const<typename T::value_type>(MinusFirstDegree<UnsignedIntegralPow<T, -I>>(
+                    UnsignedIntegralPow<T, -I>(v)
+                ).compute_value(typename T::value_type{}));
+        else
+            return MinusFirstDegree<UnsignedIntegralPow<T, -I>>(UnsignedIntegralPow<T, -I>(v));
 }
 
 #endif  // TAHD_FUNCTIONS_FOR_DERIVATIVE_H

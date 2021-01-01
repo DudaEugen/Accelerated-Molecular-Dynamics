@@ -515,31 +515,13 @@ void derivativeDebug()
 	assert(equal(ee.compute_value(x), exp(exp(x)) + exp(2)));
 	assert(equal(ee.compute_derivative(x), exp(exp(x)) * exp(x)));
 
-	auto p1 = f_sum(f_pow(v, 3), f_product(c, Const(3)));
-	auto p2 = f_exp(f_pow(v, 0.5));
-	assert(equal(p1.compute_value(x), pow(x, 3) + 6));
-	assert(equal(p2.compute_value(abs(x)), exp(pow(abs(x), 0.5))));
-	assert(equal(p1.compute_derivative(x), 3 * pow(x, 2)));
-	assert(equal(p2.compute_derivative(abs(x)), exp(pow(abs(x), 0.5)) * 0.5 * pow(abs(x), -0.5)));
-
-	auto func = f_sum(f_product(f_var(), f_exp(f_var())), f_product(Const(3), f_pow(f_var(), 5)));
-	assert(equal(func.compute_value(x), x*exp(x) + 3 * pow(x, 5)));
-	assert(equal(func.compute_derivative(x), x*exp(x) + exp(x) + 15 * pow(x, 4)));
-
-	auto foo = f_sum(f_sum(f_product(f_param(0), f_exp(f_var())), 
-					 	   f_product(f_pow(f_param(1), 1.5), f_pow(f_var(), 3))),
-					 f_product(f_param(0), f_pow(f_exp(Const(-1)), 2)));
-	std::vector<double> pars = {random<-5, 5>(), random<0, 5>()};
-	auto foo_args = foo.set_parameters(pars);
-	assert(equal(foo_args.compute_value(x), pars[0]*exp(x) + pow(pars[1], 1.5)*pow(x, 3) + pars[0]*pow(exp(-1), 2)));
-	assert(equal(foo_args.compute_derivative(x), pars[0]*exp(x) + 3*pow(pars[1], 1.5)*pow(x, 2)));
-
-	auto f = f_sum(f_sum(f_product(f_pow<2>(f_param(0)), f_pow<0>(f_var())), 
-				   		 f_product(f_pow<0>(f_param(1)), f_pow<2>(f_var()))),
+	auto f = f_sum(f_sum(f_product(f_pow<2>(f_param(0)), f_pow<-2>(f_var())), 
+				   		 f_product(f_pow<-1>(f_param(1)), f_pow<2>(f_var()))),
 				   f_product(f_pow<3>(Const(4)),f_pow<1>(f_var())));
+	std::vector<double> pars = {random<-5, 5>(), random<0, 5>()};
 	auto f_args = f.set_parameters(pars);
-	assert(equal(f_args.compute_value(x), pars[0]*pars[0] + x * x + 64 * x));
-	assert(equal(f_args.compute_derivative(x), 2 * x + 64));
+	assert(equal(f_args.compute_value(x), pars[0]*pars[0] / (x*x) + x*x/pars[1] + 64 * x));
+	assert(equal(f_args.compute_derivative(x), -2*pars[0]*pars[0]/(pow(x, 3)) + 2*x/pars[1] + 64));
 	
 }
 

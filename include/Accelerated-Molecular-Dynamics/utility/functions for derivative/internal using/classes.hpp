@@ -87,43 +87,40 @@ public:
     }
 };
 
-template<class T>
-class Pow: public AUnaryFunction<T>
+template<class T, unsigned int I>
+class UnsignedIntegralPow: public AUnaryFunction<T>
 {
-    const float p;
 protected:
     double self_value(double x) const override;
     double self_derivative(double x) const override;
 public:
-    Pow(const T& v, float power) noexcept;
+    UnsignedIntegralPow(const T& v) noexcept;
+
     template<class P>
     auto set_parameters(const std::vector<P>& params) const
     {
         auto func = AUnaryFunction<T>::inner_function.set_parameters(params);
         if constexpr (decltype(func)::is_const)
-            return Const(Pow<decltype(func)>(func, p).compute_value(0));
+            return Const(UnsignedIntegralPow<decltype(func), I>(func).compute_value(0));
         else
-            return Pow<decltype(func)>(func, p);            
+            return UnsignedIntegralPow<decltype(func), I>(func);            
     }
 };
 
-template<class T, unsigned int I>
-class IntegralPow: public AUnaryFunction<T>
+template<class T>
+class MinusFirstDegree: public AUnaryFunction<T>
 {
 protected:
     double self_value(double x) const override;
     double self_derivative(double x) const override;
 public:
-    IntegralPow(const T& v) noexcept;
+    MinusFirstDegree(const T& v) noexcept;
 
     template<class P>
     auto set_parameters(const std::vector<P>& params) const
     {
         auto func = AUnaryFunction<T>::inner_function.set_parameters(params);
-        if constexpr (decltype(func)::is_const)
-            return Const(IntegralPow<decltype(func), I>(func).compute_value(0));
-        else
-            return IntegralPow<decltype(func), I>(func);            
+        return const_folding<MinusFirstDegree, decltype(func)>(func);          
     }
 };
 
@@ -213,40 +210,41 @@ double Exp<T>::self_derivative(double x) const
     return exp(x); 
 }
 
-template<class T>
-Pow<T>::Pow(const T& v, float power) noexcept 
-    : AUnaryFunction<T>{ v }, p{ power }
-{
-}
-
-template<class T>
-double Pow<T>::self_value(double x) const 
-{ 
-    return pow(x, p); 
-}
-
-template<class T>
-double Pow<T>::self_derivative(double x) const 
-{ 
-    return p * pow(x, p-1); 
-}
-
 template<class T, unsigned int I>
-IntegralPow<T, I>::IntegralPow(const T& v) noexcept
+UnsignedIntegralPow<T, I>::UnsignedIntegralPow(const T& v) noexcept
     : AUnaryFunction<T>{ v }
 {
+    static_assert(I > 1, "exponent for UnsignedIntegralPow must be greater than 1");
 }
 
 template<class T, unsigned int I>
-double IntegralPow<T, I>::self_value(double x) const 
+double UnsignedIntegralPow<T, I>::self_value(double x) const 
 { 
     return pow(x, I); 
 }
 
 template<class T, unsigned int I>
-double IntegralPow<T, I>::self_derivative(double x) const 
+double UnsignedIntegralPow<T, I>::self_derivative(double x) const 
 { 
     return I * pow(x, I-1); 
+}
+
+template<class T>
+MinusFirstDegree<T>::MinusFirstDegree(const T& v) noexcept
+    : AUnaryFunction<T>{ v }
+{
+}
+
+template<class T>
+double MinusFirstDegree<T>::self_value(double x) const 
+{ 
+    return 1/x; 
+}
+
+template<class T>
+double MinusFirstDegree<T>::self_derivative(double x) const 
+{ 
+    return -1/(x*x); 
 }
 
 

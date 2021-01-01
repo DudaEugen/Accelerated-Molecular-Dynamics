@@ -29,6 +29,7 @@ public:
     {
     }
 
+    using value_type = double;
     static constexpr bool is_const = true;
     
     const double compute_value(double x) const noexcept { return value; }
