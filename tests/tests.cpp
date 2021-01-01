@@ -533,6 +533,14 @@ void derivativeDebug()
 	auto foo_args = foo.set_parameters(pars);
 	assert(equal(foo_args.compute_value(x), pars[0]*exp(x) + pow(pars[1], 1.5)*pow(x, 3) + pars[0]*pow(exp(-1), 2)));
 	assert(equal(foo_args.compute_derivative(x), pars[0]*exp(x) + 3*pow(pars[1], 1.5)*pow(x, 2)));
+
+	auto f = f_sum(f_sum(f_product(f_pow<2>(f_param(0)), f_pow<0>(f_var())), 
+				   		 f_product(f_pow<0>(f_param(1)), f_pow<2>(f_var()))),
+				   f_product(f_pow<3>(Const(4)),f_pow<1>(f_var())));
+	auto f_args = f.set_parameters(pars);
+	assert(equal(f_args.compute_value(x), pars[0]*pars[0] + x * x + 64 * x));
+	assert(equal(f_args.compute_derivative(x), 2 * x + 64));
+	
 }
 
 void funcDebug(int ProcRank, int procNum)

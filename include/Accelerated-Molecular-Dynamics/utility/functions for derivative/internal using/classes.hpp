@@ -107,6 +107,26 @@ public:
     }
 };
 
+template<class T, unsigned int I>
+class IntegralPow: public AUnaryFunction<T>
+{
+protected:
+    double self_value(double x) const override;
+    double self_derivative(double x) const override;
+public:
+    IntegralPow(const T& v) noexcept;
+
+    template<class P>
+    auto set_parameters(const std::vector<P>& params) const
+    {
+        auto func = AUnaryFunction<T>::inner_function.set_parameters(params);
+        if constexpr (decltype(func)::is_const)
+            return Const(IntegralPow<decltype(func), I>(func).compute_value(0));
+        else
+            return IntegralPow<decltype(func), I>(func);            
+    }
+};
+
 // definitions of methods
 
 template<class F, class S>
@@ -210,5 +230,24 @@ double Pow<T>::self_derivative(double x) const
 { 
     return p * pow(x, p-1); 
 }
+
+template<class T, unsigned int I>
+IntegralPow<T, I>::IntegralPow(const T& v) noexcept
+    : AUnaryFunction<T>{ v }
+{
+}
+
+template<class T, unsigned int I>
+double IntegralPow<T, I>::self_value(double x) const 
+{ 
+    return pow(x, I); 
+}
+
+template<class T, unsigned int I>
+double IntegralPow<T, I>::self_derivative(double x) const 
+{ 
+    return I * pow(x, I-1); 
+}
+
 
 #endif  // TAHD_FUNCTIONS_FOR_DERIVATIVE_CLASSES_H

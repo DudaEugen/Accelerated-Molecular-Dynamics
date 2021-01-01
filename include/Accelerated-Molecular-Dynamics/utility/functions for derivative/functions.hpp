@@ -43,4 +43,13 @@ auto f_pow(const T& v, const float p) noexcept
         return Pow<T>(v, p); 
 }
 
+template<unsigned int I, class T>
+auto f_pow(const T& v) noexcept
+{
+    if constexpr(T::is_const)
+        return Const(IntegralPow<T, I>(v).compute_value(0));
+    else
+        return IntegralPow<T, I>(v);
+}
+
 #endif  // TAHD_FUNCTIONS_FOR_DERIVATIVE_H
