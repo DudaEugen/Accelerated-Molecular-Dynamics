@@ -522,6 +522,7 @@ void derivativeDebug()
 	assert(equal(derivative(f5)(abs(x)), 1/(2*sqrt(abs(x))) + 0.4*pow(abs(x), -0.6), 10));
 
 	assert(equal(derivative(f_sum(Parameter(0), Parameter(1)))(x), 0, 10));
+	assert(equal(derivative(f_prod(Parameter(0), Parameter(1)))(x), 0, 10));
 }
 
 void funcDebug(int ProcRank, int procNum)

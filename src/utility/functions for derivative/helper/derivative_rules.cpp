@@ -1,16 +1,21 @@
 #include "utility/functions for derivative/helper/derivative_rules.hpp"
 
-Constanta derivative_const(Constanta constanta) noexcept
+ZeroConstanta derivative_arg(ZeroConstanta constanta) noexcept
 {
-    return Constanta(0);
+    return ZeroConstanta();
 }
 
-Constanta derivative_param(Parameter parameter) noexcept
+ZeroConstanta derivative_arg(Constanta constanta) noexcept
 {
-    return Constanta(0);
+    return ZeroConstanta();
 }
 
-Constanta derivative_var(Variable variable) noexcept
+ZeroConstanta derivative_arg(Parameter parameter) noexcept
+{
+    return ZeroConstanta();
+}
+
+Constanta derivative_arg(Variable variable) noexcept
 {
     return Constanta(1);
 }
