@@ -20,7 +20,7 @@
 #include "Potential/MockPotential.hpp"
 #include "utility/Zip.hpp"
 #include "utility/IndexedZip.hpp"
-#include "utility/functions for derivative/functions.hpp"
+#include "utility/functions for derivative/function.hpp"
 
 using namespace std;
 
@@ -496,33 +496,32 @@ void derivativeDebug()
 {
 	double x = random<-3, 3>();
 
-	Const c{2};
-	assert(equal(c.compute_value(x), 2));
-	assert(equal(c.compute_derivative(x), 0));
+	auto f = f_exp(Variable());
+	assert(equal(f(x), exp(x)));
+	assert(equal(derivative(f)(x), exp(x)));
+	assert(equal(derivative(derivative(f))(x), exp(x)));
 
-	Variable<double> v;
-	assert(equal(v.compute_value(x), x));
-	assert(equal(v.compute_derivative(x), 1));
+	auto f2 = f_sum(f_prod(Constanta(5), f_pow<2>(Variable())), Variable());
+	assert(equal(f2(x), 5*x*x + x));
+	assert(equal(derivative(f2)(x), 10*x + 1));
+	assert(equal(derivative(derivative(f2))(x), 10));
+	assert(equal(derivative(derivative(derivative(f2)))(x), 0));
 
-	auto e_c = f_exp(c);
-	auto e_v = f_exp(v);
-	assert(equal(e_c.compute_value(x), exp(c.compute_value(x))));
-	assert(equal(e_c.compute_derivative(x), 0));
-	assert(equal(e_v.compute_value(x), exp(v.compute_value(x))));
-	assert(equal(e_v.compute_derivative(x), exp(v.compute_value(x))));
+	std::vector<double> params = {1, -2};
+	auto f3_uncomplete = f_sum(f_prod(f_pow<3>(Variable()), f_exp(Variable())),
+						 f_prod(f_exp(Parameter(0)), Parameter(1)));
+	auto f3 = f3_uncomplete.set_parameters(params);
+	assert(equal(f3(x), x*x*x*exp(x) + params[1] * exp(params[0]), 10));
+	assert(equal(derivative(f3)(x), 3*x*x*exp(x) + x*x*x*exp(x), 10));
+	assert(equal(derivative(derivative(f3))(x), derivative(f3)(x) + 6*x*exp(x) + 3*x*x*exp(x), 10));
 
-	auto ee = f_sum(f_exp(e_v), f_exp(c));
-	assert(equal(ee.compute_value(x), exp(exp(x)) + exp(2)));
-	assert(equal(ee.compute_derivative(x), exp(exp(x)) * exp(x)));
+	auto f4 = f_prod(Constanta(-0.5), f_pow<-2>(Variable()));
+	assert(equal(derivative(derivative(f4))(x), -3/(pow(x,4)), 10));
 
-	auto f = f_sum(f_sum(f_product(f_pow<2>(f_param(0)), f_pow<-2>(f_var())), 
-				   		 f_product(f_pow<-1>(f_param(1)), f_pow<2>(f_var()))),
-				   f_product(f_pow<3>(Const(4)),f_pow<1>(f_var())));
-	std::vector<double> pars = {random<-5, 5>(), random<0, 5>()};
-	auto f_args = f.set_parameters(pars);
-	assert(equal(f_args.compute_value(x), pars[0]*pars[0] / (x*x) + x*x/pars[1] + 64 * x));
-	assert(equal(f_args.compute_derivative(x), -2*pars[0]*pars[0]/(pow(x, 3)) + 2*x/pars[1] + 64));
-	
+	auto f5 = f_sum(f_sqrt(Variable()), f_pow<2>(f_root<5>(Variable())));
+	assert(equal(derivative(f5)(abs(x)), 1/(2*sqrt(abs(x))) + 0.4*pow(abs(x), -0.6), 10));
+
+	assert(equal(derivative(f_sum(Parameter(0), Parameter(1)))(x), 0, 10));
 }
 
 void funcDebug(int ProcRank, int procNum)
