@@ -196,7 +196,8 @@ void substanceDebug()
 
 void matrixDebug()
 {
-	
+	using namespace utils::matrix;
+
 	SquareMatrix<2> m1 = { {0, 1}, 
 	                       {2, 3} };
 	SquareMatrix<2> m2 = { {3, -4}, 
@@ -447,6 +448,8 @@ void cellCollectionDebug()
 
 void zipDebug()
 {
+	using namespace utils::zip;
+
 	Vector v1 = randomVector();
 	Vector v2 = randomVector();
 	std::array<int, DIMENSIONAL_NUMBER> arr;

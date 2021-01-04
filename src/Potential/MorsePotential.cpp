@@ -24,7 +24,8 @@ void MorsePotential::computeAndSetAccelerations()
 {
 	Vector force;
 	const std::vector<AtomPair>& atomPairs = *pairs;
-	for (auto [atomPair, cutRadius, D_e, alpha]: Zip(atomPairs, std::as_const(rc), std::as_const(De), std::as_const(a)))
+	for (auto [atomPair, cutRadius, D_e, alpha]: 
+		 utils::zip::Zip(atomPairs, std::as_const(rc), std::as_const(De), std::as_const(a)))
 	{
 		double distance = atomPair.getDistance();
 		if (distance < cutRadius)

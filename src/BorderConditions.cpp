@@ -6,7 +6,7 @@
 BorderConditions::BorderConditions(Vector::ConstPass size, ConstPassArrayT<borderType> borders) noexcept
 	: dimensions{ size }
 {
-	for (auto [type, border]: Zip(borderTypes, borders))
+	for (auto [type, border]: utils::zip::Zip(borderTypes, borders))
 		type = border;
 }
 
@@ -26,7 +26,8 @@ Vector::ConstPass BorderConditions::getZeroPoint() const noexcept { return zeroP
 Vector BorderConditions::computePosition(Vector::ConstPass coordinates) const
 {
 	Vector result;
-	for (auto [res, coordinate, type, size, zPoint]: Zip(result, coordinates, borderTypes, dimensions, zeroPoint))
+	for (auto [res, coordinate, type, size, zPoint]: 
+		 utils::zip::Zip(result, coordinates, borderTypes, dimensions, zeroPoint))
 	{
 		res = coordinate;
 		if (type == borderType::periodic)
@@ -39,7 +40,7 @@ double BorderConditions::operator() (Vector& projectionsDifference) const
 {
 	double squaredDistance = 0;
 	double ratioProjToSize;
-	for (auto [type, projectionDifference, size]: Zip(borderTypes, projectionsDifference, dimensions))
+	for (auto [type, projectionDifference, size]: utils::zip::Zip(borderTypes, projectionsDifference, dimensions))
 	{
 		if (type == borderType::periodic)
 		{

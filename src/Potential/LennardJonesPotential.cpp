@@ -23,7 +23,8 @@ void LennardJonesPotential::computeAndSetAccelerations()
 {
 	Vector force;
 	const std::vector<AtomPair>& atomPairs = *pairs;
-	for (auto [atomPair, cutRadius, e, r_m]: Zip(atomPairs, std::as_const(rc), std::as_const(eps), std::as_const(rm)))
+	for (auto [atomPair, cutRadius, e, r_m]: 
+		 utils::zip::Zip(atomPairs, std::as_const(rc), std::as_const(eps), std::as_const(rm)))
 	{
 		double distance = atomPair.getDistance();
 		if (distance < cutRadius)

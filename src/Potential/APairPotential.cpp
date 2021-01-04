@@ -31,7 +31,7 @@ void APairPotential::refreshAtomPairs()
 	{
 		bool notFound = true;
 
-		for (auto [index, pairType]: IndexedZip(std::as_const(pairTypes)))
+		for (auto [index, pairType]: utils::zip::IndexedZip(std::as_const(pairTypes)))
 		{
 			if (pairType.first == atomPair.getFirst().chemElement && pairType.second == atomPair.getSecond().chemElement ||
 				pairType.first == atomPair.getSecond().chemElement && pairType.second == atomPair.getFirst().chemElement)

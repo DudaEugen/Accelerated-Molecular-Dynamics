@@ -31,8 +31,11 @@ std::array<std::size_t, DIMENSIONAL_NUMBER> CellCollection::getOffsetBySizeInDir
     ConstPassArrayT<std::size_t> offsetFactorInDirection) const noexcept
 {
     std::array<std::size_t, DIMENSIONAL_NUMBER> offsetBySizeInDirection;    
-    for (auto [offsetBySize, offsetFactor, cellNumber]: Zip(offsetBySizeInDirection, offsetFactorInDirection, cellNumberInDirection))
+    for (auto [offsetBySize, offsetFactor, cellNumber]: 
+         utils::zip::Zip(offsetBySizeInDirection, offsetFactorInDirection, cellNumberInDirection))
+    {
         offsetBySize = offsetFactor * cellNumber;
+    }
     return offsetBySizeInDirection;
 }
 
