@@ -1,7 +1,7 @@
 #include "BorderConditions.hpp"
 #include <cmath>
 #include <cstdint>
-#include "utility/Zip.hpp"
+#include "Zip.hpp"
 
 BorderConditions::BorderConditions(Vector::ConstPass size, ConstPassArrayT<borderType> borders) noexcept
 	: dimensions{ size }

@@ -1,4 +1,4 @@
-#include "utility/functions for derivative/helper/derivative_rules.hpp"
+#include "functions for derivative/helper/derivative_rules.hpp"
 
 ZeroConstanta derivative_arg(ZeroConstanta constanta) noexcept
 {

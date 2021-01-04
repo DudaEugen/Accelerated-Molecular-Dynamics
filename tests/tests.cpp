@@ -14,13 +14,13 @@
 #include "constants.hpp"
 #include "Atom.hpp"
 #include "Substances.hpp"
-#include "utility/Matrix/SquareMatrix.hpp"
+#include "Matrix/SquareMatrix.hpp"
 #include "NeighboursList.hpp"
 #include "ProcessesSet.hpp"
 #include "Potential/MockPotential.hpp"
-#include "utility/Zip.hpp"
-#include "utility/IndexedZip.hpp"
-#include "utility/functions for derivative/function.hpp"
+#include "Zip.hpp"
+#include "IndexedZip.hpp"
+#include "functions for derivative/function.hpp"
 
 using namespace std;
 

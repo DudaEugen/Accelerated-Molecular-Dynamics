@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <exception>
 #include <cmath>
-#include <utility/Zip.hpp>
+#include <Zip.hpp>
 
 CellCollection::CellCollection(const std::vector<Atom>& atoms, const APotential* potential, 
                                BorderConditions* borderCond)

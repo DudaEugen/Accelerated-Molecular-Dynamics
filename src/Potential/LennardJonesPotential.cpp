@@ -1,6 +1,6 @@
 #include "Potential/LennardJonesPotential.hpp"
 #include <cmath>
-#include "utility/Zip.hpp"
+#include "Zip.hpp"
 
 LennardJonesPotential::LennardJonesPotential(std::vector<AtomPair>* atomPairs, const std::size_t maxAtomPairTypes)
 	: APairPotential{ atomPairs, maxAtomPairTypes }
