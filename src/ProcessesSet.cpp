@@ -1,7 +1,7 @@
 #include "ProcessesSet.hpp"
 #include <exception>
 
-ProcessesSet::ProcessesSet(const unsigned int uniqId, AtomicSystem* atomicSystem, const MPI_Comm mpiComm)  
+md::ProcessesSet::ProcessesSet(const unsigned int uniqId, AtomicSystem* atomicSystem, const MPI_Comm mpiComm)  
     : id{ uniqId }, aSystem{ atomicSystem }, commutator{ mpiComm }
 {
     int procNumber;
@@ -13,11 +13,11 @@ ProcessesSet::ProcessesSet(const unsigned int uniqId, AtomicSystem* atomicSystem
     MPI_Comm_rank(commutator, &activeProcessRank);
 }
 
-MPI_Comm ProcessesSet::getCommutator() const noexcept { return commutator; }
+MPI_Comm md::ProcessesSet::getCommutator() const noexcept { return commutator; }
 
-unsigned int ProcessesSet::getId() const noexcept { return id; }
+unsigned int md::ProcessesSet::getId() const noexcept { return id; }
 
-void ProcessesSet::addAtomicSystem(AtomicSystem& atomicSystem) noexcept
+void md::ProcessesSet::addAtomicSystem(AtomicSystem& atomicSystem) noexcept
 {
     aSystem = &atomicSystem;
 }

@@ -1,5 +1,5 @@
 #include "Potential/APotential.hpp"
 
-APotential::APotential(std::vector<AtomPair>* atomPairs) noexcept: pairs{ atomPairs }
+md::APotential::APotential(std::vector<AtomPair>* atomPairs) noexcept: pairs{ atomPairs }
 {
 }

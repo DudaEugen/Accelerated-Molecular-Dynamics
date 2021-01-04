@@ -2,14 +2,16 @@
 #include <cmath>
 #include "Zip.hpp"
 
-LennardJonesPotential::LennardJonesPotential(std::vector<AtomPair>* atomPairs, const std::size_t maxAtomPairTypes)
+md::LennardJonesPotential::LennardJonesPotential(std::vector<AtomPair>* atomPairs, 
+												 const std::size_t maxAtomPairTypes)
 	: APairPotential{ atomPairs, maxAtomPairTypes }
 {
 }
 
-LennardJonesPotential::~LennardJonesPotential() {}
+md::LennardJonesPotential::~LennardJonesPotential() {}
 
-void LennardJonesPotential::addPairType(element first, element second, double bondEnergy, double bondRadius, double cutRadius)
+void md::LennardJonesPotential::addPairType(element first, element second, 
+											double bondEnergy, double bondRadius, double cutRadius)
 {
 	if (APairPotential::addPairType(first, second))
 	{
@@ -19,7 +21,7 @@ void LennardJonesPotential::addPairType(element first, element second, double bo
 	}
 }
 
-void LennardJonesPotential::computeAndSetAccelerations()
+void md::LennardJonesPotential::computeAndSetAccelerations()
 {
 	Vector force;
 	const std::vector<AtomPair>& atomPairs = *pairs;

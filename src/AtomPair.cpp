@@ -1,53 +1,53 @@
 #include "AtomPair.hpp"
 
-AtomPair::AtomPair(Atom& first, Atom& second)  noexcept
+md::AtomPair::AtomPair(Atom& first, Atom& second)  noexcept
 	: atomPair{ &first, &second }
 {
 	computeDistance();
 }
 
-AtomPair::AtomPair(Atom& first, Atom& second, const double d, const Vector deltaCoordinates) noexcept
+md::AtomPair::AtomPair(Atom& first, Atom& second, const double d, const Vector deltaCoordinates) noexcept
 	: atomPair{ &first, &second }, distance{d}, dProjections{deltaCoordinates}
 {
 }
 
-Atom& AtomPair::getAtomByIndex(const index i) const noexcept
+md::Atom& md::AtomPair::getAtomByIndex(const index i) const noexcept
 {
 	return *atomPair[static_cast<int>(i)];
 }
 
-Atom& AtomPair::getAtomWithAnotherIndex(const index i) const noexcept
+md::Atom& md::AtomPair::getAtomWithAnotherIndex(const index i) const noexcept
 {
 	int ind = static_cast<int>(i) == 0 ? 1 : 0;
 	return *atomPair[ind];
 }
 
-Atom& AtomPair::getFirst() const noexcept { return *atomPair[0]; }
+md::Atom& md::AtomPair::getFirst() const noexcept { return *atomPair[0]; }
 
-Atom& AtomPair::getSecond() const noexcept { return *atomPair[1]; }
+md::Atom& md::AtomPair::getSecond() const noexcept { return *atomPair[1]; }
 
-double AtomPair::getDistance() const noexcept { return distance; }
+double md::AtomPair::getDistance() const noexcept { return distance; }
 
-Vector::ConstPass AtomPair::getDistanceProjections() const noexcept 
+md::Vector::ConstPass md::AtomPair::getDistanceProjections() const noexcept 
 { 
 	return dProjections; 
 }
 
-bool AtomPair::getIsAtomsFromSameStream() const noexcept { return isAtomsFromSameStream; }
+bool md::AtomPair::getIsAtomsFromSameStream() const noexcept { return isAtomsFromSameStream; }
 
-void AtomPair::setIsAtomsFromSameStream(const bool isSame) noexcept
+void md::AtomPair::setIsAtomsFromSameStream(const bool isSame) noexcept
 { 
 	isAtomsFromSameStream = isSame; 
 }
 
-double AtomPair::computeDistance() noexcept
+double md::AtomPair::computeDistance() noexcept
 {
 	dProjections = atomPair[1]->getCoordinates() - atomPair[0]->getCoordinates();
 	distance = dProjections.absoluteValue();
 	return distance;
 }
 
-double AtomPair::computeDistance(const BorderConditions& borderConditions) noexcept
+double md::AtomPair::computeDistance(const BorderConditions& borderConditions) noexcept
 {
 	dProjections = atomPair[1]->getCoordinates() - atomPair[0]->getCoordinates();
 	distance = borderConditions(dProjections);

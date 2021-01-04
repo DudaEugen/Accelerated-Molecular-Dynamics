@@ -1,13 +1,13 @@
 #include "Potential/APairPotential.hpp"
 #include "IndexedZip.hpp"
 
-APairPotential::APairPotential(std::vector<AtomPair>* atomPairs, const std::size_t maxAtomPairTypes)
+md::APairPotential::APairPotential(std::vector<AtomPair>* atomPairs, const std::size_t maxAtomPairTypes)
 : APotential{ atomPairs }, indexes {}
 {
 	pairTypes.reserve(maxAtomPairTypes);
 }
 
-bool APairPotential::addPairType(const element first, const element second)
+bool md::APairPotential::addPairType(const element first, const element second)
 {
 	bool isNew = true;
 	for (const auto& pairType: pairTypes)
@@ -23,7 +23,7 @@ bool APairPotential::addPairType(const element first, const element second)
 	return isNew;
 }
 
-void APairPotential::refreshAtomPairs()
+void md::APairPotential::refreshAtomPairs()
 {
 	indexes.reserve(pairs->size());
 	indexes.resize(0);
@@ -49,7 +49,7 @@ void APairPotential::refreshAtomPairs()
 	}
 }
 
-double APairPotential::getCutRadius() const noexcept
+double md::APairPotential::getCutRadius() const noexcept
 {
 	double max = 0;
 	for (double cutRadius : rc)

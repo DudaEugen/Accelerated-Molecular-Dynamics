@@ -6,17 +6,17 @@
 #include <string>
 #include <set>
 
-class ElementException : public std::runtime_error {
-public:
-	ElementException(const std::string& _Massage);
-};
-
-#define ENUM_CREATE
-#include "Elements/elements_enum.hpp"
-#undef ENUM_CREATE
-
-namespace chem_element
+namespace md
 {
+	class ElementException : public std::runtime_error {
+	public:
+		ElementException(const std::string& _Massage);
+	};
+
+	#define ENUM_CREATE
+	#include "Elements/elements_enum.hpp"
+	#undef ENUM_CREATE
+
 	//functions throw ElementException if dont know values for this element
 	// or element of enum does not have enumerator, that corresponding to title
 	std::string to_string(const element e);

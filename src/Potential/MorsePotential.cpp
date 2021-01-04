@@ -2,14 +2,15 @@
 #include <cmath>
 #include "Zip.hpp"
 
-MorsePotential::MorsePotential(std::vector<AtomPair>* atomPairs, const std::size_t maxAtomPairTypes)
+md::MorsePotential::MorsePotential(std::vector<AtomPair>* atomPairs, const std::size_t maxAtomPairTypes)
 : APairPotential{ atomPairs, maxAtomPairTypes }
 {
 }
 
-MorsePotential::~MorsePotential() {}
+md::MorsePotential::~MorsePotential() {}
 
-void MorsePotential::addPairType(element first, element second, double dissociationEnergy, double equilibriumBondDistance, double a, double cutRadius)
+void md::MorsePotential::addPairType(element first, element second, 
+		double dissociationEnergy, double equilibriumBondDistance, double a, double cutRadius)
 {
 	if (APairPotential::addPairType(first, second))
 	{
@@ -20,7 +21,7 @@ void MorsePotential::addPairType(element first, element second, double dissociat
 	}
 }
 
-void MorsePotential::computeAndSetAccelerations()
+void md::MorsePotential::computeAndSetAccelerations()
 {
 	Vector force;
 	const std::vector<AtomPair>& atomPairs = *pairs;

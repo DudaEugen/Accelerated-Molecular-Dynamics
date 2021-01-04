@@ -4,30 +4,33 @@
 
 #include <stdexcept>
 
-enum class substance {
-	Aluminum,
-	Argon,
-	Copper,
-	Gold,
-	Iron,
-	Nickel,
-	Silicon,
-	Silver,
-	Titanium,
-	Zink,
-	diamond,
-	graphite,
-};
+namespace md
+{
+	enum class substance {
+		Aluminum,
+		Argon,
+		Copper,
+		Gold,
+		Iron,
+		Nickel,
+		Silicon,
+		Silver,
+		Titanium,
+		Zink,
+		diamond,
+		graphite,
+	};
 
-class SubstanceException : public std::runtime_error {
-public:
-	SubstanceException(const std::string& _Massage);
-private:
-	const std::string massage();
-};
+	class SubstanceException : public std::runtime_error {
+	public:
+		SubstanceException(const std::string& _Massage);
+	private:
+		const std::string massage();
+	};
 
-substance convert_to_substance(const std::string& name);
+	substance convert_to_substance(const std::string& name);
 
-double get_debye_temperature(const substance _substance);
+	double get_debye_temperature(const substance _substance);
+}
 
 #endif	//TAHD_SUBSTANCES_H

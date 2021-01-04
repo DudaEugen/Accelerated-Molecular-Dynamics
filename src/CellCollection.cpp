@@ -4,8 +4,8 @@
 #include <cmath>
 #include <Zip.hpp>
 
-CellCollection::CellCollection(const std::vector<Atom>& atoms, const APotential* potential, 
-                               BorderConditions* borderCond)
+md::CellCollection::CellCollection(const std::vector<Atom>& atoms, const APotential* potential, 
+                                   BorderConditions* borderCond)
     : cells{}, borderConditions{ borderCond }
 {
     size_t cellsNumber = computeAndSetParameters(atoms, potential);
@@ -13,7 +13,7 @@ CellCollection::CellCollection(const std::vector<Atom>& atoms, const APotential*
     computeAndSetNeighbours();
 }
 
-std::array<std::size_t, DIMENSIONAL_NUMBER> CellCollection::getOffsetFactorInDirection() const noexcept
+std::array<std::size_t, md::DIMENSIONAL_NUMBER> md::CellCollection::getOffsetFactorInDirection() const noexcept
 {
     std::array<std::size_t, DIMENSIONAL_NUMBER> offsetFactorInDirection;    
     offsetFactorInDirection[0] = 1;
@@ -22,12 +22,12 @@ std::array<std::size_t, DIMENSIONAL_NUMBER> CellCollection::getOffsetFactorInDir
     return offsetFactorInDirection;
 }
 
-std::array<std::size_t, DIMENSIONAL_NUMBER> CellCollection::getOffsetBySizeInDirection() const noexcept
+std::array<std::size_t, md::DIMENSIONAL_NUMBER> md::CellCollection::getOffsetBySizeInDirection() const noexcept
 {
     return getOffsetBySizeInDirection(getOffsetFactorInDirection());
 }
 
-std::array<std::size_t, DIMENSIONAL_NUMBER> CellCollection::getOffsetBySizeInDirection(
+std::array<std::size_t, md::DIMENSIONAL_NUMBER> md::CellCollection::getOffsetBySizeInDirection(
     ConstPassArrayT<std::size_t> offsetFactorInDirection) const noexcept
 {
     std::array<std::size_t, DIMENSIONAL_NUMBER> offsetBySizeInDirection;    
@@ -39,7 +39,7 @@ std::array<std::size_t, DIMENSIONAL_NUMBER> CellCollection::getOffsetBySizeInDir
     return offsetBySizeInDirection;
 }
 
-std::size_t CellCollection::computeAndSetParameters(const std::vector<Atom>& atoms, const APotential* potential)
+std::size_t md::CellCollection::computeAndSetParameters(const std::vector<Atom>& atoms, const APotential* potential)
 {
     size_t cellsNumber = 1;
     double minimumSize = potential->getCutRadius();
@@ -74,14 +74,14 @@ std::size_t CellCollection::computeAndSetParameters(const std::vector<Atom>& ato
     return cellsNumber;  
 }
 
-void CellCollection::createCells(const std::size_t cellsNumber)
+void md::CellCollection::createCells(const std::size_t cellsNumber)
 {
     cells.reserve(cellsNumber);
     for(std::size_t i = 0; i < cellsNumber; ++i)
         cells.push_back(Cell());
 }
 
-void CellCollection::computeAndSetNeighbours()
+void md::CellCollection::computeAndSetNeighbours()
 {
     std::array<std::size_t, DIMENSIONAL_NUMBER> offsetFactorInDirection = getOffsetFactorInDirection();
     std::array<std::size_t, DIMENSIONAL_NUMBER> offsetBySizeInDirection = getOffsetBySizeInDirection(offsetFactorInDirection);
@@ -124,11 +124,11 @@ void CellCollection::computeAndSetNeighbours()
     }
 }
 
-std::vector<Cell>& CellCollection::getCells() noexcept { return cells; }
+std::vector<md::Cell>& md::CellCollection::getCells() noexcept { return cells; }
 
-const std::vector<Cell>& CellCollection::getCells() const noexcept { return cells; }
+const std::vector<md::Cell>& md::CellCollection::getCells() const noexcept { return cells; }
 
-Cell& CellCollection::findCellContainingVector(Vector::ConstPass vector)
+md::Cell& md::CellCollection::findCellContainingVector(Vector::ConstPass vector)
 {
     std::array<std::size_t, DIMENSIONAL_NUMBER> offsetFactorInDirection = getOffsetFactorInDirection();
 
@@ -154,7 +154,7 @@ Cell& CellCollection::findCellContainingVector(Vector::ConstPass vector)
     return cells[cellIndex];
 }
 
-Cell& CellCollection::findCellContainingAtom(const Atom& atom)
+md::Cell& md::CellCollection::findCellContainingAtom(const Atom& atom)
 {
     return findCellContainingVector(atom.getCoordinates());
 }

@@ -4,7 +4,7 @@
 
 #include "Potential/APotential.hpp"
 
-class MockPotential: public APotential
+class MockPotential: public md::APotential
 {
     double cutR;
 public:

@@ -23,6 +23,7 @@
 #include "calculation of derivatives/functions.hpp"
 
 using namespace std;
+using namespace md;
 
 bool equal(double d1, double d2, const int symbolCountAfterPoint = 12)
 {
@@ -126,12 +127,12 @@ void atomDebug()
 	assert(aAl_1.chemElement == aAl_2.chemElement);
 	assert(aCu_1.chemElement == aCu_2.chemElement);
 	assert(not(aAl_1.chemElement == aCu_2.chemElement));
-	assert(chem_element::get_atomic_mass(aAl_1.chemElement) == 27);
-	assert(equal(aAl_1.mass, chem_element::get_atomic_mass(aAl_2.chemElement) / (N_AVOGADRO * 1000)));
+	assert(md::get_atomic_mass(aAl_1.chemElement) == 27);
+	assert(equal(aAl_1.mass, md::get_atomic_mass(aAl_2.chemElement) / (N_AVOGADRO * 1000)));
 
 	char c[2] = { 'A', 'u' };
-	assert(chem_element::get_atomic_mass(Atom(c, randomVector()).chemElement) == 197);
-	assert(chem_element::get_atomic_number(Atom(c, randomVector()).chemElement) == 79);
+	assert(md::get_atomic_mass(Atom(c, randomVector()).chemElement) == 197);
+	assert(md::get_atomic_number(Atom(c, randomVector()).chemElement) == 79);
 
 	Vector v = aAl_1.getCoordinates();
 	Atom a(c, v);

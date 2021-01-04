@@ -1,17 +1,17 @@
 #include "Process.hpp"
 
-Process::~Process()
+md::Process::~Process()
 {
 	delete[] accelerations;
 }
 
 
-Process::Process(const int rank) noexcept
+md::Process::Process(const int rank) noexcept
 	: accelerations{ nullptr }, firstAtom{ nullptr }, lastAtom{ nullptr }, rank{ rank }
 {
 }
 
-std::size_t Process::getAtomNumber() const noexcept
+std::size_t md::Process::getAtomNumber() const noexcept
 {
 	std::size_t result = 0;
 	if (firstAtom != nullptr && lastAtom != nullptr)
@@ -19,7 +19,7 @@ std::size_t Process::getAtomNumber() const noexcept
 	return result;
 }
 
-void Process::changeAccelerationsSize()
+void md::Process::changeAccelerationsSize()
 {
 	delete[] accelerations;
 	accelerations = nullptr;
@@ -30,9 +30,9 @@ void Process::changeAccelerationsSize()
 	}
 }
 
-int Process::getRank() const noexcept { return rank; }
+int md::Process::getRank() const noexcept { return rank; }
 
-void Process::preparationForDataExchange()
+void md::Process::preparationForDataExchange()
 {
 	size_t atomNumber = getAtomNumber();
 	if (getAccelerationsSize() < atomNumber * DIMENSIONAL_NUMBER)
@@ -47,11 +47,11 @@ void Process::preparationForDataExchange()
 	}
 }
 
-double* Process::getAccelerationsPointer() noexcept { return accelerations; }
+double* md::Process::getAccelerationsPointer() noexcept { return accelerations; }
 
-size_t Process::getAccelerationsSize() const noexcept { return getAtomNumber() * DIMENSIONAL_NUMBER; }
+size_t md::Process::getAccelerationsSize() const noexcept { return getAtomNumber() * DIMENSIONAL_NUMBER; }
 
-void Process::setAtoms(Atom& first, Atom& last) noexcept
+void md::Process::setAtoms(Atom& first, Atom& last) noexcept
 {
 	firstAtom = &first;
 	lastAtom = &last;

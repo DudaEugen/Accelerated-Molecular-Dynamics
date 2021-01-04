@@ -5,15 +5,18 @@
 #include <vector>
 #include "AtomPair.hpp"
 
-class APotential
+namespace md
 {
-protected:
-	std::vector<AtomPair>* pairs;
-public:
-	APotential(std::vector<AtomPair>* atomPairs) noexcept;
-	virtual ~APotential() = default;
-	virtual void computeAndSetAccelerations() = 0;
-	virtual double getCutRadius() const noexcept = 0;
-};
+	class APotential
+	{
+	protected:
+		std::vector<AtomPair>* pairs;
+	public:
+		APotential(std::vector<AtomPair>* atomPairs) noexcept;
+		virtual ~APotential() = default;
+		virtual void computeAndSetAccelerations() = 0;
+		virtual double getCutRadius() const noexcept = 0;
+	};
+}
 
 #endif	//TAHD_ABSTRACT_POTENTIAL_H

@@ -1,10 +1,11 @@
 #include "Substances.hpp"
 
-SubstanceException::SubstanceException(const std::string& _Massage) : std::runtime_error(massage() + _Massage)
+md::SubstanceException::SubstanceException(const std::string& _Massage) 
+	: std::runtime_error(massage() + _Massage)
 {
 }
 
-const std::string SubstanceException::massage() { return "invalid or nondefined substance "; }
+const std::string md::SubstanceException::massage() { return "invalid or nondefined substance "; }
 
 std::string convert_to_lover(const std::string& s)
 {
@@ -16,7 +17,7 @@ std::string convert_to_lover(const std::string& s)
 	return result;
 }
 
-substance convert_to_substance(const std::string& name)
+md::substance md::convert_to_substance(const std::string& name)
 {
 	if (convert_to_lover(name) == "aluminum") { return substance::Aluminum; }
 	else if (convert_to_lover(name) == "argon") { return substance::Argon; }
@@ -33,7 +34,7 @@ substance convert_to_substance(const std::string& name)
 	throw SubstanceException(name);
 }
 
-double get_debye_temperature(const substance _substance)
+double md::get_debye_temperature(const substance _substance)
 {
 	double result = -1;
 	switch (_substance)

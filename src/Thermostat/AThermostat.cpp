@@ -1,8 +1,8 @@
 #include "Thermostat/AThermostat.hpp"
 
-void AThermostat::setTemperature(const double temperature) noexcept { T0 = temperature; }
+void md::AThermostat::setTemperature(const double temperature) noexcept { T0 = temperature; }
 
-double AThermostat::computeTemperature()
+double md::AThermostat::computeTemperature()
 {
 	T = 0;
 	size_t atomNumber = atomsSystem.size();
