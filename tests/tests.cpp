@@ -20,7 +20,7 @@
 #include "Potential/MockPotential.hpp"
 #include "Zip.hpp"
 #include "IndexedZip.hpp"
-#include "functions for derivative/function.hpp"
+#include "calculation of derivatives/functions.hpp"
 
 using namespace std;
 
@@ -494,34 +494,36 @@ void zipDebug()
 
 void derivativeDebug()
 {
+	using namespace utils;
+
 	double x = random<-3, 3>();
 
-	auto f = f_exp(Variable());
+	auto f = fcd::exponenta(fcd::Variable());
 	assert(equal(f(x), exp(x)));
-	assert(equal(derivative(f)(x), derivative<5>(f)(x)));
+	assert(equal(fcd::derivative(f)(x), fcd::derivative<5>(f)(x)));
 
-	auto f2 = f_sum(f_prod(Constanta(5), f_pow<2>(Variable())), Variable());
+	auto f2 = fcd::summ(fcd::product(fcd::Constanta(5), fcd::power<2>(fcd::Variable())), fcd::Variable());
 	assert(equal(f2(x), 5*x*x + x));
-	assert(equal(derivative(f2)(x), 10*x + 1));
-	assert(equal(derivative<2>(f2)(x), 10));
-	assert(equal(derivative<3>(f2)(x), 0));
+	assert(equal(fcd::derivative(f2)(x), 10*x + 1));
+	assert(equal(fcd::derivative<2>(f2)(x), 10));
+	assert(equal(fcd::derivative<3>(f2)(x), 0));
 
 	std::vector<double> params = {1, -2};
-	auto f3_uncomplete = f_sum(f_prod(f_pow<3>(Variable()), f_exp(Variable())),
-						 f_prod(f_exp(Parameter(0)), Parameter(1)));
+	auto f3_uncomplete = fcd::summ(fcd::product(fcd::power<3>(fcd::Variable()), fcd::exponenta(fcd::Variable())),
+						 fcd::product(fcd::exponenta(fcd::Parameter(0)), fcd::Parameter(1)));
 	auto f3 = f3_uncomplete.set_parameters(params);
 	assert(equal(f3(x), x*x*x*exp(x) + params[1] * exp(params[0]), 10));
-	assert(equal(derivative(f3)(x), 3*x*x*exp(x) + x*x*x*exp(x), 10));
-	assert(equal(derivative<2>(f3)(x), derivative(f3)(x) + 6*x*exp(x) + 3*x*x*exp(x), 10));
+	assert(equal(fcd::derivative(f3)(x), 3*x*x*exp(x) + x*x*x*exp(x), 10));
+	assert(equal(fcd::derivative<2>(f3)(x), fcd::derivative(f3)(x) + 6*x*exp(x) + 3*x*x*exp(x), 10));
 
-	auto f4 = f_prod(Constanta(-0.5), f_pow<-2>(Variable()));
-	assert(equal(derivative<2>(f4)(x), -3/(pow(x,4)), 10));
+	auto f4 = fcd::product(fcd::Constanta(-0.5), fcd::power<-2>(fcd::Variable()));
+	assert(equal(fcd::derivative<2>(f4)(x), -3/(pow(x,4)), 10));
 
-	auto f5 = f_sum(f_sqrt(Variable()), f_pow<2>(f_root<5>(Variable())));
-	assert(equal(derivative(f5)(abs(x)), 1/(2*sqrt(abs(x))) + 0.4*pow(abs(x), -0.6), 10));
+	auto f5 = fcd::summ(fcd::sq_root(fcd::Variable()), fcd::power<2>(fcd::root<5>(fcd::Variable())));
+	assert(equal(fcd::derivative(f5)(abs(x)), 1/(2*sqrt(abs(x))) + 0.4*pow(abs(x), -0.6), 10));
 
-	assert(equal(derivative(f_sum(Parameter(0), Parameter(1)))(x), 0, 10));
-	assert(equal(derivative(f_prod(Parameter(0), Parameter(1)))(x), 0, 10));
+	assert(equal(fcd::derivative(fcd::summ(fcd::Parameter(0), fcd::Parameter(1)))(x), 0, 10));
+	assert(equal(fcd::derivative(fcd::product(fcd::Parameter(0), fcd::Parameter(1)))(x), 0, 10));
 }
 
 void funcDebug(int ProcRank, int procNum)
@@ -555,7 +557,6 @@ int main(int argc, char* argv[])
 	MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
 	
 	funcDebug(ProcRank, ProcNum);
-
 	MPI_Finalize();
 
 	return 0;
