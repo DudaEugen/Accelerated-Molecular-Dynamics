@@ -498,14 +498,13 @@ void derivativeDebug()
 
 	auto f = f_exp(Variable());
 	assert(equal(f(x), exp(x)));
-	assert(equal(derivative(f)(x), exp(x)));
-	assert(equal(derivative(derivative(f))(x), exp(x)));
+	assert(equal(derivative(f)(x), derivative<5>(f)(x)));
 
 	auto f2 = f_sum(f_prod(Constanta(5), f_pow<2>(Variable())), Variable());
 	assert(equal(f2(x), 5*x*x + x));
 	assert(equal(derivative(f2)(x), 10*x + 1));
-	assert(equal(derivative(derivative(f2))(x), 10));
-	assert(equal(derivative(derivative(derivative(f2)))(x), 0));
+	assert(equal(derivative<2>(f2)(x), 10));
+	assert(equal(derivative<3>(f2)(x), 0));
 
 	std::vector<double> params = {1, -2};
 	auto f3_uncomplete = f_sum(f_prod(f_pow<3>(Variable()), f_exp(Variable())),
@@ -513,10 +512,10 @@ void derivativeDebug()
 	auto f3 = f3_uncomplete.set_parameters(params);
 	assert(equal(f3(x), x*x*x*exp(x) + params[1] * exp(params[0]), 10));
 	assert(equal(derivative(f3)(x), 3*x*x*exp(x) + x*x*x*exp(x), 10));
-	assert(equal(derivative(derivative(f3))(x), derivative(f3)(x) + 6*x*exp(x) + 3*x*x*exp(x), 10));
+	assert(equal(derivative<2>(f3)(x), derivative(f3)(x) + 6*x*exp(x) + 3*x*x*exp(x), 10));
 
 	auto f4 = f_prod(Constanta(-0.5), f_pow<-2>(Variable()));
-	assert(equal(derivative(derivative(f4))(x), -3/(pow(x,4)), 10));
+	assert(equal(derivative<2>(f4)(x), -3/(pow(x,4)), 10));
 
 	auto f5 = f_sum(f_sqrt(Variable()), f_pow<2>(f_root<5>(Variable())));
 	assert(equal(derivative(f5)(abs(x)), 1/(2*sqrt(abs(x))) + 0.4*pow(abs(x), -0.6), 10));

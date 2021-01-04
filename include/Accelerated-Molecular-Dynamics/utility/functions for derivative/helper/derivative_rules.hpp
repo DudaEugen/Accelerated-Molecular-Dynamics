@@ -146,4 +146,13 @@ auto derivative(const T& func_struct)
     }
 }
 
+template<std::uint8_t I, class T>
+auto derivative(const T& func_struct)
+{
+    if constexpr (I == 0)
+        return func_struct;
+    else
+        return derivative<I-1>(derivative(func_struct));
+}
+
 #endif  // TAHD_FUNCTIONS_FOR_DERIVATIVE_DERIVATIVE_RULES_T
