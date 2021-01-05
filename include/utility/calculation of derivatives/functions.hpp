@@ -2,6 +2,7 @@
 #ifndef TAHD_FUNCTIONS_FOR_DERIVATIVE_FUNCTION_T
 #define TAHD_FUNCTIONS_FOR_DERIVATIVE_FUNCTION_T
 
+#include "helper/set_parameters.hpp"
 #include "helper/derivative_rules.hpp"
 
 // fcd - functions for calculation of derivatives
@@ -10,54 +11,55 @@ namespace utils::fcd
     template<class T>
     auto exponenta(const T& argument)
     {
-        return implementation::OneArgumentFunction<
+        return implementation::const_function_folding(implementation::OneArgumentFunction<
             implementation::one_arg_function::EXPONENTA, T
-        >(argument);
+        >(argument));
     }
 
     template<class T>
     auto sq_root(const T& argument)
     {
-        return implementation::OneArgumentFunction<
+        return implementation::const_function_folding(implementation::OneArgumentFunction<
             implementation::one_arg_function::SQUARE_ROOT, T
-        >(argument);
+        >(argument));
     }
 
+    // I is exponent, argument (T) is base degree
     template<int I, class T>
     auto power(const T& argument)
     {
-        return implementation::OneArgumentIntTemplateParFunction<
+        return implementation::const_function_folding(implementation::OneArgumentIntTemplateParFunction<
             implementation::one_arg_int_template_par_function::POWER, T, I
-        >(argument);
+        >(argument));
     }
 
     template<std::uint8_t I, class T>
     auto root(const T& argument)
     {
         if constexpr (I != 2)
-            return implementation::OneArgumentIntTemplateParFunction<
+            return implementation::const_function_folding(implementation::OneArgumentIntTemplateParFunction<
                 implementation::one_arg_int_template_par_function::ROOT, T, I
-            >(argument);
+            >(argument));
         else
-            return implementation::OneArgumentFunction<
+            return implementation::const_function_folding(implementation::OneArgumentFunction<
                 implementation::one_arg_function::SQUARE_ROOT, T
-            >(argument);    
+            >(argument));    
     }
 
     template<class F, class S>
     auto summ(const F& first, const S& second)
     {
-        return implementation::TwoArgumentFunction<
+        return implementation::const_function_folding(implementation::TwoArgumentFunction<
             implementation::two_arg_function::SUMM, F, S
-        >(first, second);
+        >(first, second));
     }
 
     template<class F, class S>
     auto product(const F& first, const S& second)
     {
-        return implementation::TwoArgumentFunction<
+        return implementation::const_function_folding(implementation::TwoArgumentFunction<
             implementation::two_arg_function::PRODUCT, F, S
-        >(first, second);
+        >(first, second));
     }
 }
 

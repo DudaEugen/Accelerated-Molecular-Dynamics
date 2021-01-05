@@ -515,7 +515,7 @@ void derivativeDebug()
 	std::vector<double> params = {1, -2};
 	auto f3_uncomplete = fcd::summ(fcd::product(fcd::power<3>(fcd::Variable()), fcd::exponenta(fcd::Variable())),
 						 fcd::product(fcd::exponenta(fcd::Parameter(0)), fcd::Parameter(1)));
-	auto f3 = f3_uncomplete.set_parameters(params);
+	auto f3 = set_parameters(f3_uncomplete, params);
 	assert(equal(f3(x), x*x*x*exp(x) + params[1] * exp(params[0]), 10));
 	assert(equal(fcd::derivative(f3)(x), 3*x*x*exp(x) + x*x*x*exp(x), 10));
 	assert(equal(fcd::derivative<2>(f3)(x), fcd::derivative(f3)(x) + 6*x*exp(x) + 3*x*x*exp(x), 10));
@@ -526,8 +526,30 @@ void derivativeDebug()
 	auto f5 = fcd::summ(fcd::sq_root(fcd::Variable()), fcd::power<2>(fcd::root<5>(fcd::Variable())));
 	assert(equal(fcd::derivative(f5)(abs(x)), 1/(2*sqrt(abs(x))) + 0.4*pow(abs(x), -0.6), 10));
 
-	assert(equal(fcd::derivative(fcd::summ(fcd::Parameter(0), fcd::Parameter(1)))(x), 0, 10));
-	assert(equal(fcd::derivative(fcd::product(fcd::Parameter(0), fcd::Parameter(1)))(x), 0, 10));
+	static_assert(std::is_same_v<
+		decltype(fcd::derivative(fcd::product(fcd::Parameter(0), fcd::summ(fcd::Parameter(1), fcd::Constanta(x))))), 
+		fcd::implementation::ZeroConstanta
+	>);
+	static_assert(std::is_same_v<
+		decltype(fcd::power<3>(fcd::sq_root(fcd::exponenta(fcd::product(fcd::Constanta(-2), fcd::Constanta(5)))))), 
+		fcd::Constanta
+	>);
+	static_assert(std::is_same_v<
+		decltype(fcd::derivative<6>(fcd::product(fcd::Parameter(0), fcd::power<5>(fcd::Variable())))), 
+		fcd::implementation::ZeroConstanta
+	>);
+	static_assert(std::is_same_v<
+		decltype(fcd::derivative(fcd::summ(fcd::Variable(), fcd::product(fcd::Constanta(2), fcd::Variable())))), 
+		fcd::Constanta
+	>);
+	static_assert(std::is_same_v<
+		decltype(fcd::derivative<9>(fcd::product(fcd::Constanta(x), fcd::power<8>(fcd::Variable())))), 
+		fcd::implementation::ZeroConstanta
+	>);
+	static_assert(std::is_same_v<
+		decltype(set_parameters(fcd::product(fcd::Constanta(x), fcd::root<5>(fcd::Parameter(0))), params)), 
+		fcd::Constanta
+	>);
 }
 
 void funcDebug(int ProcRank, int procNum)

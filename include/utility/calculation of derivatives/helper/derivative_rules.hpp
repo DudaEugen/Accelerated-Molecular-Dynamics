@@ -8,14 +8,6 @@
 
 namespace utils::fcd::implementation
 {
-    ZeroConstanta derivative_arg(ZeroConstanta constanta) noexcept;
-
-    ZeroConstanta derivative_arg(Constanta constanta) noexcept;
-
-    ZeroConstanta derivative_arg(Parameter parameter) noexcept;
-
-    Constanta derivative_arg(Variable variable) noexcept;
-
     template<class T>
     auto derivative_exp(const T& arg) noexcept
     {
@@ -79,12 +71,15 @@ namespace utils::fcd
     {
         using namespace implementation;
 
-        if constexpr (std::is_same_v<T, Constanta> || std::is_same_v<T, ZeroConstanta> || 
-                    std::is_same_v<T, Parameter> || std::is_same_v<T, Variable>)
+        if constexpr (!T::is_contain_variable)
         {
-            return derivative_arg(func_struct);
+            return ZeroConstanta();
+        } 
+        else if constexpr (std::is_same_v<std::decay_t<T>, Variable>)
+        {
+            return Constanta(1);
         }
-        else if constexpr (std::is_same_v<decltype(T::function_t), const one_arg_function>)
+        else if constexpr (is_one_argument_function<T>)
         {
             if constexpr (T::function_t == one_arg_function::EXPONENTA)
             {
@@ -103,7 +98,7 @@ namespace utils::fcd
                 >(derivative_sqrt(func_struct), derivative(func_struct.argument));
             }
         }
-        else if constexpr (std::is_same_v<decltype(T::function_t), const one_arg_int_template_par_function>)
+        else if constexpr (is_one_argument_int_template_par_function<T>)
         {
             if constexpr (T::function_t == one_arg_int_template_par_function::POWER)
             {
@@ -122,33 +117,33 @@ namespace utils::fcd
                 >(derivative_root(func_struct), derivative(func_struct.argument));
             }
         }
-        else if constexpr (std::is_same_v<decltype(T::function_t), const two_arg_function>)
+        else if constexpr (is_two_argument_function<T>)
         {
             if constexpr (T::function_t == two_arg_function::PRODUCT)
             {
-                auto first_arg = product_function_folding(TwoArgumentFunction<
+                auto first_arg = product_by_zero_folding(TwoArgumentFunction<
                     two_arg_function::PRODUCT,
                     decltype(derivative(func_struct.argument1)),
                     decltype(func_struct.argument2)
                 >(derivative(func_struct.argument1), func_struct.argument2));
 
-                auto second_arg = product_function_folding(TwoArgumentFunction<
+                auto second_arg = product_by_zero_folding(TwoArgumentFunction<
                     two_arg_function::PRODUCT,
                     decltype(func_struct.argument1),
                     decltype(derivative(func_struct.argument2))
                 >(func_struct.argument1, derivative(func_struct.argument2)));
 
-                return summ_function_folding(TwoArgumentFunction<
+                return summ_with_zero_folding(TwoArgumentFunction<
                     two_arg_function::SUMM, decltype(first_arg), decltype(second_arg)
                 >(first_arg, second_arg));
             }
             else
             {
-                return summ_function_folding(TwoArgumentFunction<
+                return const_function_folding(summ_with_zero_folding(TwoArgumentFunction<
                     two_arg_function::SUMM,
                     decltype(derivative(func_struct.argument1)),
                     decltype(derivative(func_struct.argument2))
-                >(derivative(func_struct.argument1), derivative(func_struct.argument2)));
+                >(derivative(func_struct.argument1), derivative(func_struct.argument2))));
             }
         }
     }
