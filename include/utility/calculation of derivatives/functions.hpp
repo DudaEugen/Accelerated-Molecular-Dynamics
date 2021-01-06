@@ -11,16 +11,22 @@ namespace utils::fcd
     template<class T>
     auto exponenta(const T& argument)
     {
-        return implementation::const_function_folding(implementation::OneArgumentFunction<
-            implementation::one_arg_function::EXPONENTA, T
+        return implementation::const_function_folding(implementation::Function<
+            implementation::function_name::EXPONENTA,
+            T,
+            implementation::UnusedArgument,
+            implementation::UnusedParameter
         >(argument));
     }
 
     template<class T>
     auto sq_root(const T& argument)
     {
-        return implementation::const_function_folding(implementation::OneArgumentFunction<
-            implementation::one_arg_function::SQUARE_ROOT, T
+        return implementation::const_function_folding(implementation::Function<
+            implementation::function_name::SQUARE_ROOT, 
+            T,
+            implementation::UnusedArgument,
+            implementation::UnusedParameter
         >(argument));
     }
 
@@ -28,8 +34,8 @@ namespace utils::fcd
     template<int I, class T>
     auto power(const T& argument)
     {
-        return implementation::const_function_folding(implementation::OneArgumentIntTemplateParFunction<
-            implementation::one_arg_int_template_par_function::POWER, T, I
+        return implementation::const_function_folding(implementation::Function<
+            implementation::function_name::POWER, T, implementation::UnusedArgument, I
         >(argument));
     }
 
@@ -37,28 +43,31 @@ namespace utils::fcd
     auto root(const T& argument)
     {
         if constexpr (I != 2)
-            return implementation::const_function_folding(implementation::OneArgumentIntTemplateParFunction<
-                implementation::one_arg_int_template_par_function::ROOT, T, I
+            return implementation::const_function_folding(implementation::Function<
+                implementation::function_name::ROOT, T, implementation::UnusedArgument, I
             >(argument));
         else
-            return implementation::const_function_folding(implementation::OneArgumentFunction<
-                implementation::one_arg_function::SQUARE_ROOT, T
+            return implementation::const_function_folding(implementation::Function<
+                implementation::function_name::SQUARE_ROOT, 
+                T,
+                implementation::UnusedArgument,
+                implementation::UnusedParameter
             >(argument));    
     }
 
     template<class F, class S>
     auto summ(const F& first, const S& second)
     {
-        return implementation::const_function_folding(implementation::TwoArgumentFunction<
-            implementation::two_arg_function::SUMM, F, S
+        return implementation::const_function_folding(implementation::Function<
+            implementation::function_name::SUMM, F, S, implementation::UnusedParameter
         >(first, second));
     }
 
     template<class F, class S>
     auto product(const F& first, const S& second)
     {
-        return implementation::const_function_folding(implementation::TwoArgumentFunction<
-            implementation::two_arg_function::PRODUCT, F, S
+        return implementation::const_function_folding(implementation::Function<
+            implementation::function_name::PRODUCT, F, S, implementation::UnusedParameter
         >(first, second));
     }
 }

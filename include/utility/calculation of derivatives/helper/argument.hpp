@@ -13,6 +13,8 @@ namespace utils::fcd
 
         static constexpr bool is_constanta = true;
         static constexpr bool is_contain_variable = false;
+        static constexpr bool is_contain_parameter = false;
+        static constexpr bool is_function = false;
 
         Constanta(double value) noexcept;
         double operator() (double argument) const noexcept;
@@ -24,6 +26,8 @@ namespace utils::fcd
 
         static constexpr bool is_constanta = false;
         static constexpr bool is_contain_variable = false;
+        static constexpr bool is_contain_parameter = true;
+        static constexpr bool is_function = false;
 
         Parameter(std::uint8_t i) noexcept;
         double operator() (double argument) const;
@@ -33,6 +37,8 @@ namespace utils::fcd
     {
         static constexpr bool is_constanta = false;
         static constexpr bool is_contain_variable =true;
+        static constexpr bool is_contain_parameter = false;
+        static constexpr bool is_function = false;
 
         Variable() = default;
         double operator() (double argument) const noexcept;
@@ -45,6 +51,8 @@ namespace utils::fcd::implementation
     {
         static constexpr bool is_constanta = true;
         static constexpr bool is_contain_variable = false;
+        static constexpr bool is_contain_parameter = false;
+        static constexpr bool is_function = false;
 
         ZeroConstanta() = default;
         double operator() (double argument) const noexcept;

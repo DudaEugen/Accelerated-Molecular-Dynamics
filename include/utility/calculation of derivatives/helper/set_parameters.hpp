@@ -17,30 +17,29 @@ namespace utils::fcd
         {
             return Constanta(params[func.index]);
         }
-        else if constexpr (!is_function_fcd<T>)
+        else if constexpr (!T::is_function)
         {
             return func;
         }
-        else if constexpr (is_contain_parameter<T>)
+        else if constexpr (T::is_contain_parameter)
         {
-            if constexpr (is_one_argument_function<T>)
+            if constexpr (T::type == function_type::ONE_ARGUMENT || 
+                          T::type == function_type::INDEXED_ONE_ARGUMENT)
             {
-                return const_function_folding(OneArgumentFunction<
-                    T::function_t, decltype(set_parameters(func.argument, params))
+                return const_function_folding(Function<
+                    T::name, 
+                    decltype(set_parameters(func.argument, params)),
+                    UnusedArgument,
+                    T::template_index
                 >{set_parameters(func.argument, params)});
             }
-            else if constexpr (is_one_argument_int_template_par_function<T>)
+            else if constexpr (T::type == function_type::TWO_ARGUMENT)
             {
-                return const_function_folding(OneArgumentIntTemplateParFunction<
-                    T::function_t, decltype(set_parameters(func.argument, params)), T::template_index
-                >{set_parameters(func.argument, params)});
-            }
-            else if constexpr (is_two_argument_function<T> )
-            {
-                return const_function_folding(TwoArgumentFunction<
-                    T::function_t, 
+                return const_function_folding(Function<
+                    T::name, 
                     decltype(set_parameters(func.argument1, params)), 
-                    decltype(set_parameters(func.argument2, params))
+                    decltype(set_parameters(func.argument2, params)),
+                    UnusedParameter
                 >{set_parameters(func.argument1, params), set_parameters(func.argument2, params)});
             }
         }
