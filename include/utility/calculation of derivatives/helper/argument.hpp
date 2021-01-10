@@ -7,19 +7,6 @@
 // fcd - functions for calculation of derivatives
 namespace utils::fcd
 {
-    struct Constanta
-    {
-        const double value;
-
-        static constexpr bool is_constanta = true;
-        static constexpr bool is_contain_variable = false;
-        static constexpr bool is_contain_parameter = false;
-        static constexpr bool is_function = false;
-
-        Constanta(double value) noexcept;
-        double operator() (double argument) const noexcept;
-    };
-
     struct Parameter
     {
         const std::uint8_t index;
@@ -29,7 +16,7 @@ namespace utils::fcd
         static constexpr bool is_contain_parameter = true;
         static constexpr bool is_function = false;
 
-        Parameter(std::uint8_t i) noexcept;
+        explicit Parameter(std::uint8_t i) noexcept;
         double operator() (double argument) const;
     };
 
@@ -47,6 +34,20 @@ namespace utils::fcd
 
 namespace utils::fcd::implementation
 {
+    struct Constanta
+    {
+        const double value;
+
+        static constexpr bool is_constanta = true;
+        static constexpr bool is_contain_variable = false;
+        static constexpr bool is_contain_parameter = false;
+        static constexpr bool is_function = false;
+
+        Constanta(double value) noexcept;
+        Constanta(int value) noexcept;
+        double operator() (double argument) const noexcept;
+    };
+
     struct ZeroConstanta
     {
         static constexpr bool is_constanta = true;

@@ -507,7 +507,7 @@ void derivativeDebug()
 	assert(equal(f(x), exp(x)));
 	assert(equal(fcd::derivative(f)(x), fcd::derivative<5>(f)(x)));
 
-	auto f2 = fcd::Constanta(5)*fcd::power<2>(fcd::Variable()) + fcd::Variable();
+	auto f2 = 5*fcd::power<2>(fcd::Variable()) + fcd::Variable();
 	assert(equal(f2(x), 5*x*x + x));
 	assert(equal(fcd::derivative(f2)(x), 10*x + 1));
 	assert(equal(fcd::derivative<2>(f2)(x), 10));
@@ -521,35 +521,35 @@ void derivativeDebug()
 	assert(equal(fcd::derivative(f3)(x), 3*x*x*exp(x) + x*x*x*exp(x), 10));
 	assert(equal(fcd::derivative<2>(f3)(x), fcd::derivative(f3)(x) + 6*x*exp(x) + 3*x*x*exp(x), 10));
 
-	auto f4 = fcd::Constanta(-0.5)*fcd::power<-2>(fcd::Variable());
+	auto f4 = -0.5*fcd::power<-2>(fcd::Variable());
 	assert(equal(fcd::derivative<2>(f4)(x), -3/(pow(x,4)), 10));
 
 	auto f5 = fcd::sq_root(fcd::Variable()) + fcd::power<2>(fcd::root<5>(fcd::Variable()));
 	assert(equal(fcd::derivative(f5)(abs(x)), 1/(2*sqrt(abs(x))) + 0.4*pow(abs(x), -0.6), 10));
 
 	static_assert(std::is_same_v<
-		decltype(fcd::derivative(fcd::Parameter(0) * (fcd::Parameter(1) + fcd::Constanta(x)))), 
+		decltype(fcd::derivative(fcd::Parameter(0) * (fcd::Parameter(1) + x))), 
 		fcd::implementation::ZeroConstanta
 	>);
 	static_assert(std::is_same_v<
-		decltype(fcd::power<3>(fcd::sq_root(fcd::exponenta(fcd::Constanta(-2) * fcd::Constanta(5))))), 
-		fcd::Constanta
+		decltype(fcd::power<3>(fcd::sq_root(fcd::exponenta(-2 * 5)))), 
+		impl::Constanta
 	>);
 	static_assert(std::is_same_v<
 		decltype(fcd::derivative<6>(fcd::Parameter(0) * fcd::power<5>(fcd::Variable()))), 
 		fcd::implementation::ZeroConstanta
 	>);
 	static_assert(std::is_same_v<
-		decltype(fcd::derivative(fcd::Variable() + fcd::Constanta(2)*fcd::Variable())), 
-		fcd::Constanta
+		decltype(fcd::derivative(fcd::Variable() + 2*fcd::Variable())), 
+		impl::Constanta
 	>);
 	static_assert(std::is_same_v<
-		decltype(fcd::derivative<9>(fcd::Constanta(x) * fcd::power<8>(fcd::Variable()))), 
+		decltype(fcd::derivative<9>(x * fcd::power<8>(fcd::Variable()))), 
 		fcd::implementation::ZeroConstanta
 	>);
 	static_assert(std::is_same_v<
-		decltype(set_parameters(fcd::Constanta(x) * fcd::root<5>(fcd::Parameter(0)), params)), 
-		fcd::Constanta
+		decltype(set_parameters(x * fcd::root<5>(fcd::Parameter(0)), params)), 
+		impl::Constanta
 	>);
 }
 

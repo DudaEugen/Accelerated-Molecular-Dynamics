@@ -2,12 +2,17 @@
 #include <stdexcept>
 #include <cmath>
 
-utils::fcd::Constanta::Constanta(double value) noexcept 
+utils::fcd::implementation::Constanta::Constanta(double value) noexcept 
     : value{ value }
 {
 }
 
-double utils::fcd::Constanta::operator() (double argument) const noexcept 
+utils::fcd::implementation::Constanta::Constanta(int value) noexcept 
+    : value{ static_cast<double>(value) }
+{
+}
+
+double utils::fcd::implementation::Constanta::operator() (double argument) const noexcept 
 { 
     return value; 
 }

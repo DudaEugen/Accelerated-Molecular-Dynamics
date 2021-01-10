@@ -2,6 +2,7 @@
 #ifndef TAHD_FUNCTIONS_FOR_DERIVATIVE_STRUCTURE_T
 #define TAHD_FUNCTIONS_FOR_DERIVATIVE_STRUCTURE_T
 
+#include <cmath>
 #include <utility>
 #include <type_traits>
 #include "argument.hpp"
