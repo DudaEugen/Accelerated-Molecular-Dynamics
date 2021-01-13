@@ -29,6 +29,66 @@ namespace utils::fcd::implementation
     }
 
     template<class T>
+    auto derivative_cbrt(const T& arg) noexcept
+    {
+        auto func = Function<
+            function_name::POWER, T, UnusedArgument, -2
+        >(arg);
+
+        return Function<
+            function_name::PRODUCT, Constanta, decltype(func), UnusedParameter
+        >(Constanta(1./3), func);
+    }
+
+    template<class T>
+    auto derivative_sin(const T& arg) noexcept
+    {
+        return Function<
+            function_name::COSINUS, typename T::arg_t, UnusedArgument, UnusedParameter
+        >(arg.argument);
+    }
+
+    template<class T>
+    auto derivative_cos(const T& arg) noexcept
+    {
+        auto sinus = Function<
+            function_name::SINUS, typename T::arg_t, UnusedArgument, UnusedParameter
+        >(arg.argument);
+
+        return Function<
+            function_name::PRODUCT, Constanta, decltype(sinus), UnusedParameter
+        >(Constanta(-1), sinus);
+    }
+
+    template<class T>
+    auto derivative_tg(const T& arg) noexcept
+    {
+        auto cosinus = Function<
+            function_name::COSINUS, typename T::arg_t, UnusedArgument, UnusedParameter
+        >(arg.argument);
+
+        return Function<
+            function_name::POWER, decltype(cosinus), UnusedArgument, -2
+        >(cosinus);
+    }
+
+    template<class T>
+    auto derivative_exponential(const T& arg) noexcept
+    {
+        return Function<
+            function_name::PRODUCT, Constanta, T, UnusedParameter
+        >(Constanta(log(T::template_index)), arg);
+    }
+
+    template<class T>
+    auto derivative_lg(const T& arg) noexcept
+    {
+        return Function<
+            function_name::POWER, typename T::arg_t, UnusedArgument, -1
+        >(arg.argument);
+    }
+
+    template<class T>
     auto derivative_pow(const T& arg) noexcept
     {
         if constexpr (T::template_index == 2)
@@ -88,6 +148,18 @@ namespace utils::fcd::implementation
             return derivative_pow(arg);
         else if constexpr (T::name == function_name::ROOT)
             return derivative_root(arg);
+        else if constexpr (T::name == function_name::CUBIC_ROOT)
+            return derivative_cbrt(arg);
+        else if constexpr (T::name == function_name::COSINUS)
+            return derivative_cos(arg);
+        else if constexpr (T::name == function_name::SINUS)
+            return derivative_sin(arg);
+        else if constexpr (T::name == function_name::TANGENT)
+            return derivative_tg(arg);
+        else if constexpr (T::name == function_name::EXPONENTIAL)
+            return derivative_exponential(arg);
+        else if constexpr (T::name == function_name::LOGARITHM_NATURAL)
+            return derivative_lg(arg);
     }
 }
 

@@ -13,8 +13,15 @@ namespace utils::fcd::implementation
     {
         EXPONENTA,
         SQUARE_ROOT,
+        CUBIC_ROOT,
+        SINUS,
+        COSINUS,
+        TANGENT,
+        LOGARITHM_NATURAL,
         POWER,
-        ROOT,SUMM,
+        ROOT,
+        EXPONENTIAL,
+        SUMM,
         PRODUCT,
     };
 
@@ -79,6 +86,126 @@ namespace utils::fcd::implementation
         }
     };
 
+    template<class T>
+    struct Function<function_name::CUBIC_ROOT, T, UnusedArgument, UnusedParameter>
+    {
+        const T argument;
+
+        using arg_t = T;
+        static constexpr bool is_constanta = T::is_constanta;
+        static constexpr bool is_contain_variable = T::is_contain_variable;
+        static constexpr bool is_contain_parameter = T::is_contain_parameter;
+        static constexpr bool is_function = true;
+        static constexpr auto name = function_name::CUBIC_ROOT;
+        static constexpr auto type = function_type::ONE_ARGUMENT;
+        static constexpr int template_index = UnusedParameter;
+
+        Function(const T& arg) noexcept : argument{ arg }
+        {
+        }
+
+        double operator() (double arg) const
+        {
+            return cbrt(argument(arg));
+        }
+    };
+
+    template<class T>
+    struct Function<function_name::SINUS, T, UnusedArgument, UnusedParameter>
+    {
+        const T argument;
+
+        using arg_t = T;
+        static constexpr bool is_constanta = T::is_constanta;
+        static constexpr bool is_contain_variable = T::is_contain_variable;
+        static constexpr bool is_contain_parameter = T::is_contain_parameter;
+        static constexpr bool is_function = true;
+        static constexpr auto name = function_name::SINUS;
+        static constexpr auto type = function_type::ONE_ARGUMENT;
+        static constexpr int template_index = UnusedParameter;
+
+        Function(const T& arg) noexcept : argument{ arg }
+        {
+        }
+
+        double operator() (double arg) const
+        {
+            return sin(argument(arg));
+        }
+    };
+
+    template<class T>
+    struct Function<function_name::COSINUS, T, UnusedArgument, UnusedParameter>
+    {
+        const T argument;
+
+        using arg_t = T;
+        static constexpr bool is_constanta = T::is_constanta;
+        static constexpr bool is_contain_variable = T::is_contain_variable;
+        static constexpr bool is_contain_parameter = T::is_contain_parameter;
+        static constexpr bool is_function = true;
+        static constexpr auto name = function_name::COSINUS;
+        static constexpr auto type = function_type::ONE_ARGUMENT;
+        static constexpr int template_index = UnusedParameter;
+
+        Function(const T& arg) noexcept : argument{ arg }
+        {
+        }
+
+        double operator() (double arg) const
+        {
+            return cos(argument(arg));
+        }
+    };
+
+    template<class T>
+    struct Function<function_name::TANGENT, T, UnusedArgument, UnusedParameter>
+    {
+        const T argument;
+
+        using arg_t = T;
+        static constexpr bool is_constanta = T::is_constanta;
+        static constexpr bool is_contain_variable = T::is_contain_variable;
+        static constexpr bool is_contain_parameter = T::is_contain_parameter;
+        static constexpr bool is_function = true;
+        static constexpr auto name = function_name::TANGENT;
+        static constexpr auto type = function_type::ONE_ARGUMENT;
+        static constexpr int template_index = UnusedParameter;
+
+        Function(const T& arg) noexcept : argument{ arg }
+        {
+        }
+
+        double operator() (double arg) const
+        {
+            return tan(argument(arg));
+        }
+    };
+
+    template<class T>
+    struct Function<function_name::LOGARITHM_NATURAL, T, UnusedArgument, UnusedParameter>
+    {
+        const T argument;
+
+        using arg_t = T;
+        static constexpr bool is_constanta = T::is_constanta;
+        static constexpr bool is_contain_variable = T::is_contain_variable;
+        static constexpr bool is_contain_parameter = T::is_contain_parameter;
+        static constexpr bool is_function = true;
+        static constexpr auto name = function_name::LOGARITHM_NATURAL;
+        static constexpr auto type = function_type::ONE_ARGUMENT;
+        static constexpr int template_index = UnusedParameter;
+
+        Function(const T& arg) noexcept : argument{ arg }
+        {
+        }
+
+        double operator() (double arg) const
+        {
+            return log(argument(arg));
+        }
+    };
+
     // I is exponent, argument (T) is base degree
     template<class T, int I>
     struct Function<function_name::POWER, T, UnusedArgument, I>
@@ -127,6 +254,32 @@ namespace utils::fcd::implementation
         {
             static_assert(I > 1, "root must be great that 1");
             return pow(argument(arg), 1./I);
+        }
+    };
+
+    // I is base degree, argument (T) is exponent
+    template<class T, int I>
+    struct Function<function_name::EXPONENTIAL, T, UnusedArgument, I>
+    {
+        const T argument;
+
+        using arg_t = T;
+        static constexpr bool is_constanta = T::is_constanta;
+        static constexpr bool is_contain_variable = T::is_contain_variable;
+        static constexpr bool is_contain_parameter = T::is_contain_parameter;
+        static constexpr bool is_function = true;
+        static constexpr auto name = function_name::EXPONENTIAL;
+        static constexpr auto type = function_type::INDEXED_ONE_ARGUMENT;
+        static constexpr int template_index = I;
+
+        Function(const T& arg) noexcept : argument{ arg }
+        {
+        }
+
+        double operator() (double arg) const
+        {
+            static_assert(I > 1, "base of degree must be greater than 1");
+            return pow(I, argument(arg));
         }
     };
 

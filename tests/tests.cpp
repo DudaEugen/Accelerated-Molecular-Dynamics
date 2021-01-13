@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <cstddef>
 #include <ctime>
+#include <cmath>
 #include <stdlib.h>
 #include <cassert>
 #include <random>
@@ -551,6 +552,30 @@ void derivativeDebug()
 		decltype(set_parameters(x * fcd::root<5>(fcd::Parameter(0)), params)), 
 		impl::Constanta
 	>);
+
+	assert(equal(fcd::root<3>(fcd::Variable())(x), fcd::cb_root(fcd::Variable())(x), 10));
+	assert(equal(fcd::derivative<3>(fcd::root<3>(fcd::Variable()))(x), fcd::derivative<3>(fcd::cb_root(fcd::Variable()))(x), 10));
+
+	assert(equal(fcd::cosinus(fcd::Variable())(x), fcd::sinus(fcd::Variable() + 1.57079632679489661923)(x), 10));
+	assert(equal(fcd::derivative(fcd::sinus(fcd::Variable()))(x), fcd::cosinus(fcd::Variable())(x), 10));
+
+	assert(equal(fcd::tangent(fcd::Variable())(x), sin(x) / cos(x), 10));
+	assert(equal(fcd::derivative(fcd::tangent(fcd::Variable()))(x), pow(cos(x), -2), 10));
+
+	assert(equal(fcd::logarithm(fcd::Variable())(abs(x)), log(abs(x)), 10));
+	assert(equal(fcd::derivative(fcd::logarithm(fcd::Variable()))(abs(x)), 1/abs(x), 10));
+	assert(equal(fcd::logarithm<2>(fcd::Variable())(abs(x)), log2(abs(x)), 10));
+	assert(equal(fcd::logarithm<10>(fcd::Variable())(abs(x)), log10(abs(x)), 10));
+	assert(equal(fcd::derivative(fcd::logarithm<3>(fcd::Variable()))(abs(x)), 1/(abs(x) * log(3)), 10));
+
+	auto f6 = fcd::sq_root(fcd::exponential<3>(-2 * fcd::Variable()));
+	assert(equal(f6(x), pow(3, -x), 10));
+	assert(equal(fcd::derivative<5>(f6)(x), -pow(3,-x) * pow(log(3), 5), 10));
+
+	auto f7_uncomplete = fcd::Parameter(0) * fcd::cosinus(3*fcd::Variable() + fcd::Parameter(1));
+	auto f7 = fcd::set_parameters(f7_uncomplete, params);
+	assert(equal(f7(x), params[0] * cos(3*x + params[1]), 10));
+	assert(equal(fcd::derivative(f7)(x), -3*params[0] * sin(3*x + params[1]), 10));
 }
 
 void funcDebug(int ProcRank, int procNum)

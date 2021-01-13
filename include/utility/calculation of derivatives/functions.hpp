@@ -260,6 +260,17 @@ namespace utils::fcd
         >(argument);
     }
 
+    template<class T>
+    auto cb_root(const T& argument)
+    {
+        return implementation::create_function<
+            implementation::function_name::CUBIC_ROOT,
+            T,
+            implementation::UnusedArgument,
+            implementation::UnusedParameter
+        >(argument);
+    }
+
     // I is exponent, argument (T) is base degree
     template<int I, class T>
     auto power(const T& argument)
@@ -275,15 +286,80 @@ namespace utils::fcd
     template<std::uint8_t I, class T>
     auto root(const T& argument)
     {
-        if constexpr (I != 2)
+        if constexpr (I == 2)
+            return sq_root(argument);
+        if constexpr (I == 3)
+            return cb_root(argument);
+        else
             return implementation::create_function<
                 implementation::function_name::ROOT,
                 T,
                 implementation::UnusedArgument,
                 I
-            >(argument);
-        else
-            return sq_root(argument);    
+            >(argument);   
+    }
+
+    template<class T>
+    auto sinus(const T& argument)
+    {
+        return implementation::create_function<
+            implementation::function_name::SINUS,
+            T,
+            implementation::UnusedArgument,
+            implementation::UnusedParameter
+        >(argument);
+    }
+
+    template<class T>
+    auto cosinus(const T& argument)
+    {
+        return implementation::create_function<
+            implementation::function_name::COSINUS,
+            T,
+            implementation::UnusedArgument,
+            implementation::UnusedParameter
+        >(argument);
+    }
+
+    template<class T>
+    auto tangent(const T& argument)
+    {
+        return implementation::create_function<
+            implementation::function_name::TANGENT,
+            T,
+            implementation::UnusedArgument,
+            implementation::UnusedParameter
+        >(argument);
+    }
+
+    // natural logarithm
+    template<class T>
+    auto logarithm(const T& argument)
+    {
+        return implementation::create_function<
+            implementation::function_name::LOGARITHM_NATURAL,
+            T,
+            implementation::UnusedArgument,
+            implementation::UnusedParameter
+        >(argument);
+    }
+
+    template<std::uint8_t I, class T>
+    auto logarithm(const T& argument)
+    {
+        static_assert(I > 1, "base of logarithm must be great than 1");
+        return product(implementation::Constanta(1/log(I)), logarithm(argument));
+    }
+
+    template<std::uint8_t I, class T>
+    auto exponential(const T& argument)
+    {
+        return implementation::create_function<
+            implementation::function_name::EXPONENTIAL,
+            T,
+            implementation::UnusedArgument,
+            I
+        >(argument);
     }
 }
 
