@@ -576,6 +576,19 @@ void derivativeDebug()
 	auto f7 = fcd::set_parameters(f7_uncomplete, params);
 	assert(equal(f7(x), params[0] * cos(3*x + params[1]), 10));
 	assert(equal(fcd::derivative(f7)(x), -3*params[0] * sin(3*x + params[1]), 10));
+
+	auto f8 = fcd::sinus(fcd::Variable())/fcd::cosinus(fcd::Variable());
+	assert(equal(f8(x), fcd::tangent(fcd::Variable())(x), 10));
+	assert(equal(fcd::derivative(f8)(x), pow(cos(x), -2), 10));
+
+	auto f9_uncomplete = fcd::Parameter(1) * fcd::exponenta(-fcd::Variable() / fcd::Parameter(0));
+	auto f9 = fcd::set_parameters(f9_uncomplete, params);
+	assert(equal(f9(x), params[1]*exp(-x/params[0]), 10));
+	assert(equal(fcd::derivative<3>(f9)(x), -params[1]/pow(params[0], 3)*exp(-x/params[0]), 10));
+
+	auto f10 = fcd::power<3>(fcd::Variable()) - fcd::Variable() - 5;
+	assert(equal(f10(x), pow(x, 3) - x - 5, 10));
+	assert(equal(fcd::derivative<2>(f10)(x), 6*x, 10));
 }
 
 void funcDebug(int ProcRank, int procNum)
