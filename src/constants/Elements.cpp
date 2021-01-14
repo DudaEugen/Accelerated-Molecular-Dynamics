@@ -1,4 +1,4 @@
-#include "Elements.hpp"
+#include "constants/Elements.hpp"
 #include <random>
 #include <ctime>
 #include <fstream>
@@ -6,18 +6,18 @@
 namespace md
 {
 	#define CONVERT_TO_STRING
-	#include "Elements/elements_enum.hpp"
-	#include "Elements/macros_close.hpp"
+	#include "constants/Elements helper/elements_enum.hpp"
+	#include "constants/Elements helper/macros_close.hpp"
 	#undef CONVERT_TO_STRING
 
 	#define PARSE_ELEMENT
-	#include "Elements/elements_enum.hpp"
-	#include "Elements/macros_close.hpp"
+	#include "constants/Elements helper/elements_enum.hpp"
+	#include "constants/Elements helper/macros_close.hpp"
 	#undef PARSE_ELEMENT
 
 	#define ALL_ELEMENTS
-	#include "Elements/elements_enum.hpp"
-	#include "Elements/macros_close.hpp"
+	#include "constants/Elements helper/elements_enum.hpp"
+	#include "constants/Elements helper/macros_close.hpp"
 	#undef ALL_ELEMENTS
 	#define TAHD_ELEMENT_ENUMERATION_MACROS
 }
@@ -66,7 +66,7 @@ int md::get_atomic_mass(const std::string& title, const bool isWeightedMean)
 	static bool isNeedSrand = true;
 
 	std::ifstream file;
-	file.open("src/Elements/Isotopes/" + title);
+	file.open("src/constants/Elements helper/Isotopes/" + title);
 	if (file.is_open())
 	{
 		if (isWeightedMean)

@@ -14,7 +14,7 @@ namespace md
 	};
 
 	#define ENUM_CREATE
-	#include "Elements/elements_enum.hpp"
+	#include "Elements helper/elements_enum.hpp"
 	#undef ENUM_CREATE
 
 	//functions throw ElementException if dont know values for this element

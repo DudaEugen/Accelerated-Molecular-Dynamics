@@ -12,9 +12,9 @@
 #include <functional>
 #include <utility>
 #include "mpi.h"
-#include "constants.hpp"
+#include "constants/constants.hpp"
 #include "Atom.hpp"
-#include "Substances.hpp"
+#include "constants/Substances.hpp"
 #include "Matrix/SquareMatrix.hpp"
 #include "NeighboursList.hpp"
 #include "ProcessesSet.hpp"

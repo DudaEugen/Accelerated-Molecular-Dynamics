@@ -2,7 +2,7 @@
 #ifndef TAHD_ATOM_H
 #define TAHD_ATOM_H
 
-#include "Elements.hpp"
+#include "constants/Elements.hpp"
 #include "Vector.hpp"
 
 namespace md
