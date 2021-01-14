@@ -12,8 +12,6 @@ namespace utils::fcd::implementation
     enum class function_name
     {
         EXPONENTA,
-        SQUARE_ROOT,
-        CUBIC_ROOT,
         SINUS,
         COSINUS,
         TANGENT,
@@ -59,54 +57,6 @@ namespace utils::fcd::implementation
         double operator() (double arg) const
         {
             return exp(argument(arg));
-        }
-    };
-
-    template<class T>
-    struct Function<function_name::SQUARE_ROOT, T, UnusedArgument, UnusedParameter>
-    {
-        const T argument;
-
-        using arg_t = T;
-        static constexpr bool is_constanta = T::is_constanta;
-        static constexpr bool is_contain_variable = T::is_contain_variable;
-        static constexpr bool is_contain_parameter = T::is_contain_parameter;
-        static constexpr bool is_function = true;
-        static constexpr auto name = function_name::SQUARE_ROOT;
-        static constexpr auto type = function_type::ONE_ARGUMENT;
-        static constexpr int template_index = UnusedParameter;
-
-        Function(const T& arg) noexcept : argument{ arg }
-        {
-        }
-
-        double operator() (double arg) const
-        {
-            return sqrt(argument(arg));
-        }
-    };
-
-    template<class T>
-    struct Function<function_name::CUBIC_ROOT, T, UnusedArgument, UnusedParameter>
-    {
-        const T argument;
-
-        using arg_t = T;
-        static constexpr bool is_constanta = T::is_constanta;
-        static constexpr bool is_contain_variable = T::is_contain_variable;
-        static constexpr bool is_contain_parameter = T::is_contain_parameter;
-        static constexpr bool is_function = true;
-        static constexpr auto name = function_name::CUBIC_ROOT;
-        static constexpr auto type = function_type::ONE_ARGUMENT;
-        static constexpr int template_index = UnusedParameter;
-
-        Function(const T& arg) noexcept : argument{ arg }
-        {
-        }
-
-        double operator() (double arg) const
-        {
-            return cbrt(argument(arg));
         }
     };
 
@@ -253,7 +203,12 @@ namespace utils::fcd::implementation
         double operator() (double arg) const
         {
             static_assert(I > 1, "root must be great that 1");
-            return pow(argument(arg), 1./I);
+            if constexpr (I == 2)
+                return sqrt(argument(arg));
+            else if constexpr (I == 3)
+                return cbrt(argument(arg));
+            else
+                return pow(argument(arg), 1./I);
         }
     };
 

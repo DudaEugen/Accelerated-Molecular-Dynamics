@@ -451,10 +451,10 @@ namespace utils::fcd
     auto sq_root(const T& argument)
     {
         return implementation::create_function<
-            implementation::function_name::SQUARE_ROOT,
+            implementation::function_name::ROOT,
             T,
             implementation::UnusedArgument,
-            implementation::UnusedParameter
+            2
         >(argument);
     }
 
@@ -462,10 +462,10 @@ namespace utils::fcd
     auto cb_root(const T& argument)
     {
         return implementation::create_function<
-            implementation::function_name::CUBIC_ROOT,
+            implementation::function_name::ROOT,
             T,
             implementation::UnusedArgument,
-            implementation::UnusedParameter
+            3
         >(argument);
     }
 
@@ -484,17 +484,12 @@ namespace utils::fcd
     template<std::uint8_t I, class T>
     auto root(const T& argument)
     {
-        if constexpr (I == 2)
-            return sq_root(argument);
-        if constexpr (I == 3)
-            return cb_root(argument);
-        else
-            return implementation::create_function<
-                implementation::function_name::ROOT,
-                T,
-                implementation::UnusedArgument,
-                I
-            >(argument);   
+        return implementation::create_function<
+            implementation::function_name::ROOT,
+            T,
+            implementation::UnusedArgument,
+            I
+        >(argument);   
     }
 
     template<class T>

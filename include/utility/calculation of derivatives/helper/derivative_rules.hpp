@@ -17,30 +17,6 @@ namespace utils::fcd::implementation
     }
 
     template<class T>
-    auto derivative_sqrt(const T& arg) noexcept
-    {
-        auto func = Function<
-            function_name::POWER, T, UnusedArgument, -1
-        >(arg);
-
-        return Function<
-            function_name::PRODUCT, Constanta, decltype(func), UnusedParameter
-        >(Constanta(0.5), func);
-    }
-
-    template<class T>
-    auto derivative_cbrt(const T& arg) noexcept
-    {
-        auto func = Function<
-            function_name::POWER, T, UnusedArgument, -2
-        >(arg);
-
-        return Function<
-            function_name::PRODUCT, Constanta, decltype(func), UnusedParameter
-        >(Constanta(1./3), func);
-    }
-
-    template<class T>
     auto derivative_sin(const T& arg) noexcept
     {
         return Function<
@@ -142,14 +118,10 @@ namespace utils::fcd::implementation
     {
         if constexpr (T::name == function_name::EXPONENTA)
             return derivative_exp(arg);
-        else if constexpr (T::name == function_name::SQUARE_ROOT)
-            return derivative_sqrt(arg);
         else if constexpr (T::name == function_name::POWER)
             return derivative_pow(arg);
         else if constexpr (T::name == function_name::ROOT)
             return derivative_root(arg);
-        else if constexpr (T::name == function_name::CUBIC_ROOT)
-            return derivative_cbrt(arg);
         else if constexpr (T::name == function_name::COSINUS)
             return derivative_cos(arg);
         else if constexpr (T::name == function_name::SINUS)
