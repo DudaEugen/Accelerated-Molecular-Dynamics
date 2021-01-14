@@ -2,7 +2,7 @@
 #ifndef TAHD_CELL_COLLECTION_H
 #define TAHD_CELL_COLLECTION_H
 
-#include "Cell.hpp"
+#include "Part of System/Cell.hpp"
 #include "Potential/APotential.hpp"
 
 namespace md

@@ -1,4 +1,4 @@
-#include "Atom.hpp"
+#include "Atoms/Atom.hpp"
 #include <cmath>
 
 md::Atom::Atom(const element element, Vector::ConstPass coordinates):

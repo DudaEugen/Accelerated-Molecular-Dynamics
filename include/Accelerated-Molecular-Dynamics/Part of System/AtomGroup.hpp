@@ -2,7 +2,7 @@
 #ifndef TAHD_ATOM_GROUP_H
 #define TAHD_ATOM_GROUP_H
 
-#include "Atom.hpp"
+#include "Atoms/Atom.hpp"
 #include <vector>
 
 namespace md

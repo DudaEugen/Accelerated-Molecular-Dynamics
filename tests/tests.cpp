@@ -13,10 +13,10 @@
 #include <utility>
 #include "mpi.h"
 #include "constants/constants.hpp"
-#include "Atom.hpp"
+#include "Atoms/Atom.hpp"
 #include "constants/Substances.hpp"
 #include "Matrix/SquareMatrix.hpp"
-#include "NeighboursList.hpp"
+#include "Atoms/NeighboursList.hpp"
 #include "Parallel/MPI/ProcessesSet.hpp"
 #include "Potential/MockPotential.hpp"
 #include "Zip.hpp"

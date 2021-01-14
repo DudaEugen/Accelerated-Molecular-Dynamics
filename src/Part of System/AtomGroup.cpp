@@ -1,4 +1,4 @@
-#include "AtomGroup.hpp"
+#include "Part of System/AtomGroup.hpp"
 
 md::AtomGroup::AtomGroup(const size_t reservedNumber) : atoms{}
 {

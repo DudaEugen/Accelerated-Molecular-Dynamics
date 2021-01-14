@@ -2,7 +2,7 @@
 #ifndef TAHD_STREAM_H
 #define TAHD_STREAM_H
 
-#include "Atom.hpp"
+#include "Atoms/Atom.hpp"
 
 namespace md
 {

@@ -3,7 +3,7 @@
 #define TAHD_ABSTRACT_POTENTIAL_H
 
 #include <vector>
-#include "AtomPair.hpp"
+#include "Atoms/AtomPair.hpp"
 
 namespace md
 {

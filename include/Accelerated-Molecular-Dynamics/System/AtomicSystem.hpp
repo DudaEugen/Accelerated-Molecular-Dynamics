@@ -2,7 +2,7 @@
 #ifndef TAHD_ATOMIC_SYSTEM_H
 #define TAHD_ATOMIC_SYSTEM_H
 
-#include "AtomPair.hpp"
+#include "Atoms/AtomPair.hpp"
 #include "CellCollection.hpp"
 
 namespace md
