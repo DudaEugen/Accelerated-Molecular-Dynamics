@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include "mpi.h"
 #include "Process.hpp"
-#include "AtomicSystem.hpp"
+#include "System/AtomicSystem.hpp"
 
 namespace md
 {

@@ -3,7 +3,7 @@
 #define TAHD_ATOM_PAIR_H
 
 #include "Atom.hpp"
-#include "BorderConditions.hpp"
+#include "System/BorderConditions.hpp"
 
 namespace md
 {

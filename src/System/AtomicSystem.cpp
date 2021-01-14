@@ -1,4 +1,4 @@
-#include "AtomicSystem.hpp"
+#include "System/AtomicSystem.hpp"
 
 md::AtomicSystem::AtomicSystem(const std::vector<Atom>& allAtoms, APotential* atomicPotential, 
                                BorderConditions* borderCond)
