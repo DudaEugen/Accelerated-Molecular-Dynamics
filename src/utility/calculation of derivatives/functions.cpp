@@ -304,7 +304,7 @@ impl::ZeroConstanta fcd::operator/ (impl::ZeroConstanta c, Variable v) noexcept
     return impl::ZeroConstanta();
 }
 
-impl::Product_t<impl::Constanta, fcd::Parameter> fcd::operator/ (Parameter p, impl::Constanta c) noexcept
+impl::Product_t<impl::Constanta, fcd::Parameter> fcd::operator/ (Parameter p, impl::Constanta c)
 {
     return impl::Constanta(1/c(0)) * p;
 }
@@ -314,7 +314,7 @@ impl::Ratio_t<fcd::Parameter, fcd::Variable> fcd::operator/ (Parameter p, Variab
     return p * power<-1>(v);
 }
 
-impl::Product_t<impl::Constanta, fcd::Variable> fcd::operator/ (Variable v, impl::Constanta c) noexcept
+impl::Product_t<impl::Constanta, fcd::Variable> fcd::operator/ (Variable v, impl::Constanta c)
 {
     return impl::Constanta(1/c(0)) * v;
 }

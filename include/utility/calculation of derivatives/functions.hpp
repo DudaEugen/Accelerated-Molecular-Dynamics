@@ -363,12 +363,12 @@ namespace utils::fcd
     implementation::ZeroConstanta operator/ (implementation::ZeroConstanta c, Variable v) noexcept;
 
     implementation::Product_t<implementation::Constanta, Parameter> operator/ (Parameter p, 
-                                                                               implementation::Constanta c) noexcept;
+                                                                               implementation::Constanta c);
 
     implementation::Ratio_t<Parameter, Variable> operator/ (Parameter p, Variable v) noexcept;
 
     implementation::Product_t<implementation::Constanta, Variable> operator/ (Variable v, 
-                                                                              implementation::Constanta c) noexcept;
+                                                                              implementation::Constanta c);
 
     implementation::Ratio_t<Variable, Parameter> operator/ (Variable v, Parameter p) noexcept;
 
