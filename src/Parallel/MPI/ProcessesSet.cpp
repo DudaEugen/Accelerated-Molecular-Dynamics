@@ -1,4 +1,4 @@
-#include "ProcessesSet.hpp"
+#include "Parallel/MPI/ProcessesSet.hpp"
 #include <exception>
 
 md::ProcessesSet::ProcessesSet(const unsigned int uniqId, AtomicSystem* atomicSystem, const MPI_Comm mpiComm)  

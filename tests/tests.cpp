@@ -17,7 +17,7 @@
 #include "constants/Substances.hpp"
 #include "Matrix/SquareMatrix.hpp"
 #include "NeighboursList.hpp"
-#include "ProcessesSet.hpp"
+#include "Parallel/MPI/ProcessesSet.hpp"
 #include "Potential/MockPotential.hpp"
 #include "Zip.hpp"
 #include "IndexedZip.hpp"
