@@ -4,9 +4,6 @@
 using namespace utils;
 namespace impl = fcd::implementation;
 
-template<class T>
-void function__();
-
 void staticTestsDerivative()
 {
     double x = random<-3, 3>();
@@ -43,6 +40,10 @@ void staticTestsDerivative()
 	static_assert(std::is_same_v<
 		decltype(fcd::setParameterAsVariable<1>(fcd::Parameter<0>())),
 		fcd::Parameter<0>
+	>);
+	static_assert(std::is_same_v<
+		decltype(fcd::derivative<2>(fcd::setParameterAsVariable<0>(fcd::exponenta(fcd::Parameter<0>())))),
+		decltype(fcd::exponenta(fcd::Variable()))
 	>);
 }
 

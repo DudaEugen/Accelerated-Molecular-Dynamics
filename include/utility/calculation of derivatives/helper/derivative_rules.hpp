@@ -149,12 +149,19 @@ namespace utils::fcd
         else if constexpr (T::Type == FunctionType::OneArgument ||
                            T::Type == FunctionType::IndexedOneArgument)
         {
-            return Function<
-                FunctionName::Product,
-                decltype(derivativeOneArgumentFunction(func_struct)),
-                decltype(derivative(func_struct.argument)),
-                UnusedParameter
-            >(derivativeOneArgumentFunction(func_struct), derivative(func_struct.argument));
+            if constexpr (std::is_same_v<typename T::ArgT, Variable>)
+            {
+                return derivativeOneArgumentFunction(func_struct);
+            }
+            else
+            {
+                return Function<
+                    FunctionName::Product,
+                    decltype(derivativeOneArgumentFunction(func_struct)),
+                    decltype(derivative(func_struct.argument)),
+                    UnusedParameter
+                >(derivativeOneArgumentFunction(func_struct), derivative(func_struct.argument));
+            }
         }
         else if constexpr (T::Type == FunctionType::TwoArgument)
         {
