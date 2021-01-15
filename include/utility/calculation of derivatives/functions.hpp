@@ -7,42 +7,42 @@
 
 namespace utils::fcd::implementation
 {
-    template<function_name N, class T, class S, int I>
-    auto create_function(const T& argument)
+    template<FunctionName N, class T, class S, int I>
+    auto createFunction(const T& argument)
     {
         if constexpr (std::is_same_v<T, double> || std::is_same_v<T, int>)
-            return implementation::const_function_folding(implementation::Function<
+            return implementation::constFunctionFolding(implementation::Function<
                 N, Constanta, S, I
             >(implementation::Constanta{argument}));
         else if constexpr (std::is_same_v<T, Constanta>)
-            return implementation::const_function_folding(implementation::Function<
+            return implementation::constFunctionFolding(implementation::Function<
                 N, Constanta, S, I
             >(argument));
         else
-            return implementation::const_function_folding(implementation::Function<
+            return implementation::constFunctionFolding(implementation::Function<
                 N, T, S, I
             >(argument));
     }
 
     template<class F, class S>
-    using Summ_t = Function<function_name::SUMM, F, S, UnusedParameter>;
+    using Summ_t = Function<FunctionName::Summ, F, S, UnusedParameter>;
     template<class F, class S>
-    using Product_t = Function<function_name::PRODUCT, F, S, UnusedParameter>;
+    using Product_t = Function<FunctionName::Product, F, S, UnusedParameter>;
     template<class F, class S>
     using Difference_t = Summ_t<F, Product_t<Constanta, S>>;
     template<class F, class S>
-    using Ratio_t = Product_t<F, Function<function_name::POWER, S, UnusedArgument, -1>>;
+    using Ratio_t = Product_t<F, Function<FunctionName::Power, S, UnusedArgument, -1>>;
 
     template<class F, class S>
     auto summ(const F& first, const S& second)
     {
-        return const_function_folding(Summ_t<F, S>(first, second));
+        return constFunctionFolding(Summ_t<F, S>(first, second));
     }
 
     template<class F, class S>
     auto product(const F& first, const S& second)
     {
-        return const_function_folding(Product_t<F, S>(first, second));
+        return constFunctionFolding(Product_t<F, S>(first, second));
     }
 }
 
@@ -57,7 +57,7 @@ namespace utils::fcd
     
     implementation::Product_t<implementation::Constanta, Variable> operator- (Variable v) noexcept;
     
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator- (const implementation::Function<N, F, S, I>& func)
     {
         return implementation::product(implementation::Constanta(-1), func);
@@ -100,56 +100,56 @@ namespace utils::fcd
 
     implementation::Summ_t<Parameter, Variable> operator+ (Variable v, Parameter p) noexcept;
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator+ (const implementation::Function<N, F, S, I>& func, implementation::Constanta c)
     {
         return implementation::summ(c, func);
     }
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator+ (implementation::Constanta c, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::summ(c, func);
     }
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator+ (const implementation::Function<N, F, S, I>& func, implementation::ZeroConstanta c)
     {
         return func;
     }
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator+ (implementation::ZeroConstanta c, const implementation::Function<N, F, S, I>& func)
     {
         return func;
     }
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator+ (const implementation::Function<N, F, S, I>& func, Parameter p)
     {
         return implementation::summ(p, func);
     }
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator+ (Parameter p, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::summ(p, func);
     }
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator+ (const implementation::Function<N, F, S, I>& func, Variable v)
     {
         return implementation::summ(v, func);
     }
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator+ (Variable v, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::summ(v, func);
     }
 
-    template<implementation::function_name N1, class F1, class S1, int I1, 
-             implementation::function_name N2, class F2, class S2, int I2>
+    template<implementation::FunctionName N1, class F1, class S1, int I1, 
+             implementation::FunctionName N2, class F2, class S2, int I2>
     auto operator+ (const implementation::Function<N1, F1, S1, I1>& func1, 
                     const implementation::Function<N2, F2, S2, I2>& func2)
     {
@@ -162,7 +162,7 @@ namespace utils::fcd
 
     implementation::Product_t<Parameter, Parameter> operator* (Parameter p1, Parameter p2) noexcept;
 
-    implementation::Function<implementation::function_name::POWER, 
+    implementation::Function<implementation::FunctionName::Power, 
         Variable, implementation::UnusedArgument, 2> operator* (Variable v1, Variable v2) noexcept;
 
     implementation::ZeroConstanta operator* (implementation::Constanta c1, implementation::ZeroConstanta c2) noexcept;
@@ -193,56 +193,56 @@ namespace utils::fcd
 
     implementation::Product_t<Parameter, Variable> operator* (Variable v, Parameter p) noexcept;
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator* (const implementation::Function<N, F, S, I>& func, implementation::Constanta c)
     {
         return implementation::product(c, func);
     }
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator* (implementation::Constanta c, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::product(c, func);
     }
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator* (const implementation::Function<N, F, S, I>& func, implementation::ZeroConstanta c)
     {
         return implementation::ZeroConstanta();
     }
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator* (implementation::ZeroConstanta c, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::ZeroConstanta();
     }
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator* (const implementation::Function<N, F, S, I>& func, Parameter p)
     {
         return implementation::product(p, func);
     }
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator* (Parameter p, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::product(p, func);
     }
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator* (const implementation::Function<N, F, S, I>& func, Variable v)
     {
         return implementation::product(v, func);
     }
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator* (Variable v, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::product(v, func);
     }
 
-    template<implementation::function_name N1, class F1, class S1, int I1, 
-             implementation::function_name N2, class F2, class S2, int I2>
+    template<implementation::FunctionName N1, class F1, class S1, int I1, 
+             implementation::FunctionName N2, class F2, class S2, int I2>
     auto operator* (const implementation::Function<N1, F1, S1, I1>& func1, 
                    const implementation::Function<N2, F2, S2, I2>& func2)
     {
@@ -288,56 +288,56 @@ namespace utils::fcd
 
     implementation::Difference_t<Variable, Parameter> operator- (Variable v, Parameter p) noexcept;
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator- (const implementation::Function<N, F, S, I>& func, implementation::Constanta c)
     {
         return implementation::summ(implementation::Constanta(-c(0)), func);
     }
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator- (implementation::Constanta c, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::summ(c, implementation::product(implementation::Constanta(-1), func));
     }
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator- (const implementation::Function<N, F, S, I>& func, implementation::ZeroConstanta c)
     {
         return func;
     }
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator- (implementation::ZeroConstanta c, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::product(implementation::Constanta(-1), func);
     }
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator- (const implementation::Function<N, F, S, I>& func, Parameter p)
     {
         return implementation::summ(implementation::product(implementation::Constanta(-1), p), func);
     }
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator- (Parameter p, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::summ(p, implementation::product(implementation::Constanta(-1), func));
     }
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator- (const implementation::Function<N, F, S, I>& func, Variable v)
     {
         return implementation::summ(implementation::product(implementation::Constanta(-1), v), func);
     }
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator- (Variable v, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::summ(v, implementation::product(implementation::Constanta(-1), func));
     }
 
-    template<implementation::function_name N1, class F1, class S1, int I1, 
-             implementation::function_name N2, class F2, class S2, int I2>
+    template<implementation::FunctionName N1, class F1, class S1, int I1, 
+             implementation::FunctionName N2, class F2, class S2, int I2>
     auto operator- (const implementation::Function<N1, F1, S1, I1>& func1, 
                     const implementation::Function<N2, F2, S2, I2>& func2)
     {
@@ -372,65 +372,65 @@ namespace utils::fcd
 
     implementation::Ratio_t<Variable, Parameter> operator/ (Variable v, Parameter p) noexcept;
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator/ (const implementation::Function<N, F, S, I>& func, implementation::Constanta c)
     {
         return implementation::product(implementation::Constanta(1/c(0)), func);
     }
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator/ (implementation::Constanta c, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::product(c, implementation::Function<
-            implementation::function_name::POWER, std::decay_t<decltype(func)>, implementation::UnusedArgument, -1
+            implementation::FunctionName::Power, std::decay_t<decltype(func)>, implementation::UnusedArgument, -1
         >(func));
     }
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator/ (implementation::ZeroConstanta c, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::ZeroConstanta();
     }
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator/ (const implementation::Function<N, F, S, I>& func, Parameter p)
     {
         return implementation::product(func, implementation::Function<
-            implementation::function_name::POWER, Parameter, implementation::UnusedArgument, -1
+            implementation::FunctionName::Power, Parameter, implementation::UnusedArgument, -1
         >(p));
     }
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator/ (Parameter p, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::product(p, implementation::Function<
-            implementation::function_name::POWER, std::decay_t<decltype(func)>, implementation::UnusedArgument, -1
+            implementation::FunctionName::Power, std::decay_t<decltype(func)>, implementation::UnusedArgument, -1
         >(func));
     }
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator/ (const implementation::Function<N, F, S, I>& func, Variable v)
     {
         return implementation::product(func, implementation::Function<
-            implementation::function_name::POWER, Variable, implementation::UnusedArgument, -1
+            implementation::FunctionName::Power, Variable, implementation::UnusedArgument, -1
         >(v));
     }
 
-    template<implementation::function_name N, class F, class S, int I>
+    template<implementation::FunctionName N, class F, class S, int I>
     auto operator/ (Variable v, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::product(v, implementation::Function<
-            implementation::function_name::POWER, std::decay_t<decltype(func)>, implementation::UnusedArgument, -1
+            implementation::FunctionName::Power, std::decay_t<decltype(func)>, implementation::UnusedArgument, -1
         >(func));
     }
 
-    template<implementation::function_name N1, class F1, class S1, int I1, 
-             implementation::function_name N2, class F2, class S2, int I2>
+    template<implementation::FunctionName N1, class F1, class S1, int I1, 
+             implementation::FunctionName N2, class F2, class S2, int I2>
     auto operator/ (const implementation::Function<N1, F1, S1, I1>& func1, 
                    const implementation::Function<N2, F2, S2, I2>& func2)
     {
         return implementation::product(func1, implementation::Function<
-            implementation::function_name::POWER, std::decay_t<decltype(func2)>, implementation::UnusedArgument, -1
+            implementation::FunctionName::Power, std::decay_t<decltype(func2)>, implementation::UnusedArgument, -1
         >(func2));
     }
 
@@ -439,8 +439,8 @@ namespace utils::fcd
     template<class T>
     auto exponenta(const T& argument)
     {
-        return implementation::create_function<
-            implementation::function_name::EXPONENTA,
+        return implementation::createFunction<
+            implementation::FunctionName::Exponenta,
             T,
             implementation::UnusedArgument,
             implementation::UnusedParameter
@@ -448,10 +448,10 @@ namespace utils::fcd
     }
 
     template<class T>
-    auto sq_root(const T& argument)
+    auto sqRoot(const T& argument)
     {
-        return implementation::create_function<
-            implementation::function_name::ROOT,
+        return implementation::createFunction<
+            implementation::FunctionName::Root,
             T,
             implementation::UnusedArgument,
             2
@@ -459,10 +459,10 @@ namespace utils::fcd
     }
 
     template<class T>
-    auto cb_root(const T& argument)
+    auto cbRoot(const T& argument)
     {
-        return implementation::create_function<
-            implementation::function_name::ROOT,
+        return implementation::createFunction<
+            implementation::FunctionName::Root,
             T,
             implementation::UnusedArgument,
             3
@@ -473,8 +473,8 @@ namespace utils::fcd
     template<int I, class T>
     auto power(const T& argument)
     {
-        return implementation::create_function<
-            implementation::function_name::POWER,
+        return implementation::createFunction<
+            implementation::FunctionName::Power,
             T,
             implementation::UnusedArgument,
             I
@@ -484,8 +484,8 @@ namespace utils::fcd
     template<std::uint8_t I, class T>
     auto root(const T& argument)
     {
-        return implementation::create_function<
-            implementation::function_name::ROOT,
+        return implementation::createFunction<
+            implementation::FunctionName::Root,
             T,
             implementation::UnusedArgument,
             I
@@ -495,8 +495,8 @@ namespace utils::fcd
     template<class T>
     auto sinus(const T& argument)
     {
-        return implementation::create_function<
-            implementation::function_name::SINUS,
+        return implementation::createFunction<
+            implementation::FunctionName::Sinus,
             T,
             implementation::UnusedArgument,
             implementation::UnusedParameter
@@ -506,8 +506,8 @@ namespace utils::fcd
     template<class T>
     auto cosinus(const T& argument)
     {
-        return implementation::create_function<
-            implementation::function_name::COSINUS,
+        return implementation::createFunction<
+            implementation::FunctionName::Cosinus,
             T,
             implementation::UnusedArgument,
             implementation::UnusedParameter
@@ -517,8 +517,8 @@ namespace utils::fcd
     template<class T>
     auto tangent(const T& argument)
     {
-        return implementation::create_function<
-            implementation::function_name::TANGENT,
+        return implementation::createFunction<
+            implementation::FunctionName::Tangent,
             T,
             implementation::UnusedArgument,
             implementation::UnusedParameter
@@ -529,8 +529,8 @@ namespace utils::fcd
     template<class T>
     auto logarithm(const T& argument)
     {
-        return implementation::create_function<
-            implementation::function_name::LOGARITHM_NATURAL,
+        return implementation::createFunction<
+            implementation::FunctionName::LogarithmNatural,
             T,
             implementation::UnusedArgument,
             implementation::UnusedParameter
@@ -547,8 +547,8 @@ namespace utils::fcd
     template<std::uint8_t I, class T>
     auto exponential(const T& argument)
     {
-        return implementation::create_function<
-            implementation::function_name::EXPONENTIAL,
+        return implementation::createFunction<
+            implementation::FunctionName::Exponential,
             T,
             implementation::UnusedArgument,
             I

@@ -118,7 +118,7 @@ impl::Product_t<fcd::Parameter, fcd::Parameter> fcd::operator* (Parameter p1, Pa
     return impl::product(p1, p2);
 }
 
-impl::Function<impl::function_name::POWER, 
+impl::Function<impl::FunctionName::Power, 
     fcd::Variable, impl::UnusedArgument, 2> fcd::operator* (Variable v1, Variable v2) noexcept
 {
     return power<2>(Variable());

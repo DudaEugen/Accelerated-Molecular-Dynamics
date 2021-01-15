@@ -9,46 +9,46 @@
 
 namespace utils::fcd::implementation
 {
-    enum class function_name
+    enum class FunctionName
     {
-        EXPONENTA,
-        SINUS,
-        COSINUS,
-        TANGENT,
-        LOGARITHM_NATURAL,
-        POWER,
-        ROOT,
-        EXPONENTIAL,
-        SUMM,
-        PRODUCT,
+        Exponenta,
+        Sinus,
+        Cosinus,
+        Tangent,
+        LogarithmNatural,
+        Power,
+        Root,
+        Exponential,
+        Summ,
+        Product,
     };
 
-    enum class function_type
+    enum class FunctionType
     {
-        ONE_ARGUMENT,
-        TWO_ARGUMENT,
-        INDEXED_ONE_ARGUMENT,
+        OneArgument,
+        TwoArgument,
+        IndexedOneArgument,
     };
 
     struct UnusedArgument;
     constexpr int UnusedParameter = 0;
 
-    template<function_name Name, class FirstArgument, class SecondArgument, int Index>
+    template<FunctionName FName, class FirstArgument, class SecondArgument, int Index>
     struct Function;
 
     template<class T>
-    struct Function<function_name::EXPONENTA, T, UnusedArgument, UnusedParameter>
+    struct Function<FunctionName::Exponenta, T, UnusedArgument, UnusedParameter>
     {
         const T argument;
 
-        using arg_t = T;
-        static constexpr bool is_constanta = T::is_constanta;
-        static constexpr bool is_contain_variable = T::is_contain_variable;
-        static constexpr bool is_contain_parameter = T::is_contain_parameter;
-        static constexpr bool is_function = true;
-        static constexpr auto name = function_name::EXPONENTA;
-        static constexpr auto type = function_type::ONE_ARGUMENT;
-        static constexpr int template_index = UnusedParameter;
+        using ArgT = T;
+        static constexpr bool IsConstanta = T::IsConstanta;
+        static constexpr bool IsContainVariable = T::IsContainVariable;
+        static constexpr bool IsContainParameter = T::IsContainParameter;
+        static constexpr bool IsFunction = true;
+        static constexpr auto Name = FunctionName::Exponenta;
+        static constexpr auto Type = FunctionType::OneArgument;
+        static constexpr int TemplateIndex = UnusedParameter;
 
         Function(const T& arg) noexcept : argument{ arg }
         {
@@ -61,18 +61,18 @@ namespace utils::fcd::implementation
     };
 
     template<class T>
-    struct Function<function_name::SINUS, T, UnusedArgument, UnusedParameter>
+    struct Function<FunctionName::Sinus, T, UnusedArgument, UnusedParameter>
     {
         const T argument;
 
-        using arg_t = T;
-        static constexpr bool is_constanta = T::is_constanta;
-        static constexpr bool is_contain_variable = T::is_contain_variable;
-        static constexpr bool is_contain_parameter = T::is_contain_parameter;
-        static constexpr bool is_function = true;
-        static constexpr auto name = function_name::SINUS;
-        static constexpr auto type = function_type::ONE_ARGUMENT;
-        static constexpr int template_index = UnusedParameter;
+        using ArgT = T;
+        static constexpr bool IsConstanta = T::IsConstanta;
+        static constexpr bool IsContainVariable = T::IsContainVariable;
+        static constexpr bool IsContainParameter = T::IsContainParameter;
+        static constexpr bool IsFunction = true;
+        static constexpr auto Name = FunctionName::Sinus;
+        static constexpr auto Type = FunctionType::OneArgument;
+        static constexpr int TemplateIndex = UnusedParameter;
 
         Function(const T& arg) noexcept : argument{ arg }
         {
@@ -85,18 +85,18 @@ namespace utils::fcd::implementation
     };
 
     template<class T>
-    struct Function<function_name::COSINUS, T, UnusedArgument, UnusedParameter>
+    struct Function<FunctionName::Cosinus, T, UnusedArgument, UnusedParameter>
     {
         const T argument;
 
-        using arg_t = T;
-        static constexpr bool is_constanta = T::is_constanta;
-        static constexpr bool is_contain_variable = T::is_contain_variable;
-        static constexpr bool is_contain_parameter = T::is_contain_parameter;
-        static constexpr bool is_function = true;
-        static constexpr auto name = function_name::COSINUS;
-        static constexpr auto type = function_type::ONE_ARGUMENT;
-        static constexpr int template_index = UnusedParameter;
+        using ArgT = T;
+        static constexpr bool IsConstanta = T::IsConstanta;
+        static constexpr bool IsContainVariable = T::IsContainVariable;
+        static constexpr bool IsContainParameter = T::IsContainParameter;
+        static constexpr bool IsFunction = true;
+        static constexpr auto Name = FunctionName::Cosinus;
+        static constexpr auto Type = FunctionType::OneArgument;
+        static constexpr int TemplateIndex = UnusedParameter;
 
         Function(const T& arg) noexcept : argument{ arg }
         {
@@ -109,18 +109,18 @@ namespace utils::fcd::implementation
     };
 
     template<class T>
-    struct Function<function_name::TANGENT, T, UnusedArgument, UnusedParameter>
+    struct Function<FunctionName::Tangent, T, UnusedArgument, UnusedParameter>
     {
         const T argument;
 
-        using arg_t = T;
-        static constexpr bool is_constanta = T::is_constanta;
-        static constexpr bool is_contain_variable = T::is_contain_variable;
-        static constexpr bool is_contain_parameter = T::is_contain_parameter;
-        static constexpr bool is_function = true;
-        static constexpr auto name = function_name::TANGENT;
-        static constexpr auto type = function_type::ONE_ARGUMENT;
-        static constexpr int template_index = UnusedParameter;
+        using ArgT = T;
+        static constexpr bool IsConstanta = T::IsConstanta;
+        static constexpr bool IsContainVariable = T::IsContainVariable;
+        static constexpr bool IsContainParameter = T::IsContainParameter;
+        static constexpr bool IsFunction = true;
+        static constexpr auto Name = FunctionName::Tangent;
+        static constexpr auto Type = FunctionType::OneArgument;
+        static constexpr int TemplateIndex = UnusedParameter;
 
         Function(const T& arg) noexcept : argument{ arg }
         {
@@ -133,18 +133,18 @@ namespace utils::fcd::implementation
     };
 
     template<class T>
-    struct Function<function_name::LOGARITHM_NATURAL, T, UnusedArgument, UnusedParameter>
+    struct Function<FunctionName::LogarithmNatural, T, UnusedArgument, UnusedParameter>
     {
         const T argument;
 
-        using arg_t = T;
-        static constexpr bool is_constanta = T::is_constanta;
-        static constexpr bool is_contain_variable = T::is_contain_variable;
-        static constexpr bool is_contain_parameter = T::is_contain_parameter;
-        static constexpr bool is_function = true;
-        static constexpr auto name = function_name::LOGARITHM_NATURAL;
-        static constexpr auto type = function_type::ONE_ARGUMENT;
-        static constexpr int template_index = UnusedParameter;
+        using ArgT = T;
+        static constexpr bool IsConstanta = T::IsConstanta;
+        static constexpr bool IsContainVariable = T::IsContainVariable;
+        static constexpr bool IsContainParameter = T::IsContainParameter;
+        static constexpr bool IsFunction = true;
+        static constexpr auto Name = FunctionName::LogarithmNatural;
+        static constexpr auto Type = FunctionType::OneArgument;
+        static constexpr int TemplateIndex = UnusedParameter;
 
         Function(const T& arg) noexcept : argument{ arg }
         {
@@ -158,18 +158,18 @@ namespace utils::fcd::implementation
 
     // I is exponent, argument (T) is base degree
     template<class T, int I>
-    struct Function<function_name::POWER, T, UnusedArgument, I>
+    struct Function<FunctionName::Power, T, UnusedArgument, I>
     {
         const T argument;
 
-        using arg_t = T;
-        static constexpr bool is_constanta = T::is_constanta;
-        static constexpr bool is_contain_variable = T::is_contain_variable;
-        static constexpr bool is_contain_parameter = T::is_contain_parameter;
-        static constexpr bool is_function = true;
-        static constexpr auto name = function_name::POWER;
-        static constexpr auto type = function_type::INDEXED_ONE_ARGUMENT;
-        static constexpr int template_index = I;
+        using ArgT = T;
+        static constexpr bool IsConstanta = T::IsConstanta;
+        static constexpr bool IsContainVariable = T::IsContainVariable;
+        static constexpr bool IsContainParameter = T::IsContainParameter;
+        static constexpr bool IsFunction = true;
+        static constexpr auto Name = FunctionName::Power;
+        static constexpr auto Type = FunctionType::IndexedOneArgument;
+        static constexpr int TemplateIndex = I;
 
         Function(const T& arg) noexcept : argument{ arg }
         {
@@ -177,24 +177,24 @@ namespace utils::fcd::implementation
 
         double operator() (double arg) const
         {
-            static_assert(I != 0 && I != 1, "power can't be equal 0 or 1");
+            static_assert(I != 0 && I != 1, "Power can't be equal 0 or 1");
             return pow(argument(arg), I);
         }
     };
 
     template<class T, int I>
-    struct Function<function_name::ROOT, T, UnusedArgument, I>
+    struct Function<FunctionName::Root, T, UnusedArgument, I>
     {
         const T argument;
 
-        using arg_t = T;
-        static constexpr bool is_constanta = T::is_constanta;
-        static constexpr bool is_contain_variable = T::is_contain_variable;
-        static constexpr bool is_contain_parameter = T::is_contain_parameter;
-        static constexpr bool is_function = true;
-        static constexpr auto name = function_name::ROOT;
-        static constexpr auto type = function_type::INDEXED_ONE_ARGUMENT;
-        static constexpr int template_index = I;
+        using ArgT = T;
+        static constexpr bool IsConstanta = T::IsConstanta;
+        static constexpr bool IsContainVariable = T::IsContainVariable;
+        static constexpr bool IsContainParameter = T::IsContainParameter;
+        static constexpr bool IsFunction = true;
+        static constexpr auto Name = FunctionName::Root;
+        static constexpr auto Type = FunctionType::IndexedOneArgument;
+        static constexpr int TemplateIndex = I;
 
         Function(const T& arg) noexcept : argument{ arg }
         {
@@ -202,7 +202,7 @@ namespace utils::fcd::implementation
 
         double operator() (double arg) const
         {
-            static_assert(I > 1, "root must be great that 1");
+            static_assert(I > 1, "Root must be great that 1");
             if constexpr (I == 2)
                 return sqrt(argument(arg));
             else if constexpr (I == 3)
@@ -214,18 +214,18 @@ namespace utils::fcd::implementation
 
     // I is base degree, argument (T) is exponent
     template<class T, int I>
-    struct Function<function_name::EXPONENTIAL, T, UnusedArgument, I>
+    struct Function<FunctionName::Exponential, T, UnusedArgument, I>
     {
         const T argument;
 
-        using arg_t = T;
-        static constexpr bool is_constanta = T::is_constanta;
-        static constexpr bool is_contain_variable = T::is_contain_variable;
-        static constexpr bool is_contain_parameter = T::is_contain_parameter;
-        static constexpr bool is_function = true;
-        static constexpr auto name = function_name::EXPONENTIAL;
-        static constexpr auto type = function_type::INDEXED_ONE_ARGUMENT;
-        static constexpr int template_index = I;
+        using ArgT = T;
+        static constexpr bool IsConstanta = T::IsConstanta;
+        static constexpr bool IsContainVariable = T::IsContainVariable;
+        static constexpr bool IsContainParameter = T::IsContainParameter;
+        static constexpr bool IsFunction = true;
+        static constexpr auto Name = FunctionName::Exponential;
+        static constexpr auto Type = FunctionType::IndexedOneArgument;
+        static constexpr int TemplateIndex = I;
 
         Function(const T& arg) noexcept : argument{ arg }
         {
@@ -239,20 +239,20 @@ namespace utils::fcd::implementation
     };
 
     template<class First, class Second>
-    struct Function<function_name::SUMM, First, Second, UnusedParameter>
+    struct Function<FunctionName::Summ, First, Second, UnusedParameter>
     {
         const First argument1;
         const Second argument2;
 
-        using arg_t = std::pair<First, Second>;
-        static constexpr bool is_constanta = First::is_constanta && Second::is_constanta;
-        static constexpr bool is_contain_variable = First::is_contain_variable || 
-                                                    Second::is_contain_variable;
-        static constexpr bool is_contain_parameter = First::is_contain_parameter || 
-                                                     Second::is_contain_parameter;
-        static constexpr bool is_function = true;
-        static constexpr auto name = function_name::SUMM;
-        static constexpr auto type = function_type::TWO_ARGUMENT;
+        using ArgT = std::pair<First, Second>;
+        static constexpr bool IsConstanta = First::IsConstanta && Second::IsConstanta;
+        static constexpr bool IsContainVariable = First::IsContainVariable || 
+                                                    Second::IsContainVariable;
+        static constexpr bool IsContainParameter = First::IsContainParameter || 
+                                                     Second::IsContainParameter;
+        static constexpr bool IsFunction = true;
+        static constexpr auto Name = FunctionName::Summ;
+        static constexpr auto Type = FunctionType::TwoArgument;
 
         Function(const First& first, const Second& second) noexcept
             : argument1{ first }, argument2{ second }
@@ -266,20 +266,20 @@ namespace utils::fcd::implementation
     };
 
     template<class First, class Second>
-    struct Function<function_name::PRODUCT, First, Second, UnusedParameter>
+    struct Function<FunctionName::Product, First, Second, UnusedParameter>
     {
         const First argument1;
         const Second argument2;
 
-        using arg_t = std::pair<First, Second>;
-        static constexpr bool is_constanta = First::is_constanta && Second::is_constanta;
-        static constexpr bool is_contain_variable = First::is_contain_variable || 
-                                                    Second::is_contain_variable;
-        static constexpr bool is_contain_parameter = First::is_contain_parameter || 
-                                                     Second::is_contain_parameter;
-        static constexpr bool is_function = true;
-        static constexpr auto name = function_name::PRODUCT;
-        static constexpr auto type = function_type::TWO_ARGUMENT;
+        using ArgT = std::pair<First, Second>;
+        static constexpr bool IsConstanta = First::IsConstanta && Second::IsConstanta;
+        static constexpr bool IsContainVariable = First::IsContainVariable || 
+                                                    Second::IsContainVariable;
+        static constexpr bool IsContainParameter = First::IsContainParameter || 
+                                                     Second::IsContainParameter;
+        static constexpr bool IsFunction = true;
+        static constexpr auto Name = FunctionName::Product;
+        static constexpr auto Type = FunctionType::TwoArgument;
 
         Function(const First& first, const Second& second) noexcept
             : argument1{ first }, argument2{ second }

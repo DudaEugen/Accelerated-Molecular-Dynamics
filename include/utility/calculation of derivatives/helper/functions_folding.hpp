@@ -8,7 +8,7 @@
 namespace utils::fcd::implementation
 {
     template<class T>
-    auto product_by_zero_folding(const T& func) noexcept
+    auto productByZeroFolding(const T& func) noexcept
     {
         if constexpr (std::is_same_v<std::decay_t<decltype(func.argument1)>, ZeroConstanta> || 
                       std::is_same_v<std::decay_t<decltype(func.argument2)>, ZeroConstanta>)
@@ -18,7 +18,7 @@ namespace utils::fcd::implementation
     }
 
     template<class T>
-    auto summ_with_zero_folding(const T& func) noexcept
+    auto summWithZeroFolding(const T& func) noexcept
     {
         if constexpr (std::is_same_v<std::decay_t<decltype(func.argument1)>, ZeroConstanta>)
             return func.argument2;
@@ -29,11 +29,11 @@ namespace utils::fcd::implementation
     }
 
     template<class T>
-    auto const_function_folding(const T& func)
+    auto constFunctionFolding(const T& func)
     {
-        if constexpr (!T::is_function)
+        if constexpr (!T::IsFunction)
             return func;
-        else if constexpr (T::is_constanta)
+        else if constexpr (T::IsConstanta)
             return Constanta(func(0));
         else
             return func;

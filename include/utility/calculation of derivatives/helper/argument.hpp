@@ -11,10 +11,10 @@ namespace utils::fcd
     {
         const std::uint8_t index;
 
-        static constexpr bool is_constanta = false;
-        static constexpr bool is_contain_variable = false;
-        static constexpr bool is_contain_parameter = true;
-        static constexpr bool is_function = false;
+        static constexpr bool IsConstanta = false;
+        static constexpr bool IsContainVariable = false;
+        static constexpr bool IsContainParameter = true;
+        static constexpr bool IsFunction = false;
 
         explicit Parameter(std::uint8_t i) noexcept;
         double operator() (double argument) const;
@@ -22,10 +22,10 @@ namespace utils::fcd
 
     struct Variable
     {
-        static constexpr bool is_constanta = false;
-        static constexpr bool is_contain_variable =true;
-        static constexpr bool is_contain_parameter = false;
-        static constexpr bool is_function = false;
+        static constexpr bool IsConstanta = false;
+        static constexpr bool IsContainVariable =true;
+        static constexpr bool IsContainParameter = false;
+        static constexpr bool IsFunction = false;
 
         Variable() = default;
         double operator() (double argument) const noexcept;
@@ -38,10 +38,10 @@ namespace utils::fcd::implementation
     {
         const double value;
 
-        static constexpr bool is_constanta = true;
-        static constexpr bool is_contain_variable = false;
-        static constexpr bool is_contain_parameter = false;
-        static constexpr bool is_function = false;
+        static constexpr bool IsConstanta = true;
+        static constexpr bool IsContainVariable = false;
+        static constexpr bool IsContainParameter = false;
+        static constexpr bool IsFunction = false;
 
         Constanta(double value) noexcept;
         Constanta(int value) noexcept;
@@ -50,10 +50,10 @@ namespace utils::fcd::implementation
 
     struct ZeroConstanta
     {
-        static constexpr bool is_constanta = true;
-        static constexpr bool is_contain_variable = false;
-        static constexpr bool is_contain_parameter = false;
-        static constexpr bool is_function = false;
+        static constexpr bool IsConstanta = true;
+        static constexpr bool IsContainVariable = false;
+        static constexpr bool IsContainParameter = false;
+        static constexpr bool IsFunction = false;
 
         ZeroConstanta() = default;
         double operator() (double argument) const noexcept;

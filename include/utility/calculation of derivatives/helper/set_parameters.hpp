@@ -9,7 +9,7 @@
 namespace utils::fcd
 {
     template<class T>
-    auto set_parameters(const T& func, const std::vector<double>& params)
+    auto setParameters(const T& func, const std::vector<double>& params)
     {
         using namespace implementation;
 
@@ -17,30 +17,30 @@ namespace utils::fcd
         {
             return Constanta(params[func.index]);
         }
-        else if constexpr (!T::is_function)
+        else if constexpr (!T::IsFunction)
         {
             return func;
         }
-        else if constexpr (T::is_contain_parameter)
+        else if constexpr (T::IsContainParameter)
         {
-            if constexpr (T::type == function_type::ONE_ARGUMENT || 
-                          T::type == function_type::INDEXED_ONE_ARGUMENT)
+            if constexpr (T::Type == FunctionType::OneArgument || 
+                          T::Type == FunctionType::IndexedOneArgument)
             {
-                return const_function_folding(Function<
-                    T::name, 
-                    decltype(set_parameters(func.argument, params)),
+                return constFunctionFolding(Function<
+                    T::Name, 
+                    decltype(setParameters(func.argument, params)),
                     UnusedArgument,
-                    T::template_index
-                >{set_parameters(func.argument, params)});
+                    T::TemplateIndex
+                >{setParameters(func.argument, params)});
             }
-            else if constexpr (T::type == function_type::TWO_ARGUMENT)
+            else if constexpr (T::Type == FunctionType::TwoArgument)
             {
-                return const_function_folding(Function<
-                    T::name, 
-                    decltype(set_parameters(func.argument1, params)), 
-                    decltype(set_parameters(func.argument2, params)),
+                return constFunctionFolding(Function<
+                    T::Name, 
+                    decltype(setParameters(func.argument1, params)), 
+                    decltype(setParameters(func.argument2, params)),
                     UnusedParameter
-                >{set_parameters(func.argument1, params), set_parameters(func.argument2, params)});
+                >{setParameters(func.argument1, params), setParameters(func.argument2, params)});
             }
         }
         else
