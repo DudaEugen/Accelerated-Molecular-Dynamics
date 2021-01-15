@@ -76,19 +76,19 @@ namespace utils::fcd
             {
                 return Function<
                     T::Name, 
-                    decltype(setParameterAsVariable(func.argument)),
+                    decltype(setParameterAsVariable<Index>(func.argument)),
                     UnusedArgument,
                     T::TemplateIndex
-                >{setParameterAsVariable(func.argument)};
+                >{setParameterAsVariable<Index>(func.argument)};
             }
             else if constexpr (T::Type == FunctionType::TwoArgument)
             {
                 return Function<
                     T::Name, 
-                    decltype(setParameterAsVariable(func.argument1)), 
-                    decltype(setParameterAsVariable(func.argument2)),
+                    decltype(setParameterAsVariable<Index>(func.argument1)), 
+                    decltype(setParameterAsVariable<Index>(func.argument2)),
                     UnusedParameter
-                >{setParameterAsVariable(func.argument1), setParameterAsVariable(func.argument2)};
+                >{setParameterAsVariable<Index>(func.argument1), setParameterAsVariable<Index>(func.argument2)};
             }
         }
         else
