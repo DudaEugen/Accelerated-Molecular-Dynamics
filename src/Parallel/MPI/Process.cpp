@@ -35,21 +35,21 @@ int md::Process::getRank() const noexcept { return rank; }
 void md::Process::preparationForDataExchange()
 {
 	size_t atomNumber = getAtomNumber();
-	if (getAccelerationsSize() < atomNumber * DIMENSIONAL_NUMBER)
+	if (getAccelerationsSize() < atomNumber * DimensionalNumber)
 		changeAccelerationsSize();
 
 	Vector acceleration;
 	for (size_t index = 0; index < atomNumber; ++index)
 	{
 		acceleration = (firstAtom + index)->getAcceleration();
-		for (Vector::projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
-			accelerations[index * DIMENSIONAL_NUMBER + i] = acceleration[i];
+		for (Vector::projection_index i = 0; i < DimensionalNumber; ++i)
+			accelerations[index * DimensionalNumber + i] = acceleration[i];
 	}
 }
 
 double* md::Process::getAccelerationsPointer() noexcept { return accelerations; }
 
-size_t md::Process::getAccelerationsSize() const noexcept { return getAtomNumber() * DIMENSIONAL_NUMBER; }
+size_t md::Process::getAccelerationsSize() const noexcept { return getAtomNumber() * DimensionalNumber; }
 
 void md::Process::setAtoms(Atom& first, Atom& last) noexcept
 {

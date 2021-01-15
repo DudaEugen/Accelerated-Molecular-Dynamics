@@ -4,7 +4,7 @@ using namespace md;
 
 void testVectorDimensionalNumber3()
 {
-    if constexpr (DIMENSIONAL_NUMBER == 3)
+    if constexpr (DimensionalNumber == 3)
 	{
 		assert(equal(
             Vector({ 3, 4, 0 }).absoluteValue(), 
@@ -95,7 +95,7 @@ void testVector()
     testVectorConstructors();
     testVectorIterators();
     testVectorOperators();
-    if constexpr (DIMENSIONAL_NUMBER == 3)
+    if constexpr (DimensionalNumber == 3)
     {
         testVectorDimensionalNumber3();
     }

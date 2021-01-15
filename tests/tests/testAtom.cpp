@@ -5,7 +5,7 @@ using namespace md;
 
 void testAtomDimensionalNumber3()
 {
-    if constexpr (DIMENSIONAL_NUMBER == 3)
+    if constexpr (DimensionalNumber == 3)
 	{
         char c[2] = { 'A', 'u' };
         Vector v = randomVector();
@@ -32,7 +32,7 @@ void testAtomConstructors()
 	assert(aCu_1.chemElement == aCu_2.chemElement);
 	assert(not(aAl_1.chemElement == aCu_2.chemElement));
 	assert(md::get_atomic_mass(aAl_1.chemElement) == 27);
-	assert(equal(aAl_1.mass, md::get_atomic_mass(aAl_2.chemElement) / (N_AVOGADRO * 1000)));
+	assert(equal(aAl_1.mass, md::get_atomic_mass(aAl_2.chemElement) / (K_Avogadro * 1000)));
 
     char c[2] = { 'A', 'u' };
 	assert(md::get_atomic_mass(Atom(c, randomVector()).chemElement) == 197);
@@ -81,7 +81,7 @@ void testAtom()
 {
     testAtomConstructors();
     testAtomMoving();
-	if constexpr (DIMENSIONAL_NUMBER == 3)
+	if constexpr (DimensionalNumber == 3)
 	{
 		testAtomDimensionalNumber3();
 	}

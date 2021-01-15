@@ -10,9 +10,9 @@ md::Vector::Vector(ConstPassArrayT<double> projectionArray) noexcept
 {
 }
 
-md::Vector::Vector(const double projectionArray[DIMENSIONAL_NUMBER]) noexcept
+md::Vector::Vector(const double projectionArray[DimensionalNumber]) noexcept
 {
-	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (projection_index i = 0; i < DimensionalNumber; ++i)
 	{
 		projections[i] = projectionArray[i];
 	}
@@ -20,7 +20,7 @@ md::Vector::Vector(const double projectionArray[DIMENSIONAL_NUMBER]) noexcept
 
 md::Vector::Vector(const std::initializer_list<double>& init_list)
 {
-	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (projection_index i = 0; i < DimensionalNumber; ++i)
 	{
 		projections[i] = init_list.size() > i ? *(init_list.begin() + i) : 0;
 	}
@@ -28,17 +28,17 @@ md::Vector::Vector(const std::initializer_list<double>& init_list)
 
 md::Vector::Vector(const Vector& Vector) noexcept
 {
-	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (projection_index i = 0; i < DimensionalNumber; ++i)
 	{
 		projections[i] = Vector.projections[i];
 	}
 }
 
-md::Vector::projection_index md::Vector::size() const noexcept { return DIMENSIONAL_NUMBER; }
+md::Vector::projection_index md::Vector::size() const noexcept { return DimensionalNumber; }
 
 md::Vector::Pass md::Vector::operator = (ConstPass other) noexcept
 {
-	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (projection_index i = 0; i < DimensionalNumber; ++i)
 	{
 		projections[i] = other.projections[i];
 	}
@@ -48,7 +48,7 @@ md::Vector::Pass md::Vector::operator = (ConstPass other) noexcept
 md::Vector md::Vector::operator - () const noexcept
 {
 	Vector result;
-	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (projection_index i = 0; i < DimensionalNumber; ++i)
 	{
 		result.projections[i] = -projections[i];
 	}
@@ -71,7 +71,7 @@ md::Vector md::Vector::operator - (ConstPass other) const noexcept
 
 md::Vector::Pass md::Vector::operator += (ConstPass other) noexcept
 {
-	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (projection_index i = 0; i < DimensionalNumber; ++i)
 	{
 		projections[i] += other.projections[i];
 	}
@@ -80,7 +80,7 @@ md::Vector::Pass md::Vector::operator += (ConstPass other) noexcept
 
 md::Vector::Pass md::Vector::operator -= (ConstPass other) noexcept
 {
-	for (projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+	for (projection_index i = 0; i < DimensionalNumber; ++i)
 	{
 		projections[i] -= other.projections[i];
 	}

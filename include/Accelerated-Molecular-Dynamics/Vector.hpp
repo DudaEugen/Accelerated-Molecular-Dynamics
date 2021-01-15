@@ -14,21 +14,21 @@ namespace md
 	private:
 		using element_t = double;
 
-		std::array<element_t, DIMENSIONAL_NUMBER> projections;
+		std::array<element_t, DimensionalNumber> projections;
 	public:
 		//this is type of index for this->projections array
-		using projection_index = std::remove_const_t<decltype(DIMENSIONAL_NUMBER)>;	
+		using projection_index = std::remove_const_t<decltype(DimensionalNumber)>;	
 		using iterator = decltype(projections)::iterator;
 		using const_iterator = decltype(projections)::const_iterator;
 		/* Pass and ConstPass is type for pass to fonctions and return from functions by value or reference 
-		depending on the DIMENSIONAL_NUMBER and MAX_DIMENSIONAL_FOR_VALUE_PASSING.
+		depending on the DimensionalNumber and MaxDimensionalForValuePassing.
 		Don't use Pass for change Vector in function (pass Vector& or Vector* to function for this) */
 		using Pass = PassT<element_t, Vector>;
 		using ConstPass = PassT<element_t, const Vector>;
 
 		Vector() noexcept;
 		Vector(ConstPassArrayT<double> projectionArray) noexcept;
-		Vector(const double projectionArray[DIMENSIONAL_NUMBER]) noexcept;
+		Vector(const double projectionArray[DimensionalNumber]) noexcept;
 		Vector(const std::initializer_list<double>& init_list);
 		Vector(const Vector& vector) noexcept;
 		projection_index size() const noexcept;

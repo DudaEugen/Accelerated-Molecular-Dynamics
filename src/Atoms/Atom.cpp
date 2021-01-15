@@ -28,7 +28,7 @@ md::Atom::Atom(const std::string element, Vector::ConstPass coordinates) :
 
 double md::Atom::computeMass(const element element) 
 { 
-	return get_atomic_mass(element) * 0.001 / N_AVOGADRO; 
+	return get_atomic_mass(element) * 0.001 / K_Avogadro; 
 }
 
 char md::Atom::getPreviousStepIndex() noexcept

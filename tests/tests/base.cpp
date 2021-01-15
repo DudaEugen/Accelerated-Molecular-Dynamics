@@ -9,7 +9,7 @@ bool equal(double d1, double d2, int symbolCountAfterPoint)
 bool equal(md::Vector::ConstPass v1, md::Vector::ConstPass v2, int symbolCountAfterPoint)
 {	
 	bool result = true;
-	for (md::Vector::projection_index i = 0; i < md::DIMENSIONAL_NUMBER; ++i)
+	for (md::Vector::projection_index i = 0; i < md::DimensionalNumber; ++i)
 		result = result && equal(v1[i], v2[i], symbolCountAfterPoint);
 	return result;
 }

@@ -6,9 +6,9 @@ using namespace md;
 
 void testCellCollectionDimensionalNumber3()
 {
-    if constexpr (DIMENSIONAL_NUMBER == 3)
+    if constexpr (DimensionalNumber == 3)
 	{
-		std::array<BorderConditions::borderType, DIMENSIONAL_NUMBER> bTypes = {
+		std::array<BorderConditions::borderType, DimensionalNumber> bTypes = {
 			BorderConditions::borderType::periodic,
 			BorderConditions::borderType::periodic,
 			BorderConditions::borderType::periodic,
@@ -49,8 +49,8 @@ void testCellCollectionDimensionalNumber3()
 
 void testCellCollectionNeighborsCells()
 {
-    std::array<BorderConditions::borderType, DIMENSIONAL_NUMBER> bordersType;
-	for (Vector::projection_index i = 0; i < DIMENSIONAL_NUMBER; ++i)
+    std::array<BorderConditions::borderType, DimensionalNumber> bordersType;
+	for (Vector::projection_index i = 0; i < DimensionalNumber; ++i)
 		bordersType[i] = BorderConditions::borderType::periodic;
 	Vector vect = randomVector<20, 50>();
 	BorderConditions bConditions(vect, bordersType);
@@ -60,7 +60,7 @@ void testCellCollectionNeighborsCells()
 	CellCollection cColl{ twoAtoms, pot, &bConditions };
 	for(auto& cell: cColl.getCells())
 	{
-		assert(cell.getNeighborCells().size() == static_cast<std::size_t>(round(pow(3, DIMENSIONAL_NUMBER))));
+		assert(cell.getNeighborCells().size() == static_cast<std::size_t>(round(pow(3, DimensionalNumber))));
 		bool isFindSelf = false;
 		for(auto c: cell.getNeighborCells())
 			if (c == &cell)
@@ -91,7 +91,7 @@ void testCellCollection()
 {
 	testCellCollectionNeighborsCells();
 
-    if constexpr (DIMENSIONAL_NUMBER == 3)
+    if constexpr (DimensionalNumber == 3)
     {
         testCellCollectionDimensionalNumber3();
     }

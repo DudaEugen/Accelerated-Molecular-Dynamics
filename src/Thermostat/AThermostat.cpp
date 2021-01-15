@@ -10,6 +10,6 @@ double md::AThermostat::computeTemperature()
 	{
 		T += atomsSystem[i].mass * atomsSystem[i].getVelocity().sumSquares();
 	}
-	T *= 10000 / (K_BOLTZMANN * DIMENSIONAL_NUMBER * atomNumber);	//units of velocity is Angstrom/ps
+	T *= 10000 / (K_Boltzmann * DimensionalNumber * atomNumber);	//units of velocity is Angstrom/ps
 	return T;
 }
