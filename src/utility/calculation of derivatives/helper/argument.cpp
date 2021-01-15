@@ -17,16 +17,6 @@ double utils::fcd::implementation::Constanta::operator() (double argument) const
     return value; 
 }
 
-utils::fcd::Parameter::Parameter(std::uint8_t i) noexcept 
-    : index{ i }
-{
-}
-
-double utils::fcd::Parameter::operator() (double argument) const
-{
-    throw std::runtime_error("Parameter in function for derivative don't initializing!");
-}
-
 double utils::fcd::Variable::operator() (double argument) const noexcept 
 { 
     return argument; 

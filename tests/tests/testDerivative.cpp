@@ -4,22 +4,25 @@
 using namespace utils;
 namespace impl = fcd::implementation;
 
+template<class T>
+void function__();
+
 void staticTestsDerivative()
 {
     double x = random<-3, 3>();
     std::vector<double> params = {random(), random()};
 
     static_assert(std::is_same_v<
-		decltype(fcd::derivative(fcd::Parameter(0) * (fcd::Parameter(1) + x))), 
-		fcd::implementation::ZeroConstanta
+		decltype(fcd::derivative(fcd::Parameter<0>() * (fcd::Parameter<1>() + x))), 
+		impl::ZeroConstanta
 	>);
 	static_assert(std::is_same_v<
 		decltype(fcd::power<3>(fcd::sqRoot(fcd::exponenta(-2 * 5)))), 
 		impl::Constanta
 	>);
 	static_assert(std::is_same_v<
-		decltype(fcd::derivative<6>(fcd::Parameter(0) * fcd::power<5>(fcd::Variable()))), 
-		fcd::implementation::ZeroConstanta
+		decltype(fcd::derivative<6>(fcd::Parameter<0>() * fcd::power<5>(fcd::Variable()))), 
+		impl::ZeroConstanta
 	>);
 	static_assert(std::is_same_v<
 		decltype(fcd::derivative(fcd::Variable() + 2*fcd::Variable())), 
@@ -27,11 +30,19 @@ void staticTestsDerivative()
 	>);
 	static_assert(std::is_same_v<
 		decltype(fcd::derivative<9>(x * fcd::power<8>(fcd::Variable()))), 
-		fcd::implementation::ZeroConstanta
+		impl::ZeroConstanta
 	>);
 	static_assert(std::is_same_v<
-		decltype(setParameters(x * fcd::root<5>(fcd::Parameter(0)), params)), 
+		decltype(fcd::setParameters(x * fcd::root<5>(fcd::Parameter<0>()), params)), 
 		impl::Constanta
+	>);
+	static_assert(std::is_same_v<
+		decltype(fcd::setParameterAsVariable<0>(fcd::Parameter<0>())),
+		fcd::Variable
+	>);
+	static_assert(std::is_same_v<
+		decltype(fcd::setParameterAsVariable<1>(fcd::Parameter<0>())),
+		fcd::Parameter<0>
 	>);
 }
 
@@ -89,18 +100,18 @@ void testDerivativeWithParameters()
 
 	std::vector<double> params = {1, -2};
 	auto f3_uncomplete = fcd::power<3>(fcd::Variable())*fcd::exponenta(fcd::Variable()) +
-						 fcd::exponenta(fcd::Parameter(0))*fcd::Parameter(1);
+						 fcd::exponenta(fcd::Parameter<0>())*fcd::Parameter<1>();
 	auto f3 = fcd::setParameters(f3_uncomplete, params);
 	assert(equal(f3(x), x*x*x*exp(x) + params[1] * exp(params[0]), 10));
 	assert(equal(fcd::derivative(f3)(x), 3*x*x*exp(x) + x*x*x*exp(x), 10));
 	assert(equal(fcd::derivative<2>(f3)(x), fcd::derivative(f3)(x) + 6*x*exp(x) + 3*x*x*exp(x), 10));
 
-	auto f7_uncomplete = fcd::Parameter(0) * fcd::cosinus(3*fcd::Variable() + fcd::Parameter(1));
+	auto f7_uncomplete = fcd::Parameter<0>() * fcd::cosinus(3*fcd::Variable() + fcd::Parameter<1>());
 	auto f7 = fcd::setParameters(f7_uncomplete, params);
 	assert(equal(f7(x), params[0] * cos(3*x + params[1]), 10));
 	assert(equal(fcd::derivative(f7)(x), -3*params[0] * sin(3*x + params[1]), 10));
 
-	auto f9_uncomplete = fcd::Parameter(1) * fcd::exponenta(-fcd::Variable() / fcd::Parameter(0));
+	auto f9_uncomplete = fcd::Parameter<1>() * fcd::exponenta(-fcd::Variable() / fcd::Parameter<0>());
 	auto f9 = fcd::setParameters(f9_uncomplete, params);
 	assert(equal(f9(x), params[1]*exp(-x/params[0]), 10));
 	assert(equal(fcd::derivative<3>(f9)(x), -params[1]/pow(params[0], 3)*exp(-x/params[0]), 10));

@@ -3,21 +3,24 @@
 #define TAHD_FUNCTIONS_FOR_DERIVATIVE_ARGUMENT_T
 
 #include <cstdint>
+#include <stdexcept>
 
 // fcd - functions for calculation of derivatives
 namespace utils::fcd
 {
+    template<std::uint8_t I>
     struct Parameter
     {
-        const std::uint8_t index;
-
         static constexpr bool IsConstanta = false;
         static constexpr bool IsContainVariable = false;
         static constexpr bool IsContainParameter = true;
         static constexpr bool IsFunction = false;
 
-        explicit Parameter(std::uint8_t i) noexcept;
-        double operator() (double argument) const;
+        Parameter() noexcept = default;
+        double operator() (double argument) const
+        {
+            throw std::runtime_error("Parameter in function for derivative don't initializing!");
+        }
     };
 
     struct Variable
