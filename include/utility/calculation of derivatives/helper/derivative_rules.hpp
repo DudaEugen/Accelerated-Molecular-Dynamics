@@ -9,7 +9,7 @@
 namespace utils::fcd::implementation
 {
     template<class T>
-    auto derivativeExp(const T& arg) noexcept
+    constexpr auto derivativeExp(const T& arg) noexcept
     {
         return Function<
             FunctionName::Exponenta, typename T::ArgT, UnusedArgument, UnusedParameter
@@ -17,7 +17,7 @@ namespace utils::fcd::implementation
     }
 
     template<class T>
-    auto derivativeSin(const T& arg) noexcept
+    constexpr auto derivativeSin(const T& arg) noexcept
     {
         return Function<
             FunctionName::Cosinus, typename T::ArgT, UnusedArgument, UnusedParameter
@@ -25,7 +25,7 @@ namespace utils::fcd::implementation
     }
 
     template<class T>
-    auto derivativeCos(const T& arg) noexcept
+    constexpr auto derivativeCos(const T& arg) noexcept
     {
         auto sinus = Function<
             FunctionName::Sinus, typename T::ArgT, UnusedArgument, UnusedParameter
@@ -37,7 +37,7 @@ namespace utils::fcd::implementation
     }
 
     template<class T>
-    auto derivativeTg(const T& arg) noexcept
+    constexpr auto derivativeTg(const T& arg) noexcept
     {
         auto cosinus = Function<
             FunctionName::Cosinus, typename T::ArgT, UnusedArgument, UnusedParameter
@@ -49,7 +49,7 @@ namespace utils::fcd::implementation
     }
 
     template<class T>
-    auto derivativeExponential(const T& arg) noexcept
+    constexpr auto derivativeExponential(const T& arg) noexcept
     {
         return Function<
             FunctionName::Product, Constanta, T, UnusedParameter
@@ -57,7 +57,7 @@ namespace utils::fcd::implementation
     }
 
     template<class T>
-    auto derivativeLg(const T& arg) noexcept
+    constexpr auto derivativeLg(const T& arg) noexcept
     {
         return Function<
             FunctionName::Power, typename T::ArgT, UnusedArgument, -1
@@ -65,7 +65,7 @@ namespace utils::fcd::implementation
     }
 
     template<class T>
-    auto derivativePow(const T& arg) noexcept
+    constexpr auto derivativePow(const T& arg) noexcept
     {
         if constexpr (T::TemplateIndex == 2)
         {
@@ -89,7 +89,7 @@ namespace utils::fcd::implementation
     }
 
     template<class T>
-    auto derivativeRoot(const T& arg) noexcept
+    constexpr auto derivativeRoot(const T& arg) noexcept
     {
         auto func = Function<
             FunctionName::Power, T, UnusedArgument, 1 - T::TemplateIndex
@@ -101,7 +101,7 @@ namespace utils::fcd::implementation
     }
 
     template<class T>
-    auto derivativeNoFunction(const T& arg) noexcept
+    constexpr auto derivativeNoFunction(const T& arg) noexcept
     {
         if constexpr (std::is_same_v<std::decay_t<T>, Variable>)
         {
@@ -114,7 +114,7 @@ namespace utils::fcd::implementation
     }
 
     template<class T>
-    auto derivativeOneArgumentFunction(const T& arg) noexcept
+    constexpr auto derivativeOneArgumentFunction(const T& arg) noexcept
     {
         if constexpr (T::Name == FunctionName::Exponenta)
             return derivativeExp(arg);
@@ -138,7 +138,7 @@ namespace utils::fcd::implementation
 namespace utils::fcd
 {
     template<class T>
-    auto derivative(const T& func_struct)
+    constexpr auto derivative(const T& func_struct)
     {
         using namespace implementation;
 
@@ -198,7 +198,7 @@ namespace utils::fcd
     }
 
     template<std::uint8_t I, class T>
-    auto derivative(const T& func_struct)
+    constexpr auto derivative(const T& func_struct)
     {
         if constexpr (I == 0)
             return func_struct;

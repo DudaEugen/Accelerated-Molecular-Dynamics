@@ -52,7 +52,7 @@ namespace utils::fcd
     }
 
     template<std::uint8_t I, std::uint8_t Index>
-    auto setParameterAsVariable(const Parameter<Index> func)
+    constexpr auto setParameterAsVariable(const Parameter<Index> func)
     {
         if constexpr (I == Index)
             return Variable();
@@ -61,7 +61,7 @@ namespace utils::fcd
     }
 
     template<std::uint8_t Index, class T>
-    auto setParameterAsVariable(const T& func)
+    constexpr auto setParameterAsVariable(const T& func)
     {
         using namespace implementation;
 

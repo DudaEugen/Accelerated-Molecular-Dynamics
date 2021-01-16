@@ -7,11 +7,6 @@ impl::Constanta fcd::operator- (impl::Constanta c) noexcept
 {
     return impl::Constanta(-c(0));
 }
-
-impl::ZeroConstanta fcd::operator- (impl::ZeroConstanta c) noexcept
-{
-    return impl::ZeroConstanta();
-}
     
 impl::Product_t<impl::Constanta, fcd::Variable> fcd::operator- (Variable v) noexcept
 {
@@ -21,11 +16,6 @@ impl::Product_t<impl::Constanta, fcd::Variable> fcd::operator- (Variable v) noex
 impl::Constanta fcd::operator+ (impl::Constanta c1, impl::Constanta c2) noexcept
 {
     return impl::Constanta(c1(0) + c2(0));
-}
-
-impl::ZeroConstanta fcd::operator+ (impl::ZeroConstanta c1, impl::ZeroConstanta c2) noexcept
-{
-    return impl::ZeroConstanta();
 }
 
 impl::Product_t<impl::Constanta, fcd::Variable> fcd::operator+ (Variable v1, Variable v2) noexcept
@@ -68,11 +58,6 @@ impl::Constanta fcd::operator* (impl::Constanta c1, impl::Constanta c2) noexcept
     return impl::Constanta(c1(0)*c2(0));
 }
 
-impl::ZeroConstanta fcd::operator* (impl::ZeroConstanta c1, impl::ZeroConstanta c2) noexcept
-{
-    return impl::ZeroConstanta();
-}
-
 impl::Function<impl::FunctionName::Power, 
     fcd::Variable, impl::UnusedArgument, 2> fcd::operator* (Variable v1, Variable v2) noexcept
 {
@@ -112,11 +97,6 @@ impl::ZeroConstanta fcd::operator* (Variable v, impl::ZeroConstanta c) noexcept
 impl::Constanta fcd::operator- (impl::Constanta c1, impl::Constanta c2) noexcept
 {
     return impl::Constanta(c1(0) - c2(0));
-}
-
-impl::ZeroConstanta fcd::operator- (impl::ZeroConstanta c1, impl::ZeroConstanta c2) noexcept
-{
-    return impl::ZeroConstanta();
 }
 
 impl::ZeroConstanta fcd::operator- (Variable v1, Variable v2) noexcept

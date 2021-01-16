@@ -8,7 +8,7 @@
 namespace utils::fcd::implementation
 {
     template<FunctionName N, class T, class S, int I>
-    auto createFunction(const T& argument)
+    constexpr auto createFunction(const T& argument)
     {
         if constexpr (std::is_same_v<T, double> || std::is_same_v<T, int>)
             return implementation::constFunctionFolding(implementation::Function<
@@ -34,13 +34,13 @@ namespace utils::fcd::implementation
     using Ratio_t = Product_t<F, Function<FunctionName::Power, S, UnusedArgument, -1>>;
 
     template<class F, class S>
-    auto summ(const F& first, const S& second)
+    constexpr auto summ(const F& first, const S& second)
     {
         return constFunctionFolding(Summ_t<F, S>(first, second));
     }
 
     template<class F, class S>
-    auto product(const F& first, const S& second)
+    constexpr auto product(const F& first, const S& second)
     {
         return constFunctionFolding(Product_t<F, S>(first, second));
     }
@@ -52,7 +52,7 @@ namespace utils::fcd
     // functions
 
     template<class T>
-    auto exponenta(const T& argument)
+    constexpr auto exponenta(const T& argument)
     {
         return implementation::createFunction<
             implementation::FunctionName::Exponenta,
@@ -63,7 +63,7 @@ namespace utils::fcd
     }
 
     template<class T>
-    auto sqRoot(const T& argument)
+    constexpr auto sqRoot(const T& argument)
     {
         return implementation::createFunction<
             implementation::FunctionName::Root,
@@ -74,7 +74,7 @@ namespace utils::fcd
     }
 
     template<class T>
-    auto cbRoot(const T& argument)
+    constexpr auto cbRoot(const T& argument)
     {
         return implementation::createFunction<
             implementation::FunctionName::Root,
@@ -86,7 +86,7 @@ namespace utils::fcd
 
     // I is exponent, argument (T) is base degree
     template<int I, class T>
-    auto power(const T& argument)
+    constexpr auto power(const T& argument)
     {
         return implementation::createFunction<
             implementation::FunctionName::Power,
@@ -97,7 +97,7 @@ namespace utils::fcd
     }
 
     template<std::uint8_t I, class T>
-    auto root(const T& argument)
+    constexpr auto root(const T& argument)
     {
         return implementation::createFunction<
             implementation::FunctionName::Root,
@@ -108,7 +108,7 @@ namespace utils::fcd
     }
 
     template<class T>
-    auto sinus(const T& argument)
+    constexpr auto sinus(const T& argument)
     {
         return implementation::createFunction<
             implementation::FunctionName::Sinus,
@@ -119,7 +119,7 @@ namespace utils::fcd
     }
 
     template<class T>
-    auto cosinus(const T& argument)
+    constexpr auto cosinus(const T& argument)
     {
         return implementation::createFunction<
             implementation::FunctionName::Cosinus,
@@ -130,7 +130,7 @@ namespace utils::fcd
     }
 
     template<class T>
-    auto tangent(const T& argument)
+    constexpr auto tangent(const T& argument)
     {
         return implementation::createFunction<
             implementation::FunctionName::Tangent,
@@ -142,7 +142,7 @@ namespace utils::fcd
 
     // natural logarithm
     template<class T>
-    auto logarithm(const T& argument)
+    constexpr auto logarithm(const T& argument)
     {
         return implementation::createFunction<
             implementation::FunctionName::LogarithmNatural,
@@ -153,14 +153,14 @@ namespace utils::fcd
     }
 
     template<std::uint8_t I, class T>
-    auto logarithm(const T& argument)
+    constexpr auto logarithm(const T& argument)
     {
         static_assert(I > 1, "base of logarithm must be great than 1");
         return product(implementation::Constanta(1/log(I)), logarithm(argument));
     }
 
     template<std::uint8_t I, class T>
-    auto exponential(const T& argument)
+    constexpr auto exponential(const T& argument)
     {
         return implementation::createFunction<
             implementation::FunctionName::Exponential,
@@ -178,10 +178,13 @@ namespace utils::fcd
 
     implementation::Constanta operator- (implementation::Constanta c) noexcept;
 
-    implementation::ZeroConstanta operator- (implementation::ZeroConstanta c) noexcept;
+    constexpr implementation::ZeroConstanta operator- (implementation::ZeroConstanta c) noexcept
+    {
+        return implementation::ZeroConstanta();
+    }
 
     template<std::uint8_t I>
-    auto operator- (Parameter<I> p) noexcept
+    constexpr auto operator- (Parameter<I> p) noexcept
     {
         return implementation::product(implementation::Constanta(-1), p);
     }
@@ -189,18 +192,20 @@ namespace utils::fcd
     implementation::Product_t<implementation::Constanta, Variable> operator- (Variable v) noexcept;
     
     template<implementation::FunctionName N, class F, class S, int I>
-    auto operator- (const implementation::Function<N, F, S, I>& func)
+    constexpr auto operator- (const implementation::Function<N, F, S, I>& func)
     {
         return implementation::product(implementation::Constanta(-1), func);
     }
 
     implementation::Constanta operator+ (implementation::Constanta c1, implementation::Constanta c2) noexcept;
 
-    implementation::ZeroConstanta operator+ (implementation::ZeroConstanta c1, 
-                                             implementation::ZeroConstanta c2) noexcept;
+    constexpr auto operator+ (implementation::ZeroConstanta c1, implementation::ZeroConstanta c2) noexcept
+    {
+        return implementation::ZeroConstanta();
+    }
 
     template<std::uint8_t I1, std::uint8_t I2>
-    auto operator+ (Parameter<I1> p1, Parameter<I2> p2) noexcept
+    constexpr auto operator+ (Parameter<I1> p1, Parameter<I2> p2) noexcept
     {
         return implementation::summ(p1, p2);
     }
@@ -210,7 +215,7 @@ namespace utils::fcd
     implementation::Constanta operator+ (implementation::Constanta c1, implementation::ZeroConstanta c2) noexcept;
 
     template<std::uint8_t I>
-    auto operator+ (implementation::Constanta c, Parameter<I> p) noexcept
+    constexpr auto operator+ (implementation::Constanta c, Parameter<I> p) noexcept
     {
         return implementation::summ(c, p);
     }
@@ -221,7 +226,7 @@ namespace utils::fcd
     implementation::Constanta operator+ (implementation::ZeroConstanta c1, implementation::Constanta c2) noexcept;
 
     template<std::uint8_t I>
-    Parameter<I> operator+ (implementation::ZeroConstanta c, Parameter<I> p) noexcept
+    constexpr Parameter<I> operator+ (implementation::ZeroConstanta c, Parameter<I> p) noexcept
     {
         return p;
     }
@@ -229,19 +234,19 @@ namespace utils::fcd
     Variable operator+ (implementation::ZeroConstanta c, Variable v) noexcept;
 
     template<std::uint8_t I>
-    auto operator+ (Parameter<I> p, implementation::Constanta c) noexcept
+    constexpr auto operator+ (Parameter<I> p, implementation::Constanta c) noexcept
     {
         return implementation::summ(c, p);
     }
 
     template<std::uint8_t I>
-    Parameter<I> operator+ (Parameter<I> p, implementation::ZeroConstanta c) noexcept
+    constexpr Parameter<I> operator+ (Parameter<I> p, implementation::ZeroConstanta c) noexcept
     {
         return p;
     }
 
     template<std::uint8_t I>
-    auto operator+ (Parameter<I> p, Variable v) noexcept
+    constexpr auto operator+ (Parameter<I> p, Variable v) noexcept
     {
         return implementation::summ(p, v);
     }
@@ -252,73 +257,76 @@ namespace utils::fcd
     Variable operator+ (Variable v, implementation::ZeroConstanta c) noexcept;
 
     template<std::uint8_t I>
-    auto operator+ (Variable v, Parameter<I> p) noexcept
+    constexpr auto operator+ (Variable v, Parameter<I> p) noexcept
     {
         return implementation::summ(p, v);
     }
 
     template<implementation::FunctionName N, class F, class S, int I>
-    auto operator+ (const implementation::Function<N, F, S, I>& func, implementation::Constanta c)
+    constexpr auto operator+ (const implementation::Function<N, F, S, I>& func, implementation::Constanta c)
     {
         return implementation::summ(c, func);
     }
 
     template<implementation::FunctionName N, class F, class S, int I>
-    auto operator+ (implementation::Constanta c, const implementation::Function<N, F, S, I>& func)
+    constexpr auto operator+ (implementation::Constanta c, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::summ(c, func);
     }
 
     template<implementation::FunctionName N, class F, class S, int I>
-    auto operator+ (const implementation::Function<N, F, S, I>& func, implementation::ZeroConstanta c)
+    constexpr auto operator+ (const implementation::Function<N, F, S, I>& func, implementation::ZeroConstanta c)
     {
         return func;
     }
 
     template<implementation::FunctionName N, class F, class S, int I>
-    auto operator+ (implementation::ZeroConstanta c, const implementation::Function<N, F, S, I>& func)
+    constexpr auto operator+ (implementation::ZeroConstanta c, const implementation::Function<N, F, S, I>& func)
     {
         return func;
     }
 
     template<implementation::FunctionName N, class F, class S, int I, std::uint8_t IPar>
-    auto operator+ (const implementation::Function<N, F, S, I>& func, Parameter<IPar> p)
+    constexpr auto operator+ (const implementation::Function<N, F, S, I>& func, Parameter<IPar> p)
     {
         return implementation::summ(p, func);
     }
 
     template<implementation::FunctionName N, class F, class S, int I, std::uint8_t IPar>
-    auto operator+ (Parameter<IPar> p, const implementation::Function<N, F, S, I>& func)
+    constexpr auto operator+ (Parameter<IPar> p, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::summ(p, func);
     }
 
     template<implementation::FunctionName N, class F, class S, int I>
-    auto operator+ (const implementation::Function<N, F, S, I>& func, Variable v)
+    constexpr auto operator+ (const implementation::Function<N, F, S, I>& func, Variable v)
     {
         return implementation::summ(v, func);
     }
 
     template<implementation::FunctionName N, class F, class S, int I>
-    auto operator+ (Variable v, const implementation::Function<N, F, S, I>& func)
+    constexpr auto operator+ (Variable v, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::summ(v, func);
     }
 
     template<implementation::FunctionName N1, class F1, class S1, int I1, 
              implementation::FunctionName N2, class F2, class S2, int I2>
-    auto operator+ (const implementation::Function<N1, F1, S1, I1>& func1, 
-                    const implementation::Function<N2, F2, S2, I2>& func2)
+    constexpr auto operator+ (const implementation::Function<N1, F1, S1, I1>& func1, 
+                              const implementation::Function<N2, F2, S2, I2>& func2)
     {
         return implementation::summ(func1, func2);
     }
 
     implementation::Constanta operator* (implementation::Constanta c1, implementation::Constanta c2) noexcept;
 
-    implementation::ZeroConstanta operator* (implementation::ZeroConstanta c1, implementation::ZeroConstanta c2) noexcept;
+    constexpr auto operator* (implementation::ZeroConstanta c1, implementation::ZeroConstanta c2) noexcept
+    {
+        return implementation::ZeroConstanta();
+    }
 
     template<std::uint8_t I1, std::uint8_t I2>
-    auto operator* (Parameter<I1> p1, Parameter<I2> p2) noexcept
+    constexpr auto operator* (Parameter<I1> p1, Parameter<I2> p2) noexcept
     {
         return implementation::product(p1, p2);
     }
@@ -329,7 +337,7 @@ namespace utils::fcd
     implementation::ZeroConstanta operator* (implementation::Constanta c1, implementation::ZeroConstanta c2) noexcept;
 
     template<std::uint8_t I>
-    auto operator* (implementation::Constanta c, Parameter<I> p) noexcept
+    constexpr auto operator* (implementation::Constanta c, Parameter<I> p) noexcept
     {
         return implementation::product(c, p);
     }
@@ -340,7 +348,7 @@ namespace utils::fcd
     implementation::ZeroConstanta operator* (implementation::ZeroConstanta c1, implementation::Constanta c2) noexcept;
 
     template<std::uint8_t I>
-    implementation::ZeroConstanta operator* (implementation::ZeroConstanta c, Parameter<I> p) noexcept
+    constexpr implementation::ZeroConstanta operator* (implementation::ZeroConstanta c, Parameter<I> p) noexcept
     {
         return implementation::ZeroConstanta();
     }
@@ -348,19 +356,19 @@ namespace utils::fcd
     implementation::ZeroConstanta operator* (implementation::ZeroConstanta c, Variable v) noexcept;
 
     template<std::uint8_t I>
-    auto operator* (Parameter<I> p, implementation::Constanta c) noexcept
+    constexpr auto operator* (Parameter<I> p, implementation::Constanta c) noexcept
     {
         return implementation::product(c, p);
     }
 
     template<std::uint8_t I>
-    implementation::ZeroConstanta operator* (Parameter<I> p, implementation::ZeroConstanta c) noexcept
+    constexpr implementation::ZeroConstanta operator* (Parameter<I> p, implementation::ZeroConstanta c) noexcept
     {
         return implementation::ZeroConstanta();
     }
 
     template<std::uint8_t I>
-    auto operator* (Parameter<I> p, Variable v) noexcept
+    constexpr auto operator* (Parameter<I> p, Variable v) noexcept
     {
         return implementation::product(p, v);
     }
@@ -371,74 +379,76 @@ namespace utils::fcd
     implementation::ZeroConstanta operator* (Variable v, implementation::ZeroConstanta c) noexcept;
 
     template<std::uint8_t I>
-    auto operator* (Variable v, Parameter<I> p) noexcept
+    constexpr auto operator* (Variable v, Parameter<I> p) noexcept
     {
         return implementation::product(p, v);
     }
 
     template<implementation::FunctionName N, class F, class S, int I>
-    auto operator* (const implementation::Function<N, F, S, I>& func, implementation::Constanta c)
+    constexpr auto operator* (const implementation::Function<N, F, S, I>& func, implementation::Constanta c)
     {
         return implementation::product(c, func);
     }
 
     template<implementation::FunctionName N, class F, class S, int I>
-    auto operator* (implementation::Constanta c, const implementation::Function<N, F, S, I>& func)
+    constexpr auto operator* (implementation::Constanta c, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::product(c, func);
     }
 
     template<implementation::FunctionName N, class F, class S, int I>
-    auto operator* (const implementation::Function<N, F, S, I>& func, implementation::ZeroConstanta c)
+    constexpr auto operator* (const implementation::Function<N, F, S, I>& func, implementation::ZeroConstanta c)
     {
         return implementation::ZeroConstanta();
     }
 
     template<implementation::FunctionName N, class F, class S, int I>
-    auto operator* (implementation::ZeroConstanta c, const implementation::Function<N, F, S, I>& func)
+    constexpr auto operator* (implementation::ZeroConstanta c, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::ZeroConstanta();
     }
 
     template<implementation::FunctionName N, class F, class S, int I, std::uint8_t IPar>
-    auto operator* (const implementation::Function<N, F, S, I>& func, Parameter<IPar> p)
+    constexpr auto operator* (const implementation::Function<N, F, S, I>& func, Parameter<IPar> p)
     {
         return implementation::product(p, func);
     }
 
     template<implementation::FunctionName N, class F, class S, int I, std::uint8_t IPar>
-    auto operator* (Parameter<IPar> p, const implementation::Function<N, F, S, I>& func)
+    constexpr auto operator* (Parameter<IPar> p, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::product(p, func);
     }
 
     template<implementation::FunctionName N, class F, class S, int I>
-    auto operator* (const implementation::Function<N, F, S, I>& func, Variable v)
+    constexpr auto operator* (const implementation::Function<N, F, S, I>& func, Variable v)
     {
         return implementation::product(v, func);
     }
 
     template<implementation::FunctionName N, class F, class S, int I>
-    auto operator* (Variable v, const implementation::Function<N, F, S, I>& func)
+    constexpr auto operator* (Variable v, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::product(v, func);
     }
 
     template<implementation::FunctionName N1, class F1, class S1, int I1, 
              implementation::FunctionName N2, class F2, class S2, int I2>
-    auto operator* (const implementation::Function<N1, F1, S1, I1>& func1, 
-                   const implementation::Function<N2, F2, S2, I2>& func2)
+    constexpr auto operator* (const implementation::Function<N1, F1, S1, I1>& func1, 
+                              const implementation::Function<N2, F2, S2, I2>& func2)
     {
         return implementation::product(func1, func2);
     }
 
     implementation::Constanta operator- (implementation::Constanta c1, implementation::Constanta c2) noexcept;
 
-    implementation::ZeroConstanta operator- (implementation::ZeroConstanta c1, 
-                                             implementation::ZeroConstanta c2) noexcept;
+    constexpr auto operator- (implementation::ZeroConstanta c1, implementation::ZeroConstanta c2) noexcept
+    {
+        return implementation::ZeroConstanta();
+    }
 
     template<std::uint8_t I1, std::uint8_t I2>
-    auto operator- (Parameter<I1> p1, Parameter<I2> p2) noexcept
+    constexpr auto operator- (Parameter<I1> p1, Parameter<I2> p2) noexcept
     {
         return p1 + (-p2);
     }
@@ -448,7 +458,7 @@ namespace utils::fcd
     implementation::Constanta operator- (implementation::Constanta c1, implementation::ZeroConstanta c2) noexcept;
 
     template<std::uint8_t I>
-    auto operator- (implementation::Constanta c, Parameter<I> p) noexcept
+    constexpr auto operator- (implementation::Constanta c, Parameter<I> p) noexcept
     {
         return c + (-p);
     }
@@ -459,7 +469,7 @@ namespace utils::fcd
     implementation::Constanta operator- (implementation::ZeroConstanta c1, implementation::Constanta c2) noexcept;
 
     template<std::uint8_t I>
-    auto operator- (implementation::ZeroConstanta c, Parameter<I> p) noexcept
+    constexpr auto operator- (implementation::ZeroConstanta c, Parameter<I> p) noexcept
     {
         return -p;
     }
@@ -468,19 +478,19 @@ namespace utils::fcd
                                                                               Variable v) noexcept;
 
     template<std::uint8_t I>
-    auto operator- (Parameter<I> p, implementation::Constanta c) noexcept
+    constexpr auto operator- (Parameter<I> p, implementation::Constanta c) noexcept
     {
         return p + implementation::Constanta(-c(0));
     }
 
     template<std::uint8_t I>
-    Parameter<I> operator- (Parameter<I> p, implementation::ZeroConstanta c) noexcept
+    constexpr Parameter<I> operator- (Parameter<I> p, implementation::ZeroConstanta c) noexcept
     {
         return p;
     }
 
     template<std::uint8_t I>
-    auto operator- (Parameter<I> p, Variable v) noexcept
+    constexpr auto operator- (Parameter<I> p, Variable v) noexcept
     {
         return p + (-v);
     }
@@ -491,63 +501,63 @@ namespace utils::fcd
     Variable operator- (Variable v, implementation::ZeroConstanta c) noexcept;
 
     template<std::uint8_t I>
-    auto operator- (Variable v, Parameter<I> p) noexcept
+    constexpr auto operator- (Variable v, Parameter<I> p) noexcept
     {
         return v + (-p);
     }
 
     template<implementation::FunctionName N, class F, class S, int I>
-    auto operator- (const implementation::Function<N, F, S, I>& func, implementation::Constanta c)
+    constexpr auto operator- (const implementation::Function<N, F, S, I>& func, implementation::Constanta c)
     {
         return implementation::summ(implementation::Constanta(-c(0)), func);
     }
 
     template<implementation::FunctionName N, class F, class S, int I>
-    auto operator- (implementation::Constanta c, const implementation::Function<N, F, S, I>& func)
+    constexpr auto operator- (implementation::Constanta c, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::summ(c, implementation::product(implementation::Constanta(-1), func));
     }
 
     template<implementation::FunctionName N, class F, class S, int I>
-    auto operator- (const implementation::Function<N, F, S, I>& func, implementation::ZeroConstanta c)
+    constexpr auto operator- (const implementation::Function<N, F, S, I>& func, implementation::ZeroConstanta c)
     {
         return func;
     }
 
     template<implementation::FunctionName N, class F, class S, int I>
-    auto operator- (implementation::ZeroConstanta c, const implementation::Function<N, F, S, I>& func)
+    constexpr auto operator- (implementation::ZeroConstanta c, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::product(implementation::Constanta(-1), func);
     }
 
     template<implementation::FunctionName N, class F, class S, int I, std::uint8_t IPar>
-    auto operator- (const implementation::Function<N, F, S, I>& func, Parameter<IPar> p)
+    constexpr auto operator- (const implementation::Function<N, F, S, I>& func, Parameter<IPar> p)
     {
         return implementation::summ(implementation::product(implementation::Constanta(-1), p), func);
     }
 
     template<implementation::FunctionName N, class F, class S, int I, std::uint8_t IPar>
-    auto operator- (Parameter<IPar> p, const implementation::Function<N, F, S, I>& func)
+    constexpr auto operator- (Parameter<IPar> p, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::summ(p, implementation::product(implementation::Constanta(-1), func));
     }
 
     template<implementation::FunctionName N, class F, class S, int I>
-    auto operator- (const implementation::Function<N, F, S, I>& func, Variable v)
+    constexpr auto operator- (const implementation::Function<N, F, S, I>& func, Variable v)
     {
         return implementation::summ(implementation::product(implementation::Constanta(-1), v), func);
     }
 
     template<implementation::FunctionName N, class F, class S, int I>
-    auto operator- (Variable v, const implementation::Function<N, F, S, I>& func)
+    constexpr auto operator- (Variable v, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::summ(v, implementation::product(implementation::Constanta(-1), func));
     }
 
     template<implementation::FunctionName N1, class F1, class S1, int I1, 
              implementation::FunctionName N2, class F2, class S2, int I2>
-    auto operator- (const implementation::Function<N1, F1, S1, I1>& func1, 
-                    const implementation::Function<N2, F2, S2, I2>& func2)
+    constexpr auto operator- (const implementation::Function<N1, F1, S1, I1>& func1, 
+                              const implementation::Function<N2, F2, S2, I2>& func2)
     {
         return implementation::summ(func1, implementation::product(implementation::Constanta(-1), func2));
     }
@@ -555,7 +565,7 @@ namespace utils::fcd
     implementation::Constanta operator/ (implementation::Constanta c1, implementation::Constanta c2);
 
     template<std::uint8_t I1, std::uint8_t I2>
-    auto operator/ (Parameter<I1> p1, Parameter<I2> p2) noexcept
+    constexpr auto operator/ (Parameter<I1> p1, Parameter<I2> p2) noexcept
     {
         return p1 * power<-1>(p2);
     }
@@ -563,7 +573,7 @@ namespace utils::fcd
     implementation::Constanta operator/ (Variable v1, Variable v2) noexcept;
 
     template<std::uint8_t I>
-    auto operator/ (implementation::Constanta c, Parameter<I> p) noexcept
+    constexpr auto operator/ (implementation::Constanta c, Parameter<I> p) noexcept
     {
         return c * power<-1>(p);
     }
@@ -574,7 +584,7 @@ namespace utils::fcd
     implementation::ZeroConstanta operator/ (implementation::ZeroConstanta c1, implementation::Constanta c2) noexcept;
 
     template<std::uint8_t I>
-    implementation::ZeroConstanta operator/ (implementation::ZeroConstanta c, Parameter<I> p) noexcept
+    constexpr implementation::ZeroConstanta operator/ (implementation::ZeroConstanta c, Parameter<I> p) noexcept
     {
         return implementation::ZeroConstanta();
     }
@@ -582,13 +592,13 @@ namespace utils::fcd
     implementation::ZeroConstanta operator/ (implementation::ZeroConstanta c, Variable v) noexcept;
 
     template<std::uint8_t I>
-    auto operator/ (Parameter<I> p, implementation::Constanta c)
+    constexpr auto operator/ (Parameter<I> p, implementation::Constanta c)
     {
         return implementation::Constanta(1/c(0)) * p;
     }
 
     template<std::uint8_t I>
-    auto operator/ (Parameter<I> p, Variable v) noexcept
+    constexpr auto operator/ (Parameter<I> p, Variable v) noexcept
     {
         return p * power<-1>(v);
     }
@@ -597,19 +607,19 @@ namespace utils::fcd
                                                                               implementation::Constanta c);
 
     template<std::uint8_t I>
-    auto operator/ (Variable v, Parameter<I> p) noexcept
+    constexpr auto operator/ (Variable v, Parameter<I> p) noexcept
     {
         return v * power<-1>(p);
     }
 
     template<implementation::FunctionName N, class F, class S, int I>
-    auto operator/ (const implementation::Function<N, F, S, I>& func, implementation::Constanta c)
+    constexpr auto operator/ (const implementation::Function<N, F, S, I>& func, implementation::Constanta c)
     {
         return implementation::product(implementation::Constanta(1/c(0)), func);
     }
 
     template<implementation::FunctionName N, class F, class S, int I>
-    auto operator/ (implementation::Constanta c, const implementation::Function<N, F, S, I>& func)
+    constexpr auto operator/ (implementation::Constanta c, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::product(c, implementation::Function<
             implementation::FunctionName::Power, std::decay_t<decltype(func)>, implementation::UnusedArgument, -1
@@ -617,13 +627,13 @@ namespace utils::fcd
     }
 
     template<implementation::FunctionName N, class F, class S, int I>
-    auto operator/ (implementation::ZeroConstanta c, const implementation::Function<N, F, S, I>& func)
+    constexpr auto operator/ (implementation::ZeroConstanta c, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::ZeroConstanta();
     }
 
     template<implementation::FunctionName N, class F, class S, int I, std::uint8_t IPar>
-    auto operator/ (const implementation::Function<N, F, S, I>& func, Parameter<IPar> p)
+    constexpr auto operator/ (const implementation::Function<N, F, S, I>& func, Parameter<IPar> p)
     {
         return implementation::product(func, implementation::Function<
             implementation::FunctionName::Power, Parameter<IPar>, implementation::UnusedArgument, -1
@@ -631,7 +641,7 @@ namespace utils::fcd
     }
 
     template<implementation::FunctionName N, class F, class S, int I, std::uint8_t IPar>
-    auto operator/ (Parameter<IPar> p, const implementation::Function<N, F, S, I>& func)
+    constexpr auto operator/ (Parameter<IPar> p, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::product(p, implementation::Function<
             implementation::FunctionName::Power, std::decay_t<decltype(func)>, implementation::UnusedArgument, -1
@@ -639,7 +649,7 @@ namespace utils::fcd
     }
 
     template<implementation::FunctionName N, class F, class S, int I>
-    auto operator/ (const implementation::Function<N, F, S, I>& func, Variable v)
+    constexpr auto operator/ (const implementation::Function<N, F, S, I>& func, Variable v)
     {
         return implementation::product(func, implementation::Function<
             implementation::FunctionName::Power, Variable, implementation::UnusedArgument, -1
@@ -647,7 +657,7 @@ namespace utils::fcd
     }
 
     template<implementation::FunctionName N, class F, class S, int I>
-    auto operator/ (Variable v, const implementation::Function<N, F, S, I>& func)
+    constexpr auto operator/ (Variable v, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::product(v, implementation::Function<
             implementation::FunctionName::Power, std::decay_t<decltype(func)>, implementation::UnusedArgument, -1
@@ -656,8 +666,8 @@ namespace utils::fcd
 
     template<implementation::FunctionName N1, class F1, class S1, int I1, 
              implementation::FunctionName N2, class F2, class S2, int I2>
-    auto operator/ (const implementation::Function<N1, F1, S1, I1>& func1, 
-                   const implementation::Function<N2, F2, S2, I2>& func2)
+    constexpr auto operator/ (const implementation::Function<N1, F1, S1, I1>& func1, 
+                              const implementation::Function<N2, F2, S2, I2>& func2)
     {
         return implementation::product(func1, implementation::Function<
             implementation::FunctionName::Power, std::decay_t<decltype(func2)>, implementation::UnusedArgument, -1
