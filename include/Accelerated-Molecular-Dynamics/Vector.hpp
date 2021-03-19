@@ -20,13 +20,8 @@ namespace md
 		using projection_index = std::remove_const_t<decltype(kDimensionalNumber)>;	
 		using iterator = decltype(projections)::iterator;
 		using const_iterator = decltype(projections)::const_iterator;
-		
-		/* Pass and ConstPass is type for pass to fonctions and return from functions by value or reference 
-		depending on the kDimensionalNumber and kMaxDimensionalForValuePassing.
-		Don't use Pass for change Vector in function (pass Vector& or Vector* to function for this) */
-	private:
-		using Pass = PassT<element_t, Vector>;
-	public:
+		/* ConstPass is type for pass to fonctions and return from functions by value or reference 
+		depending on the kDimensionalNumber and kMaxDimensionalForValuePassing. */
 		using ConstPass = PassT<element_t, const Vector>;
 
 		Vector() noexcept;
@@ -35,14 +30,14 @@ namespace md
 		Vector(const std::initializer_list<double>& init_list);
 		Vector(const Vector& vector) noexcept;
 		projection_index size() const noexcept;
-		Pass operator = (ConstPass other) noexcept;
+		Vector& operator = (ConstPass other) noexcept;
 		Vector operator - () const noexcept;
 		Vector operator + (ConstPass other) const noexcept;
 		Vector operator - (ConstPass other) const noexcept;
-		Pass operator += (ConstPass other) noexcept;
-		Pass operator -= (ConstPass other) noexcept;
-		Pass operator *= (const double factor) noexcept;
-		Pass operator /= (const double divider);
+		Vector& operator += (ConstPass other) noexcept;
+		Vector& operator -= (ConstPass other) noexcept;
+		Vector& operator *= (const double factor) noexcept;
+		Vector& operator /= (const double divider);
 		double& operator [] (const projection_index index);
 		double operator [] (const projection_index index) const;
 		Vector operator / (const double divider) const;

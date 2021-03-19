@@ -36,7 +36,7 @@ md::Vector::Vector(const Vector& Vector) noexcept
 
 md::Vector::projection_index md::Vector::size() const noexcept { return kDimensionalNumber; }
 
-md::Vector::Pass md::Vector::operator = (ConstPass other) noexcept
+md::Vector& md::Vector::operator = (ConstPass other) noexcept
 {
 	for (projection_index i = 0; i < kDimensionalNumber; ++i)
 	{
@@ -69,7 +69,7 @@ md::Vector md::Vector::operator - (ConstPass other) const noexcept
 	return result;
 }
 
-md::Vector::Pass md::Vector::operator += (ConstPass other) noexcept
+md::Vector& md::Vector::operator += (ConstPass other) noexcept
 {
 	for (projection_index i = 0; i < kDimensionalNumber; ++i)
 	{
@@ -78,7 +78,7 @@ md::Vector::Pass md::Vector::operator += (ConstPass other) noexcept
 	return *this;
 }
 
-md::Vector::Pass md::Vector::operator -= (ConstPass other) noexcept
+md::Vector& md::Vector::operator -= (ConstPass other) noexcept
 {
 	for (projection_index i = 0; i < kDimensionalNumber; ++i)
 	{
@@ -87,7 +87,7 @@ md::Vector::Pass md::Vector::operator -= (ConstPass other) noexcept
 	return *this;
 }
 
-md::Vector::Pass md::Vector::operator *= (const double factor) noexcept
+md::Vector& md::Vector::operator *= (const double factor) noexcept
 {
 	for (double& projection: projections)
 	{
@@ -96,7 +96,7 @@ md::Vector::Pass md::Vector::operator *= (const double factor) noexcept
 	return *this;
 }
 
-md::Vector::Pass md::Vector::operator /= (const double divider)
+md::Vector& md::Vector::operator /= (const double divider)
 {
 	for (double& projection: projections)
 	{
