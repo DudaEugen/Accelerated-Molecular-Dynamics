@@ -2,9 +2,9 @@
 
 using namespace md;
 
-void testVectorDimensionalNumber3()
+void testVectorkDimensionalNumber3()
 {
-    if constexpr (DimensionalNumber == 3)
+    if constexpr (kDimensionalNumber == 3)
 	{
 		assert(equal(
             Vector({ 3, 4, 0 }).absoluteValue(), 
@@ -95,8 +95,8 @@ void testVector()
     testVectorConstructors();
     testVectorIterators();
     testVectorOperators();
-    if constexpr (DimensionalNumber == 3)
+    if constexpr (kDimensionalNumber == 3)
     {
-        testVectorDimensionalNumber3();
+        testVectorkDimensionalNumber3();
     }
 }

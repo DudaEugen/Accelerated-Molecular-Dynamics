@@ -31,7 +31,7 @@ void md::MorsePotential::computeAndSetAccelerations()
 		double distance = atomPair.getDistance();
 		if (distance < cutRadius)
 		{
-			force = 2 * Q_Elementary * 0.0001 * D_e * alpha * 
+			force = 2 * kElementaryCharge * 0.0001 * D_e * alpha * 
 				( exp(-alpha*(distance - cutRadius)) - exp(-2*alpha* (distance - cutRadius)) ) / distance * 
 				atomPair.getDistanceProjections();
 

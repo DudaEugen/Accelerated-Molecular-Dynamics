@@ -12,14 +12,14 @@ namespace md
         std::vector<Cell> cells;
         Vector firstCellPosition;
         Vector cellSize;
-        std::array<std::size_t, DimensionalNumber> cellNumberInDirection;
+        std::array<std::size_t, kDimensionalNumber> cellNumberInDirection;
         BorderConditions* borderConditions;
 
         // getOffsetFactorInDirection()[i] element is value that need add for offset by 1 cell to i-th direction
-        std::array<std::size_t, DimensionalNumber> getOffsetFactorInDirection() const noexcept;
+        std::array<std::size_t, kDimensionalNumber> getOffsetFactorInDirection() const noexcept;
         // getOffsetBySizeInDirection()[i] element is value that need add for offset by size of cellCollection to i-th direction
-        std::array<std::size_t, DimensionalNumber> getOffsetBySizeInDirection() const noexcept;
-        std::array<std::size_t, DimensionalNumber> getOffsetBySizeInDirection(ConstPassArrayT<std::size_t> 
+        std::array<std::size_t, kDimensionalNumber> getOffsetBySizeInDirection() const noexcept;
+        std::array<std::size_t, kDimensionalNumber> getOffsetBySizeInDirection(ConstPassArrayT<std::size_t> 
                                                                             offsetFactorInDirection) const noexcept;
         // compute and set cellSize, firstCellPosition, return number of cell
         std::size_t computeAndSetParameters(const std::vector<Atom>& atoms, const APotential* potential);

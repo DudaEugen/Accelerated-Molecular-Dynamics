@@ -18,7 +18,7 @@ namespace md
 			none,
 		};
 	private:
-		std::array<borderType, DimensionalNumber> borderTypes;
+		std::array<borderType, kDimensionalNumber> borderTypes;
 		Vector dimensions;
 		Vector zeroPoint;
 	public:

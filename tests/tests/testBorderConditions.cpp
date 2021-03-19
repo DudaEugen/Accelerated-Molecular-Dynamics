@@ -3,11 +3,11 @@
 
 using namespace md;
 
-void testBorderConditionsDimensionalNumber3()
+void testBorderConditionskDimensionalNumber3()
 {
-    if constexpr (DimensionalNumber == 3)
+    if constexpr (kDimensionalNumber == 3)
 	{
-		std::array<BorderConditions::borderType, DimensionalNumber> bTypes = {
+		std::array<BorderConditions::borderType, kDimensionalNumber> bTypes = {
 			BorderConditions::borderType::none,
 			BorderConditions::borderType::periodic,
 			BorderConditions::borderType::periodic,
@@ -53,7 +53,7 @@ void testBorderConditionsDimensionalNumber3()
 		assert(equal(bCond(v), a.absoluteValue()));
 		assert(equal(v, a));
 
-		std::array<BorderConditions::borderType, DimensionalNumber> bTypes2 = {
+		std::array<BorderConditions::borderType, kDimensionalNumber> bTypes2 = {
 			BorderConditions::borderType::periodic,
 			BorderConditions::borderType::periodic,
 			BorderConditions::borderType::periodic,
@@ -85,8 +85,8 @@ void testBorderConditionsDimensionalNumber3()
 
 void testBorderConditions()
 {
-    if constexpr (DimensionalNumber == 3)
+    if constexpr (kDimensionalNumber == 3)
     {
-        testBorderConditionsDimensionalNumber3();
+        testBorderConditionskDimensionalNumber3();
     }
 }

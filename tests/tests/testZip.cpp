@@ -9,7 +9,7 @@ void testUnindexedZip()
 {
     Vector v1 = randomVector();
 	Vector v2 = randomVector();
-	std::array<int, DimensionalNumber> arr;
+	std::array<int, kDimensionalNumber> arr;
 	for(auto& v: arr)
 		v = random();
 	
@@ -25,14 +25,14 @@ void testUnindexedZip()
 		assert(c == arr[i]);
 		++i;
 	}
-	assert(i == DimensionalNumber);
+	assert(i == kDimensionalNumber);
 }
 
 void testIndexedZip()
 {
     Vector v1 = randomVector();
 	Vector v2 = randomVector();
-	std::array<int, DimensionalNumber> arr;
+	std::array<int, kDimensionalNumber> arr;
 	for(auto& v: arr)
 		v = random();
 
@@ -40,7 +40,7 @@ void testIndexedZip()
 	{
 		assert(equal(a, v1[index]));
 		assert(b == arr[index]);
-		assert(index >= 0 && index < DimensionalNumber);
+		assert(index >= 0 && index < kDimensionalNumber);
 	}
 
 	std::vector<int> v = {10, 20, 30 , 40, 50, 60, 70, 80, 90};
@@ -53,12 +53,12 @@ void testIndexedZip()
 	assert(i == v.size());
 
 	for (auto [index, a, b, c]: IndexedZip(v1, arr, v2))
-		assert(index < DimensionalNumber);
+		assert(index < kDimensionalNumber);
 	for (auto [index, a, b, c, p]: IndexedZip(v1, arr, v2, v))
-		assert(index < DimensionalNumber);
+		assert(index < kDimensionalNumber);
 	std::array<int, 3> dd = {};
 	for (auto [index, a, b, c, p, d]: IndexedZip(v1, arr, v2, v, dd))
-		assert(index < DimensionalNumber);
+		assert(index < kDimensionalNumber);
 }
 
 void testZip()

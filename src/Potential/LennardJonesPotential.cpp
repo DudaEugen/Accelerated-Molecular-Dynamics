@@ -31,7 +31,7 @@ void md::LennardJonesPotential::computeAndSetAccelerations()
 		double distance = atomPair.getDistance();
 		if (distance < cutRadius)
 		{
-			force = 24 * Q_Elementary * 0.0001 * e *
+			force = 24 * kElementaryCharge * 0.0001 * e *
 				( 1 - 2*pow(r_m/distance, 6) ) * pow(r_m / distance, 8) / std::pow(r_m, 2) *
 				atomPair.getDistanceProjections();
 

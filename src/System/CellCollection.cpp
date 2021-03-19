@@ -13,24 +13,24 @@ md::CellCollection::CellCollection(const std::vector<Atom>& atoms, const APotent
     computeAndSetNeighbours();
 }
 
-std::array<std::size_t, md::DimensionalNumber> md::CellCollection::getOffsetFactorInDirection() const noexcept
+std::array<std::size_t, md::kDimensionalNumber> md::CellCollection::getOffsetFactorInDirection() const noexcept
 {
-    std::array<std::size_t, DimensionalNumber> offsetFactorInDirection;    
+    std::array<std::size_t, kDimensionalNumber> offsetFactorInDirection;    
     offsetFactorInDirection[0] = 1;
-    for(Vector::projection_index direction = 1; direction < DimensionalNumber; ++direction)
+    for(Vector::projection_index direction = 1; direction < kDimensionalNumber; ++direction)
         offsetFactorInDirection[direction] = offsetFactorInDirection[direction-1] * cellNumberInDirection[direction-1];
     return offsetFactorInDirection;
 }
 
-std::array<std::size_t, md::DimensionalNumber> md::CellCollection::getOffsetBySizeInDirection() const noexcept
+std::array<std::size_t, md::kDimensionalNumber> md::CellCollection::getOffsetBySizeInDirection() const noexcept
 {
     return getOffsetBySizeInDirection(getOffsetFactorInDirection());
 }
 
-std::array<std::size_t, md::DimensionalNumber> md::CellCollection::getOffsetBySizeInDirection(
+std::array<std::size_t, md::kDimensionalNumber> md::CellCollection::getOffsetBySizeInDirection(
     ConstPassArrayT<std::size_t> offsetFactorInDirection) const noexcept
 {
-    std::array<std::size_t, DimensionalNumber> offsetBySizeInDirection;    
+    std::array<std::size_t, kDimensionalNumber> offsetBySizeInDirection;    
     for (auto [offsetBySize, offsetFactor, cellNumber]: 
          utils::zip::Zip(offsetBySizeInDirection, offsetFactorInDirection, cellNumberInDirection))
     {
@@ -43,7 +43,7 @@ std::size_t md::CellCollection::computeAndSetParameters(const std::vector<Atom>&
 {
     size_t cellsNumber = 1;
     double minimumSize = potential->getCutRadius();
-    for(Vector::projection_index i = 0; i < DimensionalNumber; ++i)
+    for(Vector::projection_index i = 0; i < kDimensionalNumber; ++i)
     {
         bool isPeriodic = false;
         if (borderConditions != nullptr)
@@ -83,13 +83,13 @@ void md::CellCollection::createCells(const std::size_t cellsNumber)
 
 void md::CellCollection::computeAndSetNeighbours()
 {
-    std::array<std::size_t, DimensionalNumber> offsetFactorInDirection = getOffsetFactorInDirection();
-    std::array<std::size_t, DimensionalNumber> offsetBySizeInDirection = getOffsetBySizeInDirection(offsetFactorInDirection);
+    std::array<std::size_t, kDimensionalNumber> offsetFactorInDirection = getOffsetFactorInDirection();
+    std::array<std::size_t, kDimensionalNumber> offsetBySizeInDirection = getOffsetBySizeInDirection(offsetFactorInDirection);
     for (std::size_t p = 0; p < cells.size(); ++p)
     {
         std::vector<std::size_t> neighbourCellsIndexes;
         neighbourCellsIndexes.push_back(p);
-        for(Vector::projection_index direction = 0; direction < DimensionalNumber; ++direction)
+        for(Vector::projection_index direction = 0; direction < kDimensionalNumber; ++direction)
         {
             std::size_t initSize = neighbourCellsIndexes.size();
             for (std::size_t k = 0; k < initSize; ++k)
@@ -130,19 +130,19 @@ const std::vector<md::Cell>& md::CellCollection::getCells() const noexcept { ret
 
 md::Cell& md::CellCollection::findCellContainingVector(Vector::ConstPass vector)
 {
-    std::array<std::size_t, DimensionalNumber> offsetFactorInDirection = getOffsetFactorInDirection();
+    std::array<std::size_t, kDimensionalNumber> offsetFactorInDirection = getOffsetFactorInDirection();
 
     Vector pos = vector;
     if (borderConditions != nullptr)
         pos = borderConditions->computePosition(pos);
     
-    for(Vector::projection_index i = 0; i < DimensionalNumber; ++i)
+    for(Vector::projection_index i = 0; i < kDimensionalNumber; ++i)
         if (borderConditions == nullptr || 
             borderConditions->getBorderTypes()[i] == BorderConditions::borderType::none)
             pos[i] -= firstCellPosition[i];
 
     std::size_t cellIndex = 0;
-    for(Vector::projection_index i = 0; i < DimensionalNumber; ++i)
+    for(Vector::projection_index i = 0; i < kDimensionalNumber; ++i)
     {
         int64_t cellCoordinate = static_cast<int64_t>(floor(pos[i] / cellSize[i]));
 
