@@ -20,10 +20,13 @@ namespace md
 		using projection_index = std::remove_const_t<decltype(kDimensionalNumber)>;	
 		using iterator = decltype(projections)::iterator;
 		using const_iterator = decltype(projections)::const_iterator;
+		
 		/* Pass and ConstPass is type for pass to fonctions and return from functions by value or reference 
 		depending on the kDimensionalNumber and kMaxDimensionalForValuePassing.
 		Don't use Pass for change Vector in function (pass Vector& or Vector* to function for this) */
+	private:
 		using Pass = PassT<element_t, Vector>;
+	public:
 		using ConstPass = PassT<element_t, const Vector>;
 
 		Vector() noexcept;
