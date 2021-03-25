@@ -24,6 +24,7 @@ int main(int argc, char* argv[])
 			testCellCollection();
 			testZip();
 			testDerivative();
+			testEnum();
 
 			std::cout << "tests completed\n";
 		}
