@@ -16,9 +16,9 @@ CREATE_ENUM_F2(
 
 void testEnum()
 {
-    assert(ARGS_SIZE(8) == 1);
-    assert(ARGS_SIZE(5, 6, 7, 0, 9) == 5);
-    assert(ARGS_SIZE(0, 1, 2, 3, 4, 6, 5, 7, 8, 0, 7) == 11);
+    assert(MACRO_ARGS_SIZE(8) == 1);
+    assert(MACRO_ARGS_SIZE(5, 6, 7, 0, 9) == 5);
+    assert(MACRO_ARGS_SIZE(0, 1, 2, 3, 4, 6, 5, 7, 8, 0, 7) == 11);
     
     elements v = elements::H;
     assert(v == elements::H);

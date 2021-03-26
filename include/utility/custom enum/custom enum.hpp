@@ -6,28 +6,28 @@
 #include <stdexcept>
 
 // macro functions
-#define ARGS_COUNT(x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, res, ...) res
-#define ARGS_SIZE(...) ARGS_COUNT(__VA_ARGS__, 16, 15, 14, 13, 12, 11, 10, 9 , 8, 7, 6, 5, 4, 3, 2, 1)
+#define MACRO_ARGS_COUNT(x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, res, ...) res
+#define MACRO_ARGS_SIZE(...) MACRO_ARGS_COUNT(__VA_ARGS__, 16, 15, 14, 13, 12, 11, 10, 9 , 8, 7, 6, 5, 4, 3, 2, 1)
 
-#define FOREACH_1(macro, context, sep, arg) macro(context, arg)
-#define FOREACH_2(macro, context, sep, arg, ...) macro(context, arg) ADD_##sep FOREACH_1(macro, context, sep, __VA_ARGS__)
-#define FOREACH_3(macro, context, sep, arg, ...) macro(context, arg) ADD_##sep FOREACH_2(macro, context, sep, __VA_ARGS__)
-#define FOREACH_4(macro, context, sep, arg, ...) macro(context, arg) ADD_##sep FOREACH_3(macro, context, sep, __VA_ARGS__)
-#define FOREACH_5(macro, context, sep, arg, ...) macro(context, arg) ADD_##sep FOREACH_4(macro, context, sep, __VA_ARGS__)
-#define FOREACH_6(macro, context, sep, arg, ...) macro(context, arg) ADD_##sep FOREACH_5(macro, context, sep, __VA_ARGS__)
-#define FOREACH_7(macro, context, sep, arg, ...) macro(context, arg) ADD_##sep FOREACH_6(macro, context, sep, __VA_ARGS__)
-#define FOREACH_8(macro, context, sep, arg, ...) macro(context, arg) ADD_##sep FOREACH_7(macro, context, sep, __VA_ARGS__)
-#define FOREACH_9(macro, context, sep, arg, ...) macro(context, arg) ADD_##sep FOREACH_8(macro, context, sep, __VA_ARGS__)
-#define FOREACH_10(macro, context, sep, arg, ...) macro(context, arg) ADD_##sep FOREACH_9(macro, context, sep, __VA_ARGS__)
-#define FOREACH_11(macro, context, sep, arg, ...) macro(context, arg) ADD_##sep FOREACH_10(macro, context, sep, __VA_ARGS__)
-#define FOREACH_12(macro, context, sep, arg, ...) macro(context, arg) ADD_##sep FOREACH_11(macro, context, sep, __VA_ARGS__)
-#define FOREACH_13(macro, context, sep, arg, ...) macro(context, arg) ADD_##sep FOREACH_12(macro, context, sep, __VA_ARGS__)
-#define FOREACH_14(macro, context, sep, arg, ...) macro(context, arg) ADD_##sep FOREACH_13(macro, context, sep, __VA_ARGS__)
-#define FOREACH_15(macro, context, sep, arg, ...) macro(context, arg) ADD_##sep FOREACH_14(macro, context, sep, __VA_ARGS__)
-#define FOREACH_16(macro, context, sep, arg, ...) macro(context, arg) ADD_##sep FOREACH_15(macro, context, sep, __VA_ARGS__)
-#define FOREACH_N(macro, context, sep, count, ...) FOREACH_##count(macro, context, sep, __VA_ARGS__)
-#define ARGUMENTS(...) ARGS_SIZE(__VA_ARGS__), __VA_ARGS__
-#define FOREACH(macro, context, sep, ...) FOREACH_N(macro, context, sep, __VA_ARGS__)
+#define MACRO_FOREACH_1(f, context, sep, arg) f(context, arg)
+#define MACRO_FOREACH_2(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_1(f, context, sep, __VA_ARGS__)
+#define MACRO_FOREACH_3(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_2(f, context, sep, __VA_ARGS__)
+#define MACRO_FOREACH_4(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_3(f, context, sep, __VA_ARGS__)
+#define MACRO_FOREACH_5(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_4(f, context, sep, __VA_ARGS__)
+#define MACRO_FOREACH_6(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_5(f, context, sep, __VA_ARGS__)
+#define MACRO_FOREACH_7(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_6(f, context, sep, __VA_ARGS__)
+#define MACRO_FOREACH_8(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_7(f, context, sep, __VA_ARGS__)
+#define MACRO_FOREACH_9(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_8(f, context, sep, __VA_ARGS__)
+#define MACRO_FOREACH_10(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_9(f, context, sep, __VA_ARGS__)
+#define MACRO_FOREACH_11(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_10(f, context, sep, __VA_ARGS__)
+#define MACRO_FOREACH_12(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_11(f, context, sep, __VA_ARGS__)
+#define MACRO_FOREACH_13(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_12(f, context, sep, __VA_ARGS__)
+#define MACRO_FOREACH_14(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_13(f, context, sep, __VA_ARGS__)
+#define MACRO_FOREACH_15(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_14(f, context, sep, __VA_ARGS__)
+#define MACRO_FOREACH_16(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_15(f, context, sep, __VA_ARGS__)
+#define MACRO_FOREACH_N(f, context, sep, count, ...) MACRO_FOREACH_##count(f, context, sep, __VA_ARGS__)
+#define MACRO_ARGUMENTS(...) MACRO_ARGS_SIZE(__VA_ARGS__), __VA_ARGS__
+#define MACRO_FOREACH(f, context, sep, ...) MACRO_FOREACH_N(f, context, sep, __VA_ARGS__)
 #define ADD_KOMA_SEP ,
 #define ADD_SEMICOLON_SEP ;
 #define ADD_NO_SEP  
@@ -52,7 +52,7 @@
     return ARG_1_##arg;
 #define ENUM_SWITH(arg, enum_name, ...) switch (arg)                                                                                       \
     {                                                                                        \
-        FOREACH(CASE_RETURN, enum_name, NO_SEP, ARGUMENTS(__VA_ARGS__))                      \
+        MACRO_FOREACH(CASE_RETURN, enum_name, NO_SEP, MACRO_ARGUMENTS(__VA_ARGS__))          \
     }                                                                                        \
     throw std::runtime_error(std::string("Incorrect value of custom enum: ") + #enum_name);     
 
@@ -79,20 +79,20 @@ EXAMPLE: CREATE_ENUM_F3(
 */
 #define CREATE_ENUM_F0(name, f_headers, ...) enum class name                                 \
     {                                                                                        \
-        FOREACH(ADD_PREF, ENUM_VALUE_, KOMA_SEP, ARGUMENTS(__VA_ARGS__))                     \
+        MACRO_FOREACH(ADD_PREF, ENUM_VALUE_, KOMA_SEP, MACRO_ARGUMENTS(__VA_ARGS__))         \
     };                                                                                       \
-    ENUM_TO_STRING(name, FOREACH(ADD_PREF, ARG_0_, KOMA_SEP, ARGUMENTS(__VA_ARGS__)))
+    ENUM_TO_STRING(name, MACRO_FOREACH(ADD_PREF, ARG_0_, KOMA_SEP, MACRO_ARGUMENTS(__VA_ARGS__)))
 
 #define CREATE_ENUM_F1(name, f_headers, ...) CREATE_ENUM_F0(name, f_headers, __VA_ARGS__)    \
     ENUM_FUNCTION_CREATOR(name, ARG_0_##f_headers,                                           \
-                          FOREACH(ADD_PREF, ARG_1_, KOMA_SEP, ARGUMENTS(__VA_ARGS__)))
+                          MACRO_FOREACH(ADD_PREF, ARG_1_, KOMA_SEP, MACRO_ARGUMENTS(__VA_ARGS__)))
 
 #define CREATE_ENUM_F2(name, f_headers, ...) CREATE_ENUM_F1(name, f_headers, __VA_ARGS__)    \
     ENUM_FUNCTION_CREATOR(name, ARG_1_##f_headers,                                           \
-                          FOREACH(ADD_PREF, ARG_2_, KOMA_SEP, ARGUMENTS(__VA_ARGS__)))
+                          MACRO_FOREACH(ADD_PREF, ARG_2_, KOMA_SEP, MACRO_ARGUMENTS(__VA_ARGS__)))
 
 #define CREATE_ENUM_F3(name, f_headers, ...) CREATE_ENUM_F2(name, f_headers, __VA_ARGS__)    \
     ENUM_FUNCTION_CREATOR(name, ARG_2_##f_headers,                                           \
-                          FOREACH(ADD_PREF, ARG_3_, KOMA_SEP, ARGUMENTS(__VA_ARGS__)))
+                          MACRO_FOREACH(ADD_PREF, ARG_3_, KOMA_SEP, MACRO_ARGUMENTS(__VA_ARGS__)))
 
 #endif  // TAHD_CUSTOM_ENUM_H
