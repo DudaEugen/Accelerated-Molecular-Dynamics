@@ -7,9 +7,8 @@ void testAtomkDimensionalNumber3()
 {
     if constexpr (kDimensionalNumber == 3)
 	{
-        char c[2] = { 'A', 'u' };
         Vector v = randomVector();
-        Atom a(c, randomVector());
+        Atom a(element::Au, randomVector());
 		
         a.setVelocity(v);
 		Vector v2 = { 4, -5.67, 9.23897 };
@@ -24,9 +23,9 @@ void testAtomkDimensionalNumber3()
 
 void testAtomConstructors()
 {
-    Atom aAl_1("Al", randomVector());
-	Atom aAl_2("Al", randomVector());
-	Atom aCu_1("Cu", randomVector());
+    Atom aAl_1(element::Al, randomVector());
+	Atom aAl_2(element::Al, randomVector());
+	Atom aCu_1(element::Cu, randomVector());
 	Atom aCu_2 = aCu_1;
 	assert(aAl_1.chemElement == aAl_2.chemElement);
 	assert(aCu_1.chemElement == aCu_2.chemElement);
@@ -34,12 +33,11 @@ void testAtomConstructors()
 	assert(md::get_atomic_mass(aAl_1.chemElement) == 27);
 	assert(equal(aAl_1.mass, md::get_atomic_mass(aAl_2.chemElement) / (kAvogadro * 1000)));
 
-    char c[2] = { 'A', 'u' };
-	assert(md::get_atomic_mass(Atom(c, randomVector()).chemElement) == 197);
-	assert(md::get_atomic_number(Atom(c, randomVector()).chemElement) == 79);
+	assert(md::get_atomic_mass(Atom(element::Au, randomVector()).chemElement) == 197);
+	assert(md::get_atomic_number(Atom(element::Au, randomVector()).chemElement) == 79);
 
     Vector v = aAl_1.getCoordinates();
-	Atom a(c, v);
+	Atom a(element::Au, v);
 	assert(equal(a.getCoordinates(), aAl_1.getCoordinates()));
 	assert(equal(a.getAcceleration(), randomVector() * 0));
 }
@@ -49,14 +47,14 @@ void testAtomMoving()
     Vector rx = randomVector();
 	Vector rv = randomVector();
 	Vector ra = randomVector();
-	Atom a1("Cu", Vector());
-	Atom a2("Cu", Vector());
+	Atom a1(element::Cu, Vector());
+	Atom a2(element::Cu, Vector());
 	a2.setVelocity(rv);
-	Atom a3("Cu", Vector());	
-	Atom a4("Al", rx);
+	Atom a3(element::Cu, Vector());	
+	Atom a4(element::Al, rx);
 	a4.setVelocity(rv);
 	a4.addVelocity(rv);
-	Atom a5("Au", Vector());
+	Atom a5(element::Au, Vector());
 	double dt = 0.000'01;
 	for(int i = 0; i < 100'000; ++i)
 	{

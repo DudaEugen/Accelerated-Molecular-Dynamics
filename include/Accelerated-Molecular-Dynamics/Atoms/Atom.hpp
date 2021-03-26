@@ -27,9 +27,6 @@ namespace md
 		void doStepVelocityVerlet(const double dt) noexcept;
 	public:
 		Atom(const element element, Vector::ConstPass coordinates);
-		Atom(const char element, Vector::ConstPass coordinates);
-		Atom(const char element[2], Vector::ConstPass coordinates);
-		Atom(const std::string element, Vector::ConstPass coordinates);
 						
 		void setCoordinates(Vector::ConstPass coordinates) noexcept;
 		void setVelocity(Vector::ConstPass velocity) noexcept;

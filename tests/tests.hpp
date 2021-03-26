@@ -53,6 +53,4 @@ void testZip();
 
 void testDerivative();
 
-void testEnum();
-
 #endif  // TAHD_TESTS_H

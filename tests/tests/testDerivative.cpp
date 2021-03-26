@@ -62,7 +62,7 @@ void testDerivativeFunctions()
 	assert(equal(fcd::derivative<3>(f2)(x), 0));
 
     auto f4 = -0.5*fcd::power<-2>(fcd::Variable());
-	assert(equal(fcd::derivative<2>(f4)(x), -3/(pow(x,4)), 10));
+	assert(equal(fcd::derivative<2>(f4)(x), -3/(pow(x,4)), 8));
 
 	auto f5 = fcd::sqRoot(fcd::Variable()) + fcd::power<2>(fcd::root<5>(fcd::Variable()));
 	assert(equal(fcd::derivative(f5)(abs(x)), 1/(2*sqrt(abs(x))) + 0.4*pow(abs(x), -0.6), 10));

@@ -15,7 +15,7 @@ void testCellCollectionkDimensionalNumber3()
 		};
 		BorderConditions bCond(Vector{8, 10, 47}, bTypes);
 		APotential* potential = new MockPotential(4);
-		std::vector<Atom> atoms = { Atom{"Cu", Vector{}}, Atom{"Cu", Vector{13, 12.1, 12}}};
+		std::vector<Atom> atoms = { Atom{element::Cu, Vector{}}, Atom{element::Cu, Vector{13, 12.1, 12}}};
 		CellCollection cc{ atoms, potential, &bCond };
 		assert(cc.getCells().size() == 44);
 
@@ -55,7 +55,7 @@ void testCellCollectionNeighborsCells()
 	Vector vect = randomVector<20, 50>();
 	BorderConditions bConditions(vect, bordersType);
 	APotential* pot = new MockPotential(6);
-	std::vector<Atom> twoAtoms = { Atom{"Cu", Vector{}}, Atom{"Cu", vect}};
+	std::vector<Atom> twoAtoms = { Atom{element::Cu, Vector{}}, Atom{element::Cu, vect}};
 
 	CellCollection cColl{ twoAtoms, pot, &bConditions };
 	for(auto& cell: cColl.getCells())
@@ -71,7 +71,7 @@ void testCellCollectionNeighborsCells()
 		assert(isFindSelf);
 	}
 	Vector v = randomVector();
-	assert(&cColl.findCellContainingVector(v) == &cColl.findCellContainingAtom(Atom{"Cu", v}));
+	assert(&cColl.findCellContainingVector(v) == &cColl.findCellContainingAtom(Atom{element::Cu, v}));
 
 	CellCollection cellColl{ twoAtoms, pot};
 	for(auto& cell: cellColl.getCells())

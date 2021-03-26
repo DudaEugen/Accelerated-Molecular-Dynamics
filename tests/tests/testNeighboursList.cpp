@@ -9,10 +9,10 @@ void testNeighboursList()
 	Vector v = randomVector();
 	Vector d{};
 	d[0] += 1;
-	l1.push_back(Atom{"Cu", v - 2*d});
-	l1.push_back(Atom{"Cu", v});
-	l1.push_back(Atom{"Cu", v + 2*d});
-	l1.push_back(Atom{"Cu", v + 4*d});
+	l1.push_back(Atom{element::Cu, v - 2*d});
+	l1.push_back(Atom{element::Cu, v});
+	l1.push_back(Atom{element::Cu, v + 2*d});
+	l1.push_back(Atom{element::Cu, v + 4*d});
 
 	std::vector<AtomPair> prs;
 	prs.push_back(AtomPair(l1[0], l1[1]));

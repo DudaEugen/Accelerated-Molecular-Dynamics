@@ -5,8 +5,8 @@ using namespace md;
 
 void testAtomPair()
 {
-    Atom a("Cu", randomVector());
-	Atom b("Al", randomVector());
+    Atom a(element::Cu, randomVector());
+	Atom b(element::Al, randomVector());
 	AtomPair pair(a, b);
 
 	assert(&pair.getAtomByIndex(AtomPair::index::first) == &pair.getFirst());

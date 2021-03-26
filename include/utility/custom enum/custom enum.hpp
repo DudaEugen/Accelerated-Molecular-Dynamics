@@ -22,24 +22,26 @@
 // functions for custom enum
 
 /* switch */
-#define CASE_RETURN(enum_name, arg) case enum_name::ARG_0_##arg:                             \
+#define CASE_RETURN(enum_name, arg) case enum_name::ARG_0_##arg:                                 \
     return ARG_1_##arg;
-#define ENUM_SWITH(arg, enum_name, ...) switch (arg)                                                                                       \
-    {                                                                                        \
-        MACRO_FOREACH(CASE_RETURN, enum_name, NO_SEP, MACRO_ARGUMENTS(__VA_ARGS__))          \
-    }                                                                                        \
+#define ENUM_SWITH(arg, enum_name, ...) switch (arg)                                             \
+    {                                                                                            \
+        MACRO_FOREACH(CASE_RETURN, enum_name, NO_SEP, MACRO_ARGUMENTS(__VA_ARGS__))              \
+    }                                                                                            \
     throw std::runtime_error(std::string("Incorrect value of custom enum: ") + #enum_name);     
 
 /* to string */
-#define ENUM_TO_STRING(enum_name, ...) std::string enum_name##_to_string(enum_name arg)      \
-    {                                                                                        \
-        ENUM_SWITH(arg, enum_name, __VA_ARGS__)                                              \
+#define ENUM_TO_STRING_SIGN(enum_name) std::string enum_name##_to_string(enum_name arg)    
+#define ENUM_TO_STRING(enum_name, ...) ENUM_TO_STRING_SIGN(enum_name)                            \
+    {                                                                                            \
+        ENUM_SWITH(arg, enum_name, __VA_ARGS__)                                                  \
     }
  
 /* enum functions */
-#define ENUM_FUNCTION_CREATOR(enum_name, f_header, ...) f_header (enum_name arg)             \
-    {                                                                                        \
-        ENUM_SWITH(arg, enum_name, __VA_ARGS__)                                              \
+#define ENUM_FUNCTION_SIGN(enum_name, f_header) f_header (enum_name arg) 
+#define ENUM_FUNCTION_CREATOR(enum_name, f_header, ...) ENUM_FUNCTION_SIGN(enum_name, f_header)  \
+    {                                                                                            \
+        ENUM_SWITH(arg, enum_name, __VA_ARGS__)                                                  \
     }
 
 /* custom enum create. N in FN is count of additional functions for enum
@@ -51,22 +53,39 @@ EXAMPLE: CREATE_ENUM_F3(
     ...
 )
 */
-#define CREATE_ENUM_F0(name, f_headers, ...) enum class name                                 \
-    {                                                                                        \
-        MACRO_FOREACH(ADD_PREF, ENUM_VALUE_, KOMA_SEP, MACRO_ARGUMENTS(__VA_ARGS__))         \
-    };                                                                                       \
-    ENUM_TO_STRING(name, MACRO_FOREACH(ADD_PREF, ARG_0_, KOMA_SEP, MACRO_ARGUMENTS(__VA_ARGS__)))
+#ifdef CPP_CUSTOM_ENUM
+    #define CREATE_ENUM_F0(name, f_headers, ...) enum class name                                 \
+        {                                                                                        \
+            MACRO_FOREACH(ADD_PREF, ENUM_VALUE_, KOMA_SEP, MACRO_ARGUMENTS(__VA_ARGS__))         \
+        };                                                                                       \
+        ENUM_TO_STRING(name, MACRO_FOREACH(ADD_PREF, ARG_0_, KOMA_SEP, MACRO_ARGUMENTS(__VA_ARGS__)))
 
-#define CREATE_ENUM_F1(name, f_headers, ...) CREATE_ENUM_F0(name, f_headers, __VA_ARGS__)    \
-    ENUM_FUNCTION_CREATOR(name, ARG_0_##f_headers,                                           \
-                          MACRO_FOREACH(ADD_PREF, ARG_1_, KOMA_SEP, MACRO_ARGUMENTS(__VA_ARGS__)))
+    #define CREATE_ENUM_F1(name, f_headers, ...) CREATE_ENUM_F0(name, f_headers, __VA_ARGS__)    \
+        ENUM_FUNCTION_CREATOR(name, ARG_0_##f_headers,                                           \
+                            MACRO_FOREACH(ADD_PREF, ARG_1_, KOMA_SEP, MACRO_ARGUMENTS(__VA_ARGS__)))
 
-#define CREATE_ENUM_F2(name, f_headers, ...) CREATE_ENUM_F1(name, f_headers, __VA_ARGS__)    \
-    ENUM_FUNCTION_CREATOR(name, ARG_1_##f_headers,                                           \
-                          MACRO_FOREACH(ADD_PREF, ARG_2_, KOMA_SEP, MACRO_ARGUMENTS(__VA_ARGS__)))
+    #define CREATE_ENUM_F2(name, f_headers, ...) CREATE_ENUM_F1(name, f_headers, __VA_ARGS__)    \
+        ENUM_FUNCTION_CREATOR(name, ARG_1_##f_headers,                                           \
+                            MACRO_FOREACH(ADD_PREF, ARG_2_, KOMA_SEP, MACRO_ARGUMENTS(__VA_ARGS__)))
 
-#define CREATE_ENUM_F3(name, f_headers, ...) CREATE_ENUM_F2(name, f_headers, __VA_ARGS__)    \
-    ENUM_FUNCTION_CREATOR(name, ARG_2_##f_headers,                                           \
-                          MACRO_FOREACH(ADD_PREF, ARG_3_, KOMA_SEP, MACRO_ARGUMENTS(__VA_ARGS__)))
+    #define CREATE_ENUM_F3(name, f_headers, ...) CREATE_ENUM_F2(name, f_headers, __VA_ARGS__)    \
+        ENUM_FUNCTION_CREATOR(name, ARG_2_##f_headers,                                           \
+                            MACRO_FOREACH(ADD_PREF, ARG_3_, KOMA_SEP, MACRO_ARGUMENTS(__VA_ARGS__)))
+#else   // notdef CPP_CUSTOM_ENUM
+    #define CREATE_ENUM_F0(name, f_headers, ...) enum class name                                 \
+        {                                                                                        \
+            MACRO_FOREACH(ADD_PREF, ENUM_VALUE_, KOMA_SEP, MACRO_ARGUMENTS(__VA_ARGS__))         \
+        };                                                                                       \
+        ENUM_TO_STRING_SIGN(name);
+
+    #define CREATE_ENUM_F1(name, f_headers, ...) CREATE_ENUM_F0(name, f_headers, __VA_ARGS__)    \
+        ENUM_FUNCTION_SIGN(name, ARG_0_##f_headers);
+
+    #define CREATE_ENUM_F2(name, f_headers, ...) CREATE_ENUM_F1(name, f_headers, __VA_ARGS__)    \
+        ENUM_FUNCTION_SIGN(name, ARG_1_##f_headers);
+
+    #define CREATE_ENUM_F3(name, f_headers, ...) CREATE_ENUM_F2(name, f_headers, __VA_ARGS__)    \
+        ENUM_FUNCTION_SIGN(name, ARG_2_##f_headers);
+#endif  // CPP_CUSTOM_ENUM
 
 #endif  // TAHD_CUSTOM_ENUM_H

@@ -11,21 +11,6 @@ md::Atom::Atom(const element element, Vector::ConstPass coordinates):
 {
 }
 
-md::Atom::Atom(const char element, Vector::ConstPass coordinates) 
-	: Atom{ parse(element), coordinates }
-{
-}
-
-md::Atom::Atom(const char element[2], Vector::ConstPass coordinates) 
-	: Atom{ parse(element), coordinates }
-{
-}
-
-md::Atom::Atom(const std::string element, Vector::ConstPass coordinates) : 
-	Atom{ parse(element), coordinates }
-{
-}
-
 double md::Atom::computeMass(const element element) 
 { 
 	return get_atomic_mass(element) * 0.001 / kAvogadro; 
