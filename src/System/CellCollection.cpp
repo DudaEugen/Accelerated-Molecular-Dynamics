@@ -140,7 +140,7 @@ md::Cell& md::CellCollection::findCellContainingVector(Vector::ConstPass vector)
     {
         int64_t cellCoordinate = static_cast<int64_t>(floor(pos[i] / cellSize[i]));
 
-        if (cellCoordinate < 0 || cellCoordinate >= cellNumberInDirection[i])
+        if (cellCoordinate < 0 || cellCoordinate >= static_cast<int64_t>(cellNumberInDirection[i]))
             throw std::range_error("position outside any Cell");
         
         cellIndex += offsetFactorInDirection[i] * cellCoordinate;

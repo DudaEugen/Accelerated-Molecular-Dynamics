@@ -43,7 +43,7 @@ void testIndexedZip()
 		assert(index >= 0 && index < kDimensionalNumber);
 	}
 
-	std::vector<int> v = {10, 20, 30 , 40, 50, 60, 70, 80, 90};
+	std::vector<std::size_t> v = {10, 20, 30 , 40, 50, 60, 70, 80, 90};
 	Vector::projection_index i = 0;
 	for (auto [index, p]: IndexedZip(v))
 	{
