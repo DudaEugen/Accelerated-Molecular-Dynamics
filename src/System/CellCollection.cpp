@@ -104,17 +104,11 @@ void md::CellCollection::computeAndSetNeighbours()
                     {
                         neighbourCellsIndexes.push_back(possibleNeighbourIndex);
                     }
-                    else if (possibleNeighbourIndex < 0)
-                    {
-                        if (borderConditions != nullptr && 
-                            borderConditions->getBorderTypes()[direction] == BorderConditions::borderType::periodic)
-                                neighbourCellsIndexes.push_back(possibleNeighbourIndex + offsetBySizeInDirection[direction]);
-                    }
                     else
                     {
                         if (borderConditions != nullptr && 
                             borderConditions->getBorderTypes()[direction] == BorderConditions::borderType::periodic)
-                                neighbourCellsIndexes.push_back(possibleNeighbourIndex - offset/abs(offset)*offsetBySizeInDirection[direction]);
+                                neighbourCellsIndexes.push_back(possibleNeighbourIndex - offset*offsetBySizeInDirection[direction]);
                     }
                 }
             }
