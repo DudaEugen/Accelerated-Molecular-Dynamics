@@ -2,35 +2,9 @@
 #ifndef TAHD_CUSTOM_ENUM_H
 #define TAHD_CUSTOM_ENUM_H
 
+#include "macro functions.hpp"
 #include <string>
 #include <stdexcept>
-
-// macro functions
-#define MACRO_ARGS_COUNT(x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, res, ...) res
-#define MACRO_ARGS_SIZE(...) MACRO_ARGS_COUNT(__VA_ARGS__, 16, 15, 14, 13, 12, 11, 10, 9 , 8, 7, 6, 5, 4, 3, 2, 1)
-
-#define MACRO_FOREACH_1(f, context, sep, arg) f(context, arg)
-#define MACRO_FOREACH_2(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_1(f, context, sep, __VA_ARGS__)
-#define MACRO_FOREACH_3(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_2(f, context, sep, __VA_ARGS__)
-#define MACRO_FOREACH_4(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_3(f, context, sep, __VA_ARGS__)
-#define MACRO_FOREACH_5(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_4(f, context, sep, __VA_ARGS__)
-#define MACRO_FOREACH_6(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_5(f, context, sep, __VA_ARGS__)
-#define MACRO_FOREACH_7(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_6(f, context, sep, __VA_ARGS__)
-#define MACRO_FOREACH_8(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_7(f, context, sep, __VA_ARGS__)
-#define MACRO_FOREACH_9(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_8(f, context, sep, __VA_ARGS__)
-#define MACRO_FOREACH_10(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_9(f, context, sep, __VA_ARGS__)
-#define MACRO_FOREACH_11(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_10(f, context, sep, __VA_ARGS__)
-#define MACRO_FOREACH_12(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_11(f, context, sep, __VA_ARGS__)
-#define MACRO_FOREACH_13(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_12(f, context, sep, __VA_ARGS__)
-#define MACRO_FOREACH_14(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_13(f, context, sep, __VA_ARGS__)
-#define MACRO_FOREACH_15(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_14(f, context, sep, __VA_ARGS__)
-#define MACRO_FOREACH_16(f, context, sep, arg, ...) f(context, arg) ADD_##sep MACRO_FOREACH_15(f, context, sep, __VA_ARGS__)
-#define MACRO_FOREACH_N(f, context, sep, count, ...) MACRO_FOREACH_##count(f, context, sep, __VA_ARGS__)
-#define MACRO_ARGUMENTS(...) MACRO_ARGS_SIZE(__VA_ARGS__), __VA_ARGS__
-#define MACRO_FOREACH(f, context, sep, ...) MACRO_FOREACH_N(f, context, sep, __VA_ARGS__)
-#define ADD_KOMA_SEP ,
-#define ADD_SEMICOLON_SEP ;
-#define ADD_NO_SEP  
 
 // custom enum arguments
 #define ARG_0_FUNCTION_HEADERS(x0, ...) x0
