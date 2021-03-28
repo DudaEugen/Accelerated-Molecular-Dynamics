@@ -1,7 +1,7 @@
 #include "Atoms/Atom.hpp"
 #include <cmath>
 
-md::Atom::Atom(const element element, Vector::ConstPass coordinates):
+md::Atom::Atom(element element, Vector::ConstPass coordinates):
 	actualStepIndex{ 0 },
 	chemElement{ element }, 
 	mass{ computeMass(element) },
@@ -11,7 +11,22 @@ md::Atom::Atom(const element element, Vector::ConstPass coordinates):
 {
 }
 
-double md::Atom::computeMass(const element element) 
+md::Atom::Atom(char element, Vector::ConstPass coordinates) 
+	: Atom{ parse(element), coordinates }
+{
+}
+
+md::Atom::Atom(const char element[2], Vector::ConstPass coordinates) 
+	: Atom{ parse(element), coordinates }
+{
+}
+
+md::Atom::Atom(const std::string& element, Vector::ConstPass coordinates) : 
+	Atom{ parse(element), coordinates }
+{
+}
+
+double md::Atom::computeMass(element element) 
 { 
 	return get_atomic_mass(element) * 0.001 / kAvogadro; 
 }
@@ -26,7 +41,7 @@ void md::Atom::changeStepIndex() noexcept
 	actualStepIndex = actualStepIndex == 0 ? 1 : 0;
 }
 
-void md::Atom::doStepVelocityVerlet(const double dt) noexcept
+void md::Atom::doStepVelocityVerlet(double dt) noexcept
 {
 	r += v * dt + 0.5 * a[actualStepIndex] * pow(dt, 2);
 	v += 0.5 * (a[actualStepIndex] + a[getPreviousStepIndex()]) * dt;
@@ -54,7 +69,7 @@ md::Vector::ConstPass md::Atom::getVelocity() const noexcept { return v; }
 
 md::Vector::ConstPass md::Atom::getAcceleration() const noexcept { return a[actualStepIndex]; }
 
-void md::Atom::move(const double dt) noexcept
+void md::Atom::move(double dt) noexcept
 {
 	doStepVelocityVerlet(dt);
 	changeStepIndex();

@@ -21,12 +21,15 @@ namespace md
 		Vector v;
 		Vector a[2];
 
-		double computeMass(const element element);
+		double computeMass(element element);
 		char getPreviousStepIndex() noexcept;
 		void changeStepIndex() noexcept;
 		void doStepVelocityVerlet(const double dt) noexcept;
 	public:
-		Atom(const element element, Vector::ConstPass coordinates);
+		Atom(element element, Vector::ConstPass coordinates);
+		Atom(char element, Vector::ConstPass coordinates);
+		Atom(const char element[2], Vector::ConstPass coordinates);
+		Atom(const std::string& element, Vector::ConstPass coordinates);
 						
 		void setCoordinates(Vector::ConstPass coordinates) noexcept;
 		void setVelocity(Vector::ConstPass velocity) noexcept;
@@ -40,7 +43,7 @@ namespace md
 		Vector::ConstPass getAcceleration() const noexcept;
 		
 		//doStepAlhorithm are methods to moving atom corresponding algorithm
-		void move(const double dt) noexcept;
+		void move(double dt) noexcept;
 	};
 }
 
