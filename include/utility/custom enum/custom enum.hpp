@@ -2,7 +2,7 @@
 #ifndef TAHD_CUSTOM_ENUM_H
 #define TAHD_CUSTOM_ENUM_H
 
-#include "macro functions.hpp"
+#include "helper/macro functions.hpp"
 #include <string>
 #include <stdexcept>
 #include <array>
