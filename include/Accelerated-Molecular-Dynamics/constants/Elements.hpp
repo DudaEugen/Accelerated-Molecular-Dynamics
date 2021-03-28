@@ -3,7 +3,6 @@
 #define TAHD_ELEMENTS_H
 
 #include "custom enum/custom enum.hpp"
-#include <array>
 
 namespace md
 {
@@ -42,16 +41,6 @@ namespace md
 	std::uint8_t get_atomic_number(char title);
 	std::uint8_t get_atomic_number(const char title[2]);
 	std::uint8_t get_atomic_number(const std::string& title);
-
-	constexpr std::array<element, element_impl::kMaxEnumValue+1> all_elements()
-	{
-		std::array<element, element_impl::kMaxEnumValue+1> result{};
-		for (std::uint8_t i = 0; i <= element_impl::kMaxEnumValue; ++i)
-		{
-			result[i] = element{i};
-		}
-		return result;
-	}
 }
 
 #endif	// TAHD_ELEMENTS_H

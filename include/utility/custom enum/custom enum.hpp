@@ -5,6 +5,7 @@
 #include "macro functions.hpp"
 #include <string>
 #include <stdexcept>
+#include <array>
 
 // custom enum arguments
 #define ARG_0_FUNCTION_HEADERS(x0, ...) x0
@@ -61,7 +62,17 @@ Values of enum is all std:int8_t numbers from 0 to kMaxEnumValue
         {                                                                                        \
             MACRO_FOREACH(ADD_PREF, ENUM_VALUE_, KOMA_SEP, MACRO_ARGUMENTS(__VA_ARGS__))         \
         };                                                                                       \
-        namespace name##_impl { constexpr std::uint8_t kMaxEnumValue = MACRO_ARGS_SIZE(__VA_ARGS__) - 1; }
+        namespace name##_impl                                                                    \
+        {                                                                                        \
+            constexpr std::uint8_t kMaxEnumValue = MACRO_ARGS_SIZE(__VA_ARGS__) - 1;             \
+            constexpr auto allEnumValues()                                                       \
+            {                                                                                    \
+                std::array<name, kMaxEnumValue+1> result{};                                      \
+                for (std::uint8_t i = 0; i <= kMaxEnumValue; ++i)                                \
+                    result[i] = name{i};                                                         \
+                return result;                                                                   \
+            }                                                                                    \
+        }
 
 #ifdef CPP_CUSTOM_ENUM
     #define CREATE_ENUM_F0(name, f_headers, ...) CUSTOM_ENUM_CREATE(name, __VA_ARGS__)           \

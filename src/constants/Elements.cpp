@@ -7,7 +7,7 @@ md::ElementException::ElementException(const std::string& _Massage) : std::runti
 
 md::element md::parse(const std::string& title)
 {
-    for (element el: all_elements())
+    for (element el: element_impl::allEnumValues())
         if(element_to_string(el) == title)
             return el;
     throw ElementException(std::string("Can't parse to element string: ") + title);
