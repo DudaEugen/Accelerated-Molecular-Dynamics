@@ -52,12 +52,19 @@ EXAMPLE: CREATE_ENUM_F3(
     VALUE_TUPLE(SECOND_VALUE, 2, 2.0, -5),
     ...
 )
+MAX number of enum values is 255
+MIN number of enum values is 1
+<enum name>_impl namespace contain constexpr kMaxEnumValue value. Enum size equal kMaxEnumValue + 1
+Values of enum is all std:int8_t numbers from 0 to kMaxEnumValue
 */
-#ifdef CPP_CUSTOM_ENUM
-    #define CREATE_ENUM_F0(name, f_headers, ...) enum class name                                 \
+#define CUSTOM_ENUM_CREATE(name, ...) enum class name: std::uint8_t                              \
         {                                                                                        \
             MACRO_FOREACH(ADD_PREF, ENUM_VALUE_, KOMA_SEP, MACRO_ARGUMENTS(__VA_ARGS__))         \
         };                                                                                       \
+        namespace name##_impl { constexpr std::uint8_t kMaxEnumValue = MACRO_ARGS_SIZE(__VA_ARGS__); }
+
+#ifdef CPP_CUSTOM_ENUM
+    #define CREATE_ENUM_F0(name, f_headers, ...) CUSTOM_ENUM_CREATE(name, __VA_ARGS__)           \
         ENUM_TO_STRING(name, MACRO_FOREACH(ADD_PREF, ARG_0_, KOMA_SEP, MACRO_ARGUMENTS(__VA_ARGS__)))
 
     #define CREATE_ENUM_F1(name, f_headers, ...) CREATE_ENUM_F0(name, f_headers, __VA_ARGS__)    \
@@ -72,11 +79,8 @@ EXAMPLE: CREATE_ENUM_F3(
         ENUM_FUNCTION_CREATOR(name, ARG_2_##f_headers,                                           \
                             MACRO_FOREACH(ADD_PREF, ARG_3_, KOMA_SEP, MACRO_ARGUMENTS(__VA_ARGS__)))
 #else   // notdef CPP_CUSTOM_ENUM
-    #define CREATE_ENUM_F0(name, f_headers, ...) enum class name                                 \
-        {                                                                                        \
-            MACRO_FOREACH(ADD_PREF, ENUM_VALUE_, KOMA_SEP, MACRO_ARGUMENTS(__VA_ARGS__))         \
-        };                                                                                       \
-        ENUM_TO_STRING_SIGN(name);
+    #define CREATE_ENUM_F0(name, f_headers, ...) CUSTOM_ENUM_CREATE(name, __VA_ARGS__)           \
+        ENUM_TO_STRING_SIGN(name);                                                               
 
     #define CREATE_ENUM_F1(name, f_headers, ...) CREATE_ENUM_F0(name, f_headers, __VA_ARGS__)    \
         ENUM_FUNCTION_SIGN(name, ARG_0_##f_headers);
