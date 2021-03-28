@@ -28,7 +28,7 @@ md::Atom::Atom(const std::string& element, Vector::ConstPass coordinates) :
 
 double md::Atom::computeMass(element element) 
 { 
-	return get_atomic_mass(element) * 0.001 / kAvogadro; 
+	return isotope_generator(element).compute_average_atomic_mass() * 0.001 / kAvogadro; 
 }
 
 char md::Atom::getPreviousStepIndex() noexcept
