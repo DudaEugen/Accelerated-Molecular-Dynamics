@@ -61,7 +61,7 @@ Values of enum is all std:int8_t numbers from 0 to kMaxEnumValue
         {                                                                                        \
             MACRO_FOREACH(ADD_PREF, ENUM_VALUE_, KOMA_SEP, MACRO_ARGUMENTS(__VA_ARGS__))         \
         };                                                                                       \
-        namespace name##_impl { constexpr std::uint8_t kMaxEnumValue = MACRO_ARGS_SIZE(__VA_ARGS__); }
+        namespace name##_impl { constexpr std::uint8_t kMaxEnumValue = MACRO_ARGS_SIZE(__VA_ARGS__) - 1; }
 
 #ifdef CPP_CUSTOM_ENUM
     #define CREATE_ENUM_F0(name, f_headers, ...) CUSTOM_ENUM_CREATE(name, __VA_ARGS__)           \
