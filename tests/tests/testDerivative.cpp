@@ -1,5 +1,6 @@
 #include "../tests.hpp"
 #include "calculation of derivatives/functions.hpp"
+#include <iostream>
 
 using namespace utils;
 namespace impl = fcd::implementation;
@@ -118,9 +119,26 @@ void testDerivativeWithParameters()
 	assert(equal(fcd::derivative<3>(f9)(x), -params[1]/pow(params[0], 3)*exp(-x/params[0]), 10));
 }
 
+void testDerivativeDynamicFunctions()
+{
+	std::vector<double> dynamic_parameters = {0, 1, 2, 3};
+
+	assert(equal(fcd::dynamicSumm(fcd::DynamicParameter())(0, &dynamic_parameters), 6));
+	assert(equal(fcd::derivative(fcd::dynamicSumm(fcd::DynamicParameter()))(0, &dynamic_parameters), 0));
+
+	assert(equal(fcd::dynamicSumm(fcd::DynamicParameter()*fcd::Variable())(3, &dynamic_parameters), 18));
+	assert(equal(fcd::derivative(fcd::dynamicSumm(fcd::DynamicParameter()*fcd::Variable()))(3, &dynamic_parameters), 6));
+	assert(equal(fcd::derivative<2>(fcd::dynamicSumm(fcd::DynamicParameter()*fcd::Variable()))(3, &dynamic_parameters), 0));
+	
+	assert(equal(fcd::dynamicSumm(fcd::DynamicParameter()*fcd::power<2>(fcd::Variable()) - fcd::Variable())(2, &dynamic_parameters), 16));
+	assert(equal(fcd::derivative(fcd::dynamicSumm(fcd::DynamicParameter()*fcd::power<2>(fcd::Variable()) - fcd::Variable()))(2, &dynamic_parameters), 20));
+	assert(equal(fcd::derivative<5>(fcd::dynamicSumm(fcd::DynamicParameter()*fcd::power<2>(fcd::Variable()) - fcd::Variable()))(2, &dynamic_parameters), 0));
+}
+
 void testDerivative()
 {
     staticTestsDerivative();
     testDerivativeFunctions();
-    testDerivativeWithParameters();	
+    testDerivativeWithParameters();
+	testDerivativeDynamicFunctions();
 }

@@ -4,6 +4,7 @@
 
 #include <cstdint>
 #include <stdexcept>
+#include <vector>
 
 // fcd - functions for calculation of derivatives
 namespace utils::fcd
@@ -17,7 +18,11 @@ namespace utils::fcd
         static constexpr bool IsFunction = false;
 
         Parameter() noexcept = default;
-        double operator() (double argument) const
+        double operator() (double argument, const std::vector<double>* dynamicParameters = nullptr) const
+        {
+            throw std::runtime_error("Parameter in function for derivative don't initializing!");
+        }
+        double operator() (double argument, double dynamicParameterValue) const
         {
             throw std::runtime_error("Parameter in function for derivative don't initializing!");
         }
@@ -31,7 +36,19 @@ namespace utils::fcd
         static constexpr bool IsFunction = false;
 
         Variable() = default;
-        double operator() (double argument) const noexcept;
+        double operator() (double argument, const std::vector<double>* dynamicParameters = nullptr) const noexcept;
+        double operator() (double argument, double dynamicParameterValue) const noexcept;
+    };
+
+    struct DynamicParameter
+    {
+        static constexpr bool IsConstanta = false;
+        static constexpr bool IsContainVariable = false;
+        static constexpr bool IsContainParameter = false;
+        static constexpr bool IsFunction = false;
+
+        DynamicParameter() noexcept = default;
+        double operator() (double argument, double dynamicParameterValue) const noexcept;
     };
 }
 
@@ -48,7 +65,8 @@ namespace utils::fcd::implementation
 
         Constanta(double value) noexcept;
         Constanta(int value) noexcept;
-        double operator() (double argument) const noexcept;
+        double operator() (double argument, const std::vector<double>* dynamicParameters = nullptr) const noexcept;
+        double operator() (double argument, double dynamicParameterValue) const noexcept;
     };
 
     struct ZeroConstanta
@@ -59,7 +77,8 @@ namespace utils::fcd::implementation
         static constexpr bool IsFunction = false;
 
         ZeroConstanta() = default;
-        double operator() (double argument) const noexcept;
+        double operator() (double argument, const std::vector<double>* dynamicParameters = nullptr) const noexcept;
+        double operator() (double argument, double dynamicParameterValue) const noexcept;
     };
 }
 

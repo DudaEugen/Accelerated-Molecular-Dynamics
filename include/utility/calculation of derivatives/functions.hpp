@@ -169,6 +169,17 @@ namespace utils::fcd
             I
         >(argument);
     }
+
+    template<class T>
+    constexpr auto dynamicSumm(const T& argument)
+    {
+        return implementation::Function<
+            implementation::FunctionName::DynamicSumm,
+            T,
+            implementation::UnusedArgument,
+            implementation::UnusedParameter
+        >(argument);
+    }
 }
 
 // fcd - functions for calculation of derivatives
@@ -190,6 +201,8 @@ namespace utils::fcd
     }
     
     implementation::Product_t<implementation::Constanta, Variable> operator- (Variable v) noexcept;
+
+    implementation::Product_t<implementation::Constanta, DynamicParameter> operator- (DynamicParameter v) noexcept;
     
     template<implementation::FunctionName N, class F, class S, int I>
     constexpr auto operator- (const implementation::Function<N, F, S, I>& func)
@@ -212,6 +225,9 @@ namespace utils::fcd
 
     implementation::Product_t<implementation::Constanta, Variable> operator+ (Variable v1, Variable v2) noexcept;
 
+    implementation::Product_t<implementation::Constanta, DynamicParameter> operator+ (DynamicParameter v1, 
+                                                                                      DynamicParameter v2) noexcept;
+
     implementation::Constanta operator+ (implementation::Constanta c1, implementation::ZeroConstanta c2) noexcept;
 
     template<std::uint8_t I>
@@ -222,6 +238,9 @@ namespace utils::fcd
 
     implementation::Summ_t<implementation::Constanta, Variable> operator+ (implementation::Constanta c, 
                                                                          Variable v) noexcept;
+    
+    implementation::Summ_t<implementation::Constanta, DynamicParameter> operator+ (implementation::Constanta c, 
+                                                                                   DynamicParameter v) noexcept;
 
     implementation::Constanta operator+ (implementation::ZeroConstanta c1, implementation::Constanta c2) noexcept;
 
@@ -232,6 +251,8 @@ namespace utils::fcd
     }
 
     Variable operator+ (implementation::ZeroConstanta c, Variable v) noexcept;
+
+    DynamicParameter operator+ (implementation::ZeroConstanta c, DynamicParameter v) noexcept;
 
     template<std::uint8_t I>
     constexpr auto operator+ (Parameter<I> p, implementation::Constanta c) noexcept
@@ -251,6 +272,12 @@ namespace utils::fcd
         return implementation::summ(p, v);
     }
 
+    template<std::uint8_t I>
+    constexpr auto operator+ (Parameter<I> p, DynamicParameter v) noexcept
+    {
+        return implementation::summ(p, v);
+    }
+
     implementation::Summ_t<implementation::Constanta, Variable> operator+ (Variable v, 
                                                                            implementation::Constanta c) noexcept;
 
@@ -261,6 +288,22 @@ namespace utils::fcd
     {
         return implementation::summ(p, v);
     }
+
+    implementation::Summ_t<DynamicParameter, Variable> operator+ (Variable v, DynamicParameter c) noexcept;
+
+    implementation::Summ_t<implementation::Constanta, DynamicParameter> operator+ (DynamicParameter p, 
+                                                                  implementation::Constanta c) noexcept;
+    
+    DynamicParameter operator+ (DynamicParameter p, implementation::ZeroConstanta c) noexcept;
+
+    template<std::uint8_t I>
+    constexpr implementation::Summ_t<Parameter<I>, DynamicParameter> operator+ (DynamicParameter dp, 
+                                                                                Parameter<I> p) noexcept
+    {
+        return implementation::summ(p, dp);
+    }
+
+    implementation::Summ_t<DynamicParameter, Variable> operator+ (DynamicParameter p, Variable v) noexcept;
 
     template<implementation::FunctionName N, class F, class S, int I>
     constexpr auto operator+ (const implementation::Function<N, F, S, I>& func, implementation::Constanta c)
@@ -310,6 +353,18 @@ namespace utils::fcd
         return implementation::summ(v, func);
     }
 
+    template<implementation::FunctionName N, class F, class S, int I>
+    constexpr auto operator+ (const implementation::Function<N, F, S, I>& func, DynamicParameter p)
+    {
+        return implementation::summ(p, func);
+    }
+
+    template<implementation::FunctionName N, class F, class S, int I>
+    constexpr auto operator+ (DynamicParameter p, const implementation::Function<N, F, S, I>& func)
+    {
+        return implementation::summ(p, func);
+    }
+
     template<implementation::FunctionName N1, class F1, class S1, int I1, 
              implementation::FunctionName N2, class F2, class S2, int I2>
     constexpr auto operator+ (const implementation::Function<N1, F1, S1, I1>& func1, 
@@ -333,6 +388,9 @@ namespace utils::fcd
 
     implementation::Function<implementation::FunctionName::Power, 
         Variable, implementation::UnusedArgument, 2> operator* (Variable v1, Variable v2) noexcept;
+    
+    implementation::Function<implementation::FunctionName::Power, 
+        DynamicParameter, implementation::UnusedArgument, 2> operator* (DynamicParameter p1, DynamicParameter p2) noexcept;
 
     implementation::ZeroConstanta operator* (implementation::Constanta c1, implementation::ZeroConstanta c2) noexcept;
 
@@ -344,6 +402,9 @@ namespace utils::fcd
                                                                              
     implementation::Product_t<implementation::Constanta, Variable> operator* (implementation::Constanta c, 
                                                                             Variable v) noexcept;
+    
+    implementation::Product_t<implementation::Constanta, DynamicParameter> operator* (implementation::Constanta c, 
+                                                                            DynamicParameter p) noexcept;
 
     implementation::ZeroConstanta operator* (implementation::ZeroConstanta c1, implementation::Constanta c2) noexcept;
 
@@ -354,6 +415,8 @@ namespace utils::fcd
     }
 
     implementation::ZeroConstanta operator* (implementation::ZeroConstanta c, Variable v) noexcept;
+
+    implementation::ZeroConstanta operator* (implementation::ZeroConstanta c, DynamicParameter v) noexcept;
 
     template<std::uint8_t I>
     constexpr auto operator* (Parameter<I> p, implementation::Constanta c) noexcept
@@ -373,6 +436,12 @@ namespace utils::fcd
         return implementation::product(p, v);
     }
 
+    template<std::uint8_t I>
+    constexpr auto operator* (Parameter<I> p, DynamicParameter dp) noexcept
+    {
+        return implementation::product(p, dp);
+    }
+
     implementation::Product_t<implementation::Constanta, Variable> operator* (Variable v, 
                                                                               implementation::Constanta c) noexcept;
 
@@ -383,6 +452,22 @@ namespace utils::fcd
     {
         return implementation::product(p, v);
     }
+
+    implementation::Product_t<DynamicParameter, Variable> operator* (Variable v, DynamicParameter p) noexcept;
+
+    implementation::Product_t<implementation::Constanta, DynamicParameter> operator* (DynamicParameter p, 
+                                                                    implementation::Constanta c) noexcept;
+    
+    implementation::ZeroConstanta operator* (DynamicParameter p, implementation::ZeroConstanta c) noexcept;
+
+    template<std::uint8_t I>
+    implementation::Product_t<Parameter<I>, DynamicParameter> operator* (DynamicParameter dp, 
+                                                                         Parameter<I> p) noexcept
+    {
+        return implementation::product(p, dp);
+    }
+    
+    implementation::Product_t<DynamicParameter, Variable> operator* (DynamicParameter p, Variable v) noexcept;
 
     template<implementation::FunctionName N, class F, class S, int I>
     constexpr auto operator* (const implementation::Function<N, F, S, I>& func, implementation::Constanta c)
@@ -432,6 +517,18 @@ namespace utils::fcd
         return implementation::product(v, func);
     }
 
+    template<implementation::FunctionName N, class F, class S, int I>
+    constexpr auto operator* (const implementation::Function<N, F, S, I>& func, DynamicParameter p)
+    {
+        return implementation::product(p, func);
+    }
+
+    template<implementation::FunctionName N, class F, class S, int I>
+    constexpr auto operator* (DynamicParameter p, const implementation::Function<N, F, S, I>& func)
+    {
+        return implementation::product(p, func);
+    }
+
     template<implementation::FunctionName N1, class F1, class S1, int I1, 
              implementation::FunctionName N2, class F2, class S2, int I2>
     constexpr auto operator* (const implementation::Function<N1, F1, S1, I1>& func1, 
@@ -455,6 +552,8 @@ namespace utils::fcd
 
     implementation::ZeroConstanta operator- (Variable v1, Variable v2) noexcept;
 
+    implementation::ZeroConstanta operator- (DynamicParameter v1, DynamicParameter v2) noexcept;
+
     implementation::Constanta operator- (implementation::Constanta c1, implementation::ZeroConstanta c2) noexcept;
 
     template<std::uint8_t I>
@@ -465,6 +564,9 @@ namespace utils::fcd
 
     implementation::Difference_t<implementation::Constanta, Variable> operator- (implementation::Constanta c, 
                                                                                  Variable v) noexcept;
+    
+    implementation::Difference_t<implementation::Constanta, DynamicParameter> 
+        operator- (implementation::Constanta c, DynamicParameter p) noexcept;
 
     implementation::Constanta operator- (implementation::ZeroConstanta c1, implementation::Constanta c2) noexcept;
 
@@ -476,6 +578,9 @@ namespace utils::fcd
 
     implementation::Product_t<implementation::Constanta, Variable> operator- (implementation::ZeroConstanta c, 
                                                                               Variable v) noexcept;
+    
+    implementation::Product_t<implementation::Constanta, DynamicParameter> 
+        operator- (implementation::ZeroConstanta c, DynamicParameter p) noexcept;
 
     template<std::uint8_t I>
     constexpr auto operator- (Parameter<I> p, implementation::Constanta c) noexcept
@@ -495,6 +600,12 @@ namespace utils::fcd
         return p + (-v);
     }
 
+    template<std::uint8_t I>
+    constexpr auto operator- (Parameter<I> p, DynamicParameter dp) noexcept
+    {
+        return p + (-dp);
+    }
+
     implementation::Summ_t<implementation::Constanta, Variable> operator- (Variable v, 
                                                                            implementation::Constanta c) noexcept;
 
@@ -505,6 +616,23 @@ namespace utils::fcd
     {
         return v + (-p);
     }
+
+    implementation::Summ_t<DynamicParameter, implementation::Product_t<implementation::Constanta, Variable>> 
+        operator- (Variable v, DynamicParameter c) noexcept;
+    
+    implementation::Summ_t<implementation::Constanta, DynamicParameter> operator- (DynamicParameter p, 
+                                                                        implementation::Constanta c) noexcept;
+
+    DynamicParameter operator- (DynamicParameter p, implementation::ZeroConstanta c) noexcept;
+
+    template<std::uint8_t I>
+    constexpr auto operator- (DynamicParameter dp, Parameter<I> p) noexcept
+    {
+        return p + (-dp);
+    }
+
+    implementation::Difference_t<DynamicParameter, Variable> operator- (DynamicParameter p, 
+                                                                        Variable v) noexcept;
 
     template<implementation::FunctionName N, class F, class S, int I>
     constexpr auto operator- (const implementation::Function<N, F, S, I>& func, implementation::Constanta c)
@@ -554,6 +682,18 @@ namespace utils::fcd
         return implementation::summ(v, implementation::product(implementation::Constanta(-1), func));
     }
 
+    template<implementation::FunctionName N, class F, class S, int I>
+    constexpr auto operator- (const implementation::Function<N, F, S, I>& func, DynamicParameter p)
+    {
+        return implementation::summ(implementation::product(implementation::Constanta(-1), p), func);
+    }
+
+    template<implementation::FunctionName N, class F, class S, int I>
+    constexpr auto operator- (DynamicParameter p, const implementation::Function<N, F, S, I>& func)
+    {
+        return implementation::summ(p, implementation::product(implementation::Constanta(-1), func));
+    }
+
     template<implementation::FunctionName N1, class F1, class S1, int I1, 
              implementation::FunctionName N2, class F2, class S2, int I2>
     constexpr auto operator- (const implementation::Function<N1, F1, S1, I1>& func1, 
@@ -572,6 +712,8 @@ namespace utils::fcd
 
     implementation::Constanta operator/ (Variable v1, Variable v2) noexcept;
 
+    implementation::Constanta operator/ (DynamicParameter v1, DynamicParameter v2) noexcept;
+
     template<std::uint8_t I>
     constexpr auto operator/ (implementation::Constanta c, Parameter<I> p) noexcept
     {
@@ -580,6 +722,9 @@ namespace utils::fcd
 
     implementation::Ratio_t<implementation::Constanta, Variable> operator/ (implementation::Constanta c, 
                                                                             Variable v) noexcept;
+    
+    implementation::Ratio_t<implementation::Constanta, DynamicParameter> operator/ (implementation::Constanta c, 
+                                                                                    DynamicParameter v) noexcept;
 
     implementation::ZeroConstanta operator/ (implementation::ZeroConstanta c1, implementation::Constanta c2) noexcept;
 
@@ -590,6 +735,8 @@ namespace utils::fcd
     }
 
     implementation::ZeroConstanta operator/ (implementation::ZeroConstanta c, Variable v) noexcept;
+
+    implementation::ZeroConstanta operator/ (implementation::ZeroConstanta c, DynamicParameter p) noexcept;
 
     template<std::uint8_t I>
     constexpr auto operator/ (Parameter<I> p, implementation::Constanta c)
@@ -603,6 +750,12 @@ namespace utils::fcd
         return p * power<-1>(v);
     }
 
+    template<std::uint8_t I>
+    constexpr auto operator/ (Parameter<I> p, DynamicParameter dp) noexcept
+    {
+        return p * power<-1>(dp);
+    }
+
     implementation::Product_t<implementation::Constanta, Variable> operator/ (Variable v, 
                                                                               implementation::Constanta c);
 
@@ -611,6 +764,19 @@ namespace utils::fcd
     {
         return v * power<-1>(p);
     }
+
+    implementation::Ratio_t<Variable, DynamicParameter> operator/ (Variable v, DynamicParameter p) noexcept;
+
+    implementation::Product_t<implementation::Constanta, DynamicParameter> operator/ (DynamicParameter p, 
+                                                                            implementation::Constanta c);
+    
+    template<std::uint8_t I>
+    constexpr auto operator/ (DynamicParameter dp, Parameter<I> p) noexcept
+    {
+        return dp * power<-1>(p);
+    }
+
+    implementation::Ratio_t<DynamicParameter, Variable> operator/ (DynamicParameter p, Variable v) noexcept;
 
     template<implementation::FunctionName N, class F, class S, int I>
     constexpr auto operator/ (const implementation::Function<N, F, S, I>& func, implementation::Constanta c)
@@ -660,6 +826,22 @@ namespace utils::fcd
     constexpr auto operator/ (Variable v, const implementation::Function<N, F, S, I>& func)
     {
         return implementation::product(v, implementation::Function<
+            implementation::FunctionName::Power, std::decay_t<decltype(func)>, implementation::UnusedArgument, -1
+        >(func));
+    }
+
+    template<implementation::FunctionName N, class F, class S, int I>
+    constexpr auto operator/ (const implementation::Function<N, F, S, I>& func, DynamicParameter p)
+    {
+        return implementation::product(func, implementation::Function<
+            implementation::FunctionName::Power, Variable, implementation::UnusedArgument, -1
+        >(p));
+    }
+
+    template<implementation::FunctionName N, class F, class S, int I>
+    constexpr auto operator/ (DynamicParameter p, const implementation::Function<N, F, S, I>& func)
+    {
+        return implementation::product(p, implementation::Function<
             implementation::FunctionName::Power, std::decay_t<decltype(func)>, implementation::UnusedArgument, -1
         >(func));
     }

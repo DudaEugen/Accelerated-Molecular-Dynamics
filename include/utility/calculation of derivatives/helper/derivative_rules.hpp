@@ -195,6 +195,18 @@ namespace utils::fcd
                 >(derivative(func_struct.argument1), derivative(func_struct.argument2))));
             }
         }
+        else if constexpr (T::Type == FunctionType::DynamicOneArgument)
+        {
+            if constexpr (T::Name == FunctionName::DynamicSumm)
+            {
+                return Function<
+                    FunctionName::DynamicSumm,
+                    decltype(derivative(func_struct.argument)),
+                    UnusedArgument,
+                    UnusedParameter
+                >(derivative(func_struct.argument));
+            }
+        }
     }
 
     template<std::uint8_t I, class T>
