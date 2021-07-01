@@ -133,6 +133,9 @@ void testDerivativeDynamicFunctions()
 	assert(equal(fcd::dynamicSumm(fcd::DynamicParameter()*fcd::power<2>(fcd::Variable()) - fcd::Variable())(2, &dynamic_parameters), 16));
 	assert(equal(fcd::derivative(fcd::dynamicSumm(fcd::DynamicParameter()*fcd::power<2>(fcd::Variable()) - fcd::Variable()))(2, &dynamic_parameters), 20));
 	assert(equal(fcd::derivative<5>(fcd::dynamicSumm(fcd::DynamicParameter()*fcd::power<2>(fcd::Variable()) - fcd::Variable()))(2, &dynamic_parameters), 0));
+
+	assert(equal(fcd::root<2>(fcd::dynamicSumm(fcd::DynamicParameter()*fcd::Variable()))(5, &dynamic_parameters), sqrt(30)));
+	assert(equal(fcd::derivative(fcd::root<2>(fcd::dynamicSumm(fcd::DynamicParameter()*fcd::Variable())))(5, &dynamic_parameters), 3/sqrt(30)));
 }
 
 void testDerivative()
