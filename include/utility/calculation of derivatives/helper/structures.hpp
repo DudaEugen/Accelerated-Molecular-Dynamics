@@ -42,7 +42,6 @@ namespace utils::fcd::implementation
         const Second argument2;
 
         using ArgT = std::pair<First, Second>;
-        static constexpr bool IsConstanta = First::IsConstanta && Second::IsConstanta;
         static constexpr bool IsContainVariable = First::IsContainVariable || 
                                                     Second::IsContainVariable;
         static constexpr bool IsContainParameter = First::IsContainParameter || 
@@ -58,7 +57,6 @@ namespace utils::fcd::implementation
         const T argument;
 
         using ArgT = T;
-        static constexpr bool IsConstanta = T::IsConstanta;
         static constexpr bool IsContainVariable = T::IsContainVariable;
         static constexpr bool IsContainParameter = T::IsContainParameter;
         static constexpr bool IsFunction = true;
@@ -66,17 +64,46 @@ namespace utils::fcd::implementation
         static constexpr int TemplateIndex = Index;
     };
 
+    template<FunctionName FName, class First, class Second, int Index>
+    struct DynamicFunction: FunctionBase<FName, First, Second, Index>
+    {
+        static constexpr bool IsDynamicFunction = true;
+        static constexpr bool IsConstanta = false;
+    };
+
+    template<FunctionName FName, class First, class Second, int Index>
+    struct NoDynamicFunction: FunctionBase<FName, First, Second, Index>
+    {
+        static constexpr bool IsDynamicFunction = false;
+        static constexpr bool IsConstanta = First::IsConstanta && Second::IsConstanta;
+
+        NoDynamicFunction(const First& first, const Second& second) noexcept
+            : NoDynamicFunction::FunctionBase{ first, second }
+        {
+        }
+    };
+
+    template<FunctionName FName, class T, int Index>
+    struct NoDynamicFunction<FName, T, UnusedArgument, Index>: FunctionBase<FName, T, UnusedArgument, Index>
+    {
+        static constexpr bool IsDynamicFunction = false;
+        static constexpr bool IsConstanta = T::IsConstanta;
+
+        NoDynamicFunction(const T& arg) noexcept : NoDynamicFunction::FunctionBase{ arg } {}
+    };
+
     template<FunctionName FName, class FirstArgument, class SecondArgument, int Index>
     struct Function;
 
+    // functions
+    
     template<class T>
     struct Function<FunctionName::Exponenta, T, UnusedArgument, UnusedParameter>: 
-        FunctionBase<FunctionName::Exponenta, T, UnusedArgument, UnusedParameter>
+        NoDynamicFunction<FunctionName::Exponenta, T, UnusedArgument, UnusedParameter>
     {
-        static constexpr bool IsDynamicFunction = false;
         static constexpr auto Type = FunctionType::OneArgument;
 
-        Function(const T& arg) noexcept : Function::FunctionBase{ arg } {}
+        Function(const T& arg) noexcept : Function::NoDynamicFunction{ arg } {}
 
         double operator() (double arg, const std::vector<double>* dynamicParameters = nullptr) const
         {
@@ -91,12 +118,11 @@ namespace utils::fcd::implementation
 
     template<class T>
     struct Function<FunctionName::Sinus, T, UnusedArgument, UnusedParameter>:
-        FunctionBase<FunctionName::Sinus, T, UnusedArgument, UnusedParameter>
+        NoDynamicFunction<FunctionName::Sinus, T, UnusedArgument, UnusedParameter>
     {
-        static constexpr bool IsDynamicFunction = false;
         static constexpr auto Type = FunctionType::OneArgument;
 
-        Function(const T& arg) noexcept : Function::FunctionBase{ arg } {}
+        Function(const T& arg) noexcept : Function::NoDynamicFunction{ arg } {}
 
         double operator() (double arg, const std::vector<double>* dynamicParameters = nullptr) const
         {
@@ -111,12 +137,11 @@ namespace utils::fcd::implementation
 
     template<class T>
     struct Function<FunctionName::Cosinus, T, UnusedArgument, UnusedParameter>:
-        FunctionBase<FunctionName::Cosinus, T, UnusedArgument, UnusedParameter>
+        NoDynamicFunction<FunctionName::Cosinus, T, UnusedArgument, UnusedParameter>
     {
-        static constexpr bool IsDynamicFunction = false;
         static constexpr auto Type = FunctionType::OneArgument;
 
-        Function(const T& arg) noexcept : Function::FunctionBase{ arg } {}
+        Function(const T& arg) noexcept : Function::NoDynamicFunction{ arg } {}
 
         double operator() (double arg, const std::vector<double>* dynamicParameters = nullptr) const
         {
@@ -131,12 +156,11 @@ namespace utils::fcd::implementation
 
     template<class T>
     struct Function<FunctionName::Tangent, T, UnusedArgument, UnusedParameter>:
-        FunctionBase<FunctionName::Tangent, T, UnusedArgument, UnusedParameter>
+        NoDynamicFunction<FunctionName::Tangent, T, UnusedArgument, UnusedParameter>
     {
-        static constexpr bool IsDynamicFunction = false;
         static constexpr auto Type = FunctionType::OneArgument;
 
-        Function(const T& arg) noexcept : Function::FunctionBase{ arg } {}
+        Function(const T& arg) noexcept : Function::NoDynamicFunction{ arg } {}
 
         double operator() (double arg, const std::vector<double>* dynamicParameters = nullptr) const
         {
@@ -151,12 +175,11 @@ namespace utils::fcd::implementation
 
     template<class T>
     struct Function<FunctionName::LogarithmNatural, T, UnusedArgument, UnusedParameter>:
-        FunctionBase<FunctionName::LogarithmNatural, T, UnusedArgument, UnusedParameter>
+        NoDynamicFunction<FunctionName::LogarithmNatural, T, UnusedArgument, UnusedParameter>
     {
-        static constexpr bool IsDynamicFunction = false;
         static constexpr auto Type = FunctionType::OneArgument;
 
-        Function(const T& arg) noexcept : Function::FunctionBase{ arg } {}
+        Function(const T& arg) noexcept : Function::NoDynamicFunction{ arg } {}
 
         double operator() (double arg, const std::vector<double>* dynamicParameters = nullptr) const
         {
@@ -172,12 +195,11 @@ namespace utils::fcd::implementation
     // I is exponent, argument (T) is base degree
     template<class T, int I>
     struct Function<FunctionName::Power, T, UnusedArgument, I>:
-        FunctionBase<FunctionName::Power, T, UnusedArgument, I>
+        NoDynamicFunction<FunctionName::Power, T, UnusedArgument, I>
     {
-        static constexpr bool IsDynamicFunction = false;
         static constexpr auto Type = FunctionType::IndexedOneArgument;
 
-        Function(const T& arg) noexcept : Function::FunctionBase{ arg } {}
+        Function(const T& arg) noexcept : Function::NoDynamicFunction{ arg } {}
 
         double operator() (double arg, const std::vector<double>* dynamicParameters = nullptr) const
         {
@@ -194,12 +216,11 @@ namespace utils::fcd::implementation
 
     template<class T, int I>
     struct Function<FunctionName::Root, T, UnusedArgument, I>:
-        FunctionBase<FunctionName::Root, T, UnusedArgument, I>
+        NoDynamicFunction<FunctionName::Root, T, UnusedArgument, I>
     {
-        static constexpr bool IsDynamicFunction = false;
         static constexpr auto Type = FunctionType::IndexedOneArgument;
 
-        Function(const T& arg) noexcept : Function::FunctionBase{ arg } {}
+        Function(const T& arg) noexcept : Function::NoDynamicFunction{ arg } {}
 
         double operator() (double arg, const std::vector<double>* dynamicParameters = nullptr) const
         {
@@ -227,12 +248,11 @@ namespace utils::fcd::implementation
     // I is base degree, argument (T) is exponent
     template<class T, int I>
     struct Function<FunctionName::Exponential, T, UnusedArgument, I>:
-        FunctionBase<FunctionName::Exponential, T, UnusedArgument, I>
+        NoDynamicFunction<FunctionName::Exponential, T, UnusedArgument, I>
     {
-        static constexpr bool IsDynamicFunction = false;
         static constexpr auto Type = FunctionType::IndexedOneArgument;
 
-        Function(const T& arg) noexcept : Function::FunctionBase{ arg } {}
+        Function(const T& arg) noexcept : Function::NoDynamicFunction{ arg } {}
 
         double operator() (double arg, const std::vector<double>* dynamicParameters = nullptr) const
         {
@@ -249,13 +269,12 @@ namespace utils::fcd::implementation
 
     template<class First, class Second>
     struct Function<FunctionName::Summ, First, Second, UnusedParameter>:
-        FunctionBase<FunctionName::Summ, First, Second, UnusedParameter>
+        NoDynamicFunction<FunctionName::Summ, First, Second, UnusedParameter>
     {
-        static constexpr bool IsDynamicFunction = false;
         static constexpr auto Type = FunctionType::TwoArgument;
 
         Function(const First& first, const Second& second) noexcept
-            : Function::FunctionBase{ first, second }
+            : Function::NoDynamicFunction{ first, second }
         {
         }
 
@@ -272,13 +291,12 @@ namespace utils::fcd::implementation
 
     template<class First, class Second>
     struct Function<FunctionName::Product, First, Second, UnusedParameter>:
-        FunctionBase<FunctionName::Product, First, Second, UnusedParameter>
+        NoDynamicFunction<FunctionName::Product, First, Second, UnusedParameter>
     {
-        static constexpr bool IsDynamicFunction = false;
         static constexpr auto Type = FunctionType::TwoArgument;
 
         Function(const First& first, const Second& second) noexcept
-            : Function::FunctionBase{ first, second }
+            : Function::NoDynamicFunction{ first, second }
         {
         }
 
@@ -295,12 +313,11 @@ namespace utils::fcd::implementation
 
     template<class T>
     struct Function<FunctionName::DynamicSumm, T, UnusedArgument, UnusedParameter>:
-        FunctionBase<FunctionName::DynamicSumm, T, UnusedArgument, UnusedParameter>
+        DynamicFunction<FunctionName::DynamicSumm, T, UnusedArgument, UnusedParameter>
     {
-        static constexpr bool IsDynamicFunction = true;
         static constexpr auto Type = FunctionType::DynamicOneArgument;
 
-        Function(const T& arg) noexcept : Function::FunctionBase{ arg } {}
+        Function(const T& arg) noexcept : Function::DynamicFunction{ arg } {}
 
         double operator() (double arg, const std::vector<double>* dynamicParameters = nullptr) const
         {
