@@ -5,7 +5,7 @@ md::Vector::Vector() noexcept: projections{}
 {
 }
 
-md::Vector::Vector(ConstPassArrayT<double> projectionArray) noexcept
+md::Vector::Vector(PassConstArrayT<double> projectionArray) noexcept
 	: projections{ projectionArray }
 {
 }

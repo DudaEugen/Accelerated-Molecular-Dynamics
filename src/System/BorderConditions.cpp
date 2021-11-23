@@ -3,14 +3,14 @@
 #include <cstdint>
 #include "Zip.hpp"
 
-md::BorderConditions::BorderConditions(Vector::ConstPass size, ConstPassArrayT<borderType> borders) noexcept
+md::BorderConditions::BorderConditions(Vector::ConstPass size, PassConstArrayT<borderType> borders) noexcept
 	: dimensions{ size }
 {
 	for (auto [type, border]: utils::zip::Zip(borderTypes, borders))
 		type = border;
 }
 
-md::BorderConditions::BorderConditions(Vector::ConstPass size, ConstPassArrayT<borderType> borders,
+md::BorderConditions::BorderConditions(Vector::ConstPass size, PassConstArrayT<borderType> borders,
 					 			  Vector::ConstPass zeroPoint) noexcept
 	: BorderConditions{ size, borders }
 {

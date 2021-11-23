@@ -22,8 +22,8 @@ namespace md
 		Vector dimensions;
 		Vector zeroPoint;
 	public:
-		BorderConditions(Vector::ConstPass size, ConstPassArrayT<borderType> borders) noexcept;
-		BorderConditions(Vector::ConstPass size, ConstPassArrayT<borderType> borders,
+		BorderConditions(Vector::ConstPass size, PassConstArrayT<borderType> borders) noexcept;
+		BorderConditions(Vector::ConstPass size, PassConstArrayT<borderType> borders,
 						Vector::ConstPass zeroPoint) noexcept;
 		const borderType* getBorderTypes() const noexcept;
 		Vector::ConstPass getSize() const noexcept;

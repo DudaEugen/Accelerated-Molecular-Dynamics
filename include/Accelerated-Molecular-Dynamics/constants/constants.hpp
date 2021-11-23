@@ -7,19 +7,20 @@
 namespace md
 {
 	inline constexpr uint8_t kDimensionalNumber = 3;
-	inline constexpr uint8_t kMaxDimensionalForValuePassing = 3;
 
 	namespace
 	{
-		template<class T, class R>
-		constexpr std::enable_if_t<
-			(kDimensionalNumber * sizeof(T) > kMaxDimensionalForValuePassing * sizeof(void*)), 
-		R&> passkDimensionalNumberElementsType();
+		constexpr uint8_t kMaxSizeForValuePassing = 3;
 
 		template<class T, class R>
 		constexpr std::enable_if_t<
-			(kDimensionalNumber * sizeof(T) <= kMaxDimensionalForValuePassing * sizeof(void*)), 
-		R> passkDimensionalNumberElementsType();
+			(kDimensionalNumber * sizeof(T) > kMaxSizeForValuePassing * sizeof(void*)), 
+		const std::remove_const_t<R>&> passType();
+
+		template<class T, class R>
+		constexpr std::enable_if_t<
+			(kDimensionalNumber * sizeof(T) <= kMaxSizeForValuePassing * sizeof(void*)), 
+		R> passType();
 
 		constexpr double power(unsigned int v1, int v2)
 		{
@@ -33,17 +34,17 @@ namespace md
 			}
 			else
 			{
-				return 1 / power(v1, (unsigned int) -v2);
+				return 1 / power(v1, -v2);
 			}
 		}
 	}
 	/* Pass of R by value if sizeof(kDimensionalNumber * sizeof(T)) <= kMaxDimensionalForValuePassing * (void*)
-	don't use PassT for change R (pass R& to function for this) */
+	else pass const R& */
 	template<class T, class R>
-	using PassT = decltype(passkDimensionalNumberElementsType<T, R>());
+	using PassConstT = decltype(passType<T, R>());
 
 	template<class T>
-	using ConstPassArrayT = PassT<T, const std::array<T, kDimensionalNumber>>;
+	using PassConstArrayT = PassConstT<T, std::array<T, kDimensionalNumber>>;
 
 	//physical constants
 	inline constexpr double kBoltzmann = 1.38064852 * power(10, -23);

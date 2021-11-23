@@ -22,10 +22,10 @@ namespace md
 		using const_iterator = decltype(projections)::const_iterator;
 		/* ConstPass is type for pass to fonctions and return from functions by value or reference 
 		depending on the kDimensionalNumber and kMaxDimensionalForValuePassing. */
-		using ConstPass = PassT<element_t, const Vector>;
+		using ConstPass = PassConstT<element_t, const Vector>;
 
 		Vector() noexcept;
-		Vector(ConstPassArrayT<double> projectionArray) noexcept;
+		Vector(PassConstArrayT<double> projectionArray) noexcept;
 		Vector(const double projectionArray[kDimensionalNumber]) noexcept;
 		Vector(const std::initializer_list<double>& init_list);
 		Vector(const Vector& vector) noexcept;

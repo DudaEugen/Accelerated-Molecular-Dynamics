@@ -28,7 +28,7 @@ std::array<std::size_t, md::kDimensionalNumber> md::CellCollection::getOffsetByS
 }
 
 std::array<std::size_t, md::kDimensionalNumber> md::CellCollection::getOffsetBySizeInDirection(
-    ConstPassArrayT<std::size_t> offsetFactorInDirection) const noexcept
+    PassConstArrayT<std::size_t> offsetFactorInDirection) const noexcept
 {
     std::array<std::size_t, kDimensionalNumber> offsetBySizeInDirection;    
     for (auto [offsetBySize, offsetFactor, cellNumber]: 
