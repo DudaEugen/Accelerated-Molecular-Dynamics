@@ -3,14 +3,17 @@
 #define TAHD_TESTS_H
 
 #include <cassert>
-#include <random>
 #include <chrono>
 #include <functional>
+#include <random>
+#include <vector>
 #include "Vector.hpp"
 
 bool equal(double d1, double d2, int symbolCountAfterPoint = 12);
 
 bool equal(md::Vector::ConstPass v1, md::Vector::ConstPass v2, int symbolCountAfterPoint = 12);
+
+bool equalAll(const std::vector<md::Vector>& vectors, int symbolCountAfterPoint = 12);
 
 template<int MIN = -100, int MAX = 100>
 double random()

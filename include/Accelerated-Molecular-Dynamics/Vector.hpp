@@ -7,14 +7,13 @@
 
 namespace md
 {
-	/*this class replying for working with vector quantities 
-	this class is also used to store the spatial sizes of objects of such classes as the system, cell, etc.*/
+	/* Replying for working with vector quantities. 
+	Also used to store the spatial sizes of objects of such classes as the system, cell, etc. */
 	class Vector
 	{
 	private:
-		using element_t = double;
+		std::array<double, kDimensionalNumber> projections;
 
-		std::array<element_t, kDimensionalNumber> projections;
 	public:
 		//this is type of index for this->projections array
 		using projection_index = std::remove_const_t<decltype(kDimensionalNumber)>;	
@@ -22,36 +21,41 @@ namespace md
 		using const_iterator = decltype(projections)::const_iterator;
 		/* ConstPass is type for pass to fonctions and return from functions by value or reference 
 		depending on the kDimensionalNumber and kMaxDimensionalForValuePassing. */
-		using ConstPass = PassConstT<element_t, const Vector>;
+		using ConstPass = PassConstT<double, const Vector>;
 
 		Vector() noexcept;
 		Vector(PassConstArrayT<double> projectionArray) noexcept;
 		Vector(const double projectionArray[kDimensionalNumber]) noexcept;
 		Vector(const std::initializer_list<double>& init_list);
-		Vector(const Vector& vector) noexcept;
-		projection_index size() const noexcept;
+		Vector(const Vector& other) noexcept;
+
 		Vector& operator = (ConstPass other) noexcept;
 		Vector operator - () const noexcept;
-		Vector operator + (ConstPass other) const noexcept;
-		Vector operator - (ConstPass other) const noexcept;
 		Vector& operator += (ConstPass other) noexcept;
 		Vector& operator -= (ConstPass other) noexcept;
-		Vector& operator *= (const double factor) noexcept;
-		Vector& operator /= (const double divider);
-		double& operator [] (const projection_index index);
-		double operator [] (const projection_index index) const;
-		Vector operator / (const double divider) const;
+		Vector& operator *= (double factor) noexcept;
+		Vector& operator /= (double divider);
+		double& operator [] (projection_index index);
+		double operator [] (projection_index index) const;
+
 		double sumSquares() const noexcept;				//sum of squares of elements
 		double absoluteValue() const noexcept;			//square root of squares of elements sum
+
+		projection_index size() const noexcept;
 
 		iterator begin() noexcept;
 		iterator end() noexcept;
 		const_iterator begin() const noexcept;
 		const_iterator end() const noexcept;
+		const_iterator cbegin() const noexcept;
+		const_iterator cend() const noexcept;
 	};
 
-	const Vector operator * (Vector::ConstPass vector, const double factor) noexcept;
-	const Vector operator * (const double factor, Vector::ConstPass vector) noexcept;
+	Vector operator + (Vector::ConstPass first, Vector::ConstPass second) noexcept;
+	Vector operator - (Vector::ConstPass first, Vector::ConstPass second) noexcept;
+	Vector operator * (Vector::ConstPass vector, double factor) noexcept;
+	Vector operator * (double factor, Vector::ConstPass vector) noexcept;
+	Vector operator / (Vector::ConstPass vector, double divider);
 }
 
 #endif	//TAHD_PROJECTION_TUPLE_H

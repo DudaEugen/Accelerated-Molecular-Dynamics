@@ -26,11 +26,11 @@ md::Vector::Vector(const std::initializer_list<double>& init_list)
 	}
 }
 
-md::Vector::Vector(const Vector& Vector) noexcept
+md::Vector::Vector(const Vector& other) noexcept
 {
 	for (projection_index i = 0; i < kDimensionalNumber; ++i)
 	{
-		projections[i] = Vector.projections[i];
+		projections[i] = other.projections[i];
 	}
 }
 
@@ -47,26 +47,7 @@ md::Vector& md::Vector::operator = (ConstPass other) noexcept
 
 md::Vector md::Vector::operator - () const noexcept
 {
-	Vector result;
-	for (projection_index i = 0; i < kDimensionalNumber; ++i)
-	{
-		result.projections[i] = -projections[i];
-	}
-	return result;
-}
-
-md::Vector md::Vector::operator + (ConstPass other) const noexcept
-{
-	Vector result = *this;
-	result += other;
-	return result;
-}
-
-md::Vector md::Vector::operator - (ConstPass other) const noexcept
-{
-	Vector result = *this;
-	result -= other;
-	return result;
+	return *this * (-1);
 }
 
 md::Vector& md::Vector::operator += (ConstPass other) noexcept
@@ -80,14 +61,10 @@ md::Vector& md::Vector::operator += (ConstPass other) noexcept
 
 md::Vector& md::Vector::operator -= (ConstPass other) noexcept
 {
-	for (projection_index i = 0; i < kDimensionalNumber; ++i)
-	{
-		projections[i] -= other.projections[i];
-	}
-	return *this;
+	return *this += -other;
 }
 
-md::Vector& md::Vector::operator *= (const double factor) noexcept
+md::Vector& md::Vector::operator *= (double factor) noexcept
 {
 	for (double& projection: projections)
 	{
@@ -96,42 +73,50 @@ md::Vector& md::Vector::operator *= (const double factor) noexcept
 	return *this;
 }
 
-md::Vector& md::Vector::operator /= (const double divider)
+md::Vector& md::Vector::operator /= (double divider)
 {
-	for (double& projection: projections)
-	{
-		projection /= divider;
-	}
-	return *this;
+	return *this *= 1/divider;
 }
 
-const md::Vector md::operator * (Vector::ConstPass vector, const double factor) noexcept
+md::Vector md::operator + (Vector::ConstPass first, Vector::ConstPass second) noexcept
+{
+	Vector result = first;
+	result += second;
+	return result;
+}
+
+md::Vector md::operator - (Vector::ConstPass first, Vector::ConstPass second) noexcept
+{
+	Vector result = first;
+	result -= second;
+	return result;
+}
+
+md::Vector md::operator * (Vector::ConstPass vector, double factor) noexcept
 {
 	Vector result = vector;
 	result *= factor;
 	return result;
 }
 
-const md::Vector md::operator * (const double factor, Vector::ConstPass vector) noexcept
+md::Vector md::operator * (double factor, Vector::ConstPass vector) noexcept
 {
-	Vector result = vector;
-	result *= factor;
-	return result;
+	return vector * factor;
 }
 
-md::Vector md::Vector::operator / (const double divider) const
+md::Vector md::operator / (Vector::ConstPass vector, double divider)
 {
-	Vector result = *this;
+	Vector result = vector;
 	result /= divider;
 	return result;
 }
 
-double& md::Vector::operator [] (const projection_index index)
+double& md::Vector::operator [] (projection_index index)
 {
 	return projections[index];
 }
 
-double md::Vector::operator [] (const projection_index index) const
+double md::Vector::operator [] (projection_index index) const
 {
 	return projections[index];
 }
@@ -148,7 +133,7 @@ double md::Vector::sumSquares() const noexcept
 
 double md::Vector::absoluteValue() const noexcept
 {
-	return sqrt(sumSquares());
+	return std::sqrt(sumSquares());
 }
 
 md::Vector::iterator md::Vector::begin() noexcept { return projections.begin(); }
@@ -158,3 +143,7 @@ md::Vector::iterator md::Vector::end() noexcept { return projections.end(); }
 md::Vector::const_iterator md::Vector::begin() const noexcept { return projections.begin(); }
 
 md::Vector::const_iterator md::Vector::end() const noexcept { return projections.end(); }
+
+md::Vector::const_iterator md::Vector::cbegin() const noexcept { return projections.cbegin(); }
+
+md::Vector::const_iterator md::Vector::cend() const noexcept { return projections.cend(); }

@@ -13,3 +13,14 @@ bool equal(md::Vector::ConstPass v1, md::Vector::ConstPass v2, int symbolCountAf
 		result = result && equal(v1[i], v2[i], symbolCountAfterPoint);
 	return result;
 }
+
+bool equalAll(const std::vector<md::Vector>& vectors, int symbolCountAfterPoint)
+{
+	if (vectors.size() < 2)
+	{
+		return true;
+	}
+	
+	return equal(vectors[0], vectors[1]) &&
+		   equalAll(std::vector<md::Vector>(vectors.begin() + 2, vectors.end()), symbolCountAfterPoint);
+}
