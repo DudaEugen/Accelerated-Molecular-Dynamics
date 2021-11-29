@@ -1,9 +1,9 @@
-#include "../tests.hpp"
 #include <cmath>
+#include "features/compare.hpp"
 
 bool equal(double d1, double d2, int symbolCountAfterPoint)
 {
-	return static_cast<int>(abs(d1 - d2) * pow(10, symbolCountAfterPoint)) == 0;
+	return static_cast<int>(std::abs(d1 - d2) * std::pow(10, symbolCountAfterPoint)) == 0;
 }
 
 bool equal(md::Vector::ConstPass v1, md::Vector::ConstPass v2, int symbolCountAfterPoint)
