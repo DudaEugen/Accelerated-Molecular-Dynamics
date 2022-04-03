@@ -1,4 +1,4 @@
-#include "calculation of derivatives/helper/argument.hpp"
+#include "CalculationOfDerivatives/helper/Argument.hpp"
 #include <stdexcept>
 #include <cmath>
 

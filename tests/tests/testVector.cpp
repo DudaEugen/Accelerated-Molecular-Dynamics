@@ -35,7 +35,7 @@ namespace testVectorConstructors
 		std::array<double, kDimensionalNumber> array;
 		for (auto& value: array)
 		{
-			value = random();
+			value = randomDouble();
 		}
 
 		const Vector vector = array;
@@ -47,7 +47,7 @@ namespace testVectorConstructors
 		double array[kDimensionalNumber];
 		for (auto& value: array)
 		{
-			value = random();
+			value = randomDouble();
 		}
 
 		const Vector vector = array;
@@ -61,7 +61,7 @@ namespace testVectorConstructors
 
 	void initializerListWithOneElement()
 	{
-		double value = random();
+		double value = randomDouble();
 		auto values = std::vector(kDimensionalNumber, 0.);
 		values[0] = value;
 		assertProjectionValues(Vector{value}, values);
@@ -69,10 +69,10 @@ namespace testVectorConstructors
 
 	void initializerListWithFourElements()
 	{
-		double value1 = random();
-		double value2 = random();
-		double value3 = random();
-		double value4 = random();
+		double value1 = randomDouble();
+		double value2 = randomDouble();
+		double value3 = randomDouble();
+		double value4 = randomDouble();
 		assertProjectionValues(
 			Vector{value1, value2, value3, value4},
 			std::vector{value1, value2, value3, value4}
@@ -85,7 +85,7 @@ namespace testVectorConstructors
 		md::Vector vector;
 		for (auto& projection: vector)
 		{
-			double value = random();
+			double value = randomDouble();
 			values.push_back(value);
 			projection = value;
 		}
@@ -157,7 +157,7 @@ namespace testVectorOperators
 	{
 		Vector vector = randomVector();
 		Vector init_vector = vector;
-		double factor = random();
+		double factor = randomDouble();
 		vector *= factor;
 		
 		for (unsigned i = 0; i < kDimensionalNumber; ++i)
@@ -170,7 +170,7 @@ namespace testVectorOperators
 	{
 		Vector vector = randomVector();
 		Vector init_vector = vector;
-		double divider = random();
+		double divider = randomDouble();
 		vector /= divider;
 		
 		for (unsigned i = 0; i < kDimensionalNumber; ++i)
@@ -184,7 +184,7 @@ namespace testVectorOperators
 		Vector vector;
 		for (unsigned i = 0; i < kDimensionalNumber; ++i)
 		{
-			double value = random();
+			double value = randomDouble();
 			vector[i] = value;
 			const Vector constVector = vector;
 			assert(equal(vector[i], value));
@@ -218,7 +218,7 @@ namespace testVectorOperators
 	{
 		Vector vector0 = randomVector();
 		Vector vector1 = vector0;
-		double factor = random();
+		double factor = randomDouble();
 		vector1 *= factor;
 		assert(equalAll(std::vector{vector1, factor*vector0, vector0*factor}));
 	}
@@ -227,7 +227,7 @@ namespace testVectorOperators
 	{
 		Vector vector0 = randomVector();
 		Vector vector1 = vector0;
-		double divider = random();
+		double divider = randomDouble();
 		vector1 /= divider;
 		assert(equal(vector1, vector0/divider));
 	}
@@ -283,7 +283,7 @@ namespace testVectorIterators
 		for (auto& value: vector)
 		{
 			assert(equal(vector[i], value));
-			double new_value = random();
+			double new_value = randomDouble();
 			value = new_value;
 			assert(equal(vector[i], new_value));
 			++i;

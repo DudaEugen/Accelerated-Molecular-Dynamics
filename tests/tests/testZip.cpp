@@ -11,7 +11,7 @@ void testUnindexedZip()
 	Vector v2 = randomVector();
 	std::array<int, kDimensionalNumber> arr;
 	for(auto& v: arr)
-		v = random();
+		v = randomDouble();
 	
 	Vector::projection_index i = 0;
 	for (auto [a, b, c]: Zip(v1, v2, std::as_const(arr)))
@@ -34,7 +34,7 @@ void testIndexedZip()
 	Vector v2 = randomVector();
 	std::array<int, kDimensionalNumber> arr;
 	for(auto& v: arr)
-		v = random();
+		v = randomDouble();
 
     for (auto [index, a, b]: IndexedZip(v1, arr))
 	{

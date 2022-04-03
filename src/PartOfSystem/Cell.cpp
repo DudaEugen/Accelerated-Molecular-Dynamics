@@ -1,4 +1,4 @@
-#include "Part of System/Cell.hpp"
+#include "PartOfSystem/Cell.hpp"
 
 constexpr std::size_t md::Cell::maximumNeighborCellsNumber()
 {

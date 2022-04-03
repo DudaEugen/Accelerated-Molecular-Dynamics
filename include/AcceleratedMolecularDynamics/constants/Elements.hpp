@@ -2,7 +2,7 @@
 #ifndef TAHD_ELEMENTS_H
 #define TAHD_ELEMENTS_H
 
-#include "custom enum/custom enum.hpp"
+#include "CustomEnum/CustomEnum.hpp"
 #include <vector>
 #include <utility>
 

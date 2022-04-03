@@ -8,7 +8,7 @@
 #include "Vector.hpp"
 
 template<int MIN = -100, int MAX = 100>
-double random()
+double randomDouble()
 {
 	static auto r =  std::bind( 
 				std::uniform_real_distribution<double>(MIN, MAX), 
@@ -22,7 +22,7 @@ md::Vector randomVector()
 {
 	md::Vector v;
 	for (double& projection: v)
-		projection = random<MIN, MAX>();
+		projection = randomDouble<MIN, MAX>();
 	return v;
 }
 

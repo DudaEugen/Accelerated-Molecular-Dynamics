@@ -2,8 +2,8 @@
 #ifndef TAHD_FUNCTIONS_FOR_DERIVATIVE_SET_PARAMETERS_T
 #define TAHD_FUNCTIONS_FOR_DERIVATIVE_SET_PARAMETERS_T
 
-#include "structures.hpp"
-#include "functions_folding.hpp"
+#include "Structures.hpp"
+#include "FunctionsFolding.hpp"
 
 namespace utils::fcd
 {

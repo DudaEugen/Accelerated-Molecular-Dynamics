@@ -1,5 +1,5 @@
 #include "../tests.hpp"
-#include "calculation of derivatives/functions.hpp"
+#include "CalculationOfDerivatives/Functions.hpp"
 #include <iostream>
 
 using namespace utils;
@@ -7,8 +7,8 @@ namespace impl = fcd::implementation;
 
 void staticTestsDerivative()
 {
-    double x = random<-3, 3>();
-    std::vector<double> params = {random(), random()};
+    double x = randomDouble<-3, 3>();
+    std::vector<double> params = {randomDouble(), randomDouble()};
 
     static_assert(std::is_same_v<
 		decltype(fcd::derivative(fcd::Parameter<0>() * (fcd::Parameter<1>() + x))), 
@@ -50,7 +50,7 @@ void staticTestsDerivative()
 
 void testDerivativeFunctions()
 {
-    double x = random<-3, 3>();
+    double x = randomDouble<-3, 3>();
 
     auto f = fcd::exponenta(fcd::Variable());
 	assert(equal(f(x), exp(x)));
@@ -63,10 +63,10 @@ void testDerivativeFunctions()
 	assert(equal(fcd::derivative<3>(f2)(x), 0));
 
     auto f4 = -0.5*fcd::power<-2>(fcd::Variable());
-	assert(equal(fcd::derivative<2>(f4)(abs(x)+0.1), -3/(pow(abs(x)+0.1, 4)), 8));
+	assert(equal(fcd::derivative<2>(f4)(std::abs(x)+0.1), -3/(pow(std::abs(x)+0.1, 4)), 8));
 
 	auto f5 = fcd::sqRoot(fcd::Variable()) + fcd::power<2>(fcd::root<5>(fcd::Variable()));
-	assert(equal(fcd::derivative(f5)(abs(x)), 1/(2*sqrt(abs(x))) + 0.4*pow(abs(x), -0.6), 10));
+	assert(equal(fcd::derivative(f5)(std::abs(x)), 1/(2*sqrt(std::abs(x))) + 0.4*pow(std::abs(x), -0.6), 10));
 
 	assert(equal(fcd::root<3>(fcd::Variable())(x), fcd::cbRoot(fcd::Variable())(x), 10));
 	assert(equal(fcd::derivative<3>(fcd::root<3>(fcd::Variable()))(x), fcd::derivative<3>(fcd::cbRoot(fcd::Variable()))(x), 10));
@@ -77,11 +77,11 @@ void testDerivativeFunctions()
 	assert(equal(fcd::tangent(fcd::Variable())(x), sin(x) / cos(x), 10));
 	assert(equal(fcd::derivative(fcd::tangent(fcd::Variable()))(x), pow(cos(x), -2), 10));
 
-	assert(equal(fcd::logarithm(fcd::Variable())(abs(x)), log(abs(x)), 10));
-	assert(equal(fcd::derivative(fcd::logarithm(fcd::Variable()))(abs(x)), 1/abs(x), 10));
-	assert(equal(fcd::logarithm<2>(fcd::Variable())(abs(x)), log2(abs(x)), 10));
-	assert(equal(fcd::logarithm<10>(fcd::Variable())(abs(x)), log10(abs(x)), 10));
-	assert(equal(fcd::derivative(fcd::logarithm<3>(fcd::Variable()))(abs(x)), 1/(abs(x) * log(3)), 10));
+	assert(equal(fcd::logarithm(fcd::Variable())(std::abs(x)), log(std::abs(x)), 10));
+	assert(equal(fcd::derivative(fcd::logarithm(fcd::Variable()))(std::abs(x)), 1/std::abs(x), 10));
+	assert(equal(fcd::logarithm<2>(fcd::Variable())(std::abs(x)), log2(std::abs(x)), 10));
+	assert(equal(fcd::logarithm<10>(fcd::Variable())(std::abs(x)), log10(std::abs(x)), 10));
+	assert(equal(fcd::derivative(fcd::logarithm<3>(fcd::Variable()))(std::abs(x)), 1/(std::abs(x) * log(3)), 10));
 
 	auto f6 = fcd::sqRoot(fcd::exponential<3>(-2 * fcd::Variable()));
 	assert(equal(f6(x), pow(3, -x), 10));
@@ -98,7 +98,7 @@ void testDerivativeFunctions()
 
 void testDerivativeWithParameters()
 {
-    double x = random<-3, 3>();	
+    double x = randomDouble<-3, 3>();	
 
 	std::vector<double> params = {1, -2};
 	auto f3_uncomplete = fcd::power<3>(fcd::Variable())*fcd::exponenta(fcd::Variable()) +

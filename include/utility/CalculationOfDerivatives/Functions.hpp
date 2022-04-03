@@ -2,8 +2,8 @@
 #ifndef TAHD_FUNCTIONS_FOR_DERIVATIVE_FUNCTION_T
 #define TAHD_FUNCTIONS_FOR_DERIVATIVE_FUNCTION_T
 
-#include "helper/set_parameters.hpp"
-#include "helper/derivative_rules.hpp"
+#include "helper/SetParameters.hpp"
+#include "helper/DerivativeRules.hpp"
 
 namespace utils::fcd::implementation
 {
@@ -46,7 +46,7 @@ namespace utils::fcd::implementation
     }
 }
 
-// fcd - functions for calculation of derivatives
+// fcd - functions for CalculationOfDerivatives
 namespace utils::fcd
 {
     // functions
@@ -182,7 +182,7 @@ namespace utils::fcd
     }
 }
 
-// fcd - functions for calculation of derivatives
+// fcd - functions for CalculationOfDerivatives
 namespace utils::fcd
 {
 //operators

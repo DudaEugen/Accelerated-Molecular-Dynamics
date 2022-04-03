@@ -2,9 +2,9 @@
 #ifndef TAHD_FUNCTIONS_FOR_DERIVATIVE_DERIVATIVE_RULES_T
 #define TAHD_FUNCTIONS_FOR_DERIVATIVE_DERIVATIVE_RULES_T
 
-#include "structures.hpp"
+#include "Structures.hpp"
 #include <cmath>
-#include "functions_folding.hpp"
+#include "FunctionsFolding.hpp"
 
 namespace utils::fcd::implementation
 {

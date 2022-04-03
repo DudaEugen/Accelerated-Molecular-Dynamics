@@ -6,7 +6,7 @@
 #include <stdexcept>
 #include <vector>
 
-// fcd - functions for calculation of derivatives
+// fcd - functions for CalculationOfDerivatives
 namespace utils::fcd
 {
     template<std::uint8_t I>

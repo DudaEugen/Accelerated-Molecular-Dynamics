@@ -2,8 +2,8 @@
 #ifndef TAHD_FUNCTIONS_FOR_DERIVATIVE_FOLDING_T
 #define TAHD_FUNCTIONS_FOR_DERIVATIVE_FOLDING_T
 
-#include "argument.hpp"
-#include "structures.hpp"
+#include "Argument.hpp"
+#include "Structures.hpp"
 
 namespace utils::fcd::implementation
 {

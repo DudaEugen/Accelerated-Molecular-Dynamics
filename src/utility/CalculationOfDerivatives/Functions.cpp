@@ -1,4 +1,4 @@
-#include "calculation of derivatives/functions.hpp"
+#include "CalculationOfDerivatives/Functions.hpp"
 
 namespace fcd = utils::fcd;
 namespace impl = utils::fcd::implementation;
