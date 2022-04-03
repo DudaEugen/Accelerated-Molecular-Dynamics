@@ -8,10 +8,12 @@ bool equal(double d1, double d2, int symbolCountAfterPoint)
 
 bool equal(md::Vector::ConstPass v1, md::Vector::ConstPass v2, int symbolCountAfterPoint)
 {	
-	bool result = true;
+	const double* data1 = v1.data();
+	const double* data2 = v2.data();
 	for (md::Vector::projection_index i = 0; i < md::kDimensionalNumber; ++i)
-		result = result && equal(v1[i], v2[i], symbolCountAfterPoint);
-	return result;
+		if (!equal(data1[i], data2[i], symbolCountAfterPoint))
+			return false;
+	return true;
 }
 
 bool equalAll(const std::vector<md::Vector>& vectors, int symbolCountAfterPoint)

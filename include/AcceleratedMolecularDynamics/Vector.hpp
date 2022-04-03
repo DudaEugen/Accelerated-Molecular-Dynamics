@@ -21,7 +21,7 @@ namespace md
 		using const_iterator = decltype(projections)::const_iterator;
 		/* ConstPass is type for pass to fonctions and return from functions by value or reference 
 		depending on the kDimensionalNumber and kMaxDimensionalForValuePassing. */
-		using ConstPass = PassConstT<double, const Vector>;
+		using ConstPass = PassConstT<double, Vector>;
 
 		Vector() noexcept;
 		Vector(PassConstArrayT<double> projectionArray) noexcept;
@@ -42,6 +42,8 @@ namespace md
 		double absoluteValue() const noexcept;			//square root of squares of elements sum
 
 		projection_index size() const noexcept;
+		double* data() noexcept;
+		const double* data() const noexcept;
 
 		iterator begin() noexcept;
 		iterator end() noexcept;
