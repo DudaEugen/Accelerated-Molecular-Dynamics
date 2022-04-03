@@ -40,6 +40,16 @@ md::Vector::projection_index md::Vector::size() const noexcept
 	return kDimensionalNumber;
 }
 
+double* md::Vector::data() noexcept
+{
+	return projections.data();
+}
+
+const double* md::Vector::data() const noexcept
+{
+	return projections.data();
+}
+
 md::Vector& md::Vector::operator = (ConstPass other) noexcept
 {
 	for (projection_index i = 0; i < kDimensionalNumber; ++i)

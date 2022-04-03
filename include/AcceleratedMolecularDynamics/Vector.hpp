@@ -42,6 +42,8 @@ namespace md
 		double absoluteValue() const noexcept;			//square root of squares of elements sum
 
 		projection_index size() const noexcept;
+		double* data() noexcept;
+		const double* data() const noexcept;
 
 		iterator begin() noexcept;
 		iterator end() noexcept;
