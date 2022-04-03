@@ -20,7 +20,7 @@ namespace md
 		template<class T, class R>
 		constexpr std::enable_if_t<
 			(kDimensionalNumber * sizeof(T) <= kMaxSizeForValuePassing * sizeof(void*)), 
-		R> passType();
+		const std::remove_const_t<R>> passType();
 
 		constexpr double power(unsigned int v1, int v2)
 		{
