@@ -97,10 +97,15 @@ namespace testVectorOperators
 {
 	void assign()
 	{
-		Vector vector = randomVector();
-		Vector copy_vector1, copy_vector2;
-		copy_vector2 = copy_vector1 = vector;
-		assert(equalAll(std::vector{vector, copy_vector1, copy_vector2}));
+		Vector vector0 = randomVector();
+		Vector vector1 = randomVector();
+		Vector vector2;
+		vector2 = vector1 = vector0;
+
+		assert(equalAll({vector0, vector1, vector2}));
+		assert(vector0.data() != vector1.data());
+		assert(vector0.data() != vector2.data());
+		assert(vector1.data() != vector2.data());
 	}
 
 	void unaryMinus()
@@ -108,48 +113,69 @@ namespace testVectorOperators
 		Vector vector = randomVector();
 		Vector other = -vector;
 		assert(equal(vector, -other));
-
-		for (unsigned i = 0; i < kDimensionalNumber; ++i)
-		{
-			assert(equal(other[i], -vector[i]));
-		}
 	}
 
 	void plusAssign()
 	{
 		Vector vector0 = randomVector();
 		Vector vector1;
-		vector1 += vector0;
-		assert(equal(vector0, vector1));
+		Vector vector2;
+		vector2 += vector1 += vector0;
+		
+		assert(equalAll({vector0, vector1, vector2}));
+		assert(vector0.data() != vector1.data());
+		assert(vector0.data() != vector2.data());
+		assert(vector1.data() != vector2.data());
+	}
 
-		vector1 = randomVector();
+	void plus()
+	{
+		Vector vector0 = randomVector();
+		Vector vector1 = randomVector();
 		Vector vector2 = randomVector();
 		Vector init_vector1 = vector1;
 		Vector init_vector2 = vector2;
 		vector2 += vector1 += vector0;
-		for (unsigned i = 0; i < kDimensionalNumber; ++i)
-		{
-			assert(equal(vector2[i], init_vector2[i] + vector1[i]));
-			assert(equal(vector1[i], init_vector1[i] + vector0[i]));
-		}
+
+		assert(equal(vector1, init_vector1 + vector0));
+		assert(equal(vector2, init_vector2 + vector1));
 	}
 
 	void minusAssign()
 	{
 		Vector vector0 = randomVector();
 		Vector vector1 = vector0;
-		vector1 -= vector0;
-		assert(equal(vector1, Vector{}));
+		Vector vector2;
+		Vector init_vector1 = vector1;
+		vector0 -= vector1 -= vector2;
 
-		vector1 = randomVector();
+		assert(equal(vector0, Vector{}));
+		assert(equal(vector1, init_vector1));
+	}
+
+	void difference()
+	{
+		Vector vector0 = randomVector();
+		Vector vector1 = randomVector();
 		Vector vector2 = randomVector();
 		Vector init_vector1 = vector1;
 		Vector init_vector2 = vector2;
 		vector2 -= vector1 -= vector0;
+
+		assert(equal(vector1, init_vector1 - vector0));
+		assert(equal(vector2, init_vector2 - vector1));
+	}
+
+	void squareBrackets()
+	{
+		Vector vector;
 		for (unsigned i = 0; i < kDimensionalNumber; ++i)
 		{
-			assert(equal(vector2[i], init_vector2[i] - vector1[i]));
-			assert(equal(vector1[i], init_vector1[i] - vector0[i]));
+			double value = randomDouble();
+			vector[i] = value;
+			const Vector constVector = vector;
+			assert(equal(vector[i], value));
+			assert(equal(constVector[i], value));
 		}
 	}
 
@@ -166,6 +192,15 @@ namespace testVectorOperators
 		}
 	}
 
+	void product()
+	{
+		Vector vector0 = randomVector();
+		Vector vector1 = vector0;
+		double factor = randomDouble();
+		vector1 *= factor;
+		assert(equalAll({vector1, factor*vector0, vector0*factor}));
+	}
+
 	void divideAssign()
 	{
 		Vector vector = randomVector();
@@ -177,50 +212,6 @@ namespace testVectorOperators
 		{
 			assert(equal(vector[i], init_vector[i] / divider));
 		}
-	}
-
-	void squareBrackets()
-	{
-		Vector vector;
-		for (unsigned i = 0; i < kDimensionalNumber; ++i)
-		{
-			double value = randomDouble();
-			vector[i] = value;
-			const Vector constVector = vector;
-			assert(equal(vector[i], value));
-			assert(equal(constVector[i], value));
-		}
-	}
-
-	void plus()
-	{
-		Vector vector0;
-		Vector vector1;
-		Vector summ = vector1 + vector0;
-		for (unsigned i = 0; i < kDimensionalNumber; ++i)
-		{
-			assert(equal(summ[i], vector0[i] + vector1[i]));
-		}
-	}
-
-	void difference()
-	{
-		Vector vector0;
-		Vector vector1;
-		Vector difference = vector1 + vector0;
-		for (unsigned i = 0; i < kDimensionalNumber; ++i)
-		{
-			assert(equal(difference[i], vector1[i] - vector0[i]));
-		}
-	}
-
-	void product()
-	{
-		Vector vector0 = randomVector();
-		Vector vector1 = vector0;
-		double factor = randomDouble();
-		vector1 *= factor;
-		assert(equalAll(std::vector{vector1, factor*vector0, vector0*factor}));
 	}
 
 	void divide()
@@ -235,6 +226,27 @@ namespace testVectorOperators
 
 namespace testVectorMethods
 {
+	void data()
+	{
+		Vector vector;
+		auto data = vector.data();
+		for (Vector::projection_index i = 0; i < kDimensionalNumber; ++i)
+		{
+			data[i] = randomDouble();
+			assert(equal(vector[i], data[i]));
+		}
+	}
+
+	void dataConst()
+	{
+		const Vector vector = randomVector();
+		auto data = vector.data();
+		for (Vector::projection_index i = 0; i < kDimensionalNumber; ++i)
+		{
+			assert(equal(vector[i], data[i]));
+		}
+	}
+
 	void size()
 	{
 		assert(Vector{}.size() == kDimensionalNumber);
@@ -302,17 +314,19 @@ void testVector()
 	testVectorConstructors::initializerListWithOneElement();
 
 	testVectorOperators::assign();
-	testVectorOperators::difference();
-	testVectorOperators::divide();
-	testVectorOperators::divideAssign();
-	testVectorOperators::minusAssign();
-	testVectorOperators::plus();
+	testVectorOperators::unaryMinus();
 	testVectorOperators::plusAssign();
+	testVectorOperators::plus();
+	testVectorOperators::minusAssign();
+	testVectorOperators::difference();
+	testVectorOperators::squareBrackets();
 	testVectorOperators::product();
 	testVectorOperators::productAssign();
-	testVectorOperators::squareBrackets();
-	testVectorOperators::unaryMinus();
+	testVectorOperators::divide();
+	testVectorOperators::divideAssign();
 
+	testVectorMethods::data();
+	testVectorMethods::dataConst();
 	testVectorMethods::absoluteValue();
 	testVectorMethods::size();
 	testVectorMethods::sumSquares();
