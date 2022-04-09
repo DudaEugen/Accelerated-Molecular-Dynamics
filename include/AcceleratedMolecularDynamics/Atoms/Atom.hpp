@@ -40,7 +40,7 @@ namespace md
 		Vector::ConstPass getVelocity() const noexcept;
 		Vector::ConstPass getAcceleration() const noexcept;
 		
-		//doStepAlhorithm are methods to moving atom corresponding algorithm
+		//move are methods to moving atom corresponding algorithm
 		void move(double dt) noexcept;
 	};
 }

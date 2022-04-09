@@ -45,43 +45,9 @@ void testAtomConstructors()
 	assert(equal(a.getAcceleration(), randomVector() * 0));
 }
 
-void testAtomMoving()
-{
-    Vector rx = randomVector();
-	Vector rv = randomVector();
-	Vector ra = randomVector();
-	Atom a1("Cu", Vector());
-	Atom a2("Cu", Vector());
-	a2.setVelocity(rv);
-	Atom a3("Cu", Vector());	
-	Atom a4("Al", rx);
-	a4.setVelocity(rv);
-	a4.addVelocity(rv);
-	Atom a5("Au", Vector());
-	double dt = 0.000'01;
-	for(int i = 0; i < 100'000; ++i)
-	{
-		a1.move(dt);
-		a2.move(dt);
-		a3.setAcceleration(ra);
-		a3.move(dt);
-		a4.setAcceleration(Vector());
-		a4.addAcceleration(ra);
-		a4.move(dt);
-		a5.setAcceleration(ra * (1 - i * dt));
-		a5.move(dt);
-	}
-	assert(equal(a1.getCoordinates(), Vector(), 3));
-	assert(equal(a2.getCoordinates(), rv, 3));
-	assert(equal(a3.getCoordinates(), ra / 2, 3));
-	assert(equal(a4.getCoordinates(), rx + 2*rv + ra / 2, 3));
-	assert(equal(a5.getCoordinates(), ra / 2 - ra / 6, 3));
-}
-
 void testAtom()
 {
     testAtomConstructors();
-    testAtomMoving();
 	if constexpr (kDimensionalNumber == 3)
 	{
 		testAtomkDimensionalNumber3();
