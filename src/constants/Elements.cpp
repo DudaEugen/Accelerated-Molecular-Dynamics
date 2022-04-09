@@ -40,20 +40,20 @@ md::ElementException::ElementException(const std::string& message) : std::runtim
 {
 }
 
-md::element md::parseElement(const std::string& title)
+md::element md::parseElement(const std::string_view title)
 {
     for (element el: element_impl::allEnumValues())
         if(element_to_string(el) == title)
             return el;
-    throw ElementException(std::string("Can't parse to element string: ") + title);
+    throw ElementException("Can't parse to element string: " + static_cast<std::string>(title));
 }
 
-md::element_impl::AtomicMass md::atomicMass(const std::string& title)
+md::element_impl::AtomicMass md::atomicMass(const std::string_view title)
 {
     return atomicMass(parseElement(title));
 }
 
-std::uint8_t md::atomicNumber(const std::string& title)
+std::uint8_t md::atomicNumber(const std::string_view title)
 {
     return atomicNumber(parseElement(title));
 }

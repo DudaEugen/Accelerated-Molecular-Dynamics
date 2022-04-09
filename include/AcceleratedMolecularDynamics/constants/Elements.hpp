@@ -112,9 +112,9 @@ namespace md
 
 	//functions throw ElementException if dont know values for this element
 	// or element of enum does not have enumerator, that corresponding to title
-	element parseElement(const std::string& title);
-	element_impl::AtomicMass atomicMass(const std::string& title);
-	std::uint8_t atomicNumber(const std::string& title);
+	element parseElement(const std::string_view title);
+	element_impl::AtomicMass atomicMass(const std::string_view title);
+	std::uint8_t atomicNumber(const std::string_view title);
 }
 
 #endif	// TAHD_ELEMENTS_H
