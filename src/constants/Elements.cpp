@@ -43,7 +43,7 @@ md::ElementException::ElementException(const std::string& message) : std::runtim
 md::element md::parseElement(const std::string_view title)
 {
     for (element el: element_impl::allEnumValues())
-        if(element_to_string(el) == title)
+        if(elementToString(el) == title)
             return el;
     throw ElementException("Can't parse to element string: " + static_cast<std::string>(title));
 }

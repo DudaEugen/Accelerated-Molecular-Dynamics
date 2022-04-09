@@ -7,10 +7,10 @@ namespace testElementFunctions
 {
     void testElementToString()
     {
-        assert(element_to_string(element::H) == "H");
-        assert(element_to_string(element::He) == "He");
-        assert(element_to_string(element::Al) == std::string("Al"));
-        assert(element_to_string(element::Ar) == std::string("Ar"));
+        assert(elementToString(element::H) == "H");
+        assert(elementToString(element::He) == "He");
+        assert(elementToString(element::Al) == std::string("Al"));
+        assert(elementToString(element::Ar) == std::string("Ar"));
     }
 
     void testParseElement()
