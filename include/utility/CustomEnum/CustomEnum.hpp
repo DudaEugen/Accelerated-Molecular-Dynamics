@@ -32,7 +32,7 @@
     throw std::runtime_error(std::string("Incorrect value of custom enum: ") + #enum_name);     
 
 /* to string */
-#define ENUM_TO_STRING_SIGN(enum_name) std::string enum_name##_to_string(enum_name arg)    
+#define ENUM_TO_STRING_SIGN(enum_name) std::string enum_name##ToString(enum_name arg)    
 #define ENUM_TO_STRING(enum_name, ...) ENUM_TO_STRING_SIGN(enum_name)                            \
     {                                                                                            \
         ENUM_SWITH(arg, enum_name, __VA_ARGS__)                                                  \

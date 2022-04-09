@@ -3,22 +3,12 @@
 
 using namespace md;
 
-void testElements()
-{
-	assert(isotope_generator("Al").generate_random_atomic_mass() == 27);
-	unsigned massO = isotope_generator('O').generate_random_atomic_mass();
-	assert(massO == 16 || massO == 17 || massO == 18);
-	unsigned massAr = isotope_generator(element::Ar).generate_random_atomic_mass();
-	assert(massAr == 36 || massAr == 38 || massAr == 40);
-}
-
 void testAtomkDimensionalNumber3()
 {
     if constexpr (kDimensionalNumber == 3)
 	{
-        char c[2] = { 'A', 'u' };
         Vector v = randomVector();
-        Atom a(c, randomVector());
+        Atom a("Au", randomVector());
 		
         a.setVelocity(v);
 		Vector v2 = { 4, -5.67, 9.23897 };
@@ -40,14 +30,14 @@ void testAtomConstructors()
 	assert(aAl_1.chemElement == aAl_2.chemElement);
 	assert(aCu_1.chemElement == aCu_2.chemElement);
 	assert(not(aAl_1.chemElement == aCu_2.chemElement));
-	assert(md::isotope_generator(aAl_1.chemElement).compute_average_atomic_mass() == 27);
+	assert(md::atomicMass(aAl_1.chemElement).average() == 27);
 	assert(equal(aAl_1.mass, 
-				 md::isotope_generator(aAl_2.chemElement).compute_average_atomic_mass() / (kAvogadro * 1000)
+				 md::atomicMass(aAl_2.chemElement).average() / (kAvogadro * 1000)
 	));
 
-	char c[2] = { 'A', 'u' };
-	assert(md::isotope_generator(Atom(c, randomVector()).chemElement).compute_average_atomic_mass() == 197);
-	assert(md::get_atomic_number(Atom(c, randomVector()).chemElement) == 79);
+	std::string c = "Au";
+	assert(md::atomicMass(Atom(c, randomVector()).chemElement).average() == 197);
+	assert(md::atomicNumber(Atom(c, randomVector()).chemElement) == 79);
 
     Vector v = aAl_1.getCoordinates();
 	Atom a(c, v);
@@ -90,7 +80,6 @@ void testAtomMoving()
 
 void testAtom()
 {
-	testElements();
     testAtomConstructors();
     testAtomMoving();
 	if constexpr (kDimensionalNumber == 3)

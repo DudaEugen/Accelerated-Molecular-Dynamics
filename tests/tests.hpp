@@ -8,6 +8,8 @@
 
 void testVector();
 
+void testElement();
+
 void testAtom();
 
 void testSubstance();

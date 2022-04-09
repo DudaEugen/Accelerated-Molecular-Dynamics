@@ -11,24 +11,14 @@ md::Atom::Atom(element element, Vector::ConstPass coordinates):
 {
 }
 
-md::Atom::Atom(char element, Vector::ConstPass coordinates) 
-	: Atom{ parse(element), coordinates }
-{
-}
-
-md::Atom::Atom(const char element[2], Vector::ConstPass coordinates) 
-	: Atom{ parse(element), coordinates }
-{
-}
-
 md::Atom::Atom(const std::string& element, Vector::ConstPass coordinates) : 
-	Atom{ parse(element), coordinates }
+	Atom{ parseElement(element), coordinates }
 {
 }
 
 double md::Atom::computeMass(element element) 
 { 
-	return isotope_generator(element).compute_average_atomic_mass() * 0.001 / kAvogadro; 
+	return atomicMass(element).average() * 0.001 / kAvogadro; 
 }
 
 char md::Atom::getPreviousStepIndex() noexcept
