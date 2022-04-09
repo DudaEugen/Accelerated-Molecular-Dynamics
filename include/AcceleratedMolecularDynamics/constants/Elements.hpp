@@ -112,14 +112,8 @@ namespace md
 
 	//functions throw ElementException if dont know values for this element
 	// or element of enum does not have enumerator, that corresponding to title
-	element parseElement(char title);
-	element parseElement(const char title[2]);
 	element parseElement(const std::string& title);
-	element_impl::AtomicMass atomicMass(char title);
-	element_impl::AtomicMass atomicMass(const char title[2]);
 	element_impl::AtomicMass atomicMass(const std::string& title);
-	std::uint8_t atomicNumber(char title);
-	std::uint8_t atomicNumber(const char title[2]);
 	std::uint8_t atomicNumber(const std::string& title);
 }
 

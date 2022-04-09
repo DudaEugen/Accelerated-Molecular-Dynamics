@@ -11,16 +11,6 @@ md::Atom::Atom(element element, Vector::ConstPass coordinates):
 {
 }
 
-md::Atom::Atom(char element, Vector::ConstPass coordinates) 
-	: Atom{ parseElement(element), coordinates }
-{
-}
-
-md::Atom::Atom(const char element[2], Vector::ConstPass coordinates) 
-	: Atom{ parseElement(element), coordinates }
-{
-}
-
 md::Atom::Atom(const std::string& element, Vector::ConstPass coordinates) : 
 	Atom{ parseElement(element), coordinates }
 {

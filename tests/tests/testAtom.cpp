@@ -6,7 +6,7 @@ using namespace md;
 void testElements()
 {
 	assert(atomicMass("Al").random() == 27);
-	unsigned massO = atomicMass('O').random();
+	unsigned massO = atomicMass("O").random();
 	assert(massO == 16 || massO == 17 || massO == 18);
 	unsigned massAr = atomicMass(element::Ar).random();
 	assert(massAr == 36 || massAr == 38 || massAr == 40);
@@ -16,9 +16,8 @@ void testAtomkDimensionalNumber3()
 {
     if constexpr (kDimensionalNumber == 3)
 	{
-        char c[2] = { 'A', 'u' };
         Vector v = randomVector();
-        Atom a(c, randomVector());
+        Atom a("Au", randomVector());
 		
         a.setVelocity(v);
 		Vector v2 = { 4, -5.67, 9.23897 };
@@ -45,7 +44,7 @@ void testAtomConstructors()
 				 md::atomicMass(aAl_2.chemElement).average() / (kAvogadro * 1000)
 	));
 
-	char c[2] = { 'A', 'u' };
+	std::string c = "Au";
 	assert(md::atomicMass(Atom(c, randomVector()).chemElement).average() == 197);
 	assert(md::atomicNumber(Atom(c, randomVector()).chemElement) == 79);
 

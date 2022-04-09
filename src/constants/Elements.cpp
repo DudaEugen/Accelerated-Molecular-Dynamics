@@ -48,39 +48,9 @@ md::element md::parseElement(const std::string& title)
     throw ElementException(std::string("Can't parse to element string: ") + title);
 }
 
-md::element md::parseElement(char title)
-{
-	return parseElement(std::string{title});
-}
-
-md::element md::parseElement(const char title[2])
-{
-    return parseElement(std::string{title, 2});
-}
-
-md::element_impl::AtomicMass md::atomicMass(char title)
-{
-    return atomicMass(parseElement(title));
-}
-
-md::element_impl::AtomicMass md::atomicMass(const char title[2])
-{
-    return atomicMass(parseElement(title));
-}
-
 md::element_impl::AtomicMass md::atomicMass(const std::string& title)
 {
     return atomicMass(parseElement(title));
-}
-
-std::uint8_t md::atomicNumber(char title)
-{
-    return atomicNumber(parseElement(title));
-}
-
-std::uint8_t md::atomicNumber(const char title[2])
-{
-    return atomicNumber(parseElement(title));
 }
 
 std::uint8_t md::atomicNumber(const std::string& title)
