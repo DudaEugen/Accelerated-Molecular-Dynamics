@@ -3,15 +3,6 @@
 
 using namespace md;
 
-void testElements()
-{
-	assert(atomicMass("Al").random() == 27);
-	unsigned massO = atomicMass("O").random();
-	assert(massO == 16 || massO == 17 || massO == 18);
-	unsigned massAr = atomicMass(element::Ar).random();
-	assert(massAr == 36 || massAr == 38 || massAr == 40);
-}
-
 void testAtomkDimensionalNumber3()
 {
     if constexpr (kDimensionalNumber == 3)
@@ -89,7 +80,6 @@ void testAtomMoving()
 
 void testAtom()
 {
-	testElements();
     testAtomConstructors();
     testAtomMoving();
 	if constexpr (kDimensionalNumber == 3)

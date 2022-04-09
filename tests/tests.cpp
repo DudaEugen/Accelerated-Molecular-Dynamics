@@ -15,6 +15,7 @@ int main(int argc, char* argv[])
 		if (i == ProcRank)
 		{
 			testVector();
+			testElement();
 			testAtom();
 			testSubstance();
 			testMatrix();
