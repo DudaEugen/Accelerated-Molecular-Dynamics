@@ -4,44 +4,57 @@
 
 #include "constants/Elements.hpp"
 #include "Vector.hpp"
+#include "MoveAlgorithm/IMoveAlgorithm.hpp"
 
 namespace md
 {
 	class Atom
 	{
-	private:
-		char actualStepIndex;		/*indexing steps: a[actualStepIndex] containing actuality accelerations
-									a[not actualStepIndex] containing accelerations corresponding previous step*/
-
 	public:
 		const element chemElement;
 		const double mass;
 	private:
-		Vector r;
-		Vector v;
-		Vector a[2];
+		IMoveAlgorithm* moveAlgorithm;
+		Vector coordinates;
+		Vector velocity;
+		Vector acceleration;
 
 		double computeMass(element element);
-		char getPreviousStepIndex() noexcept;
-		void changeStepIndex() noexcept;
-		void doStepVelocityVerlet(const double dt) noexcept;
 	public:
-		Atom(element element, Vector::ConstPass coordinates);
-		Atom(const std::string& element, Vector::ConstPass coordinates);
+		Atom(element element, Vector::ConstPass coordinates, bool isFrozen = false);
+		Atom(const std::string_view element, Vector::ConstPass coordinates, bool isFrozen = false);
+		Atom(
+			element element,
+			Vector::ConstPass coordinates,
+			Vector::ConstPass velocity,
+			bool isFrozen = false
+		);
+		Atom(
+			const std::string_view element,
+			Vector::ConstPass coordinates,
+			Vector::ConstPass velocity,
+			bool isFrozen = false
+		);
+
+		Atom(const Atom& other);
+		Atom& operator = (const Atom& other) = delete;
+		Atom& operator = (Atom&& other) = delete;
+
+		~Atom();
 						
-		void setCoordinates(Vector::ConstPass coordinates) noexcept;
-		void setVelocity(Vector::ConstPass velocity) noexcept;
-		void setAcceleration(Vector::ConstPass acceleration) noexcept;
-		
-		//addQuantity methods are adding argument to actuality value of quantity
-		void addVelocity(Vector::ConstPass addingVelocity) noexcept;
-		void addAcceleration(Vector::ConstPass addingAcceleratrion) noexcept;
 		Vector::ConstPass getCoordinates() const noexcept;
 		Vector::ConstPass getVelocity() const noexcept;
 		Vector::ConstPass getAcceleration() const noexcept;
+
+		void setCoordinates(Vector::ConstPass newCoordinates) noexcept;
+		void setVelocity(Vector::ConstPass newVelocity) noexcept;
+		void setAcceleration(Vector::ConstPass nawAcceleration) noexcept;
+
+		void addAcceleration(Vector::ConstPass addingAcceleratrion) noexcept;
+		void applyForce(Vector::ConstPass force);
 		
-		//doStepAlhorithm are methods to moving atom corresponding algorithm
-		void move(double dt) noexcept;
+		void move(double deltaTime) noexcept;
+		bool isFrozen() const;
 	};
 }
 

@@ -16,6 +16,7 @@ int main(int argc, char* argv[])
 		{
 			testVector();
 			testElement();
+			testMoveAlgorithm();
 			testAtom();
 			testSubstance();
 			testMatrix();

@@ -10,6 +10,8 @@ void testVector();
 
 void testElement();
 
+void testMoveAlgorithm();
+
 void testAtom();
 
 void testSubstance();
