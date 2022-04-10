@@ -3,53 +3,82 @@
 
 using namespace md;
 
-void testAtomkDimensionalNumber3()
+namespace testAtomMethods
 {
-    if constexpr (kDimensionalNumber == 3)
+	void testAcceleration()
 	{
-        Vector v = randomVector();
-        Atom a("Au", randomVector());
-		
-        a.setVelocity(v);
-		Vector v2 = { 4, -5.67, 9.23897 };
-		a.addVelocity(v2);
-		assert(equal(a.getVelocity(), v + v2));
+		Vector initialAcceleration = randomVector();
+		Vector additionalAcceleration = randomVector();
 
-		a.setAcceleration(v2);
-		a.addAcceleration(v2 / 2);
-		assert(equal(a.getAcceleration(), 1.5 * v2));
+		Atom atom("Au", randomVector());
+		atom.setAcceleration(initialAcceleration);
+		atom.addAcceleration(additionalAcceleration);
+
+		assert(equal(atom.getAcceleration(), initialAcceleration + additionalAcceleration));
 	}
-}
 
-void testAtomConstructors()
-{
-    Atom aAl_1("Al", randomVector());
-	Atom aAl_2("Al", randomVector());
-	Atom aCu_1("Cu", randomVector());
-	Atom aCu_2 = aCu_1;
-	assert(aAl_1.chemElement == aAl_2.chemElement);
-	assert(aCu_1.chemElement == aCu_2.chemElement);
-	assert(not(aAl_1.chemElement == aCu_2.chemElement));
-	assert(md::atomicMass(aAl_1.chemElement).average() == 27);
-	assert(equal(aAl_1.mass, 
-				 md::atomicMass(aAl_2.chemElement).average() / (kAvogadro * 1000)
-	));
+	void testFrozen()
+	{
+		Vector initialCoordinates = randomVector();
+		Atom atom(element::Cu, initialCoordinates, randomVector(), true);
+		atom.setAcceleration(randomVector());
 
-	std::string c = "Au";
-	assert(md::atomicMass(Atom(c, randomVector()).chemElement).average() == 197);
-	assert(md::atomicNumber(Atom(c, randomVector()).chemElement) == 79);
+		assert(atom.isFrozen());
+		assert(equal(atom.getCoordinates(), initialCoordinates));
+	}
 
-    Vector v = aAl_1.getCoordinates();
-	Atom a(c, v);
-	assert(equal(a.getCoordinates(), aAl_1.getCoordinates()));
-	assert(equal(a.getAcceleration(), randomVector() * 0));
+	void testMass()
+	{
+		Atom atom1("Al", randomVector());
+		assert(atom1.chemElement == element::Al);
+		assert(equal(atom1.mass, md::atomicMass(element::Al).average() / (kAvogadro * 1000)));
+
+		Atom atom2(element::I, randomVector());
+		assert(atom2.chemElement == element::I);
+		assert(equal(
+			atom1.mass / atom2.mass,
+			static_cast<double>(md::atomicMass(atom1.chemElement).average()) / md::atomicMass(atom2.chemElement).average()
+		));
+	}
+
+	void testMove()
+	{
+		Vector initialCoordinates = randomVector();
+		Vector initialVelocity = randomVector();
+		Vector acceleration = randomVector();
+		Atom atom("O", initialCoordinates, initialVelocity);
+		assert(!atom.isFrozen());
+
+		atom.setAcceleration(acceleration);
+		int count = static_cast<int>(randomDouble<100, 1000>());
+
+		for (int i = 0; i < count; ++i)
+		{
+			atom.move(1./count);
+		}
+
+		assert(equal(atom.getVelocity(), initialVelocity + acceleration, 3));
+		assert(equal(
+			atom.getCoordinates(),
+			initialCoordinates + initialVelocity + 0.5 * acceleration,
+			3
+		));
+	}
+
+	void testApplyForce()
+	{
+		Vector force = randomVector();
+		Atom atom(element::Au, {});
+		atom.applyForce(force);
+		assert(equal(atom.getAcceleration() * atom.mass, force));
+	}
 }
 
 void testAtom()
 {
-    testAtomConstructors();
-	if constexpr (kDimensionalNumber == 3)
-	{
-		testAtomkDimensionalNumber3();
-	}
+    testAtomMethods::testAcceleration();
+	testAtomMethods::testFrozen();
+	testAtomMethods::testMass();
+	testAtomMethods::testMove();
+	testAtomMethods::testApplyForce();
 }

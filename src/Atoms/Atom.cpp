@@ -1,19 +1,62 @@
 #include "Atoms/Atom.hpp"
-#include <cmath>
+#include <tuple> 
+#include "Atoms/MoveAlgorithm/Frozen.hpp"
+#include "Atoms/MoveAlgorithm/VelocityVerlet.hpp"
 
-md::Atom::Atom(element element, Vector::ConstPass coordinates):
-	actualStepIndex{ 0 },
+md::Atom::Atom(
+	element element,
+	Vector::ConstPass coordinates,
+	Vector::ConstPass velocity,
+	bool isFrozen
+):
 	chemElement{ element }, 
 	mass{ computeMass(element) },
-	r{ coordinates }, 
-	v{},	
-	a{ Vector(), Vector() }
+	coordinates{ coordinates }, 
+	velocity{ velocity },
+	acceleration{}
+{
+	if (isFrozen)
+		moveAlgorithm = new Frozen();
+	else
+		moveAlgorithm = new VelocityVerlet();
+}
+
+md::Atom::Atom(
+	const std::string_view element,
+	Vector::ConstPass coordinates,
+	Vector::ConstPass velocity,
+	bool isFrozen
+):
+	Atom{ parseElement(element), coordinates, velocity, isFrozen }
 {
 }
 
-md::Atom::Atom(const std::string& element, Vector::ConstPass coordinates) : 
-	Atom{ parseElement(element), coordinates }
+md::Atom::Atom(
+	element element,
+	Vector::ConstPass coordinates,
+	bool isFrozen
+):
+	Atom{ element, coordinates, {}, isFrozen }
 {
+}
+
+md::Atom::Atom(
+	const std::string_view element,
+	Vector::ConstPass coordinates,
+	bool isFrozen
+):
+	Atom{ parseElement(element), coordinates, {}, isFrozen }
+{
+}
+
+md::Atom::Atom(const Atom& other)
+	: Atom{other.chemElement, other.coordinates, other.velocity, other.isFrozen()}
+{
+}
+
+md::Atom::~Atom()
+{
+	delete moveAlgorithm;
 }
 
 double md::Atom::computeMass(element element) 
@@ -21,46 +64,54 @@ double md::Atom::computeMass(element element)
 	return atomicMass(element).average() * 0.001 / kAvogadro; 
 }
 
-char md::Atom::getPreviousStepIndex() noexcept
+void md::Atom::setCoordinates(Vector::ConstPass newCoordinates) noexcept
 {
-	return actualStepIndex == 0 ? 1 : 0;
+	coordinates = newCoordinates;
 }
 
-void md::Atom::changeStepIndex() noexcept
-{ 
-	actualStepIndex = actualStepIndex == 0 ? 1 : 0;
-}
-
-void md::Atom::doStepVelocityVerlet(double dt) noexcept
+void md::Atom::setVelocity(Vector::ConstPass newVelocity) noexcept
 {
-	r += v * dt + 0.5 * a[actualStepIndex] * pow(dt, 2);
-	v += 0.5 * (a[actualStepIndex] + a[getPreviousStepIndex()]) * dt;
+	velocity = newVelocity;
 }
 
-void md::Atom::setCoordinates(Vector::ConstPass coordinates) noexcept { r = coordinates; }
-
-void md::Atom::setVelocity(Vector::ConstPass velocity) noexcept { v = velocity; }
-
-void md::Atom::setAcceleration(Vector::ConstPass acceleration) noexcept 
+void md::Atom::setAcceleration(Vector::ConstPass nawAcceleration) noexcept 
 { 
-	a[actualStepIndex] = acceleration; 
+	acceleration = nawAcceleration; 
 }
 
-void md::Atom::addVelocity(Vector::ConstPass addingVelocity) noexcept { v += addingVelocity; }
+md::Vector::ConstPass md::Atom::getCoordinates() const noexcept
+{
+	return coordinates;
+}
+
+md::Vector::ConstPass md::Atom::getVelocity() const noexcept
+{
+	return velocity;
+}
+
+md::Vector::ConstPass md::Atom::getAcceleration() const noexcept
+{
+	return acceleration;
+}
 
 void md::Atom::addAcceleration(Vector::ConstPass addingAcceleration) noexcept 
 { 
-	a[actualStepIndex] += addingAcceleration; 
+	acceleration += addingAcceleration; 
 }
 
-md::Vector::ConstPass md::Atom::getCoordinates() const noexcept { return r; }
+void md::Atom::applyForce(Vector::ConstPass force) 
+{ 
+	addAcceleration(force / mass);
+}
 
-md::Vector::ConstPass md::Atom::getVelocity() const noexcept { return v; }
-
-md::Vector::ConstPass md::Atom::getAcceleration() const noexcept { return a[actualStepIndex]; }
-
-void md::Atom::move(double dt) noexcept
+void md::Atom::move(double deltaTime) noexcept
 {
-	doStepVelocityVerlet(dt);
-	changeStepIndex();
+	std::tie(coordinates, velocity) = moveAlgorithm->move(
+		coordinates, velocity, acceleration, deltaTime
+	);
+}
+
+bool md::Atom::isFrozen() const
+{
+	return typeid(*moveAlgorithm) == typeid(Frozen);
 }
