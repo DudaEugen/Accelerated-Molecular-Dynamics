@@ -8,6 +8,10 @@ namespace md
 {
 	inline constexpr uint8_t kDimensionalNumber = 3;
 
+	// Generate mass for random isotope of element for an any atom if false
+	// The probabilities for each isotope are determined in Elements.hpp
+	inline constexpr bool kUseAverageAtomicMass = true;
+
 	namespace constants_implementation
 	{
 		inline constexpr uint8_t kMaxSizeForValuePassing = 3;

@@ -60,8 +60,13 @@ md::Atom::~Atom()
 }
 
 double md::Atom::computeMass(element element) 
-{ 
-	return atomicMass(element).average() * 0.001 / kAvogadro; 
+{
+	unsigned aMass;
+	if constexpr (kUseAverageAtomicMass)
+		aMass = atomicMass(element).average();
+	else
+		aMass = atomicMass(element).random();
+	return aMass * 0.001 / kAvogadro; 
 }
 
 void md::Atom::setCoordinates(Vector::ConstPass newCoordinates) noexcept
