@@ -3,6 +3,7 @@
 #include "../tests.hpp"
 #include "BoundaryConditions/DimensionsCondition/InfiniteDimension.hpp"
 #include "BoundaryConditions/DimensionsCondition/PeriodicDimension.hpp"
+#include "BoundaryConditions/BoundaryConditions.hpp"
 
 using namespace md;
 
@@ -142,6 +143,30 @@ namespace testDimensionsCondition
     }
 }
 
+namespace testBoundaryConditionsClass
+{
+    void infiniteSpace()
+    {
+        IDimensionsCondition* conditions[kDimensionalNumber];
+        for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
+            conditions[i] = new InfiniteDimension();
+        }
+        BoundaryConditions boundaryConditions = BoundaryConditions(conditions);
+        Vector firstVector = randomVector();
+        Vector secondVector = randomVector();
+
+        assert(equal(firstVector, boundaryConditions.normolize(firstVector)));
+        assert(equal(secondVector, boundaryConditions.normolize(secondVector)));
+        assert(equal(
+            (firstVector - secondVector).absoluteValue(),
+            boundaryConditions.distance(firstVector, secondVector)
+        ));
+        auto [distance, projections] = boundaryConditions.distanceWithProjections(secondVector, firstVector);
+        assert(equal((secondVector - firstVector).absoluteValue(), distance));
+        assert(equal(secondVector - firstVector, projections));
+    }
+}
+
 void testBoundaryConditions()
 {
     testDimensionsCondition::infinite::test();
@@ -153,4 +178,6 @@ void testBoundaryConditions()
     testDimensionsCondition::periodic::normalizeProjectionsDifference::throughBoundary();
     testDimensionsCondition::periodic::normalizeProjectionsDifference::smallSize();
     testDimensionsCondition::periodic::normalizeProjectionsDifference::smallSizeAndThroughBoundary();
+
+    testBoundaryConditionsClass::infiniteSpace();
 }
