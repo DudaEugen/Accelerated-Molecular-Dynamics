@@ -6,7 +6,7 @@ namespace testVectorConstructors
 {
 	void assertProjectionValues(Vector::ConstPass vector, const std::vector<double>& values)
 	{
-		for (unsigned i = 0; i < kDimensionalNumber; ++i)
+		for (Vector::projection_index i = 0; i < kDimensionalNumber; ++i)
 		{
 			if (i < values.size())
 			{
@@ -169,7 +169,7 @@ namespace testVectorOperators
 	void squareBrackets()
 	{
 		Vector vector;
-		for (unsigned i = 0; i < kDimensionalNumber; ++i)
+		for (Vector::projection_index i = 0; i < kDimensionalNumber; ++i)
 		{
 			double value = randomDouble();
 			vector[i] = value;
@@ -186,7 +186,7 @@ namespace testVectorOperators
 		double factor = randomDouble();
 		vector *= factor;
 		
-		for (unsigned i = 0; i < kDimensionalNumber; ++i)
+		for (Vector::projection_index i = 0; i < kDimensionalNumber; ++i)
 		{
 			assert(equal(vector[i], init_vector[i]*factor));
 		}
@@ -208,7 +208,7 @@ namespace testVectorOperators
 		double divider = randomDouble();
 		vector /= divider;
 		
-		for (unsigned i = 0; i < kDimensionalNumber; ++i)
+		for (Vector::projection_index i = 0; i < kDimensionalNumber; ++i)
 		{
 			assert(equal(vector[i], init_vector[i] / divider));
 		}
@@ -256,7 +256,7 @@ namespace testVectorMethods
 	{
 		Vector vector = randomVector();
 		double sumSquares = 0;
-		for (unsigned i = 0; i < kDimensionalNumber; ++i)
+		for (Vector::projection_index i = 0; i < kDimensionalNumber; ++i)
 		{
 			sumSquares += vector[i] * vector[i];
 		}
@@ -267,7 +267,7 @@ namespace testVectorMethods
 	{
 		Vector vector = randomVector();
 		double sumSquares = 0;
-		for (unsigned i = 0; i < kDimensionalNumber; ++i)
+		for (Vector::projection_index i = 0; i < kDimensionalNumber; ++i)
 		{
 			sumSquares += vector[i] * vector[i];
 		}
