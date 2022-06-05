@@ -26,6 +26,8 @@ namespace testDimensionsCondition
                 firstProjection - secondProjection,
                 condition->normalizeProjectionsDifference(firstProjection, secondProjection)
             ));
+
+            delete condition;
         }
     }
 
@@ -40,6 +42,8 @@ namespace testDimensionsCondition
                 IDimensionsCondition* condition = new PeriodicDimension(size);
 
                 assert(equal(projection, condition->normalizeProjection(projection)));
+
+                delete condition;
             }
 
             void smallSize()
@@ -51,6 +55,8 @@ namespace testDimensionsCondition
                 IDimensionsCondition* condition = new PeriodicDimension(size);
 
                 assert(equal(normalized, condition->normalizeProjection(unnormalized)));
+
+                delete condition;
             }
 
             void negativeProjection()
@@ -62,6 +68,8 @@ namespace testDimensionsCondition
                 IDimensionsCondition* condition = new PeriodicDimension(size);
 
                 assert(equal(normalized, condition->normalizeProjection(projection)));
+
+                delete condition;
             }
         }
 
@@ -78,6 +86,8 @@ namespace testDimensionsCondition
                     secondProjection - firstProjection,
                     condition->normalizeProjectionsDifference(secondProjection, firstProjection)
                 ));
+
+                delete condition;
             }
 
             void throughBoundary()
@@ -91,6 +101,8 @@ namespace testDimensionsCondition
                     (secondProjection - firstProjection) - size,
                     condition->normalizeProjectionsDifference(secondProjection, firstProjection)
                 ));
+
+                delete condition;
             }
 
             void smallSize()
@@ -106,6 +118,8 @@ namespace testDimensionsCondition
                     secondNormalized - firstNormalized,
                     condition->normalizeProjectionsDifference(secondProjection, firstProjection)
                 ));
+
+                delete condition;
             }
 
             void smallSizeAndThroughBoundary()
@@ -121,6 +135,8 @@ namespace testDimensionsCondition
                     (secondNormalized - firstNormalized) - size,
                     condition->normalizeProjectionsDifference(secondProjection, firstProjection)
                 ));
+
+                delete condition;
             }
         }
     }
