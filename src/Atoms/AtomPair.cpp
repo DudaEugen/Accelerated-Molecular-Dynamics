@@ -46,10 +46,3 @@ double md::AtomPair::computeDistance() noexcept
 	distance = dProjections.absoluteValue();
 	return distance;
 }
-
-double md::AtomPair::computeDistance(const BorderConditions& borderConditions) noexcept
-{
-	dProjections = atomPair[1]->getCoordinates() - atomPair[0]->getCoordinates();
-	distance = borderConditions(dProjections);
-	return distance;
-}

@@ -23,7 +23,6 @@ int main(int argc, char* argv[])
 			testMatrix();
 			testAtomPair();
 			testNeighboursList();
-			testCellCollection();
 			testZip();
 			testDerivative();
 

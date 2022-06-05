@@ -24,8 +24,6 @@ void testAtomPair();
 
 void testNeighboursList();
 
-void testCellCollection();
-
 void testZip();
 
 void testDerivative();
