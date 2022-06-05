@@ -151,7 +151,7 @@ namespace testBoundaryConditionsClass
         for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
             conditions[i] = new InfiniteDimension();
         }
-        BoundaryConditions boundaryConditions = BoundaryConditions(conditions);
+        BoundaryConditions boundaryConditions{conditions};
         Vector firstVector = randomVector();
         Vector secondVector = randomVector();
 
@@ -164,6 +164,41 @@ namespace testBoundaryConditionsClass
         auto [distance, projections] = boundaryConditions.distanceWithProjections(secondVector, firstVector);
         assert(equal((secondVector - firstVector).absoluteValue(), distance));
         assert(equal(secondVector - firstVector, projections));
+    }
+
+    void randomConditions()
+    {
+        double size = randomDouble<1, 10>();
+        IDimensionsCondition* conditions[kDimensionalNumber];
+        for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
+            if (randomDouble<-1, 1>() > 0)
+            {
+                conditions[i] = new InfiniteDimension();
+            } else {
+                conditions[i] = new PeriodicDimension(size);
+            }
+        }
+        BoundaryConditions boundaryConditions{conditions};
+        Vector firstVector = randomVector();
+        Vector secondVector = randomVector();
+
+        Vector firstNormalize;
+        for (uint8_t i = 0; i < kDimensionalNumber; ++i)
+        {
+            firstNormalize[i] = conditions[i]->normalizeProjection(firstVector[i]);
+        }
+        Vector difference;
+        for (uint8_t i = 0; i < kDimensionalNumber; ++i)
+        {
+            difference[i] = conditions[i]->normalizeProjectionsDifference(
+                firstVector[i], secondVector[i]
+            );
+        }
+
+        assert(equal(firstNormalize, boundaryConditions.normolize(firstVector)));
+        assert(equal(difference.absoluteValue(), boundaryConditions.distance(firstVector, secondVector)));
+        auto [_, projections] = boundaryConditions.distanceWithProjections(firstVector, secondVector);
+        assert(equal(difference, projections));
     }
 }
 
@@ -180,4 +215,5 @@ void testBoundaryConditions()
     testDimensionsCondition::periodic::normalizeProjectionsDifference::smallSizeAndThroughBoundary();
 
     testBoundaryConditionsClass::infiniteSpace();
+    testBoundaryConditionsClass::randomConditions();
 }
