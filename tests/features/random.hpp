@@ -5,7 +5,7 @@
 #include <chrono>
 #include <functional>
 #include <random>
-#include "Vector.hpp"
+#include "Vector/Vector.hpp"
 
 template<int MIN = -100, int MAX = 100>
 double randomDouble()

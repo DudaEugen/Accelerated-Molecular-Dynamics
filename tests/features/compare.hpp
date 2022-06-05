@@ -3,7 +3,7 @@
 #define TAHD_TESTS_COMPARE_H
 
 #include <vector>
-#include "Vector.hpp"
+#include "Vector/Vector.hpp"
 
 bool equal(double d1, double d2, int symbolCountAfterPoint = 12);
 

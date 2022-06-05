@@ -2,7 +2,7 @@
 #ifndef TAHD_BORDER_CONDITIONS_H
 #define TAHD_BORDER_CONDITIONS_H
 
-#include "Vector.hpp"
+#include "Vector/Vector.hpp"
 
 namespace md
 {

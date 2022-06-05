@@ -3,7 +3,7 @@
 #define TAHD_ATOM_H
 
 #include "constants/Elements.hpp"
-#include "Vector.hpp"
+#include "Vector/Vector.hpp"
 
 namespace md
 {
