@@ -26,6 +26,8 @@ namespace md
         std::pair<double, Vector> distanceWithProjections(Vector::ConstPass first, Vector::ConstPass second) const;
         double distance(Vector::ConstPass first, Vector::ConstPass second) const;
         Vector normolize(Vector::ConstPass vector) const;
+
+        void setConditions(IDimensionsCondition* conditions[kDimensionalNumber]);
     };
 }
 

@@ -1,6 +1,6 @@
 #pragma once
-#ifndef TAHD_PROJECTION_TUPLE_H
-#define TAHD_PROJECTION_TUPLE_H
+#ifndef TAHD_VECTOR_H
+#define TAHD_VECTOR_H
 
 #include "constants/constants.hpp"
 #include <initializer_list>
@@ -60,4 +60,4 @@ namespace md
 	Vector operator / (Vector::ConstPass vector, double divider);
 }
 
-#endif	//TAHD_PROJECTION_TUPLE_H
+#endif	// TAHD_VECTOR_H

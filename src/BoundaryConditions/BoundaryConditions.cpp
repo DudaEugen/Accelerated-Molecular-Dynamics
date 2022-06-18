@@ -53,3 +53,12 @@ md::Vector md::BoundaryConditions::normolize(Vector::ConstPass vector) const
     }
     return result;
 }
+
+void md::BoundaryConditions::setConditions(IDimensionsCondition* conditions[kDimensionalNumber])
+{
+    for (std::uint8_t i = 0; i < kDimensionalNumber; ++i)
+    {
+        delete conditions_[i];
+        conditions_[i] = conditions[i];
+    }
+}
