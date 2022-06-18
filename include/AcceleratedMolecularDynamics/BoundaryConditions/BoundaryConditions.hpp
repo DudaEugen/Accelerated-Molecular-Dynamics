@@ -15,6 +15,7 @@ namespace md
         IDimensionsCondition* conditions_[kDimensionalNumber];
 
     public:
+        BoundaryConditions();
         BoundaryConditions(IDimensionsCondition* conditions[kDimensionalNumber]);
         BoundaryConditions(const BoundaryConditions&) = delete;
         BoundaryConditions(BoundaryConditions&&) = delete;

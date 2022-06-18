@@ -1,5 +1,14 @@
 #include "BoundaryConditions/BoundaryConditions.hpp"
+#include "BoundaryConditions/DimensionsCondition/InfiniteDimension.hpp"
 #include "IndexedZip.hpp"
+
+md::BoundaryConditions::BoundaryConditions()
+{
+    for (std::uint8_t i = 0; i < kDimensionalNumber; ++i)
+    {
+        conditions_[i] = new InfiniteDimension();
+    }
+}
 
 md::BoundaryConditions::BoundaryConditions(IDimensionsCondition* conditions[kDimensionalNumber])
 {

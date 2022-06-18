@@ -166,6 +166,23 @@ namespace testBoundaryConditionsClass
         assert(equal(secondVector - firstVector, projections));
     }
 
+    void defaultConstructor()
+    {
+        BoundaryConditions boundaryConditions;
+        Vector firstVector = randomVector();
+        Vector secondVector = randomVector();
+
+        assert(equal(firstVector, boundaryConditions.normolize(firstVector)));
+        assert(equal(secondVector, boundaryConditions.normolize(secondVector)));
+        assert(equal(
+            (firstVector - secondVector).absoluteValue(),
+            boundaryConditions.distance(firstVector, secondVector)
+        ));
+        auto [distance, projections] = boundaryConditions.distanceWithProjections(secondVector, firstVector);
+        assert(equal((secondVector - firstVector).absoluteValue(), distance));
+        assert(equal(secondVector - firstVector, projections));
+    }
+
     void randomConditions()
     {
         double size = randomDouble<1, 10>();
@@ -215,5 +232,6 @@ void testBoundaryConditions()
     testDimensionsCondition::periodic::normalizeProjectionsDifference::smallSizeAndThroughBoundary();
 
     testBoundaryConditionsClass::infiniteSpace();
+    testBoundaryConditionsClass::defaultConstructor();
     testBoundaryConditionsClass::randomConditions();
 }
