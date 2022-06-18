@@ -5,7 +5,7 @@
 #include <utility>
 #include "constants/constants.hpp"
 #include "BoundaryConditions/DimensionsCondition/IDimensionsCondition.hpp"
-#include "Vector.hpp"
+#include "Vector/Vector.hpp"
 
 namespace md
 {

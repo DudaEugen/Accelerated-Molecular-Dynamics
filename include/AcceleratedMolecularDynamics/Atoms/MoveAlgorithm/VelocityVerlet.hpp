@@ -3,7 +3,7 @@
 #define TAHD_VELOCITY_VERLET_H
 
 #include "IMoveAlgorithm.hpp"
-#include "Vector.hpp"
+#include "Vector/Vector.hpp"
 
 namespace md
 {
