@@ -349,6 +349,15 @@ namespace testPositionClass
 
 	namespace boundaryConditions
 	{
+		void resetBoundaryConditions()
+		{
+			IDimensionsCondition* conditions[kDimensionalNumber];
+			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
+				conditions[i] = new InfiniteDimension();
+			}
+			Position::setBoundaryConditions(conditions);
+		}
+
 		void infiniteSpace()
 		{
 			IDimensionsCondition* conditions[kDimensionalNumber];
