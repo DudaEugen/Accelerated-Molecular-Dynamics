@@ -22,8 +22,6 @@ void testMatrix();
 
 void testAtomPair();
 
-void testNeighboursList();
-
 void testZip();
 
 void testDerivative();
