@@ -10,7 +10,7 @@ namespace testAtomMethods
 		Vector initialAcceleration = randomVector();
 		Vector additionalAcceleration = randomVector();
 
-		Atom atom("Au", randomVector());
+		Atom atom("Au", randomPosition());
 		atom.setAcceleration(initialAcceleration);
 		atom.addAcceleration(additionalAcceleration);
 
@@ -19,21 +19,21 @@ namespace testAtomMethods
 
 	void testFrozen()
 	{
-		Vector initialCoordinates = randomVector();
+		Position initialCoordinates = randomPosition();
 		Atom atom(element::Cu, initialCoordinates, randomVector(), true);
 		atom.setAcceleration(randomVector());
 
 		assert(atom.isFrozen());
-		assert(equal(atom.getCoordinates(), initialCoordinates));
+		assert(equal(atom.getPosition(), initialCoordinates));
 	}
 
 	void testMass()
 	{
-		Atom atom1("Al", randomVector());
+		Atom atom1("Al", randomPosition());
 		assert(atom1.chemElement == element::Al);
 		assert(equal(atom1.mass, md::atomicMass(element::Al).average() / (kAvogadro * 1000)));
 
-		Atom atom2(element::I, randomVector());
+		Atom atom2(element::I, randomPosition());
 		assert(atom2.chemElement == element::I);
 		assert(equal(
 			atom1.mass / atom2.mass,
@@ -43,8 +43,8 @@ namespace testAtomMethods
 
 	void testMove()
 	{
-		Vector initialCoordinates = randomVector();
-		Vector initialVelocity = randomVector();
+		Position initialCoordinates = randomPosition();
+		Vector initialVelocity = randomPosition();
 		Vector acceleration = randomVector();
 		Atom atom("O", initialCoordinates, initialVelocity);
 		assert(!atom.isFrozen());
@@ -59,7 +59,7 @@ namespace testAtomMethods
 
 		assert(equal(atom.getVelocity(), initialVelocity + acceleration, 3));
 		assert(equal(
-			atom.getCoordinates(),
+			atom.getPosition(),
 			initialCoordinates + initialVelocity + 0.5 * acceleration,
 			3
 		));

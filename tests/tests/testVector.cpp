@@ -375,6 +375,8 @@ namespace testPositionClass
 
 			assert(equal(distance, difference.absoluteValue()));
 			assert(equal(projections, difference));
+
+			resetBoundaryConditions();
 		}
 
 		void periodicSpace()
@@ -396,6 +398,8 @@ namespace testPositionClass
 			{
 				assert(std::abs(projections[i]) <= size);
 			}
+
+			resetBoundaryConditions();
 		}
 	}
 }

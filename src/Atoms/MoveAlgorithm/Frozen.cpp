@@ -1,7 +1,7 @@
 #include "Atoms/MoveAlgorithm/Frozen.hpp"
 
-std::pair<md::Vector, md::Vector> md::Frozen::move(
-    Vector::ConstPass position,
+std::pair<md::Position, md::Vector> md::Frozen::move(
+    Position::ConstPass position,
     Vector::ConstPass velocity,
     Vector::ConstPass acceleration,
     double deltaTime

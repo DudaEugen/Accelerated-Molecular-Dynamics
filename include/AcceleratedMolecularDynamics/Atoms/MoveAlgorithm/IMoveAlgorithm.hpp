@@ -3,6 +3,7 @@
 #define TAHD_INTERFACE_MOVE_ALGORITHM_H
 
 #include <utility>
+#include "Vector/Position.hpp"
 #include "Vector/Vector.hpp"
 
 namespace md
@@ -11,8 +12,8 @@ namespace md
     {
     public:
         // return: std::pair<position, velocity>
-        virtual std::pair<Vector, Vector> move(
-            Vector::ConstPass position,
+        virtual std::pair<Position, Vector> move(
+            Position::ConstPass position,
             Vector::ConstPass velocity,
             Vector::ConstPass acceleration,
             double deltaTime

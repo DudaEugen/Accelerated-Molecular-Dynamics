@@ -5,13 +5,13 @@
 
 md::Atom::Atom(
 	element element,
-	Vector::ConstPass coordinates,
+	Position::ConstPass position,
 	Vector::ConstPass velocity,
 	bool isFrozen
 ):
 	chemElement{ element }, 
 	mass{ computeMass(element) },
-	coordinates{ coordinates }, 
+	position{ position }, 
 	velocity{ velocity },
 	acceleration{}
 {
@@ -23,34 +23,34 @@ md::Atom::Atom(
 
 md::Atom::Atom(
 	const std::string_view element,
-	Vector::ConstPass coordinates,
+	Position::ConstPass position,
 	Vector::ConstPass velocity,
 	bool isFrozen
 ):
-	Atom{ parseElement(element), coordinates, velocity, isFrozen }
+	Atom{ parseElement(element), position, velocity, isFrozen }
 {
 }
 
 md::Atom::Atom(
 	element element,
-	Vector::ConstPass coordinates,
+	Position::ConstPass position,
 	bool isFrozen
 ):
-	Atom{ element, coordinates, {}, isFrozen }
+	Atom{ element, position, {}, isFrozen }
 {
 }
 
 md::Atom::Atom(
 	const std::string_view element,
-	Vector::ConstPass coordinates,
+	Position::ConstPass position,
 	bool isFrozen
 ):
-	Atom{ parseElement(element), coordinates, {}, isFrozen }
+	Atom{ parseElement(element), position, {}, isFrozen }
 {
 }
 
 md::Atom::Atom(const Atom& other)
-	: Atom{other.chemElement, other.coordinates, other.velocity, other.isFrozen()}
+	: Atom{other.chemElement, other.position, other.velocity, other.isFrozen()}
 {
 }
 
@@ -69,9 +69,9 @@ double md::Atom::computeMass(element element)
 	return aMass * 0.001 / kAvogadro; 
 }
 
-void md::Atom::setCoordinates(Vector::ConstPass newCoordinates) noexcept
+void md::Atom::setPosition(Position::ConstPass newPosition) noexcept
 {
-	coordinates = newCoordinates;
+	position = newPosition;
 }
 
 void md::Atom::setVelocity(Vector::ConstPass newVelocity) noexcept
@@ -84,9 +84,9 @@ void md::Atom::setAcceleration(Vector::ConstPass nawAcceleration) noexcept
 	acceleration = nawAcceleration; 
 }
 
-md::Vector::ConstPass md::Atom::getCoordinates() const noexcept
+md::Position::ConstPass md::Atom::getPosition() const noexcept
 {
-	return coordinates;
+	return position;
 }
 
 md::Vector::ConstPass md::Atom::getVelocity() const noexcept
@@ -111,8 +111,8 @@ void md::Atom::applyForce(Vector::ConstPass force)
 
 void md::Atom::move(double deltaTime) noexcept
 {
-	std::tie(coordinates, velocity) = moveAlgorithm->move(
-		coordinates, velocity, acceleration, deltaTime
+	std::tie(position, velocity) = moveAlgorithm->move(
+		position, velocity, acceleration, deltaTime
 	);
 }
 

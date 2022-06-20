@@ -10,17 +10,17 @@ namespace testFrozen
     void zeroArguments()
     {
         IMoveAlgorithm* alg = new Frozen();
-        auto [position, velocity] = alg->move(Vector{}, Vector{}, Vector{}, randomDouble<10, 100>());
+        auto [position, velocity] = alg->move(Position{}, Vector{}, Vector{}, randomDouble<10, 100>());
         delete alg;
 
         assert(equal(position, Vector{}));
         assert(equal(velocity, Vector{}));
     }
 
-    void randomPosition()
+    void randomInitialPosition()
     {
         IMoveAlgorithm* alg = new Frozen();
-        Vector initialPosition = randomVector();
+        Position initialPosition = randomPosition();
         auto [position, velocity] = alg->move(initialPosition, Vector{}, Vector{}, randomDouble<10, 100>());
         delete alg;
 
@@ -32,7 +32,7 @@ namespace testFrozen
     {
         IMoveAlgorithm* alg = new Frozen();
         Vector initialVelocity = randomVector();
-        auto [position, velocity] = alg->move(Vector{}, initialVelocity, Vector{}, randomDouble<10, 100>());
+        auto [position, velocity] = alg->move(Position{}, initialVelocity, Vector{}, randomDouble<10, 100>());
         delete alg;
 
         assert(equal(position, Vector{}));
@@ -43,7 +43,7 @@ namespace testFrozen
     {
         IMoveAlgorithm* alg = new Frozen();
         Vector initialAcceleration= randomVector();
-        auto [position, velocity] = alg->move(Vector{}, Vector{}, initialAcceleration, randomDouble<10, 100>());
+        auto [position, velocity] = alg->move(Position{}, Vector{}, initialAcceleration, randomDouble<10, 100>());
         delete alg;
 
         assert(equal(position, Vector{}));
@@ -53,7 +53,7 @@ namespace testFrozen
     void random()
     {
         IMoveAlgorithm* alg = new Frozen();
-        Vector initialPosition = randomVector();
+        Position initialPosition = randomPosition();
         Vector initialVelocity = randomVector();
         Vector initialAcceleration= randomVector();
         auto [position, velocity] = alg->move(
@@ -71,17 +71,17 @@ namespace testVelocityVerlet
     void zeroArguments()
     {
         IMoveAlgorithm* alg = new VelocityVerlet();
-        auto [position, velocity] = alg->move(Vector{}, Vector{}, Vector{}, randomDouble<10, 100>());
+        auto [position, velocity] = alg->move(Position{}, Vector{}, Vector{}, randomDouble<10, 100>());
         delete alg;
 
         assert(equal(position, Vector{}));
         assert(equal(velocity, Vector{}));
     }
 
-    void randomPosition()
+    void randomInitialPosition()
     {
         IMoveAlgorithm* alg = new VelocityVerlet();
-        Vector initialPosition = randomVector();
+        Position initialPosition = randomPosition();
         auto [position, velocity] = alg->move(initialPosition, Vector{}, Vector{}, randomDouble<10, 100>());
         delete alg;
 
@@ -94,7 +94,7 @@ namespace testVelocityVerlet
         IMoveAlgorithm* alg = new VelocityVerlet();
         double time = randomDouble<10, 100>();
         Vector initialVelocity= randomVector();
-        auto [position, velocity] = alg->move(Vector{}, initialVelocity, Vector{}, time);
+        auto [position, velocity] = alg->move(Position{}, initialVelocity, Vector{}, time);
         delete alg;
 
         assert(equal(position, initialVelocity * time));
@@ -106,7 +106,7 @@ namespace testVelocityVerlet
         IMoveAlgorithm* alg = new VelocityVerlet();
         double time = randomDouble<10, 100>();
         Vector initialAcceleration= randomVector();
-        auto [position, velocity] = alg->move(Vector{}, Vector{}, initialAcceleration, time);
+        auto [position, velocity] = alg->move(Position{}, Vector{}, initialAcceleration, time);
         delete alg;
 
         assert(equal(position, 0.5 * initialAcceleration * std::pow(time, 2)));
@@ -117,10 +117,10 @@ namespace testVelocityVerlet
     {
         IMoveAlgorithm* alg = new VelocityVerlet();
         int time = static_cast<int>(randomDouble<100, 1000>());
-        Vector initialPosition = randomVector();
+        Position initialPosition = randomPosition();
         Vector initialVelocity = randomVector();
         Vector initialAcceleration= randomVector();
-        Vector position = initialPosition;
+        Position position = initialPosition;
         Vector velocity = initialVelocity;
 
         for(int i = 0; i < time; ++i)
@@ -135,13 +135,13 @@ namespace testVelocityVerlet
 void testMoveAlgorithm()
 {
     testFrozen::zeroArguments();
-    testFrozen::randomPosition();
+    testFrozen::randomInitialPosition();
     testFrozen::randomVelocity();
     testFrozen::randomAcceleration();
     testFrozen::random();
 
     testVelocityVerlet::zeroArguments();
-    testVelocityVerlet::randomPosition();
+    testVelocityVerlet::randomInitialPosition();
     testVelocityVerlet::randomVelocity();
     testVelocityVerlet::randomAcceleration();
     testVelocityVerlet::random();

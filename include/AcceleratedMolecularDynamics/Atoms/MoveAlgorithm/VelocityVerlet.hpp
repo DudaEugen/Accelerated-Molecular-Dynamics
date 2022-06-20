@@ -3,7 +3,6 @@
 #define TAHD_VELOCITY_VERLET_H
 
 #include "IMoveAlgorithm.hpp"
-#include "Vector/Vector.hpp"
 
 namespace md
 {
@@ -14,8 +13,8 @@ namespace md
     public:
         VelocityVerlet() noexcept;
 
-        std::pair<Vector, Vector> move(
-            Vector::ConstPass position,
+        std::pair<Position, Vector> move(
+            Position::ConstPass position,
             Vector::ConstPass velocity,
             Vector::ConstPass acceleration,
             double deltaTime

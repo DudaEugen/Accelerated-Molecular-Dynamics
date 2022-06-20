@@ -6,8 +6,8 @@ md::VelocityVerlet::VelocityVerlet() noexcept
 {
 }
 
-std::pair<md::Vector, md::Vector> md::VelocityVerlet::move(
-    Vector::ConstPass position,
+std::pair<md::Position, md::Vector> md::VelocityVerlet::move(
+    Position::ConstPass position,
     Vector::ConstPass velocity,
     Vector::ConstPass acceleration,
     double deltaTime
