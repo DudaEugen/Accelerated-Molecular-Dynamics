@@ -3,7 +3,6 @@
 #define TAHD_ATOM_PAIR_H
 
 #include "Atom.hpp"
-#include "System/BorderConditions.hpp"
 
 namespace md
 {
@@ -36,7 +35,6 @@ namespace md
 		bool getIsAtomsFromSameStream() const noexcept;
 		void setIsAtomsFromSameStream(const bool isSame) noexcept;
 		double computeDistance() noexcept;
-		double computeDistance(const BorderConditions& borderConditions) noexcept;
 	};
 }
 

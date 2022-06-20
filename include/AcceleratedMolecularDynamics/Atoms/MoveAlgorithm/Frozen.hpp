@@ -3,7 +3,6 @@
 #define TAHD_FROZEN_H
 
 #include "IMoveAlgorithm.hpp"
-#include "Vector.hpp"
 
 namespace md
 {
@@ -12,8 +11,8 @@ namespace md
     public:
         Frozen() noexcept = default;
 
-        std::pair<md::Vector, md::Vector> move(
-            Vector::ConstPass position,
+        std::pair<md::Position, md::Vector> move(
+            Position::ConstPass position,
             Vector::ConstPass velocity,
             Vector::ConstPass acceleration,
             double deltaTime

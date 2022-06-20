@@ -16,15 +16,11 @@ void testAtom();
 
 void testSubstance();
 
+void testBoundaryConditions();
+
 void testMatrix();
 
 void testAtomPair();
-
-void testBorderConditions();
-
-void testNeighboursList();
-
-void testCellCollection();
 
 void testZip();
 

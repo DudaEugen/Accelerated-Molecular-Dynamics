@@ -1,281 +1,286 @@
 #include "tests.hpp"
+#include "Vector/Position.hpp"
+#include "BoundaryConditions/DimensionsCondition/InfiniteDimension.hpp"
+#include "BoundaryConditions/DimensionsCondition/PeriodicDimension.hpp"
 
 using namespace md;
 
-namespace testVectorConstructors
+namespace testVectorClass
 {
-	void assertProjectionValues(Vector::ConstPass vector, const std::vector<double>& values)
+	namespace constructors
 	{
-		for (Vector::projection_index i = 0; i < kDimensionalNumber; ++i)
+		void assertProjectionValues(Vector::ConstPass vector, const std::vector<double>& values)
 		{
-			if (i < values.size())
+			for (unsigned i = 0; i < kDimensionalNumber; ++i)
 			{
-				assert(equal(vector[i], values[i]));
+				if (i < values.size())
+				{
+					assert(equal(vector[i], values[i]));
+				}
+				else
+				{
+					assert(equal(vector[i], 0));
+				}
 			}
-			else
+		}
+
+		void assertProjectionValues(Vector::ConstPass vector, double const * const values)
+		{
+			assertProjectionValues(vector, std::vector(values, values + kDimensionalNumber));
+		}
+
+		void defaultCtr()
+		{
+			const Vector vect;
+			assertProjectionValues(vect, std::vector(kDimensionalNumber, 0.));
+		}
+
+		void array()
+		{
+			std::array<double, kDimensionalNumber> array;
+			for (auto& value: array)
 			{
-				assert(equal(vector[i], 0));
+				value = randomDouble();
 			}
+
+			const Vector vector = array;
+			assertProjectionValues(vector, array.data());
 		}
-	}
 
-	void assertProjectionValues(Vector::ConstPass vector, double const * const values)
-	{
-		assertProjectionValues(vector, std::vector(values, values + kDimensionalNumber));
-	}
-
-	void defaultCtr()
-	{
-		const Vector vect;
-		assertProjectionValues(vect, std::vector(kDimensionalNumber, 0.));
-	}
-
-	void array()
-	{
-		std::array<double, kDimensionalNumber> array;
-		for (auto& value: array)
+		void cStyleArray()
 		{
-			value = randomDouble();
+			double array[kDimensionalNumber];
+			for (auto& value: array)
+			{
+				value = randomDouble();
+			}
+
+			const Vector vector = array;
+			assertProjectionValues(vector, array);
 		}
 
-		const Vector vector = array;
-		assertProjectionValues(vector, array.data());
-	}
-
-	void cStyleArray()
-	{
-		double array[kDimensionalNumber];
-		for (auto& value: array)
+		void emptyInitializerList()
 		{
-			value = randomDouble();
+			assertProjectionValues(Vector{{}}, std::vector(kDimensionalNumber, 0.));
 		}
 
-		const Vector vector = array;
-		assertProjectionValues(vector, array);
-	}
-
-	void emptyInitializerList()
-	{
-		assertProjectionValues(Vector{{}}, std::vector(kDimensionalNumber, 0.));
-	}
-
-	void initializerListWithOneElement()
-	{
-		double value = randomDouble();
-		auto values = std::vector(kDimensionalNumber, 0.);
-		values[0] = value;
-		assertProjectionValues(Vector{value}, values);
-	}
-
-	void initializerListWithFourElements()
-	{
-		double value1 = randomDouble();
-		double value2 = randomDouble();
-		double value3 = randomDouble();
-		double value4 = randomDouble();
-		assertProjectionValues(
-			Vector{value1, value2, value3, value4},
-			std::vector{value1, value2, value3, value4}
-		);
-	}
-
-	void copyCtr()
-	{
-		std::vector<double> values;
-		md::Vector vector;
-		for (auto& projection: vector)
+		void initializerListWithOneElement()
 		{
 			double value = randomDouble();
-			values.push_back(value);
-			projection = value;
+			auto values = std::vector(kDimensionalNumber, 0.);
+			values[0] = value;
+			assertProjectionValues(Vector{value}, values);
 		}
-		assertProjectionValues(Vector{vector}, values);	
-	}
-}
 
-namespace testVectorOperators
-{
-	void assign()
-	{
-		Vector vector0 = randomVector();
-		Vector vector1 = randomVector();
-		Vector vector2;
-		vector2 = vector1 = vector0;
-
-		assert(equalAll({vector0, vector1, vector2}));
-		assert(vector0.data() != vector1.data());
-		assert(vector0.data() != vector2.data());
-		assert(vector1.data() != vector2.data());
-	}
-
-	void unaryMinus()
-	{
-		Vector vector = randomVector();
-		Vector other = -vector;
-		assert(equal(vector, -other));
-	}
-
-	void plusAssign()
-	{
-		Vector vector0 = randomVector();
-		Vector vector1;
-		Vector vector2;
-		vector2 += vector1 += vector0;
-		
-		assert(equalAll({vector0, vector1, vector2}));
-		assert(vector0.data() != vector1.data());
-		assert(vector0.data() != vector2.data());
-		assert(vector1.data() != vector2.data());
-	}
-
-	void plus()
-	{
-		Vector vector0 = randomVector();
-		Vector vector1 = randomVector();
-		Vector vector2 = randomVector();
-		Vector init_vector1 = vector1;
-		Vector init_vector2 = vector2;
-		vector2 += vector1 += vector0;
-
-		assert(equal(vector1, init_vector1 + vector0));
-		assert(equal(vector2, init_vector2 + vector1));
-	}
-
-	void minusAssign()
-	{
-		Vector vector0 = randomVector();
-		Vector vector1 = vector0;
-		Vector vector2;
-		Vector init_vector1 = vector1;
-		vector0 -= vector1 -= vector2;
-
-		assert(equal(vector0, Vector{}));
-		assert(equal(vector1, init_vector1));
-	}
-
-	void difference()
-	{
-		Vector vector0 = randomVector();
-		Vector vector1 = randomVector();
-		Vector vector2 = randomVector();
-		Vector init_vector1 = vector1;
-		Vector init_vector2 = vector2;
-		vector2 -= vector1 -= vector0;
-
-		assert(equal(vector1, init_vector1 - vector0));
-		assert(equal(vector2, init_vector2 - vector1));
-	}
-
-	void squareBrackets()
-	{
-		Vector vector;
-		for (Vector::projection_index i = 0; i < kDimensionalNumber; ++i)
+		void initializerListWithFourElements()
 		{
-			double value = randomDouble();
-			vector[i] = value;
-			const Vector constVector = vector;
-			assert(equal(vector[i], value));
-			assert(equal(constVector[i], value));
+			double value1 = randomDouble();
+			double value2 = randomDouble();
+			double value3 = randomDouble();
+			double value4 = randomDouble();
+			assertProjectionValues(
+				Vector{value1, value2, value3, value4},
+				std::vector{value1, value2, value3, value4}
+			);
 		}
-	}
 
-	void productAssign()
-	{
-		Vector vector = randomVector();
-		Vector init_vector = vector;
-		double factor = randomDouble();
-		vector *= factor;
-		
-		for (Vector::projection_index i = 0; i < kDimensionalNumber; ++i)
+		void copyCtr()
 		{
-			assert(equal(vector[i], init_vector[i]*factor));
+			std::vector<double> values;
+			md::Vector vector;
+			for (auto& projection: vector)
+			{
+				double value = randomDouble();
+				values.push_back(value);
+				projection = value;
+			}
+			assertProjectionValues(Vector{vector}, values);	
 		}
 	}
 
-	void product()
+	namespace operators
 	{
-		Vector vector0 = randomVector();
-		Vector vector1 = vector0;
-		double factor = randomDouble();
-		vector1 *= factor;
-		assert(equalAll({vector1, factor*vector0, vector0*factor}));
-	}
-
-	void divideAssign()
-	{
-		Vector vector = randomVector();
-		Vector init_vector = vector;
-		double divider = randomDouble();
-		vector /= divider;
-		
-		for (Vector::projection_index i = 0; i < kDimensionalNumber; ++i)
+		void assign()
 		{
-			assert(equal(vector[i], init_vector[i] / divider));
+			Vector vector0 = randomVector();
+			Vector vector1 = randomVector();
+			Vector vector2;
+			vector2 = vector1 = vector0;
+
+			assert(equalAll({vector0, vector1, vector2}));
+			assert(vector0.data() != vector1.data());
+			assert(vector0.data() != vector2.data());
+			assert(vector1.data() != vector2.data());
 		}
-	}
 
-	void divide()
-	{
-		Vector vector0 = randomVector();
-		Vector vector1 = vector0;
-		double divider = randomDouble();
-		vector1 /= divider;
-		assert(equal(vector1, vector0/divider));
-	}
-}
-
-namespace testVectorMethods
-{
-	void data()
-	{
-		Vector vector;
-		auto data = vector.data();
-		for (Vector::projection_index i = 0; i < kDimensionalNumber; ++i)
+		void unaryMinus()
 		{
-			data[i] = randomDouble();
-			assert(equal(vector[i], data[i]));
+			Vector vector = randomVector();
+			Vector other = -vector;
+			assert(equal(vector, -other));
 		}
-	}
 
-	void dataConst()
-	{
-		const Vector vector = randomVector();
-		auto data = vector.data();
-		for (Vector::projection_index i = 0; i < kDimensionalNumber; ++i)
+		void plusAssign()
 		{
-			assert(equal(vector[i], data[i]));
+			Vector vector0 = randomVector();
+			Vector vector1;
+			Vector vector2;
+			vector2 += vector1 += vector0;
+			
+			assert(equalAll({vector0, vector1, vector2}));
+			assert(vector0.data() != vector1.data());
+			assert(vector0.data() != vector2.data());
+			assert(vector1.data() != vector2.data());
 		}
-	}
 
-	void size()
-	{
-		assert(Vector{}.size() == kDimensionalNumber);
-	}
-
-	void sumSquares()
-	{
-		Vector vector = randomVector();
-		double sumSquares = 0;
-		for (Vector::projection_index i = 0; i < kDimensionalNumber; ++i)
+		void plus()
 		{
-			sumSquares += vector[i] * vector[i];
-		}
-		assert(equal(vector.sumSquares(), sumSquares));
-	}
+			Vector vector0 = randomVector();
+			Vector vector1 = randomVector();
+			Vector vector2 = randomVector();
+			Vector init_vector1 = vector1;
+			Vector init_vector2 = vector2;
+			vector2 += vector1 += vector0;
 
-	void absoluteValue()
-	{
-		Vector vector = randomVector();
-		double sumSquares = 0;
-		for (Vector::projection_index i = 0; i < kDimensionalNumber; ++i)
+			assert(equal(vector1, init_vector1 + vector0));
+			assert(equal(vector2, init_vector2 + vector1));
+		}
+
+		void minusAssign()
 		{
-			sumSquares += vector[i] * vector[i];
-		}
-		assert(equal(vector.absoluteValue(), std::sqrt(sumSquares)));
-	}
-}
+			Vector vector0 = randomVector();
+			Vector vector1 = vector0;
+			Vector vector2;
+			Vector init_vector1 = vector1;
+			vector0 -= vector1 -= vector2;
 
-namespace testVectorIterators
+			assert(equal(vector0, Vector{}));
+			assert(equal(vector1, init_vector1));
+		}
+
+		void difference()
+		{
+			Vector vector0 = randomVector();
+			Vector vector1 = randomVector();
+			Vector vector2 = randomVector();
+			Vector init_vector1 = vector1;
+			Vector init_vector2 = vector2;
+			vector2 -= vector1 -= vector0;
+
+			assert(equal(vector1, init_vector1 - vector0));
+			assert(equal(vector2, init_vector2 - vector1));
+		}
+
+		void squareBrackets()
+		{
+			Vector vector;
+			for (unsigned i = 0; i < kDimensionalNumber; ++i)
+			{
+				double value = randomDouble();
+				vector[i] = value;
+				const Vector constVector = vector;
+				assert(equal(vector[i], value));
+				assert(equal(constVector[i], value));
+			}
+		}
+
+		void productAssign()
+		{
+			Vector vector = randomVector();
+			Vector init_vector = vector;
+			double factor = randomDouble();
+			vector *= factor;
+			
+			for (unsigned i = 0; i < kDimensionalNumber; ++i)
+			{
+				assert(equal(vector[i], init_vector[i]*factor));
+			}
+		}
+
+		void product()
+		{
+			Vector vector0 = randomVector();
+			Vector vector1 = vector0;
+			double factor = randomDouble();
+			vector1 *= factor;
+			assert(equalAll({vector1, factor*vector0, vector0*factor}));
+		}
+
+		void divideAssign()
+		{
+			Vector vector = randomVector();
+			Vector init_vector = vector;
+			double divider = randomDouble();
+			vector /= divider;
+			
+			for (unsigned i = 0; i < kDimensionalNumber; ++i)
+			{
+				assert(equal(vector[i], init_vector[i] / divider));
+			}
+		}
+
+		void divide()
+		{
+			Vector vector0 = randomVector();
+			Vector vector1 = vector0;
+			double divider = randomDouble();
+			vector1 /= divider;
+			assert(equal(vector1, vector0/divider));
+		}
+	}
+
+	namespace methods
+	{
+		void data()
+		{
+			Vector vector;
+			auto data = vector.data();
+			for (Vector::projection_index i = 0; i < kDimensionalNumber; ++i)
+			{
+				data[i] = randomDouble();
+				assert(equal(vector[i], data[i]));
+			}
+		}
+
+		void dataConst()
+		{
+			const Vector vector = randomVector();
+			auto data = vector.data();
+			for (Vector::projection_index i = 0; i < kDimensionalNumber; ++i)
+			{
+				assert(equal(vector[i], data[i]));
+			}
+		}
+
+		void size()
+		{
+			assert(Vector{}.size() == kDimensionalNumber);
+		}
+
+		void sumSquares()
+		{
+			Vector vector = randomVector();
+			double sumSquares = 0;
+			for (unsigned i = 0; i < kDimensionalNumber; ++i)
+			{
+				sumSquares += vector[i] * vector[i];
+			}
+			assert(equal(vector.sumSquares(), sumSquares));
+		}
+
+		void absoluteValue()
+		{
+			Vector vector = randomVector();
+			double sumSquares = 0;
+			for (unsigned i = 0; i < kDimensionalNumber; ++i)
+			{
+				sumSquares += vector[i] * vector[i];
+			}
+			assert(equal(vector.absoluteValue(), std::sqrt(sumSquares)));
+		}
+	}
+
+	namespace iterators
 {
 	void constIterator()
 	{
@@ -302,35 +307,168 @@ namespace testVectorIterators
 		}
 	}
 }
+}
+
+namespace testPositionClass
+{
+	namespace constructors
+	{
+		void defaultCtr()
+		{
+			const Position position;
+			const Vector vector;
+			assert(equal(vector, position));
+		}
+
+		void array()
+		{
+			std::array<double, kDimensionalNumber> array;
+			for (auto& value: array)
+			{
+				value = randomDouble();
+			}
+
+			const Position position = array;
+			const Vector vector = array;
+			assert(equal(vector, position));
+		}
+
+		void cStyleArray()
+		{
+			double array[kDimensionalNumber];
+			for (auto& value: array)
+			{
+				value = randomDouble();
+			}
+
+			const Position position = array;
+			const Vector vector = array;
+			assert(equal(vector, position));
+		}
+	}
+
+	namespace boundaryConditions
+	{
+		void resetBoundaryConditions()
+		{
+			IDimensionsCondition* conditions[kDimensionalNumber];
+			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
+				conditions[i] = new InfiniteDimension();
+			}
+			Position::setBoundaryConditions(conditions);
+		}
+
+		void distanceWithProjectionsInfiniteSpace()
+		{
+			resetBoundaryConditions();
+
+			Position firstPosition;
+			Position secondPosition;
+			firstPosition += randomVector();
+			secondPosition += randomVector();
+			Vector difference = static_cast<Vector>(firstPosition) - static_cast<Vector>(secondPosition);
+			auto [distance, projections] = firstPosition.distanceWithProjectionsTo(secondPosition);
+
+			assert(equal(distance, difference.absoluteValue()));
+			assert(equal(projections, difference));
+
+			resetBoundaryConditions();
+		}
+
+		void distanceWithProjectionsPeriodicSpace()
+		{
+			double size = randomDouble<1, 10>();
+			IDimensionsCondition* conditions[kDimensionalNumber];
+			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
+				conditions[i] = new PeriodicDimension(size);
+			}
+			Position::setBoundaryConditions(conditions);
+
+			Position firstPosition;
+			Position secondPosition;
+			firstPosition += randomVector();
+			secondPosition += randomVector();
+			auto [_, projections] = firstPosition.distanceWithProjectionsTo(secondPosition);
+
+			for (std::uint8_t i = 0; i < kDimensionalNumber; ++i)
+			{
+				assert(std::abs(projections[i]) <= size);
+			}
+
+			resetBoundaryConditions();
+		}
+
+		void normalizeInfiniteSpace()
+		{
+			resetBoundaryConditions();
+
+			Position initial = randomPosition();
+			Position position = initial;
+			position.normalize();
+			assert(equal(initial, position));
+
+			resetBoundaryConditions();
+		}
+
+		void normalizePeriodicSpace()
+		{
+			double size = randomDouble<1, 10>();
+			IDimensionsCondition* conditions[kDimensionalNumber];
+			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
+				conditions[i] = new PeriodicDimension(size);
+			}
+			Position::setBoundaryConditions(conditions);
+
+			Position initial = randomPosition<20, 30>();
+			Position position = initial;
+			position.normalize();
+			for (std::uint8_t i = 0; i < kDimensionalNumber; ++i)
+			{
+				assert(!equal(initial[i], position[i]));
+			}
+
+			resetBoundaryConditions();
+		}
+	}
+}
 
 void testVector()
 {
-	testVectorConstructors::array();
-	testVectorConstructors::copyCtr();
-	testVectorConstructors::cStyleArray();
-	testVectorConstructors::defaultCtr();
-	testVectorConstructors::emptyInitializerList();
-	testVectorConstructors::initializerListWithFourElements();
-	testVectorConstructors::initializerListWithOneElement();
+	testVectorClass::constructors::array();
+	testVectorClass::constructors::copyCtr();
+	testVectorClass::constructors::cStyleArray();
+	testVectorClass::constructors::defaultCtr();
+	testVectorClass::constructors::emptyInitializerList();
+	testVectorClass::constructors::initializerListWithFourElements();
+	testVectorClass::constructors::initializerListWithOneElement();
 
-	testVectorOperators::assign();
-	testVectorOperators::unaryMinus();
-	testVectorOperators::plusAssign();
-	testVectorOperators::plus();
-	testVectorOperators::minusAssign();
-	testVectorOperators::difference();
-	testVectorOperators::squareBrackets();
-	testVectorOperators::product();
-	testVectorOperators::productAssign();
-	testVectorOperators::divide();
-	testVectorOperators::divideAssign();
+	testVectorClass::operators::assign();
+	testVectorClass::operators::unaryMinus();
+	testVectorClass::operators::plusAssign();
+	testVectorClass::operators::plus();
+	testVectorClass::operators::minusAssign();
+	testVectorClass::operators::difference();
+	testVectorClass::operators::squareBrackets();
+	testVectorClass::operators::product();
+	testVectorClass::operators::productAssign();
+	testVectorClass::operators::divide();
+	testVectorClass::operators::divideAssign();
 
-	testVectorMethods::data();
-	testVectorMethods::dataConst();
-	testVectorMethods::absoluteValue();
-	testVectorMethods::size();
-	testVectorMethods::sumSquares();
+	testVectorClass::methods::data();
+	testVectorClass::methods::dataConst();
+	testVectorClass::methods::absoluteValue();
+	testVectorClass::methods::size();
+	testVectorClass::methods::sumSquares();
 
-	testVectorIterators::constIterator();
-	testVectorIterators::iterator();
+	testVectorClass::iterators::constIterator();
+	testVectorClass::iterators::iterator();
+
+	testPositionClass::constructors::array();
+	testPositionClass::constructors::cStyleArray();
+	testPositionClass::constructors::defaultCtr();
+
+	testPositionClass::boundaryConditions::distanceWithProjectionsInfiniteSpace();
+	testPositionClass::boundaryConditions::distanceWithProjectionsPeriodicSpace();
+	testPositionClass::boundaryConditions::normalizeInfiniteSpace();
+	testPositionClass::boundaryConditions::normalizePeriodicSpace();
 }

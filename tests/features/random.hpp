@@ -5,7 +5,8 @@
 #include <chrono>
 #include <functional>
 #include <random>
-#include "Vector.hpp"
+#include "Vector/Position.hpp"
+#include "Vector/Vector.hpp"
 
 template<int MIN = -100, int MAX = 100>
 double randomDouble()
@@ -24,6 +25,15 @@ md::Vector randomVector()
 	for (double& projection: v)
 		projection = randomDouble<MIN, MAX>();
 	return v;
+}
+
+template<int MIN = -100, int MAX = 100>
+md::Position randomPosition()
+{
+	md::Position position;
+	for (double& projection: position)
+		projection = randomDouble<MIN, MAX>();
+	return position;
 }
 
 #endif  // TAHD_TESTS_RANDOM_H

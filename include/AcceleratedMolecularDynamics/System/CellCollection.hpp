@@ -13,7 +13,6 @@ namespace md
         Vector firstCellPosition;
         Vector cellSize;
         std::array<std::size_t, kDimensionalNumber> cellNumberInDirection;
-        BorderConditions* borderConditions;
 
         // getOffsetFactorInDirection()[i] element is value that need add for offset by 1 cell to i-th direction
         std::array<std::size_t, kDimensionalNumber> getOffsetFactorInDirection() const noexcept;
@@ -26,7 +25,7 @@ namespace md
         void createCells(const std::size_t cellsNumber);                // create empty cells
         void computeAndSetNeighbours();                                 // for each cell set adjacent cells including self
     public:
-        CellCollection(const std::vector<Atom>& atoms, const APotential* potential, BorderConditions* borderCond = nullptr);
+        CellCollection(const std::vector<Atom>& atoms, const APotential* potential);
         std::vector<Cell>& getCells() noexcept;
         const std::vector<Cell>& getCells() const noexcept;
         Cell& findCellContainingVector(Vector::ConstPass vector);

@@ -1,4 +1,5 @@
 #include "Atoms/AtomPair.hpp"
+#include <tuple>
 
 md::AtomPair::AtomPair(Atom& first, Atom& second)  noexcept
 	: atomPair{ &first, &second }
@@ -42,14 +43,8 @@ void md::AtomPair::setIsAtomsFromSameStream(const bool isSame) noexcept
 
 double md::AtomPair::computeDistance() noexcept
 {
-	dProjections = atomPair[1]->getCoordinates() - atomPair[0]->getCoordinates();
-	distance = dProjections.absoluteValue();
-	return distance;
-}
-
-double md::AtomPair::computeDistance(const BorderConditions& borderConditions) noexcept
-{
-	dProjections = atomPair[1]->getCoordinates() - atomPair[0]->getCoordinates();
-	distance = borderConditions(dProjections);
+	Position::ConstPass first = atomPair[0]->getPosition();
+	Position::ConstPass second = atomPair[1]->getPosition();
+	std::tie(distance, dProjections) = second.distanceWithProjectionsTo(first);
 	return distance;
 }

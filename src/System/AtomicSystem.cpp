@@ -1,9 +1,7 @@
 #include "System/AtomicSystem.hpp"
 
-md::AtomicSystem::AtomicSystem(const std::vector<Atom>& allAtoms, APotential* atomicPotential, 
-                               BorderConditions* borderCond)
-    : cells{ allAtoms, atomicPotential, borderCond }, atoms{ allAtoms }, 
-      borderConditions{ borderCond }, potential{ atomicPotential }
+md::AtomicSystem::AtomicSystem(const std::vector<Atom>& allAtoms, APotential* atomicPotential)
+    : atoms{ allAtoms }, potential{ atomicPotential }
 {
 }
 

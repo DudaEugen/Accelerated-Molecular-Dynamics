@@ -19,11 +19,9 @@ int main(int argc, char* argv[])
 			testMoveAlgorithm();
 			testAtom();
 			testSubstance();
+			testBoundaryConditions();
 			testMatrix();
 			testAtomPair();
-			testBorderConditions();
-			testNeighboursList();
-			testCellCollection();
 			testZip();
 			testDerivative();
 
