@@ -1,4 +1,5 @@
 #include "Vector/Position.hpp"
+#include <algorithm>
 
 md::BoundaryConditions md::Position::boundaryConditions;
 
@@ -21,4 +22,10 @@ std::pair<double, md::Vector> md::Position::distanceWithProjectionsTo(Position::
 void md::Position::setBoundaryConditions(md::IDimensionsCondition* conditions[kDimensionalNumber])
 {
     boundaryConditions.setConditions(conditions);
+}
+
+void md::Position::normalize()
+{
+    const Vector normalized = boundaryConditions.normolize(static_cast<Vector>(*this));
+    std::copy(normalized.begin(), normalized.end(), this->begin());
 }

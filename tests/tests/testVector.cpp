@@ -358,13 +358,9 @@ namespace testPositionClass
 			Position::setBoundaryConditions(conditions);
 		}
 
-		void infiniteSpace()
+		void distanceWithProjectionsInfiniteSpace()
 		{
-			IDimensionsCondition* conditions[kDimensionalNumber];
-			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
-				conditions[i] = new InfiniteDimension();
-			}
-			Position::setBoundaryConditions(conditions);
+			resetBoundaryConditions();
 
 			Position firstPosition;
 			Position secondPosition;
@@ -379,7 +375,7 @@ namespace testPositionClass
 			resetBoundaryConditions();
 		}
 
-		void periodicSpace()
+		void distanceWithProjectionsPeriodicSpace()
 		{
 			double size = randomDouble<1, 10>();
 			IDimensionsCondition* conditions[kDimensionalNumber];
@@ -397,6 +393,38 @@ namespace testPositionClass
 			for (std::uint8_t i = 0; i < kDimensionalNumber; ++i)
 			{
 				assert(std::abs(projections[i]) <= size);
+			}
+
+			resetBoundaryConditions();
+		}
+
+		void normalizeInfiniteSpace()
+		{
+			resetBoundaryConditions();
+
+			Position initial = randomPosition();
+			Position position = initial;
+			position.normalize();
+			assert(equal(initial, position));
+
+			resetBoundaryConditions();
+		}
+
+		void normalizePeriodicSpace()
+		{
+			double size = randomDouble<1, 10>();
+			IDimensionsCondition* conditions[kDimensionalNumber];
+			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
+				conditions[i] = new PeriodicDimension(size);
+			}
+			Position::setBoundaryConditions(conditions);
+
+			Position initial = randomPosition<20, 30>();
+			Position position = initial;
+			position.normalize();
+			for (std::uint8_t i = 0; i < kDimensionalNumber; ++i)
+			{
+				assert(!equal(initial[i], position[i]));
 			}
 
 			resetBoundaryConditions();
@@ -439,6 +467,8 @@ void testVector()
 	testPositionClass::constructors::cStyleArray();
 	testPositionClass::constructors::defaultCtr();
 
-	testPositionClass::boundaryConditions::infiniteSpace();
-	testPositionClass::boundaryConditions::periodicSpace();
+	testPositionClass::boundaryConditions::distanceWithProjectionsInfiniteSpace();
+	testPositionClass::boundaryConditions::distanceWithProjectionsPeriodicSpace();
+	testPositionClass::boundaryConditions::normalizeInfiniteSpace();
+	testPositionClass::boundaryConditions::normalizePeriodicSpace();
 }

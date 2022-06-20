@@ -21,6 +21,7 @@ namespace md
 
         double distanceTo(ConstPass postition) const;
         std::pair<double, Vector> distanceWithProjectionsTo(ConstPass postition) const;
+        void normalize();
     };
 }
 
