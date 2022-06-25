@@ -26,7 +26,7 @@ md::BoundaryConditions::~BoundaryConditions()
     }
 }
 
-std::pair<double, md::Vector> md::BoundaryConditions::distanceWithProjections(
+std::pair<double, md::Vector::ConstPass> md::BoundaryConditions::distanceWithProjections(
     Vector::ConstPass first, Vector::ConstPass second
 ) const
 {

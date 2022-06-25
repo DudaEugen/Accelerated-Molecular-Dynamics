@@ -11,7 +11,7 @@ double md::Position::distanceTo(Position::ConstPass position) const
     );
 }
 
-std::pair<double, md::Vector> md::Position::distanceWithProjectionsTo(Position::ConstPass position) const
+std::pair<double, md::Vector::ConstPass> md::Position::distanceWithProjectionsTo(Position::ConstPass position) const
 {
     return boundaryConditions.distanceWithProjections(
         static_cast<Vector>(*this),

@@ -33,11 +33,10 @@ void md::LennardJonesPotential::computeAndSetAccelerations()
 		{
 			force = 24 * kElementaryCharge * 0.0001 * e *
 				( 1 - 2*pow(r_m/distance, 6) ) * pow(r_m / distance, 8) / std::pow(r_m, 2) *
-				atomPair.getDistanceProjections();
+				atomPair.getProjections();
 
 			atomPair.getFirst().addAcceleration(force / atomPair.getFirst().mass);
-			if (atomPair.getIsAtomsFromSameStream())
-				atomPair.getSecond().addAcceleration(-force / atomPair.getSecond().mass);
+			atomPair.getSecond().addAcceleration(-force / atomPair.getSecond().mass);
 		}
 	}
 }
