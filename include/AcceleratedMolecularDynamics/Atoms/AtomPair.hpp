@@ -26,8 +26,8 @@ namespace md
 		Get difference between coordinats of atoms: second - first, which was obtained during the 
 		last call to the computeDistance or constructor */
 		Vector getProjections() const noexcept;
-		std::pair<double, Vector> getDistanceWithProjections() const noexcept;
-		std::pair<double, Vector> computeDistanceWithProjections();
+		std::pair<double, Vector::ConstPass> getDistanceWithProjections() const noexcept;
+		std::pair<double, Vector::ConstPass> computeDistanceWithProjections();
 	};
 }
 

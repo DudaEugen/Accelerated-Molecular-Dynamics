@@ -20,7 +20,7 @@ namespace md
 		double absoluteValue() const noexcept = delete;
 
         double distanceTo(ConstPass postition) const;
-        std::pair<double, Vector> distanceWithProjectionsTo(ConstPass postition) const;
+        std::pair<double, Vector::ConstPass> distanceWithProjectionsTo(ConstPass postition) const;
         void normalize();
     };
 }

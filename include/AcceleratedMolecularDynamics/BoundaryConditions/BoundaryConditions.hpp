@@ -23,7 +23,7 @@ namespace md
         BoundaryConditions& operator=(BoundaryConditions&&) = delete;
         ~BoundaryConditions();
 
-        std::pair<double, Vector> distanceWithProjections(Vector::ConstPass first, Vector::ConstPass second) const;
+        std::pair<double, Vector::ConstPass> distanceWithProjections(Vector::ConstPass first, Vector::ConstPass second) const;
         double distance(Vector::ConstPass first, Vector::ConstPass second) const;
         Vector normolize(Vector::ConstPass vector) const;
 

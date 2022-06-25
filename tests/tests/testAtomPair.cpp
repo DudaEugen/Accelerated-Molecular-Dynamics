@@ -17,13 +17,13 @@ void testAtomPair()
 	assert(equal(d.absoluteValue(), distance));
 
 	b.setPosition(randomPosition());
-	std::tie(distance, projections) = pair.computeDistanceWithProjections();
+	auto [distance2, projections2] = pair.computeDistanceWithProjections();
 	d = b.getPosition() - a.getPosition();
-	assert(equal(d, projections));
-	assert(equal(d.absoluteValue(), distance));
+	assert(equal(d, projections2));
+	assert(equal(d.absoluteValue(), distance2));
 
 	b.setPosition(a.getPosition());
-	std::tie(distance, projections) = pair.computeDistanceWithProjections();
-	assert(equal(distance, 0));
-	assert(equal(projections, Vector()));
+	auto [distance3, projections3] = pair.computeDistanceWithProjections();
+	assert(equal(distance3, 0));
+	assert(equal(projections3, Vector()));
 }

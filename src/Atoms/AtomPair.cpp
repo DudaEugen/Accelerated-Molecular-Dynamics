@@ -15,12 +15,12 @@ double md::AtomPair::getDistance() const noexcept { return distance; }
 
 md::Vector md::AtomPair::getProjections() const noexcept { return dProjections; }
 
-std::pair<double, md::Vector> md::AtomPair::getDistanceWithProjections() const noexcept 
+std::pair<double, md::Vector::ConstPass> md::AtomPair::getDistanceWithProjections() const noexcept 
 { 
 	return std::pair(distance, dProjections); 
 }
 
-std::pair<double, md::Vector> md::AtomPair::computeDistanceWithProjections()
+std::pair<double, md::Vector::ConstPass> md::AtomPair::computeDistanceWithProjections()
 {
 	Position::ConstPass first = firstAtom.getPosition();
 	Position::ConstPass second = secondAtom.getPosition();
