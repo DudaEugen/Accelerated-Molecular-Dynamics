@@ -9,23 +9,21 @@ void testAtomPair()
 	Atom b("Al", randomPosition());
 	AtomPair pair(a, b);
 
-	assert(&pair.getAtomByIndex(AtomPair::index::first) == &pair.getFirst());
-	assert(&pair.getAtomByIndex(AtomPair::index::second) == &pair.getSecond());
-	assert(&pair.getAtomWithAnotherIndex(AtomPair::index::second) == &pair.getFirst());
-	assert(&pair.getAtomWithAnotherIndex(AtomPair::index::first) == &pair.getSecond());
 	assert(&a == &pair.getFirst());
 	assert(&b == &pair.getSecond());
-	Vector d = b.getPosition() - a.getPosition(); 
-	assert(equal(d, pair.getDistanceProjections()));
-	assert(equal(sqrt(d.sumSquares()), pair.getDistance()));
+	Vector d = b.getPosition() - a.getPosition();
+	auto [distance, projections] = pair.getDistanceWithProjections();
+	assert(equal(d, projections));
+	assert(equal(d.absoluteValue(), distance));
 
 	b.setPosition(randomPosition());
-	pair.computeDistance();
+	std::tie(distance, projections) = pair.computeDistanceWithProjections();
 	d = b.getPosition() - a.getPosition();
-	assert(equal(b.getPosition() - a.getPosition(), pair.getDistanceProjections()));
-	assert(equal(sqrt(d.sumSquares()), pair.getDistance()));
+	assert(equal(d, projections));
+	assert(equal(d.absoluteValue(), distance));
 
 	b.setPosition(a.getPosition());
-	pair.computeDistance();
-	assert(equal(pair.getDistance(), 0));
+	std::tie(distance, projections) = pair.computeDistanceWithProjections();
+	assert(equal(distance, 0));
+	assert(equal(projections, Vector()));
 }
