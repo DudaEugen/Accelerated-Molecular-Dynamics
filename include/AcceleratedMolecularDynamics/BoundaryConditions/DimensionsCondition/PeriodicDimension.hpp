@@ -11,6 +11,7 @@ namespace md
         double size;
     public:
         PeriodicDimension(double size) noexcept;
+        double getSize() const noexcept override;
         double normalizeProjection(double coordinate) const override;
         double normalizeProjectionsDifference(double projectionFirst, double projectionSecond) const override;
         ~PeriodicDimension() = default;

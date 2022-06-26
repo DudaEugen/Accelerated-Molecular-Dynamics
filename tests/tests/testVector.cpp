@@ -1,3 +1,5 @@
+#include <limits>
+#include <iostream>
 #include "tests.hpp"
 #include "Vector/Position.hpp"
 #include "BoundaryConditions/DimensionsCondition/InfiniteDimension.hpp"
@@ -358,6 +360,33 @@ namespace testPositionClass
 			Position::setBoundaryConditions(conditions);
 		}
 
+		void spaceSize()
+		{
+			resetBoundaryConditions();
+
+			Vector space = randomVector<1, 100>();
+			IDimensionsCondition* conditions[kDimensionalNumber];
+			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
+				conditions[i] = new PeriodicDimension(space[i]);
+			}
+			Position::setBoundaryConditions(conditions);
+
+			assert(equal(Position::spaceSize(), space));
+
+			resetBoundaryConditions();
+		}
+
+		void infiniteSpace()
+		{
+			resetBoundaryConditions();
+
+			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
+				assert(Position::spaceSize()[i] == std::numeric_limits<double>::infinity());
+			}
+
+			resetBoundaryConditions();
+		}
+
 		void distanceWithProjectionsInfiniteSpace()
 		{
 			resetBoundaryConditions();
@@ -377,6 +406,8 @@ namespace testPositionClass
 
 		void distanceWithProjectionsPeriodicSpace()
 		{
+			resetBoundaryConditions();
+
 			double size = randomDouble<1, 10>();
 			IDimensionsCondition* conditions[kDimensionalNumber];
 			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
@@ -467,6 +498,8 @@ void testVector()
 	testPositionClass::constructors::cStyleArray();
 	testPositionClass::constructors::defaultCtr();
 
+	testPositionClass::boundaryConditions::spaceSize();
+	testPositionClass::boundaryConditions::infiniteSpace();
 	testPositionClass::boundaryConditions::distanceWithProjectionsInfiniteSpace();
 	testPositionClass::boundaryConditions::distanceWithProjectionsPeriodicSpace();
 	testPositionClass::boundaryConditions::normalizeInfiniteSpace();

@@ -6,6 +6,11 @@ md::PeriodicDimension::PeriodicDimension(double size) noexcept
 {
 }
 
+double md::PeriodicDimension::getSize() const noexcept
+{
+    return size;
+}
+
 double md::PeriodicDimension::normalizeProjection(double coordinate) const
 {
     return coordinate - static_cast<int>(std::floor(coordinate / size)) * size;

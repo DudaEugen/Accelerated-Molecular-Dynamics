@@ -24,6 +24,11 @@ void md::Position::setBoundaryConditions(md::IDimensionsCondition* conditions[kD
     boundaryConditions.setConditions(conditions);
 }
 
+md::Vector md::Position::spaceSize()
+{
+    return boundaryConditions.getSize();
+}
+
 void md::Position::normalize()
 {
     const Vector normalized = boundaryConditions.normolize(static_cast<Vector>(*this));

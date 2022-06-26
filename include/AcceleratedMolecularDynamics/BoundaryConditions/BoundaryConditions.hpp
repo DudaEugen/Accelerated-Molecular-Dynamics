@@ -27,6 +27,7 @@ namespace md
         double distance(Vector::ConstPass first, Vector::ConstPass second) const;
         Vector normolize(Vector::ConstPass vector) const;
 
+        Vector getSize() const;
         void setConditions(IDimensionsCondition* conditions[kDimensionalNumber]);
     };
 }

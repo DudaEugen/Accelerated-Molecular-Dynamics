@@ -1,4 +1,10 @@
+#include <limits>
 #include "BoundaryConditions/DimensionsCondition/InfiniteDimension.hpp"
+
+double md::InfiniteDimension::getSize() const noexcept
+{
+    return std::numeric_limits<double>::infinity();
+}
 
 double md::InfiniteDimension::normalizeProjection(double coordinate) const
 {

@@ -7,6 +7,7 @@ namespace md
     class IDimensionsCondition
     {
     public:
+        virtual double getSize() const noexcept = 0;
         virtual double normalizeProjection(double coordinate) const = 0;
         virtual double normalizeProjectionsDifference(double projectionFirst, double projectionSecond) const = 0;
         virtual ~IDimensionsCondition() = 0;

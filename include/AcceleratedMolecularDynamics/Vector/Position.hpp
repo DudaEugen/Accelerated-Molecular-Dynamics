@@ -15,6 +15,7 @@ namespace md
         using Vector::Vector;
 
         static void setBoundaryConditions(IDimensionsCondition* conditions[kDimensionalNumber]);
+        static Vector spaceSize();
 
         double sumSquares() const noexcept = delete;
 		double absoluteValue() const noexcept = delete;

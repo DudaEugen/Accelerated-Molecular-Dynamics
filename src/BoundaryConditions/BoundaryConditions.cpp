@@ -1,5 +1,6 @@
 #include "BoundaryConditions/BoundaryConditions.hpp"
 #include "BoundaryConditions/DimensionsCondition/InfiniteDimension.hpp"
+#include "Zip.hpp"
 #include "IndexedZip.hpp"
 
 md::BoundaryConditions::BoundaryConditions()
@@ -52,6 +53,16 @@ md::Vector md::BoundaryConditions::normolize(Vector::ConstPass vector) const
         resProj = conditions_[index]->normalizeProjection(proj);
     }
     return result;
+}
+
+md::Vector md::BoundaryConditions::getSize() const
+{
+    Vector size;
+    for (std::uint8_t i = 0; i < kDimensionalNumber; ++i)
+    {
+        size[i] = conditions_[i]->getSize();
+    }
+    return size;
 }
 
 void md::BoundaryConditions::setConditions(IDimensionsCondition* conditions[kDimensionalNumber])
