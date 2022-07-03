@@ -461,6 +461,44 @@ namespace testPositionClass
 			resetBoundaryConditions();
 		}
 	}
+
+	namespace operators
+	{
+		void offsets()
+		{
+			Position initial = randomPosition();
+			Position position = initial;
+			assert(equal(position, initial));
+
+			Vector offset = randomVector();
+			position += offset;
+			assert(!equal(position, initial));
+
+			position -= offset;
+			assert(equal(position, initial));
+		}
+
+		void binaryOffsets()
+		{
+			Position initial = randomPosition();
+			Vector offset = randomVector();
+
+			Position result = initial + offset;
+			assert(!equal(result, initial));
+
+			result = result - offset;
+			assert(equal(result, initial));
+		}
+
+		void difference()
+		{
+			Position first = randomPosition();
+			Vector offset = randomVector();
+			Position second = first + offset;
+
+			assert(equal(second - first, offset));
+		}
+	}
 }
 
 void testVector()
@@ -504,4 +542,8 @@ void testVector()
 	testPositionClass::boundaryConditions::distanceWithProjectionsPeriodicSpace();
 	testPositionClass::boundaryConditions::normalizeInfiniteSpace();
 	testPositionClass::boundaryConditions::normalizePeriodicSpace();
+
+	testPositionClass::operators::offsets();
+	testPositionClass::operators::binaryOffsets();
+	testPositionClass::operators::difference();
 }
