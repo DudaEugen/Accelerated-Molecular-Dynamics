@@ -426,7 +426,7 @@ namespace testPositionClass
 		{
 			Position initial = randomPosition();
 			Position position = initial;
-			position.normalize();
+			position = position.normalize();
 			assert(equal(initial, position));
 
 			resetBoundaryConditions();
@@ -443,7 +443,7 @@ namespace testPositionClass
 
 			Position initial = randomPosition<20, 30>();
 			Position position = initial;
-			position.normalize();
+			position = position.normalize();
 			for (std::uint8_t i = 0; i < kDimensionalNumber; ++i)
 			{
 				assert(!equal(initial[i], position[i]));

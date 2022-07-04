@@ -17,10 +17,10 @@ md::Vector md::Position::spaceSize()
     return BoundaryConditions::getSize();
 }
 
-void md::Position::normalize()
+md::Position md::Position::normalize() const
 {
-    const Position normalized = BoundaryConditions::normolize(*this);
-    std::copy(normalized.begin(), normalized.end(), this->begin());
+    Position normalized = BoundaryConditions::normolize(*this);
+    return normalized;
 }
 
 md::Position& md::Position::operator += (Vector::ConstPass other) noexcept
