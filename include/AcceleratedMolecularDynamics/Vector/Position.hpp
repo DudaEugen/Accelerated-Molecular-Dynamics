@@ -2,19 +2,16 @@
 #ifndef TAHD_VELOCITY_H
 #define TAHD_VELOCITY_H
 
-#include "BoundaryConditions/BoundaryConditions.hpp"
 #include "Vector/Vector.hpp"
 
 namespace md
 {
     class Position: public Vector
     {
-        static BoundaryConditions boundaryConditions;
     public:
         using ConstPass = PassConstT<double, Position>;
         using Vector::Vector;
 
-        static void setBoundaryConditions(IDimensionsCondition* conditions[kDimensionalNumber]);
         static Vector spaceSize();
 
 		Position& operator += (Vector::ConstPass other) noexcept;

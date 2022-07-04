@@ -2,6 +2,7 @@
 #include <iostream>
 #include "tests.hpp"
 #include "Vector/Position.hpp"
+#include "BoundaryConditions/BoundaryConditions.hpp"
 #include "BoundaryConditions/DimensionsCondition/InfiniteDimension.hpp"
 #include "BoundaryConditions/DimensionsCondition/PeriodicDimension.hpp"
 
@@ -357,19 +358,17 @@ namespace testPositionClass
 			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
 				conditions[i] = new InfiniteDimension();
 			}
-			Position::setBoundaryConditions(conditions);
+			BoundaryConditions::setConditions(conditions);
 		}
 
 		void spaceSize()
 		{
-			resetBoundaryConditions();
-
 			Vector space = randomVector<1, 100>();
 			IDimensionsCondition* conditions[kDimensionalNumber];
 			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
 				conditions[i] = new PeriodicDimension(space[i]);
 			}
-			Position::setBoundaryConditions(conditions);
+			BoundaryConditions::setConditions(conditions);
 
 			assert(equal(Position::spaceSize(), space));
 
@@ -378,8 +377,6 @@ namespace testPositionClass
 
 		void infiniteSpace()
 		{
-			resetBoundaryConditions();
-
 			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
 				assert(Position::spaceSize()[i] == std::numeric_limits<double>::infinity());
 			}
@@ -389,13 +386,11 @@ namespace testPositionClass
 
 		void distanceWithProjectionsInfiniteSpace()
 		{
-			resetBoundaryConditions();
-
 			Position firstPosition;
 			Position secondPosition;
 			firstPosition += randomVector();
 			secondPosition += randomVector();
-			Vector difference = static_cast<Vector>(firstPosition) - static_cast<Vector>(secondPosition);
+			Vector difference = firstPosition - secondPosition;
 			auto [distance, projections] = firstPosition.distanceWithProjectionsTo(secondPosition);
 
 			assert(equal(distance, difference.absoluteValue()));
@@ -406,14 +401,12 @@ namespace testPositionClass
 
 		void distanceWithProjectionsPeriodicSpace()
 		{
-			resetBoundaryConditions();
-
 			double size = randomDouble<1, 10>();
 			IDimensionsCondition* conditions[kDimensionalNumber];
 			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
 				conditions[i] = new PeriodicDimension(size);
 			}
-			Position::setBoundaryConditions(conditions);
+			BoundaryConditions::setConditions(conditions);
 
 			Position firstPosition;
 			Position secondPosition;
@@ -431,8 +424,6 @@ namespace testPositionClass
 
 		void normalizeInfiniteSpace()
 		{
-			resetBoundaryConditions();
-
 			Position initial = randomPosition();
 			Position position = initial;
 			position.normalize();
@@ -448,7 +439,7 @@ namespace testPositionClass
 			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
 				conditions[i] = new PeriodicDimension(size);
 			}
-			Position::setBoundaryConditions(conditions);
+			BoundaryConditions::setConditions(conditions);
 
 			Position initial = randomPosition<20, 30>();
 			Position position = initial;

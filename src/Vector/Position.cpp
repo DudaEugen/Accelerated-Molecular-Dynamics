@@ -1,37 +1,25 @@
 #include "Vector/Position.hpp"
+#include "BoundaryConditions/BoundaryConditions.hpp"
 #include <algorithm>
-
-md::BoundaryConditions md::Position::boundaryConditions;
 
 double md::Position::distanceTo(Position::ConstPass position) const
 {
-    return boundaryConditions.distance(
-        static_cast<Vector>(*this),
-        static_cast<Vector>(position)
-    );
+    return BoundaryConditions::distance(*this, position);
 }
 
 std::pair<double, md::Vector::ConstPass> md::Position::distanceWithProjectionsTo(Position::ConstPass position) const
 {
-    return boundaryConditions.distanceWithProjections(
-        static_cast<Vector>(*this),
-        static_cast<Vector>(position)
-    );
-}
-
-void md::Position::setBoundaryConditions(md::IDimensionsCondition* conditions[kDimensionalNumber])
-{
-    boundaryConditions.setConditions(conditions);
+    return BoundaryConditions::distanceWithProjections(*this, position);
 }
 
 md::Vector md::Position::spaceSize()
 {
-    return boundaryConditions.getSize();
+    return BoundaryConditions::getSize();
 }
 
 void md::Position::normalize()
 {
-    const Vector normalized = boundaryConditions.normolize(static_cast<Vector>(*this));
+    const Position normalized = BoundaryConditions::normolize(*this);
     std::copy(normalized.begin(), normalized.end(), this->begin());
 }
 
