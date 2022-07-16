@@ -2,30 +2,19 @@
 #ifndef TAHD_CELL_H
 #define TAHD_CELL_H
 
-#include "AtomGroup.hpp"
+#include <vector>
+#include "Atoms/Atom.hpp"
+#include "Vector/Position.hpp"
 
 namespace md
 {
-	/*the whole space is divided into cubic cells whose dimensions are not less than the cutoff radius of potential. 
-	Then, to search for atoms that directly interact with each other, you need to use only atoms that are in the same or adjacent cells.*/
 	class Cell
 	{
-	private:
-		std::vector<Cell*> neighborCells;	//this and adjacent Cells
+		std::vector<std::reference_wrapper<Atom>> atoms;
 	public:
-		AtomGroup atoms;
-
-	private:
-		static constexpr size_t maximumNeighborCellsNumber();
-
-	public:
-		/*atomsNumber is the approximate number of atoms that will be contained in a cell. 
-		The vector size will be set to zero, but memory will be allocated to atomsNumber of elements.
-		In the future, the number of atoms can decrease and increase.*/
-		Cell(const size_t atomsNumber = 0);
-		void addNeighborCell(Cell* cell);
-		std::vector<Cell*>& getNeighborCells () noexcept;
-		const std::vector<Cell*>& getNeighborCells () const noexcept;
+		const std::vector<std::reference_wrapper<Atom>>& getAtoms() const noexcept;
+		void addAtom(Atom& atom);
+		void clear() noexcept;
 	};
 }
 

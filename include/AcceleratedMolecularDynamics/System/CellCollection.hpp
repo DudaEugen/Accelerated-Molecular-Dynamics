@@ -10,26 +10,38 @@ namespace md
     class CellCollection
     {
         std::vector<Cell> cells;
-        Vector firstCellPosition;
-        Vector cellSize;
         std::array<std::size_t, kDimensionalNumber> cellNumberInDirection;
+        Position firstCellPosition;
+        Vector cellSize;
 
-        // getOffsetFactorInDirection()[i] element is value that need add for offset by 1 cell to i-th direction
-        std::array<std::size_t, kDimensionalNumber> getOffsetFactorInDirection() const noexcept;
-        // getOffsetBySizeInDirection()[i] element is value that need add for offset by size of cellCollection to i-th direction
-        std::array<std::size_t, kDimensionalNumber> getOffsetBySizeInDirection() const noexcept;
-        std::array<std::size_t, kDimensionalNumber> getOffsetBySizeInDirection(PassConstArrayT<std::size_t> 
-                                                                            offsetFactorInDirection) const noexcept;
-        // compute and set cellSize, firstCellPosition, return number of cell
-        std::size_t computeAndSetParameters(const std::vector<Atom>& atoms, const APotential* potential);
-        void createCells(const std::size_t cellsNumber);                // create empty cells
-        void computeAndSetNeighbours();                                 // for each cell set adjacent cells including self
+        std::vector<Vector> offsets(std::uint8_t index = 0) const;
+        void constructCells(
+            const std::vector<md::Atom>& atoms,
+            const APotential* const potential,
+            std::uint8_t extraCells
+        );
+        std::size_t defineContainingCellIndex(Position::ConstPass position) const;
+        void setContainingCell(Atom& atom);
     public:
-        CellCollection(const std::vector<Atom>& atoms, const APotential* potential);
-        std::vector<Cell>& getCells() noexcept;
-        const std::vector<Cell>& getCells() const noexcept;
-        Cell& findCellContainingVector(Vector::ConstPass vector);
-        Cell& findCellContainingAtom(const Atom& atom);
+        CellCollection(
+            std::vector<Atom>& atoms,
+            const APotential* const potential,
+            std::uint8_t extraCells = 3
+        );
+        CellCollection(
+            std::vector<Atom>& atoms,
+            const std::vector<APotential*>& potential,
+            std::uint8_t extraCells = 3
+        );
+        const Cell& getContainingCell(Position::ConstPass position) const;
+        const Cell& getContainingCell(const Atom& atom) const;
+        const std::vector<std::reference_wrapper<const Cell>> getContainingCellWithNeighbours(
+            Position::ConstPass position
+        ) const;
+        const std::vector<std::reference_wrapper<const Cell>> getContainingCellWithNeighbours(
+            const Atom& atom
+        ) const;
+        void refreshCells(std::vector<Atom>& atoms);
     };
 }
 
