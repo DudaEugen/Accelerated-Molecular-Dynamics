@@ -12,7 +12,8 @@ namespace md
         using ConstPass = PassConstT<double, Position>;
         using Vector::Vector;
 
-        static Vector spaceSize();
+        static Vector spaceSize() noexcept;
+        static Position minimalValue() noexcept;
 
 		Position& operator += (Vector::ConstPass other) noexcept;
 		Position& operator -= (Vector::ConstPass other) noexcept;

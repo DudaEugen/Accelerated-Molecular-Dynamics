@@ -375,10 +375,35 @@ namespace testPositionClass
 			resetBoundaryConditions();
 		}
 
+		void minimalValue()
+		{
+			Vector values = randomVector();
+			IDimensionsCondition* conditions[kDimensionalNumber];
+			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
+				conditions[i] = new PeriodicDimension(randomDouble(), values[i]);
+			}
+			BoundaryConditions::setConditions(conditions);
+
+			assert(equal(Position::minimalValue(), values));
+
+			resetBoundaryConditions();
+
+			IDimensionsCondition* newConditions[kDimensionalNumber];
+			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
+				newConditions[i] = new PeriodicDimension(randomDouble());
+			}
+			BoundaryConditions::setConditions(newConditions);
+
+			assert(equal(Position::minimalValue(), Position()));
+
+			resetBoundaryConditions();
+		}
+
 		void infiniteSpace()
 		{
 			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
 				assert(Position::spaceSize()[i] == std::numeric_limits<double>::infinity());
+				assert(Position::minimalValue()[i] == -std::numeric_limits<double>::infinity());
 			}
 
 			resetBoundaryConditions();

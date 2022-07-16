@@ -12,9 +12,14 @@ std::pair<double, md::Vector::ConstPass> md::Position::distanceWithProjectionsTo
     return BoundaryConditions::distanceWithProjections(*this, position);
 }
 
-md::Vector md::Position::spaceSize()
+md::Vector md::Position::spaceSize() noexcept
 {
     return BoundaryConditions::getSize();
+}
+
+md::Position md::Position::minimalValue() noexcept
+{
+    return BoundaryConditions::getMinimalPosition();
 }
 
 md::Position md::Position::normalize() const

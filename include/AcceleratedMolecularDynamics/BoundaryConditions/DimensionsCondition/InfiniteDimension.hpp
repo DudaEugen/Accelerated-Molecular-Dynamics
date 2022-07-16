@@ -10,6 +10,7 @@ namespace md
     {
     public:
         InfiniteDimension() noexcept = default;
+        double getMinimalProjectionValue() const noexcept;
         double getSize() const noexcept override;
         double normalizeProjection(double coordinate) const override;
         double normalizeProjectionsDifference(double projectionFirst, double projectionSecond) const override;

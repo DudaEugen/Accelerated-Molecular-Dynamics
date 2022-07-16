@@ -1,9 +1,14 @@
 #include "BoundaryConditions/DimensionsCondition/PeriodicDimension.hpp"
 #include <cmath>
 
-md::PeriodicDimension::PeriodicDimension(double size) noexcept
-    : size{size}
+md::PeriodicDimension::PeriodicDimension(double size, double start) noexcept
+    : size{size}, minimalProjection{ start }
 {
+}
+
+double md::PeriodicDimension::getMinimalProjectionValue() const noexcept
+{
+    return minimalProjection;
 }
 
 double md::PeriodicDimension::getSize() const noexcept
@@ -13,7 +18,7 @@ double md::PeriodicDimension::getSize() const noexcept
 
 double md::PeriodicDimension::normalizeProjection(double coordinate) const
 {
-    return coordinate - static_cast<int>(std::floor(coordinate / size)) * size;
+    return coordinate - static_cast<int>(std::floor((coordinate - minimalProjection) / size)) * size;
 }
 
 double md::PeriodicDimension::normalizeProjectionsDifference(

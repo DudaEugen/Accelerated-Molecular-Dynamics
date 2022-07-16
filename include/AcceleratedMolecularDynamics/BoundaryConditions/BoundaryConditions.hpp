@@ -38,7 +38,8 @@ namespace md
         static double distance(Position::ConstPass first, Position::ConstPass second);
         static Position normolize(Position::ConstPass position);
 
-        static Vector getSize();
+        static Position getMinimalPosition() noexcept;
+        static Vector getSize() noexcept;
     };
 }
 

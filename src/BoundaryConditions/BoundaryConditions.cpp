@@ -68,7 +68,17 @@ md::Position md::BoundaryConditions::normolize(Position::ConstPass position)
     return result;
 }
 
-md::Vector md::BoundaryConditions::getSize()
+md::Position md::BoundaryConditions::getMinimalPosition() noexcept
+{
+    Position position;
+    for (std::uint8_t i = 0; i < kDimensionalNumber; ++i)
+    {
+        position[i] = conditions_[i]->getMinimalProjectionValue();
+    }
+    return position;
+}
+
+md::Vector md::BoundaryConditions::getSize() noexcept
 {
     Vector size;
     for (std::uint8_t i = 0; i < kDimensionalNumber; ++i)
