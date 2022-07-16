@@ -3,7 +3,6 @@
 #include "tests.hpp"
 #include "Vector/Position.hpp"
 #include "BoundaryConditions/BoundaryConditions.hpp"
-#include "BoundaryConditions/DimensionsCondition/InfiniteDimension.hpp"
 #include "BoundaryConditions/DimensionsCondition/PeriodicDimension.hpp"
 
 using namespace md;
@@ -283,7 +282,7 @@ namespace testVectorClass
 		}
 	}
 
-	namespace iterators
+namespace iterators
 {
 	void constIterator()
 	{
@@ -352,15 +351,6 @@ namespace testPositionClass
 
 	namespace boundaryConditions
 	{
-		void resetBoundaryConditions()
-		{
-			IDimensionsCondition* conditions[kDimensionalNumber];
-			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
-				conditions[i] = new InfiniteDimension();
-			}
-			BoundaryConditions::setConditions(conditions);
-		}
-
 		void spaceSize()
 		{
 			Vector space = randomVector<1, 100>();

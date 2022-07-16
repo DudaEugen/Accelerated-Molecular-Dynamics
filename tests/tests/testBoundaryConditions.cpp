@@ -1,6 +1,6 @@
 #include <algorithm>
 #include <cmath>
-#include "../tests.hpp"
+#include "tests.hpp"
 #include "BoundaryConditions/DimensionsCondition/InfiniteDimension.hpp"
 #include "BoundaryConditions/DimensionsCondition/PeriodicDimension.hpp"
 #include "BoundaryConditions/BoundaryConditions.hpp"
@@ -145,15 +145,6 @@ namespace testDimensionsCondition
 
 namespace testBoundaryConditionsClass
 {
-    void resetBoundaryConditions()
-	{
-		IDimensionsCondition* conditions[kDimensionalNumber];
-		for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
-			conditions[i] = new InfiniteDimension();
-		}
-		BoundaryConditions::setConditions(conditions);
-	}
-
     void infiniteSpace()
     {
         IDimensionsCondition* conditions[kDimensionalNumber];
