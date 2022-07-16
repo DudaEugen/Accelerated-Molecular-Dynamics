@@ -1,6 +1,6 @@
 #include <algorithm>
 #include <cmath>
-#include "../tests.hpp"
+#include "tests.hpp"
 #include "BoundaryConditions/DimensionsCondition/InfiniteDimension.hpp"
 #include "BoundaryConditions/DimensionsCondition/PeriodicDimension.hpp"
 #include "BoundaryConditions/BoundaryConditions.hpp"
@@ -151,36 +151,21 @@ namespace testBoundaryConditionsClass
         for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
             conditions[i] = new InfiniteDimension();
         }
-        BoundaryConditions boundaryConditions{conditions};
-        Vector firstVector = randomVector();
-        Vector secondVector = randomVector();
+        BoundaryConditions::setConditions(conditions);
+        Position firstPosition = randomPosition();
+        Position secondPosition = randomPosition();
 
-        assert(equal(firstVector, boundaryConditions.normolize(firstVector)));
-        assert(equal(secondVector, boundaryConditions.normolize(secondVector)));
+        assert(equal(firstPosition, BoundaryConditions::normolize(firstPosition)));
+        assert(equal(secondPosition, BoundaryConditions::normolize(secondPosition)));
         assert(equal(
-            (firstVector - secondVector).absoluteValue(),
-            boundaryConditions.distance(firstVector, secondVector)
+            (firstPosition - secondPosition).absoluteValue(),
+            BoundaryConditions::distance(firstPosition, secondPosition)
         ));
-        auto [distance, projections] = boundaryConditions.distanceWithProjections(secondVector, firstVector);
-        assert(equal((secondVector - firstVector).absoluteValue(), distance));
-        assert(equal(secondVector - firstVector, projections));
-    }
+        auto [distance, projections] = BoundaryConditions::distanceWithProjections(secondPosition, firstPosition);
+        assert(equal((secondPosition - firstPosition).absoluteValue(), distance));
+        assert(equal(secondPosition - firstPosition, projections));
 
-    void defaultConstructor()
-    {
-        BoundaryConditions boundaryConditions;
-        Vector firstVector = randomVector();
-        Vector secondVector = randomVector();
-
-        assert(equal(firstVector, boundaryConditions.normolize(firstVector)));
-        assert(equal(secondVector, boundaryConditions.normolize(secondVector)));
-        assert(equal(
-            (firstVector - secondVector).absoluteValue(),
-            boundaryConditions.distance(firstVector, secondVector)
-        ));
-        auto [distance, projections] = boundaryConditions.distanceWithProjections(secondVector, firstVector);
-        assert(equal((secondVector - firstVector).absoluteValue(), distance));
-        assert(equal(secondVector - firstVector, projections));
+        resetBoundaryConditions();
     }
 
     void randomConditions()
@@ -195,27 +180,29 @@ namespace testBoundaryConditionsClass
                 conditions[i] = new PeriodicDimension(size);
             }
         }
-        BoundaryConditions boundaryConditions{conditions};
-        Vector firstVector = randomVector();
-        Vector secondVector = randomVector();
+        BoundaryConditions::setConditions(conditions);
+        Position firstPosition = randomPosition();
+        Position secondPosition = randomPosition();
 
         Vector firstNormalize;
         for (uint8_t i = 0; i < kDimensionalNumber; ++i)
         {
-            firstNormalize[i] = conditions[i]->normalizeProjection(firstVector[i]);
+            firstNormalize[i] = conditions[i]->normalizeProjection(firstPosition[i]);
         }
         Vector difference;
         for (uint8_t i = 0; i < kDimensionalNumber; ++i)
         {
             difference[i] = conditions[i]->normalizeProjectionsDifference(
-                firstVector[i], secondVector[i]
+                firstPosition[i], secondPosition[i]
             );
         }
 
-        assert(equal(firstNormalize, boundaryConditions.normolize(firstVector)));
-        assert(equal(difference.absoluteValue(), boundaryConditions.distance(firstVector, secondVector)));
-        auto [_, projections] = boundaryConditions.distanceWithProjections(firstVector, secondVector);
+        assert(equal(firstNormalize, BoundaryConditions::normolize(firstPosition)));
+        assert(equal(difference.absoluteValue(), BoundaryConditions::distance(firstPosition, secondPosition)));
+        auto [_, projections] = BoundaryConditions::distanceWithProjections(firstPosition, secondPosition);
         assert(equal(difference, projections));
+
+        resetBoundaryConditions();
     }
 }
 
@@ -232,6 +219,5 @@ void testBoundaryConditions()
     testDimensionsCondition::periodic::normalizeProjectionsDifference::smallSizeAndThroughBoundary();
 
     testBoundaryConditionsClass::infiniteSpace();
-    testBoundaryConditionsClass::defaultConstructor();
     testBoundaryConditionsClass::randomConditions();
 }

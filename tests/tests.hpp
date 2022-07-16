@@ -5,6 +5,7 @@
 #include <cassert>
 #include "features/compare.hpp"
 #include "features/random.hpp"
+#include "features/reset.hpp"
 
 void testVector();
 
@@ -21,6 +22,8 @@ void testBoundaryConditions();
 void testMatrix();
 
 void testAtomPair();
+
+void testCell();
 
 void testZip();
 

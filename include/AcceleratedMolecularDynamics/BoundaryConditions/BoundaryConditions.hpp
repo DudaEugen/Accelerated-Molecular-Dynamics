@@ -5,29 +5,41 @@
 #include <utility>
 #include "constants/constants.hpp"
 #include "BoundaryConditions/DimensionsCondition/IDimensionsCondition.hpp"
-#include "Vector/Vector.hpp"
+#include "Vector/Position.hpp"
 
 namespace md
 {
     class BoundaryConditions
     {
     private:
-        IDimensionsCondition* conditions_[kDimensionalNumber];
+        struct Conditions
+        {
+            IDimensionsCondition* conditions_[kDimensionalNumber];
+
+            Conditions();
+            void setConditions(IDimensionsCondition* conditions[kDimensionalNumber]) noexcept;
+            IDimensionsCondition* operator[](std::uint8_t index) const;
+            ~Conditions();
+        };
+        static Conditions conditions_;
 
     public:
-        BoundaryConditions();
-        BoundaryConditions(IDimensionsCondition* conditions[kDimensionalNumber]);
         BoundaryConditions(const BoundaryConditions&) = delete;
         BoundaryConditions(BoundaryConditions&&) = delete;
         BoundaryConditions& operator=(const BoundaryConditions&) = delete;
         BoundaryConditions& operator=(BoundaryConditions&&) = delete;
-        ~BoundaryConditions();
+        ~BoundaryConditions() = delete;
 
-        std::pair<double, Vector::ConstPass> distanceWithProjections(Vector::ConstPass first, Vector::ConstPass second) const;
-        double distance(Vector::ConstPass first, Vector::ConstPass second) const;
-        Vector normolize(Vector::ConstPass vector) const;
+        static void setConditions(IDimensionsCondition* conditions[kDimensionalNumber]);
 
-        void setConditions(IDimensionsCondition* conditions[kDimensionalNumber]);
+        static std::pair<double, Vector::ConstPass> distanceWithProjections(
+            Position::ConstPass first, Position::ConstPass second
+        );
+        static double distance(Position::ConstPass first, Position::ConstPass second);
+        static Position normolize(Position::ConstPass position);
+
+        static Position getMinimalPosition() noexcept;
+        static Vector getSize() noexcept;
     };
 }
 

@@ -1,6 +1,8 @@
+#include <limits>
+#include <iostream>
 #include "tests.hpp"
 #include "Vector/Position.hpp"
-#include "BoundaryConditions/DimensionsCondition/InfiniteDimension.hpp"
+#include "BoundaryConditions/BoundaryConditions.hpp"
 #include "BoundaryConditions/DimensionsCondition/PeriodicDimension.hpp"
 
 using namespace md;
@@ -280,7 +282,7 @@ namespace testVectorClass
 		}
 	}
 
-	namespace iterators
+namespace iterators
 {
 	void constIterator()
 	{
@@ -349,24 +351,61 @@ namespace testPositionClass
 
 	namespace boundaryConditions
 	{
-		void resetBoundaryConditions()
+		void spaceSize()
 		{
+			Vector space = randomVector<1, 100>();
 			IDimensionsCondition* conditions[kDimensionalNumber];
 			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
-				conditions[i] = new InfiniteDimension();
+				conditions[i] = new PeriodicDimension(space[i]);
 			}
-			Position::setBoundaryConditions(conditions);
+			BoundaryConditions::setConditions(conditions);
+
+			assert(equal(Position::spaceSize(), space));
+
+			resetBoundaryConditions();
+		}
+
+		void minimalValue()
+		{
+			Vector values = randomVector();
+			IDimensionsCondition* conditions[kDimensionalNumber];
+			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
+				conditions[i] = new PeriodicDimension(randomDouble(), values[i]);
+			}
+			BoundaryConditions::setConditions(conditions);
+
+			assert(equal(Position::minimalValue(), values));
+
+			resetBoundaryConditions();
+
+			IDimensionsCondition* newConditions[kDimensionalNumber];
+			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
+				newConditions[i] = new PeriodicDimension(randomDouble());
+			}
+			BoundaryConditions::setConditions(newConditions);
+
+			assert(equal(Position::minimalValue(), Position()));
+
+			resetBoundaryConditions();
+		}
+
+		void infiniteSpace()
+		{
+			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
+				assert(Position::spaceSize()[i] == std::numeric_limits<double>::infinity());
+				assert(Position::minimalValue()[i] == -std::numeric_limits<double>::infinity());
+			}
+
+			resetBoundaryConditions();
 		}
 
 		void distanceWithProjectionsInfiniteSpace()
 		{
-			resetBoundaryConditions();
-
 			Position firstPosition;
 			Position secondPosition;
 			firstPosition += randomVector();
 			secondPosition += randomVector();
-			Vector difference = static_cast<Vector>(firstPosition) - static_cast<Vector>(secondPosition);
+			Vector difference = firstPosition - secondPosition;
 			auto [distance, projections] = firstPosition.distanceWithProjectionsTo(secondPosition);
 
 			assert(equal(distance, difference.absoluteValue()));
@@ -382,7 +421,7 @@ namespace testPositionClass
 			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
 				conditions[i] = new PeriodicDimension(size);
 			}
-			Position::setBoundaryConditions(conditions);
+			BoundaryConditions::setConditions(conditions);
 
 			Position firstPosition;
 			Position secondPosition;
@@ -400,11 +439,9 @@ namespace testPositionClass
 
 		void normalizeInfiniteSpace()
 		{
-			resetBoundaryConditions();
-
 			Position initial = randomPosition();
 			Position position = initial;
-			position.normalize();
+			position = position.normalize();
 			assert(equal(initial, position));
 
 			resetBoundaryConditions();
@@ -417,17 +454,55 @@ namespace testPositionClass
 			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
 				conditions[i] = new PeriodicDimension(size);
 			}
-			Position::setBoundaryConditions(conditions);
+			BoundaryConditions::setConditions(conditions);
 
 			Position initial = randomPosition<20, 30>();
 			Position position = initial;
-			position.normalize();
+			position = position.normalize();
 			for (std::uint8_t i = 0; i < kDimensionalNumber; ++i)
 			{
 				assert(!equal(initial[i], position[i]));
 			}
 
 			resetBoundaryConditions();
+		}
+	}
+
+	namespace operators
+	{
+		void offsets()
+		{
+			Position initial = randomPosition();
+			Position position = initial;
+			assert(equal(position, initial));
+
+			Vector offset = randomVector();
+			position += offset;
+			assert(!equal(position, initial));
+
+			position -= offset;
+			assert(equal(position, initial));
+		}
+
+		void binaryOffsets()
+		{
+			Position initial = randomPosition();
+			Vector offset = randomVector();
+
+			Position result = initial + offset;
+			assert(!equal(result, initial));
+
+			result = result - offset;
+			assert(equal(result, initial));
+		}
+
+		void difference()
+		{
+			Position first = randomPosition();
+			Vector offset = randomVector();
+			Position second = first + offset;
+
+			assert(equal(second - first, offset));
 		}
 	}
 }
@@ -467,8 +542,14 @@ void testVector()
 	testPositionClass::constructors::cStyleArray();
 	testPositionClass::constructors::defaultCtr();
 
+	testPositionClass::boundaryConditions::spaceSize();
+	testPositionClass::boundaryConditions::infiniteSpace();
 	testPositionClass::boundaryConditions::distanceWithProjectionsInfiniteSpace();
 	testPositionClass::boundaryConditions::distanceWithProjectionsPeriodicSpace();
 	testPositionClass::boundaryConditions::normalizeInfiniteSpace();
 	testPositionClass::boundaryConditions::normalizePeriodicSpace();
+
+	testPositionClass::operators::offsets();
+	testPositionClass::operators::binaryOffsets();
+	testPositionClass::operators::difference();
 }

@@ -1,39 +1,17 @@
+#include <functional>
 #include "PartOfSystem/Cell.hpp"
 
-constexpr std::size_t md::Cell::maximumNeighborCellsNumber()
+const std::vector<std::reference_wrapper<md::Atom>>& md::Cell::getAtoms() const noexcept
 {
-	int result = 1;
-	for (Vector::projection_index i = 0; i < kDimensionalNumber; ++i)
-	{
-		result *= 3;
-	}
-	return result;
+	return atoms;
 }
 
-md::Cell::Cell(const size_t atomsNumber)
-	: neighborCells{}, atoms{ atomsNumber }
+void md::Cell::addAtom(Atom& atom)
 {
-	neighborCells.reserve(maximumNeighborCellsNumber());
+	atoms.push_back(std::ref(atom));
 }
 
-void md::Cell::addNeighborCell(Cell* cell)
+void md::Cell::clear() noexcept
 {
-	if (neighborCells.size() < maximumNeighborCellsNumber())
-	{
-		neighborCells.push_back(cell);
-	}
-	else
-	{
-		throw std::length_error("Maximum number of neighbor Cells Exceeded");
-	}
-}
-
-std::vector<md::Cell*>& md::Cell::getNeighborCells () noexcept 
-{ 
-	return neighborCells; 
-}
-
-const std::vector<md::Cell*>& md::Cell::getNeighborCells () const noexcept 
-{ 
-	return neighborCells; 
+	atoms.clear();
 }

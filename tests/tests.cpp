@@ -22,6 +22,7 @@ int main(int argc, char* argv[])
 			testBoundaryConditions();
 			testMatrix();
 			testAtomPair();
+			testCell();
 			testZip();
 			testDerivative();
 
