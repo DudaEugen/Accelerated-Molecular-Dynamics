@@ -23,6 +23,8 @@ void testMatrix();
 
 void testAtomPair();
 
+void testCell();
+
 void testZip();
 
 void testDerivative();
