@@ -13,15 +13,19 @@ namespace md
         std::array<std::size_t, kDimensionalNumber> cellNumberInDirection;
         Position firstCellPosition;
         Vector cellSize;
+        double cutRadius;
 
-        std::vector<Vector> offsets(std::uint8_t index = 0) const;
+        std::vector<std::array<std::uint8_t, kDimensionalNumber>>
+        offsetIndexes(std::uint8_t dimensionalIndex = 0) const;
+
+        std::vector<Vector> offsets() const;
         void constructCells(
             const std::vector<md::Atom>& atoms,
             const APotential* const potential,
             std::uint8_t extraCells
         );
-        std::size_t defineContainingCellIndex(Position::ConstPass position) const;
         void setContainingCell(Atom& atom);
+        md::Position getCellCenterPositionByIndex(std::size_t index) const;
     public:
         CellCollection(
             std::vector<Atom>& atoms,
@@ -33,15 +37,19 @@ namespace md
             const std::vector<APotential*>& potential,
             std::uint8_t extraCells = 3
         );
-        const Cell& getContainingCell(Position::ConstPass position) const;
-        const Cell& getContainingCell(const Atom& atom) const;
-        const std::vector<std::reference_wrapper<const Cell>> getContainingCellWithNeighbours(
-            Position::ConstPass position
-        ) const;
-        const std::vector<std::reference_wrapper<const Cell>> getContainingCellWithNeighbours(
-            const Atom& atom
-        ) const;
+        std::size_t defineContainingCellIndex(Position::ConstPass position) const;
+        std::size_t getIndex(const Cell& cell) const;
+        const Cell& getCellByIndex(std::size_t index) const noexcept;
+        Cell& getContainingCell(Position::ConstPass position);
+        Cell& getContainingCell(const Atom& atom);
+
+        std::pair<Cell&, std::vector<Cell*>> getCellWithNeighboursByIndex(std::size_t index);
+        std::pair<Cell&, std::vector<Cell*>> getContainingCellWithNeighbours(Position::ConstPass position);
+        std::pair<Cell&, std::vector<Cell*>> getContainingCellWithNeighbours(const Atom& atom);
+
         void refreshCells(std::vector<Atom>& atoms);
+        std::size_t size() const noexcept;
+        double getCutRadius() const noexcept;
     };
 }
 
