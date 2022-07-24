@@ -10,9 +10,9 @@ namespace md
 {
 	class Cell
 	{
-		std::vector<std::reference_wrapper<Atom>> atoms;
+		std::vector<Atom*> atoms;
 	public:
-		const std::vector<std::reference_wrapper<Atom>>& getAtoms() const noexcept;
+		std::vector<Atom*>& getAtoms() noexcept;
 		void addAtom(Atom& atom);
 		void clear() noexcept;
 	};

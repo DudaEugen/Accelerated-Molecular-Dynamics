@@ -6,30 +6,27 @@
 #include "IndexedZip.hpp"
 
 void md::CellCollection::constructCells(
-    const std::vector<md::Atom>& atoms,
-    const md::APotential* const potential,
-    std::uint8_t extraCells
-)
+    const std::vector<md::Atom> &atoms,
+    const md::APotential *const potential,
+    std::uint8_t extraCells)
 {
-    double minSize = potential->getCutRadius();
+    cutRadius = potential->getCutRadius();
 
     const Vector spaceSize = Position::spaceSize();
     for (
-        auto [index, cellProj, spaceProj, number]:
-        utils::zip::IndexedZip(cellSize, spaceSize, cellNumberInDirection)
-    )
+        auto [index, cellProj, spaceProj, number] :
+        utils::zip::IndexedZip(cellSize, spaceSize, cellNumberInDirection))
     {
         if (spaceProj == std::numeric_limits<double>::infinity())
         {
-            cellProj = minSize;
-            const auto& [min, max] = std::minmax_element(
+            cellProj = cutRadius;
+            const auto &[min, max] = std::minmax_element(
                 atoms.begin(),
                 atoms.end(),
-                [index](const Atom& a, const Atom& b)
+                [index](const Atom &a, const Atom &b)
                 {
                     return a.getPosition().normalize()[index] < b.getPosition().normalize()[index];
-                }
-            );
+                });
             double minProj = max->getPosition()[index];
             double maxProj = max->getPosition()[index];
             firstCellPosition[index] = minProj - 0.5 * cellProj - extraCells * cellProj;
@@ -38,7 +35,7 @@ void md::CellCollection::constructCells(
         else
         {
             firstCellPosition[index] = Position::minimalValue()[index];
-            number = static_cast<std::size_t>(std::floor(spaceProj / minSize));
+            number = static_cast<std::size_t>(std::floor(spaceProj / cutRadius));
             cellProj = spaceProj / number;
         }
     }
@@ -54,29 +51,26 @@ void md::CellCollection::constructCells(
 }
 
 md::CellCollection::CellCollection(
-    std::vector<md::Atom>& atoms,
-    const md::APotential* const potential,
-    std::uint8_t extraCells
-)
+    std::vector<md::Atom> &atoms,
+    const md::APotential *const potential,
+    std::uint8_t extraCells)
 {
     constructCells(atoms, potential, extraCells);
     refreshCells(atoms);
 }
 
 md::CellCollection::CellCollection(
-    std::vector<md::Atom>& atoms,
-    const std::vector<md::APotential*>& potential,
-    std::uint8_t extraCells
-)
+    std::vector<md::Atom> &atoms,
+    const std::vector<md::APotential *> &potential,
+    std::uint8_t extraCells)
     : CellCollection{
-        atoms,
-        *std::max_element(
-            potential.begin(),
-            potential.end(),
-            [](const APotential* a, const APotential* b){ return a->getCutRadius() < b->getCutRadius(); }
-        ),
-        extraCells
-    }
+          atoms,
+          *std::max_element(
+              potential.begin(),
+              potential.end(),
+              [](const APotential *a, const APotential *b)
+              { return a->getCutRadius() < b->getCutRadius(); }),
+          extraCells}
 {
 }
 
@@ -99,71 +93,127 @@ std::size_t md::CellCollection::defineContainingCellIndex(md::Position::ConstPas
     return cellIndex;
 }
 
-void md::CellCollection::setContainingCell(md::Atom& atom)
+std::size_t md::CellCollection::getIndex(const md::Cell& cell) const
+{
+    return &cell - cells.data();
+}
+
+void md::CellCollection::setContainingCell(md::Atom &atom)
 {
     std::size_t index = defineContainingCellIndex(atom.getPosition());
     cells[index].addAtom(atom);
 }
 
-const md::Cell& md::CellCollection::getContainingCell(md::Position::ConstPass position) const
+const md::Cell& md::CellCollection::getCellByIndex(std::size_t index) const noexcept
+{
+    return cells[index];
+}
+
+md::Cell& md::CellCollection::getContainingCell(md::Position::ConstPass position)
 {
     return cells[defineContainingCellIndex(position)];
 }
 
-const md::Cell& md::CellCollection::getContainingCell(const md::Atom& atom) const
+md::Cell& md::CellCollection::getContainingCell(const md::Atom &atom)
 {
     return getContainingCell(atom.getPosition());
 }
 
-std::vector<md::Vector> md::CellCollection::offsets(std::uint8_t index) const
+md::Position md::CellCollection::getCellCenterPositionByIndex(std::size_t index) const
 {
-    std::vector<Vector> partialOffsets;
-    if (index == kDimensionalNumber - 1)
+    md::Position position{};
+    std::size_t cellsInLayers = cells.size();
+    for(std::int8_t i = kDimensionalNumber - 1; i >= 0; --i)
     {
-        partialOffsets.push_back(Vector{});
+        cellsInLayers /= cellNumberInDirection[i];
+        position[i] = cellSize[i] * index / cellsInLayers + cellSize[i]/2;
+        index %= cellNumberInDirection[i];
+    }
+    return position.normalize();
+}
+
+std::vector<std::array<std::uint8_t, md::kDimensionalNumber>>
+md::CellCollection::offsetIndexes(std::uint8_t dimensionalIndex) const
+{
+    std::vector<std::array<std::uint8_t, kDimensionalNumber>> partialOffsets;
+    if (dimensionalIndex == kDimensionalNumber - 1)
+    {
+        partialOffsets.push_back({});
     }
     else
     {
-        partialOffsets = offsets(index + 1);
+        partialOffsets = offsetIndexes(dimensionalIndex + 1);
     }
-    std::vector<Vector> result;
+    std::vector<std::array<std::uint8_t, kDimensionalNumber>> result;
     for (std::uint8_t i = -1; i <= 1; ++i)
     {
-        for (Vector::ConstPass partialOffset: partialOffsets)
+        for (auto partialOffset : partialOffsets)
         {
-            Vector offset = partialOffset;
-            offset[index] = i * cellSize[index];
+            std::array<std::uint8_t, kDimensionalNumber> offset = partialOffset;
+            offset[dimensionalIndex] = i;
             result.push_back(offset);
         }
     }
     return result;
 }
 
-const std::vector<std::reference_wrapper<const md::Cell>>
-md::CellCollection::getContainingCellWithNeighbours(Position::ConstPass position) const
+std::vector<md::Vector> md::CellCollection::offsets() const
 {
-    std::vector<std::reference_wrapper<const md::Cell>> result;
-    for (Vector::ConstPass offset: offsets())
+    std::vector<Vector> result;
+    for (auto &offset : offsetIndexes())
     {
-        result.push_back(getContainingCell(position + offset));
+        if (std::any_of(offset.begin(), offset.end(), [](std::uint8_t v){return v != 0;}))
+        {
+            Vector offsetVector;
+            for (std::uint8_t i = 0; i < kDimensionalNumber; ++i)
+            {
+                offsetVector[i] = offset[i] * cellSize[i];
+            }
+            result.push_back(offsetVector);
+        }
     }
     return result;
 }
 
-const std::vector<std::reference_wrapper<const md::Cell>> 
-md::CellCollection::getContainingCellWithNeighbours(const Atom& atom) const
+std::pair<md::Cell &, std::vector<md::Cell*>> md::CellCollection::getCellWithNeighboursByIndex(std::size_t index)
+{
+    return getContainingCellWithNeighbours(getCellCenterPositionByIndex(index));
+}
+
+std::pair<md::Cell &, std::vector<md::Cell*>> md::CellCollection::getContainingCellWithNeighbours(Position::ConstPass position)
+{
+    std::pair<md::Cell &, std::vector<Cell*>> result = {getContainingCell(position), {}};
+
+    for (Vector::ConstPass offset : offsets())
+    {
+        result.second.push_back(&getContainingCell(position + offset));
+    }
+    return result;
+}
+
+std::pair<md::Cell &, std::vector<md::Cell*>> md::CellCollection::getContainingCellWithNeighbours(const Atom &atom)
 {
     return getContainingCellWithNeighbours(atom.getPosition());
 }
 
-void md::CellCollection::refreshCells(std::vector<md::Atom>& atoms)
+void md::CellCollection::refreshCells(std::vector<md::Atom> &atoms)
 {
-    for(auto& cell: cells)
+    for (auto &cell : cells)
     {
         cell.clear();
     }
-    for(auto& atom: atoms)
+    for (auto &atom : atoms)
     {
         setContainingCell(atom);
     }
+}
+
+std::size_t md::CellCollection::size() const noexcept
+{
+    return cells.size();
+}
+
+double md::CellCollection::getCutRadius() const noexcept
+{
+    return cutRadius;
 }
