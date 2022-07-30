@@ -8,17 +8,14 @@ namespace md
 {
 	class MorsePotential : public APairPotential
 	{
-		std::vector<double> De;
-		std::vector<double> re;
-		std::vector<double> a;
+		double De;
+		double re;
+		double a;
 	public:
-		MorsePotential(std::vector<AtomPair>* atomPairs, const std::size_t maxAtomPairTypes);
+		MorsePotential(element el, double De, double re, double a, double cutRadius);
+		MorsePotential(element first, element second, double De, double re, double a, double cutRadius);
 		~MorsePotential() override;
-		void addPairType(element first, element second, 
-				double dissociationEnergy, double equilibriumBondDistance, double a, double cutRadius);	
-		// dissociationEnergy(eV), equilibriumBondDistance(A), a(A^-1), cutradius(A)
-
-		void computeAndSetAccelerations() override;
+		void computeAndSetAccelerations(std::vector<AtomPair>& atomPairs) const override;
 	};
 }
 

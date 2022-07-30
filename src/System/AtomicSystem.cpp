@@ -1,6 +1,6 @@
 #include "System/AtomicSystem.hpp"
 
-md::AtomicSystem::AtomicSystem(const std::vector<Atom>& allAtoms, APotential* atomicPotential)
+md::AtomicSystem::AtomicSystem(const std::vector<Atom>& allAtoms, IPotential* atomicPotential)
     : atoms{ allAtoms }, potential{ atomicPotential }
 {
 }

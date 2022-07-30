@@ -3,7 +3,7 @@
 #define TAHD_CELL_COLLECTION_H
 
 #include "PartOfSystem/Cell.hpp"
-#include "Potential/APotential.hpp"
+#include "Potential/IPotential.hpp"
 
 namespace md
 {
@@ -21,7 +21,7 @@ namespace md
         std::vector<Vector> offsets() const;
         void constructCells(
             const std::vector<md::Atom>& atoms,
-            const APotential* const potential,
+            const IPotential* const potential,
             std::uint8_t extraCells
         );
         void setContainingCell(Atom& atom);
@@ -29,12 +29,12 @@ namespace md
     public:
         CellCollection(
             std::vector<Atom>& atoms,
-            const APotential* const potential,
+            const IPotential* const potential,
             std::uint8_t extraCells = 3
         );
         CellCollection(
             std::vector<Atom>& atoms,
-            const std::vector<APotential*>& potential,
+            const std::vector<IPotential*>& potential,
             std::uint8_t extraCells = 3
         );
         std::size_t defineContainingCellIndex(Position::ConstPass position) const;

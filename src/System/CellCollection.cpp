@@ -7,7 +7,7 @@
 
 void md::CellCollection::constructCells(
     const std::vector<md::Atom> &atoms,
-    const md::APotential *const potential,
+    const md::IPotential *const potential,
     std::uint8_t extraCells)
 {
     cutRadius = potential->getCutRadius();
@@ -52,7 +52,7 @@ void md::CellCollection::constructCells(
 
 md::CellCollection::CellCollection(
     std::vector<md::Atom> &atoms,
-    const md::APotential *const potential,
+    const md::IPotential *const potential,
     std::uint8_t extraCells)
 {
     constructCells(atoms, potential, extraCells);
@@ -61,14 +61,14 @@ md::CellCollection::CellCollection(
 
 md::CellCollection::CellCollection(
     std::vector<md::Atom> &atoms,
-    const std::vector<md::APotential *> &potential,
+    const std::vector<md::IPotential *> &potential,
     std::uint8_t extraCells)
     : CellCollection{
           atoms,
           *std::max_element(
               potential.begin(),
               potential.end(),
-              [](const APotential *a, const APotential *b)
+              [](const IPotential *a, const IPotential *b)
               { return a->getCutRadius() < b->getCutRadius(); }),
           extraCells}
 {

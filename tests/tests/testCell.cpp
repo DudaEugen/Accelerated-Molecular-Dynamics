@@ -1,6 +1,5 @@
 #include "tests.hpp"
 #include "System/CellCollection.hpp"
-#include "Potential/MockPotential.hpp"
 #include "BoundaryConditions/DimensionsCondition/IDimensionsCondition.hpp"
 #include "BoundaryConditions/DimensionsCondition/PeriodicDimension.hpp"
 #include "BoundaryConditions/BoundaryConditions.hpp"

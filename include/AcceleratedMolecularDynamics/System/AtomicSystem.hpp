@@ -3,7 +3,7 @@
 #define TAHD_ATOMIC_SYSTEM_H
 
 #include "Atoms/AtomPair.hpp"
-#include "Potential/APotential.hpp"
+#include "Potential/IPotential.hpp"
 
 namespace md
 {
@@ -11,10 +11,10 @@ namespace md
 	{
 		std::vector<Atom> atoms;
 		std::vector<AtomPair> atomPairs;
-		APotential* potential;
+		IPotential* potential;
 
 	public:
-		AtomicSystem(const std::vector<Atom>& allAtoms, APotential* atomicPotential);
+		AtomicSystem(const std::vector<Atom>& allAtoms, IPotential* atomicPotential);
 		std::vector<AtomPair>& getAtomPairs() noexcept;
 		std::vector<Atom>& getAtoms() noexcept;
 	};
