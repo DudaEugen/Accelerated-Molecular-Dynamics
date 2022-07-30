@@ -8,16 +8,13 @@ namespace md
 {
 	class LennardJonesPotential : public APairPotential
 	{
-		std::vector<double> eps;
-		std::vector<double> rm;
+		double eps;
+		double rm;
 	public:
-		LennardJonesPotential(std::vector<AtomPair>* atomPairs, const std::size_t maxAtomPairTypes);
+		LennardJonesPotential(element first, element second, double eps, double rm, double cutRadius);
+		LennardJonesPotential(element el, double eps, double rm, double cutRadius);
 		~LennardJonesPotential() override;
-		void addPairType(element first, element second, 
-						 double bondEnergy, double bondRadius, double cutRadius);
-		// bondEnergy(eV), bondRadius(A), cutradius(A)
-
-		void computeAndSetAccelerations() override;
+		void computeAndSetAccelerations(std::vector<AtomPair>& atomPairs) const override;
 	};
 }
 

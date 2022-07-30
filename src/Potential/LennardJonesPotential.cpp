@@ -2,37 +2,28 @@
 #include <cmath>
 #include "Zip.hpp"
 
-md::LennardJonesPotential::LennardJonesPotential(std::vector<AtomPair>* atomPairs, 
-												 const std::size_t maxAtomPairTypes)
-	: APairPotential{ atomPairs, maxAtomPairTypes }
+md::LennardJonesPotential::LennardJonesPotential(element first, element second, double eps, double rm, double cutRadius)
+	: APairPotential{first, second, cutRadius}, eps{eps}, rm{rm}
+{
+}
+
+md::LennardJonesPotential::LennardJonesPotential(element el, double eps, double rm, double cutRadius)
+	: APairPotential{el, el, cutRadius}, eps{eps}, rm{rm}
 {
 }
 
 md::LennardJonesPotential::~LennardJonesPotential() {}
 
-void md::LennardJonesPotential::addPairType(element first, element second, 
-											double bondEnergy, double bondRadius, double cutRadius)
-{
-	if (APairPotential::addPairType(first, second))
-	{
-		eps.push_back(bondEnergy);
-		rm.push_back(bondRadius);
-		rc.push_back(cutRadius);
-	}
-}
 
-void md::LennardJonesPotential::computeAndSetAccelerations()
+void md::LennardJonesPotential::computeAndSetAccelerations(std::vector<AtomPair>& atomPairs) const
 {
-	Vector force;
-	const std::vector<AtomPair>& atomPairs = *pairs;
-	for (auto [atomPair, cutRadius, e, r_m]: 
-		 utils::zip::Zip(atomPairs, std::as_const(rc), std::as_const(eps), std::as_const(rm)))
+	for (auto& atomPair: atomPairs)
 	{
 		double distance = atomPair.getDistance();
-		if (distance < cutRadius)
+		if (distance < cutRadius && isCorrectElements(atomPair))
 		{
-			force = 24 * kElementaryCharge * 0.0001 * e *
-				( 1 - 2*pow(r_m/distance, 6) ) * pow(r_m / distance, 8) / std::pow(r_m, 2) *
+			Vector force = 24 * kElementaryCharge * 0.0001 * eps *
+				( 1 - 2*pow(rm/distance, 6) ) * pow(rm / distance, 8) / std::pow(rm, 2) *
 				atomPair.getProjections();
 
 			atomPair.getFirst().addAcceleration(force / atomPair.getFirst().mass);

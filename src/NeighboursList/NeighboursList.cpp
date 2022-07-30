@@ -4,7 +4,7 @@
 
 md::NeighboursList::NeighboursList(
     std::vector<md::Atom>& atoms,
-    const md::APotential* const potential,
+    const md::IPotential* const potential,
     std::size_t subscribersCount,
     std::size_t subscriberIndex,
     std::uint8_t extraCells
@@ -17,7 +17,7 @@ md::NeighboursList::NeighboursList(
 
 md::NeighboursList::NeighboursList(
     std::vector<md::Atom>& atoms,
-    const std::vector<md::APotential*>& potential,
+    const std::vector<md::IPotential*>& potential,
     std::size_t subscribersCount,
     std::size_t subscriberIndex,
     std::uint8_t extraCells

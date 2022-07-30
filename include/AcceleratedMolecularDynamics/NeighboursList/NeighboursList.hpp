@@ -19,14 +19,14 @@ namespace md
     public:
         NeighboursList(
             std::vector<Atom>& atoms,
-            const APotential* const potential,
+            const IPotential* const potential,
             std::size_t subscribersCount = 1,
             std::size_t subscriberIndex = 0,
             std::uint8_t extraCells = 3
         );
         NeighboursList(
             std::vector<Atom>& atoms,
-            const std::vector<APotential*>& potential,
+            const std::vector<IPotential*>& potential,
             std::size_t subscribersCount = 1,
             std::size_t subscriberIndex = 0,
             std::uint8_t extraCells = 3

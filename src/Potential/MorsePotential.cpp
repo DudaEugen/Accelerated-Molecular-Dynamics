@@ -2,37 +2,27 @@
 #include <cmath>
 #include "Zip.hpp"
 
-md::MorsePotential::MorsePotential(std::vector<AtomPair>* atomPairs, const std::size_t maxAtomPairTypes)
-: APairPotential{ atomPairs, maxAtomPairTypes }
+md::MorsePotential::MorsePotential(element first, element second, double De, double re, double a, double cutRadius)
+	: APairPotential{first, second, cutRadius}, De{De}, re{re}, a{a}
+{
+}
+
+md::MorsePotential::MorsePotential(element el, double De, double re, double a, double cutRadius)
+	: MorsePotential{el, el, De, re, a, cutRadius}
 {
 }
 
 md::MorsePotential::~MorsePotential() {}
 
-void md::MorsePotential::addPairType(element first, element second, 
-		double dissociationEnergy, double equilibriumBondDistance, double a, double cutRadius)
+void md::MorsePotential::computeAndSetAccelerations(std::vector<AtomPair>& atomPairs) const
 {
-	if (APairPotential::addPairType(first, second))
-	{
-		De.push_back(dissociationEnergy);
-		re.push_back(equilibriumBondDistance);
-		this->a.push_back(a);
-		rc.push_back(cutRadius);
-	}
-}
-
-void md::MorsePotential::computeAndSetAccelerations()
-{
-	Vector force;
-	const std::vector<AtomPair>& atomPairs = *pairs;
-	for (auto [atomPair, cutRadius, D_e, alpha]: 
-		 utils::zip::Zip(atomPairs, std::as_const(rc), std::as_const(De), std::as_const(a)))
+	for (auto& atomPair: atomPairs)
 	{
 		double distance = atomPair.getDistance();
-		if (distance < cutRadius)
+		if (distance < cutRadius && isCorrectElements(atomPair))
 		{
-			force = 2 * kElementaryCharge * 0.0001 * D_e * alpha * 
-				( exp(-alpha*(distance - cutRadius)) - exp(-2*alpha* (distance - cutRadius)) ) / distance * 
+			Vector force = 2 * kElementaryCharge * 0.0001 * De * a * 
+				( exp(-a*(distance - re)) - exp(-2*a* (distance - re)) ) / distance * 
 				atomPair.getProjections();
 
 			atomPair.getFirst().addAcceleration(force / atomPair.getFirst().mass);

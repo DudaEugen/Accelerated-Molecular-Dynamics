@@ -2,22 +2,21 @@
 #ifndef TAHD_ABSTRACT_PAIR_POTENTIAL_H
 #define TAHD_ABSTRACT_PAIR_POTENTIAL_H
 
-#include "Potential/APotential.hpp"
+#include "Potential/IPotential.hpp"
+#include "Atoms/AtomPair.hpp"
 
 namespace md
 {
-	class APairPotential: public APotential
+	class APairPotential: public IPotential
 	{
 	protected:
-		std::vector<std::size_t> indexes;		// contain indexes of pairTypes for corresponding atomPairs
-		std::vector<std::pair<element, element>> pairTypes;
-		std::vector<double> rc;
+		double cutRadius;
+		std::pair<element, element> elements;
 
-		bool addPairType(const element first, const element second);
+		bool isCorrectElements(const AtomPair& atomPair) const noexcept;
 	public:
-		APairPotential(std::vector<AtomPair>* atomPairs, const std::size_t maxAtomPairTypes = 0);
+		APairPotential(element first, element second, double cutRadius) noexcept;
 		virtual ~APairPotential() = default;
-		void refreshAtomPairs();
 		double getCutRadius() const noexcept override;
 	};
 }

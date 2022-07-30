@@ -1,59 +1,24 @@
 #include "Potential/APairPotential.hpp"
-#include "IndexedZip.hpp"
 
-md::APairPotential::APairPotential(std::vector<AtomPair>* atomPairs, const std::size_t maxAtomPairTypes)
-: APotential{ atomPairs }, indexes {}
+md::APairPotential::APairPotential(element first, element second, double cutRadius) noexcept
+	: elements{first, second}, cutRadius{cutRadius}
 {
-	pairTypes.reserve(maxAtomPairTypes);
 }
 
-bool md::APairPotential::addPairType(const element first, const element second)
+bool md::APairPotential::isCorrectElements(const md::AtomPair& atomPair) const noexcept
 {
-	bool isNew = true;
-	for (const auto& pairType: pairTypes)
-		if (pairType.first == first && pairType.second == second ||
-			pairType.first == second && pairType.second == first)
-		{
-			isNew = false;
-			break;
-		}
-
-	if (isNew)
-		pairTypes.push_back(std::pair(first, second));
-	return isNew;
-}
-
-void md::APairPotential::refreshAtomPairs()
-{
-	indexes.reserve(pairs->size());
-	indexes.resize(0);
-	for (const auto& atomPair : *pairs)
-	{
-		bool notFound = true;
-
-		for (auto [index, pairType]: utils::zip::IndexedZip(std::as_const(pairTypes)))
-		{
-			if (pairType.first == atomPair.getFirst().chemElement && pairType.second == atomPair.getSecond().chemElement ||
-				pairType.first == atomPair.getSecond().chemElement && pairType.second == atomPair.getFirst().chemElement)
-			{
-				indexes.push_back(index);
-				notFound = false;
-				break;
-			}
-		}
-
-		if (notFound)
-		{
-			throw std::runtime_error("not found parameters for atom pair in pair potential");
-		}
-	}
+	return (
+		(
+			atomPair.getFirst().chemElement == elements.first &&
+			atomPair.getSecond().chemElement == elements.second
+		) || (
+			atomPair.getFirst().chemElement == elements.second &&
+			atomPair.getSecond().chemElement == elements.first
+		)
+	);
 }
 
 double md::APairPotential::getCutRadius() const noexcept
 {
-	double max = 0;
-	for (double cutRadius : rc)
-		if (cutRadius > max)
-			max = cutRadius;
-	return max;
+	return cutRadius;
 }

@@ -1,12 +1,12 @@
 #include "Potential/MockPotential.hpp"
 
-MockPotential::MockPotential(const double cutRadius)
-    : APotential{ nullptr }, cutR{ cutRadius }
+MockPotential::MockPotential(double cutRadius)
+    : IPotential{}, cutR{ cutRadius }
 {
 }
 
 MockPotential::~MockPotential() {}
 
-void MockPotential::computeAndSetAccelerations() { return; }
+void MockPotential::computeAndSetAccelerations(std::vector<md::AtomPair>& atomPairs) const { return; }
 
 double MockPotential::getCutRadius() const noexcept { return cutR; }
