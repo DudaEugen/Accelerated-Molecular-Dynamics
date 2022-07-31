@@ -1,4 +1,5 @@
 #include <cmath>
+#include <exception>
 #include "NeighboursList/NeighboursList.hpp"
 #include "IndexedZip.hpp"
 
@@ -12,6 +13,12 @@ md::NeighboursList::NeighboursList(
 )
     : cells{ atoms, minCellLinearSize, extraCells }, cutRadius{cutRadius}
 {
+    if (cutRadius > minCellLinearSize) {
+        throw std::runtime_error("Cut radius can't be bigger than minimum cell size");
+    }
+    if (cutRadius < 0 || minCellLinearSize < 0) {
+        throw std::runtime_error("Cut radius and minimum cell size can't be negative");
+    }
     subscribeToCells(subscribersCount, subscriberIndex);
     refresh(atoms);
 }
