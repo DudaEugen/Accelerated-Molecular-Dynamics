@@ -2,21 +2,34 @@
 #ifndef TAHD_ATOMIC_SYSTEM_H
 #define TAHD_ATOMIC_SYSTEM_H
 
-#include "Atoms/AtomPair.hpp"
+#include <vector>
 #include "Potential/IPotential.hpp"
+#include "Thermostat/AThermostat.hpp"
+#include "NeighboursList/NeighboursList.hpp"
 
 namespace md
 {
 	class AtomicSystem
 	{
 		std::vector<Atom> atoms;
-		std::vector<AtomPair> atomPairs;
-		IPotential* potential;
+		std::vector<IPotential*> potentials;
+		NeighboursList neighboursList;
+		AThermostat* thermostat;
 
 	public:
-		AtomicSystem(const std::vector<Atom>& allAtoms, IPotential* atomicPotential);
-		std::vector<AtomPair>& getAtomPairs() noexcept;
-		std::vector<Atom>& getAtoms() noexcept;
+		AtomicSystem(
+			const std::vector<Atom>& allAtoms,
+			IPotential* atomicPotential,
+			AThermostat* thermostat
+		);
+		AtomicSystem(
+			const std::vector<Atom>& allAtoms,
+			std::vector<IPotential*> potentials,
+			AThermostat* thermostat
+		);
+		~AtomicSystem();
+
+		void run(double time, double timeStep);
 	};
 }
 

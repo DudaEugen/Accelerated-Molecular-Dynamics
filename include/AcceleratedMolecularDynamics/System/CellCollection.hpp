@@ -13,7 +13,6 @@ namespace md
         std::array<std::size_t, kDimensionalNumber> cellNumberInDirection;
         Position firstCellPosition;
         Vector cellSize;
-        double cutRadius;
 
         std::vector<std::array<std::uint8_t, kDimensionalNumber>>
         offsetIndexes(std::uint8_t dimensionalIndex = 0) const;
@@ -21,7 +20,7 @@ namespace md
         std::vector<Vector> offsets() const;
         void constructCells(
             const std::vector<md::Atom>& atoms,
-            const IPotential* const potential,
+            double minCellLinearSize,
             std::uint8_t extraCells
         );
         void setContainingCell(Atom& atom);
@@ -29,12 +28,7 @@ namespace md
     public:
         CellCollection(
             std::vector<Atom>& atoms,
-            const IPotential* const potential,
-            std::uint8_t extraCells = 3
-        );
-        CellCollection(
-            std::vector<Atom>& atoms,
-            const std::vector<IPotential*>& potential,
+            double minCellLinearSize,
             std::uint8_t extraCells = 3
         );
         std::size_t defineContainingCellIndex(Position::ConstPass position) const;
@@ -49,7 +43,7 @@ namespace md
 
         void refreshCells(std::vector<Atom>& atoms);
         std::size_t size() const noexcept;
-        double getCutRadius() const noexcept;
+        Vector getCellSize() const noexcept;
     };
 }
 

@@ -7,11 +7,9 @@
 
 void md::CellCollection::constructCells(
     const std::vector<md::Atom> &atoms,
-    const md::IPotential *const potential,
+    double minCellLinearSize,
     std::uint8_t extraCells)
 {
-    cutRadius = potential->getCutRadius();
-
     const Vector spaceSize = Position::spaceSize();
     for (
         auto [index, cellProj, spaceProj, number] :
@@ -19,7 +17,7 @@ void md::CellCollection::constructCells(
     {
         if (spaceProj == std::numeric_limits<double>::infinity())
         {
-            cellProj = cutRadius;
+            cellProj = minCellLinearSize;
             const auto &[min, max] = std::minmax_element(
                 atoms.begin(),
                 atoms.end(),
@@ -35,7 +33,7 @@ void md::CellCollection::constructCells(
         else
         {
             firstCellPosition[index] = Position::minimalValue()[index];
-            number = static_cast<std::size_t>(std::floor(spaceProj / cutRadius));
+            number = static_cast<std::size_t>(std::floor(spaceProj / minCellLinearSize));
             cellProj = spaceProj / number;
         }
     }
@@ -52,26 +50,11 @@ void md::CellCollection::constructCells(
 
 md::CellCollection::CellCollection(
     std::vector<md::Atom> &atoms,
-    const md::IPotential *const potential,
+    double minCellLinearSize,
     std::uint8_t extraCells)
 {
-    constructCells(atoms, potential, extraCells);
+    constructCells(atoms, minCellLinearSize, extraCells);
     refreshCells(atoms);
-}
-
-md::CellCollection::CellCollection(
-    std::vector<md::Atom> &atoms,
-    const std::vector<md::IPotential *> &potential,
-    std::uint8_t extraCells)
-    : CellCollection{
-          atoms,
-          *std::max_element(
-              potential.begin(),
-              potential.end(),
-              [](const IPotential *a, const IPotential *b)
-              { return a->getCutRadius() < b->getCutRadius(); }),
-          extraCells}
-{
 }
 
 std::size_t md::CellCollection::defineContainingCellIndex(md::Position::ConstPass position) const
@@ -213,7 +196,7 @@ std::size_t md::CellCollection::size() const noexcept
     return cells.size();
 }
 
-double md::CellCollection::getCutRadius() const noexcept
+md::Vector md::CellCollection::getCellSize() const noexcept
 {
-    return cutRadius;
+    return cellSize;
 }

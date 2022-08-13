@@ -1,29 +1,24 @@
 #include <cmath>
+#include <exception>
 #include "NeighboursList/NeighboursList.hpp"
 #include "IndexedZip.hpp"
 
 md::NeighboursList::NeighboursList(
     std::vector<md::Atom>& atoms,
-    const md::IPotential* const potential,
+    double cutRadius,
+    double minCellLinearSize,
     std::size_t subscribersCount,
     std::size_t subscriberIndex,
     std::uint8_t extraCells
 )
-    : cells{ atoms, potential, extraCells }
+    : cells{ atoms, minCellLinearSize, extraCells }, cutRadius{cutRadius}
 {
-    subscribeToCells(subscribersCount, subscriberIndex);
-    refresh(atoms);
-}
-
-md::NeighboursList::NeighboursList(
-    std::vector<md::Atom>& atoms,
-    const std::vector<md::IPotential*>& potential,
-    std::size_t subscribersCount,
-    std::size_t subscriberIndex,
-    std::uint8_t extraCells
-)
-    : cells{ atoms, potential, extraCells }
-{
+    if (cutRadius > minCellLinearSize) {
+        throw std::runtime_error("Cut radius can't be bigger than minimum cell size");
+    }
+    if (cutRadius < 0 || minCellLinearSize < 0) {
+        throw std::runtime_error("Cut radius and minimum cell size can't be negative");
+    }
     subscribeToCells(subscribersCount, subscriberIndex);
     refresh(atoms);
 }
@@ -62,7 +57,7 @@ void md::NeighboursList::refresh(std::vector<md::Atom>& atoms)
     auto updatePairs = [this](Atom& first, Atom& second)
     {
         pairs.emplace_back(first, second);
-        if (pairs.back().getDistance() > cells.getCutRadius())
+        if (pairs.back().getDistance() > cutRadius)
         {
             pairs.pop_back();
         }
@@ -95,4 +90,9 @@ void md::NeighboursList::refresh(std::vector<md::Atom>& atoms)
             }
         }
     }
+}
+
+md::Vector md::NeighboursList::getCellSize() const noexcept
+{
+    return cells.getCellSize();
 }
