@@ -1,6 +1,5 @@
 #include "Potential/LennardJonesPotential.hpp"
 #include <cmath>
-#include "Zip.hpp"
 
 md::LennardJonesPotential::LennardJonesPotential(element first, element second, double eps, double rm, double cutRadius)
 	: APairPotential{first, second, cutRadius}, eps{eps}, rm{rm}

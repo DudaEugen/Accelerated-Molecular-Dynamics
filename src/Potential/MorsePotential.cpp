@@ -1,6 +1,5 @@
 #include "Potential/MorsePotential.hpp"
 #include <cmath>
-#include "Zip.hpp"
 
 md::MorsePotential::MorsePotential(element first, element second, double De, double re, double a, double cutRadius)
 	: APairPotential{first, second, cutRadius}, De{De}, re{re}, a{a}
