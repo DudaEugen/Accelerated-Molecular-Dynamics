@@ -10,17 +10,14 @@ namespace md
 	class AThermostat
 	{
 	protected:
-		double T0;							//Temperature of thermostat
-		double T;							//Temperature of System
-		std::vector<Atom>& atomsOfSystem;   //pointer to all moving atoms of System
+		double temperature;
+
 	public:
-		AtomGroup dissipativeLeyers;
-		AThermostat(std::vector<Atom>& atoms, double temperature) noexcept;
+		AThermostat(double temperature) noexcept;
 		virtual ~AThermostat() = 0;
-		void setTemperature(const double temperature) noexcept;
-		double computeTemperature();		//units of velocity is Angstrom/ps
-		virtual void heatExchange() = 0;
+		void setTemperature(double newTemperature) noexcept;
+		virtual void heatExchange(std::vector<Atom> &atoms) const = 0;
 	};
 }
 
-#endif	//TAHD_ABSTRACT_THERMOSTAT_H
+#endif // TAHD_ABSTRACT_THERMOSTAT_H
