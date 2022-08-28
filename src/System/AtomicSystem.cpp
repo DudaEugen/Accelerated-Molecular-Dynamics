@@ -70,7 +70,7 @@ void md::AtomicSystem::run(double time, double timeStep)
             potential->computeAndSetAccelerations(neighboursList.getPairs());
         }
         // TODO: MPI;
-        // TODO: use thermostat
+        thermostat->heatExchange(atoms);
         for (auto& atom: atoms)
         {
             atom.move(timeStep);
