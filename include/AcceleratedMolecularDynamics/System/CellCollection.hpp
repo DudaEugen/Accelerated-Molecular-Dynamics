@@ -33,7 +33,7 @@ namespace md
         );
         std::size_t defineContainingCellIndex(Position::ConstPass position) const;
         std::size_t getIndex(const Cell& cell) const;
-        const Cell& getCellByIndex(std::size_t index) const noexcept;
+        Cell& getCellByIndex(std::size_t index) noexcept;
         Cell& getContainingCell(Position::ConstPass position);
         Cell& getContainingCell(const Atom& atom);
 

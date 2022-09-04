@@ -93,7 +93,7 @@ void md::Processes::setVelocities(std::vector<Atom>& atoms) const
 	}
 }
 
-void md::Processes::exchangeAccelerations(std::vector<Atom>& atoms, const std::vector<int>& sendCounts) const
+void md::Processes::exchangeAccelerations(std::vector<Atom*>& atoms, const std::vector<int>& sendCounts) const
 {
 
 	std::vector<int> redefinedSendCounts{sendCounts};
@@ -103,21 +103,21 @@ void md::Processes::exchangeAccelerations(std::vector<Atom>& atoms, const std::v
 	}
 
 	auto accelerations = std::vector<double>();
-	for (auto& atom: atoms)
+	for (auto atom: atoms)
 	{
-		for (auto proj: atom.getAcceleration())
+		for (auto proj: atom->getAcceleration())
 		{
 			accelerations.push_back(proj);
 		}
 	}
 	gatherToAll(accelerations, redefinedSendCounts);
-	for (auto [index, atom]: utils::zip::IndexedZip(atoms))
+	for (auto [index, atom]: utils::zip::IndexedZip(std::as_const(atoms)))
 	{
 		Vector acceleration;
 		for (std::uint8_t projIndex = 0; projIndex < kDimensionalNumber; ++projIndex)
 		{
 			acceleration[projIndex] = accelerations[index*kDimensionalNumber + projIndex];
 		}
-		atom.setAcceleration(acceleration);
+		atom->setAcceleration(acceleration);
 	}
 }

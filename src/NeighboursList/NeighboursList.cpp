@@ -1,4 +1,3 @@
-#include <cmath>
 #include <exception>
 #include "NeighboursList/NeighboursList.hpp"
 #include "IndexedZip.hpp"
@@ -7,11 +6,9 @@ md::NeighboursList::NeighboursList(
     std::vector<md::Atom>& atoms,
     double cutRadius,
     double minCellLinearSize,
-    std::size_t subscribersCount,
-    std::size_t subscriberIndex,
     std::uint8_t extraCells
 )
-    : cells{ atoms, minCellLinearSize, extraCells }, cutRadius{cutRadius}
+    : cells{ atoms, minCellLinearSize, extraCells }, cutRadius{cutRadius}, parallelCellGroup{}
 {
     if (cutRadius > minCellLinearSize) {
         throw std::runtime_error("Cut radius can't be bigger than minimum cell size");
@@ -19,22 +16,7 @@ md::NeighboursList::NeighboursList(
     if (cutRadius < 0 || minCellLinearSize < 0) {
         throw std::runtime_error("Cut radius and minimum cell size can't be negative");
     }
-    subscribeToCells(subscribersCount, subscriberIndex);
     refresh(atoms);
-}
-
-void md::NeighboursList::subscribeToCells(std::size_t subscribersCount, std::size_t subscriberIndex)
-{
-    std::size_t cellsCount = static_cast<std::size_t>(std::floor(cells.size() / subscribersCount));
-    firstSubscribedCellIndex = subscriberIndex * cellsCount;
-    if (subscriberIndex != (subscribersCount-1))
-    {
-        subscribedCellsCount = cellsCount;
-    }
-    else
-    {
-        subscribedCellsCount = cells.size() - firstSubscribedCellIndex;
-    }
 }
 
 std::vector<md::AtomPair>& md::NeighboursList::getPairs() noexcept
@@ -52,8 +34,10 @@ void md::NeighboursList::updateDistances()
 
 void md::NeighboursList::refresh(std::vector<md::Atom>& atoms)
 {
-    pairs.clear();
     cells.refreshCells(atoms);
+    parallelCellGroup.refresh(cells);
+
+    pairs.clear();
     auto updatePairs = [this](Atom& first, Atom& second)
     {
         pairs.emplace_back(first, second);
@@ -63,6 +47,8 @@ void md::NeighboursList::refresh(std::vector<md::Atom>& atoms)
         }
     };
 
+    std::size_t firstSubscribedCellIndex = parallelCellGroup.firstSubscriberedCellIndex();
+    std::size_t subscribedCellsCount = parallelCellGroup.subscriberedCellCount();
     for (
         std::size_t cellIndex = firstSubscribedCellIndex;
         cellIndex < firstSubscribedCellIndex + subscribedCellsCount;
