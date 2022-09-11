@@ -30,6 +30,7 @@ namespace md
 		~AtomicSystem();
 
 		void run(double time, double timeStep);
+		void setRandomVelocities();
 	};
 }
 
