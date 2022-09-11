@@ -32,8 +32,16 @@ void md::BerendsenThermostat::heatExchange(std::vector<Atom> &atoms) const
 	double currentTemperature = 2 / kDimensionalNumber * summaryKineticEnergy / (noFrozenAtomsCount * kBoltzmann);
 	double factor = - 0.75 * debyeTemperature * kBoltzmann * 2 * M_PI / kPlank * (1 - temperature / currentTemperature);
 
+
+	Vector summAdditionalAcceleration;
 	for (auto* atom: dissipativeLeyers)
 	{
-		atom->addAcceleration(factor * atom->mass * atom->getVelocity());
+		Vector additionalAcceleration = factor * atom->mass * atom->getVelocity();
+		atom->addAcceleration(additionalAcceleration);
+		summAdditionalAcceleration += additionalAcceleration;
+	}
+	for (auto* atom: dissipativeLeyers)
+	{
+		atom->addAcceleration(-summAdditionalAcceleration / dissipativeLeyers.size());
 	}
 }
