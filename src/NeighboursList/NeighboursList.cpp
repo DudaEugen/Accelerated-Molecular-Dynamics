@@ -82,3 +82,9 @@ md::Vector md::NeighboursList::getCellSize() const noexcept
 {
     return cells.getCellSize();
 }
+
+
+md::ParallelCellGroup& md::NeighboursList::getParallelCellGroups() noexcept
+{
+    return parallelCellGroup;
+}

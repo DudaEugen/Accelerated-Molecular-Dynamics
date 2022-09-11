@@ -27,6 +27,7 @@ namespace md
         void updateDistances();
         void refresh(std::vector<Atom>& atoms);
         Vector getCellSize() const noexcept;
+        ParallelCellGroup& getParallelCellGroups() noexcept;
     };
 }
 
