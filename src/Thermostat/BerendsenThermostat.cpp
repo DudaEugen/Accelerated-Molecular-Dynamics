@@ -1,13 +1,14 @@
+#include <cmath>
 #include "Thermostat/BerendsenThermostat.hpp"
 
 md::BerendsenThermostat::BerendsenThermostat(
 	double temperature,
 	const std::function<bool(const Atom&)>& isAtomFromDissipativeLeyer,
-	double phononsFrequency
+	double debyeTemperature
 ) noexcept
 	: AThermostat{ temperature },
 	isAtomFromDissipativeLeyer{ isAtomFromDissipativeLeyer },
-	phononsFrequency{ phononsFrequency }
+	debyeTemperature{ debyeTemperature }
 {
 }
 
@@ -29,10 +30,10 @@ void md::BerendsenThermostat::heatExchange(std::vector<Atom> &atoms) const
 		}
 	}
 	double currentTemperature = 2 / kDimensionalNumber * summaryKineticEnergy / (noFrozenAtomsCount * kBoltzmann);
-	double factor = - 0.75 * phononsFrequency * kBoltzmann / kPlank * (1 - temperature / currentTemperature);
+	double factor = - 0.75 * debyeTemperature * kBoltzmann * 2 * M_PI / kPlank * (1 - temperature / currentTemperature);
 
 	for (auto* atom: dissipativeLeyers)
 	{
-		atom->addAcceleration(factor * atom->getVelocity());	// TODO: check units
+		atom->addAcceleration(factor * atom->mass * atom->getVelocity());
 	}
 }
