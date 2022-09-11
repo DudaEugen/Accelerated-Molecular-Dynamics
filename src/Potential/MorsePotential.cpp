@@ -20,7 +20,7 @@ void md::MorsePotential::computeAndSetAccelerations(std::vector<AtomPair>& atomP
 		double distance = atomPair.getDistance();
 		if (distance < cutRadius && isCorrectElements(atomPair))
 		{
-			Vector force = 2 * kElementaryCharge * 0.0001 * De * a * 
+			Vector force = 2 * De * a * 
 				( exp(-a*(distance - re)) - exp(-2*a* (distance - re)) ) / distance * 
 				atomPair.getProjections();
 
