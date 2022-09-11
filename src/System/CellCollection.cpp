@@ -87,7 +87,7 @@ void md::CellCollection::setContainingCell(md::Atom &atom)
     cells[index].addAtom(atom);
 }
 
-const md::Cell& md::CellCollection::getCellByIndex(std::size_t index) const noexcept
+md::Cell& md::CellCollection::getCellByIndex(std::size_t index) noexcept
 {
     return cells[index];
 }

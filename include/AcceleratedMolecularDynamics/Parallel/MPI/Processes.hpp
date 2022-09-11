@@ -27,7 +27,7 @@ namespace md
         unsigned getRank() const noexcept;
 
         void setVelocities(std::vector<Atom>& atoms) const;
-        void exchangeAccelerations(std::vector<Atom>& atoms, const std::vector<int>& sendCounts) const;
+        void exchangeAccelerations(std::vector<Atom*>& atoms, const std::vector<int>& sendCounts) const;
     };
 }
 
