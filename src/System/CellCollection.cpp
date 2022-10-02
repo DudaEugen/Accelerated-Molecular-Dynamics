@@ -106,11 +106,12 @@ md::Position md::CellCollection::getCellCenterPositionByIndex(std::size_t index)
 {
     md::Position position{};
     std::size_t cellsInLayers = cells.size();
+    std::size_t remainder = index;
     for(std::int8_t i = kDimensionalNumber - 1; i >= 0; --i)
     {
         cellsInLayers /= cellNumberInDirection[i];
-        position[i] = cellSize[i] * index / cellsInLayers + cellSize[i]/2;
-        index %= cellNumberInDirection[i];
+        position[i] = firstCellPosition[i] + (remainder / cellsInLayers) * cellSize[i] + cellSize[i]/2;
+        remainder %= cellsInLayers;
     }
     return position.normalize();
 }
