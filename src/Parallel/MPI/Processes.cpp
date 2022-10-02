@@ -13,7 +13,7 @@ md::Processes::Processes()
 int md::Processes::defineCount()
 {
 	int count;
-	MPI_Comm_rank(MPI_COMM_WORLD, &count);
+	MPI_Comm_size(MPI_COMM_WORLD, &count);
 	return count;
 }
 
