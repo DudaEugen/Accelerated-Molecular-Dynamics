@@ -10,8 +10,8 @@ std::size_t md::ParallelCellGroup::firstSubscriberedCellIndex(std::size_t proces
 std::size_t md::ParallelCellGroup::subscriberedCellCount(std::size_t processRank) const
 {
     if (processRank != (processes.getCount()-1))
-        return firstSubscriberedCellIndex(processes.getRank() + 1) - firstSubscriberedCellIndex();
-    return totalCellsCount - firstSubscriberedCellIndex();
+        return firstSubscriberedCellIndex(processRank + 1) - firstSubscriberedCellIndex(processRank);
+    return totalCellsCount - firstSubscriberedCellIndex(processRank);
 }
 
 std::size_t md::ParallelCellGroup::firstSubscriberedCellIndex() const
