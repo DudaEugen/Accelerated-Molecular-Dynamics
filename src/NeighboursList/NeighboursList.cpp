@@ -56,12 +56,12 @@ void md::NeighboursList::refresh(std::vector<md::Atom>& atoms)
     )
     {
         auto [cell, neighbours] = cells.getCellWithNeighboursByIndex(cellIndex);
-        auto& atoms = cell.getAtoms();
-        for (auto [index, atom]: utils::zip::IndexedZip(atoms))
+        auto& cellAtoms = cell.getAtoms();
+        for (auto [index, atom]: utils::zip::IndexedZip(cellAtoms))
         {
-            for (std::size_t i = index + 1; i < atoms.size(); ++i)
+            for (std::size_t i = index + 1; i < cellAtoms.size(); ++i)
             {
-                updatePairs(*atom, *(atoms[i]));
+                updatePairs(*atom, *(cellAtoms[i]));
             }
 
             for (auto neighbour: neighbours)
