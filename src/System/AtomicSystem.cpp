@@ -88,10 +88,10 @@ void md::AtomicSystem::run(double time, double timeStep)
 void md::AtomicSystem::setRandomVelocities()
 {
     double mass = std::accumulate(
-        atoms.begin(), atoms.end(), 0, [](double acc, const Atom& atom){ return acc + atom.mass; }
+        atoms.begin(), atoms.end(), .0, [](double acc, const Atom& atom){ return acc + atom.mass; }
     ) / atoms.size();
     double standartDeviation = std::sqrt(kBoltzmann * thermostat->getTemperature() / mass);
-    auto rand =  std::bind( 
+    auto rand = std::bind( 
 		std::normal_distribution<double>(0, standartDeviation), 
 		std::mt19937(std::chrono::system_clock::now().time_since_epoch().count())
 	);
