@@ -4,6 +4,7 @@
 #include <functional>
 #include <random>
 #include "System/AtomicSystem.hpp"
+#include "Parallel/MPI/Processes.hpp"
 
 md::AtomicSystem::AtomicSystem(
 	const std::vector<Atom>& allAtoms,
@@ -105,4 +106,7 @@ void md::AtomicSystem::setRandomVelocities()
         }
         atom.setVelocity(newVelocity);
     }
+
+    Processes processes;
+    processes.setVelocities(atoms);
 }
