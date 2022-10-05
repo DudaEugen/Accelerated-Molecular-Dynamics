@@ -70,6 +70,8 @@ void md::AtomicSystem::run(double time, double timeStep)
             timeForNeighboursRefresh = (minCellSize - cutRadius) / (2 * maxVelocity);
         }
         timeForNeighboursRefresh -= timeStep;
+
+        std::for_each(atoms.begin(), atoms.end(), [](Atom& atom){ atom.setAcceleration(Vector{}); });
         for (auto potential: potentials)
         {
             potential->computeAndSetAccelerations(neighboursList.getPairs());
