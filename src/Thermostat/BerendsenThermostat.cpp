@@ -29,7 +29,7 @@ void md::BerendsenThermostat::heatExchange(std::vector<Atom> &atoms) const
 			}
 		}
 	}
-	double currentTemperature = 2 / kDimensionalNumber * summaryKineticEnergy / (noFrozenAtomsCount * kBoltzmann);
+	double currentTemperature = 2. / kDimensionalNumber * summaryKineticEnergy / (noFrozenAtomsCount * kBoltzmann);
 	double factor = - 0.75 * debyeTemperature * kBoltzmann * 2 * M_PI / kPlank * (1 - temperature / currentTemperature);
 
 
