@@ -53,27 +53,27 @@ void md::AtomicSystem::run(double time, double timeStep)
     Vector cellSize = neighboursList.getCellSize();
     double minCellSize = *std::min_element(cellSize.begin(), cellSize.end());
 
-    double timeForNeighboursRefresh = -1;
+    double maxDistanceForNeighboursRefresh = -1;
     for (double currentTime = 0; currentTime < time; currentTime += timeStep)
     {
-        if (timeForNeighboursRefresh < 0)
+        double maxVelocity = (*std::max_element(
+            atoms.begin(),
+            atoms.end(),
+            [](const Atom& first, const Atom& second)
+            {
+                return first.getVelocity().absoluteValue() < second.getVelocity().absoluteValue();
+            }
+        )).getVelocity().absoluteValue();
+        if (maxDistanceForNeighboursRefresh < 0)
         {
             neighboursList.refresh(atoms);
-            double maxVelocity = (*std::max_element(
-                atoms.begin(),
-                atoms.end(),
-                [](const Atom& first, const Atom& second)
-                {
-                    return first.getVelocity().absoluteValue() < second.getVelocity().absoluteValue();
-                }
-            )).getVelocity().absoluteValue();
-            timeForNeighboursRefresh = (minCellSize - cutRadius) / (2 * maxVelocity); // FIX ME
+            double maxDistanceForNeighboursRefresh = (minCellSize - cutRadius) / 2;
         }
         else
         {
             neighboursList.updateDistances();
         }
-        timeForNeighboursRefresh -= timeStep;
+        maxDistanceForNeighboursRefresh -= 2 * maxVelocity * timeStep;
 
         std::for_each(atoms.begin(), atoms.end(), [](Atom& atom){ atom.setAcceleration(Vector{}); });
         for (auto potential: potentials)
