@@ -67,7 +67,11 @@ void md::AtomicSystem::run(double time, double timeStep)
                     return first.getVelocity().absoluteValue() < second.getVelocity().absoluteValue();
                 }
             )).getVelocity().absoluteValue();
-            timeForNeighboursRefresh = (minCellSize - cutRadius) / (2 * maxVelocity);
+            timeForNeighboursRefresh = (minCellSize - cutRadius) / (2 * maxVelocity); // FIX ME
+        }
+        else
+        {
+            neighboursList.updateDistances();
         }
         timeForNeighboursRefresh -= timeStep;
 
