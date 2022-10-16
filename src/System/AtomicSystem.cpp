@@ -77,7 +77,7 @@ void md::AtomicSystem::run(
         if (maxDistanceForNeighboursRefresh < 0)
         {
             neighboursList.refresh(atoms);
-            double maxDistanceForNeighboursRefresh = (minCellSize - cutRadius) / 2;
+            maxDistanceForNeighboursRefresh = (minCellSize - cutRadius) / 2;
         }
         else
         {
