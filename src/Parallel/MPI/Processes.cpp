@@ -36,7 +36,7 @@ unsigned md::Processes::getRank() const noexcept
 
 void md::Processes::broadcast(std::vector<double>& data) const
 {
-	MPI_Bcast(static_cast<void*>(data.data()), count, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+	MPI_Bcast(static_cast<void*>(data.data()), data.size(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
 }
 
 void md::Processes::gatherToAll(std::vector<double>& data, std::vector<int>& sendCounts) const
