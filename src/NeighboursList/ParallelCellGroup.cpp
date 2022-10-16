@@ -27,7 +27,7 @@ std::size_t md::ParallelCellGroup::subscriberedCellCount() const
 void md::ParallelCellGroup::exchangeAccelerations()
 {
     if (!sendCounts.size() || !atoms.size() || !totalCellsCount)
-        throw std::runtime_error("ParalleCellGroup isn't refreshed");
+        throw std::runtime_error("ParallelCellGroup isn't refreshed");
     processes.exchangeAccelerations(atoms, sendCounts);
 }
 
