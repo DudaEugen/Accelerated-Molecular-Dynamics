@@ -45,6 +45,15 @@ md::AtomicSystem::~AtomicSystem()
 
 void md::AtomicSystem::run(double time, double timeStep)
 {
+    run(time, timeStep, [](std::uint64_t, const std::vector<Atom>&){});
+}
+
+void md::AtomicSystem::run(
+    double time,
+    double timeStep,
+    const std::function<void(std::uint64_t stepIndex, const std::vector<Atom>&)>& watcher
+)
+{
     double cutRadius = (*std::min_element(
         potentials.begin(),
         potentials.end(),
@@ -54,6 +63,7 @@ void md::AtomicSystem::run(double time, double timeStep)
     double minCellSize = *std::min_element(cellSize.begin(), cellSize.end());
 
     double maxDistanceForNeighboursRefresh = -1;
+    std::uint64_t stepIndex = 0;
     for (double currentTime = 0; currentTime < time; currentTime += timeStep)
     {
         double maxVelocity = (*std::max_element(
@@ -89,6 +99,9 @@ void md::AtomicSystem::run(double time, double timeStep)
         {
             atom.move(timeStep);
         }
+
+        watcher(stepIndex, atoms);
+        ++stepIndex;
     }
 }
 

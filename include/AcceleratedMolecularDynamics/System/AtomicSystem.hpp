@@ -2,6 +2,7 @@
 #ifndef TAHD_ATOMIC_SYSTEM_H
 #define TAHD_ATOMIC_SYSTEM_H
 
+#include <functional>
 #include <vector>
 #include "Potential/IPotential.hpp"
 #include "Thermostat/AThermostat.hpp"
@@ -30,6 +31,11 @@ namespace md
 		~AtomicSystem();
 
 		void run(double time, double timeStep);
+		void run(
+			double time,
+			double timeStep,
+			const std::function<void(std::uint64_t stepIndex, const std::vector<Atom>&)>& watcher
+		);
 		void setRandomVelocities();
 	};
 }
