@@ -25,10 +25,10 @@ void md::CellCollection::constructCells(
                 {
                     return a.getPosition().normalize()[index] < b.getPosition().normalize()[index];
                 });
-            double minProj = max->getPosition()[index];
+            double minProj = min->getPosition()[index];
             double maxProj = max->getPosition()[index];
             firstCellPosition[index] = minProj - 0.5 * cellProj - extraCells * cellProj;
-            number = 2 * extraCells + 1 + static_cast<std::size_t>(std::ceil((maxProj - minProj) / cellProj));
+            number = 2 * extraCells + static_cast<std::size_t>(std::ceil((maxProj - minProj) / cellProj));
         }
         else
         {
