@@ -1,7 +1,7 @@
 #include "Potential/MockPotential.hpp"
 
 MockPotential::MockPotential(double cutRadius)
-    : IPotential{}, cutR{ cutRadius }
+    : APotential{}, cutR{ cutRadius }
 {
 }
 

@@ -10,11 +10,12 @@ namespace md
 	{
 		double eps;
 		double rm;
+	protected:
+		void computeAndSetAccelerations(std::vector<AtomPair>& atomPairs) const override;
 	public:
 		LennardJonesPotential(element first, element second, double eps, double rm, double cutRadius);
 		LennardJonesPotential(element el, double eps, double rm, double cutRadius);
 		~LennardJonesPotential() override;
-		void computeAndSetAccelerations(std::vector<AtomPair>& atomPairs) const override;
 	};
 }
 

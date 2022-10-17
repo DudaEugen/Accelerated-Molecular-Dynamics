@@ -2,12 +2,12 @@
 #ifndef TAHD_ABSTRACT_PAIR_POTENTIAL_H
 #define TAHD_ABSTRACT_PAIR_POTENTIAL_H
 
-#include "Potential/IPotential.hpp"
+#include "Potential/APotential.hpp"
 #include "Atoms/AtomPair.hpp"
 
 namespace md
 {
-	class APairPotential: public IPotential
+	class APairPotential: public APotential
 	{
 	protected:
 		double cutRadius;

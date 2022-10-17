@@ -8,7 +8,7 @@
 
 md::AtomicSystem::AtomicSystem(
 	const std::vector<Atom>& allAtoms,
-	IPotential* atomicPotential,
+	APotential* atomicPotential,
 	AThermostat* thermostat
 ) : AtomicSystem{allAtoms, std::vector{atomicPotential}, thermostat}
 {
@@ -16,7 +16,7 @@ md::AtomicSystem::AtomicSystem(
 
 md::AtomicSystem::AtomicSystem(
 	const std::vector<Atom>& allAtoms,
-	std::vector<IPotential*> potentials,
+	std::vector<APotential*> potentials,
 	AThermostat* thermostat
 ) : 
     atoms{allAtoms},
@@ -26,12 +26,12 @@ md::AtomicSystem::AtomicSystem(
         (*std::min_element(
             potentials.begin(),
             potentials.end(),
-            [](const IPotential *a, const IPotential *b){ return a->getCutRadius() < b->getCutRadius(); }
+            [](const APotential *a, const APotential *b){ return a->getCutRadius() < b->getCutRadius(); }
         ))->getCutRadius(),
         1.2 * (*std::min_element(
             potentials.begin(),
             potentials.end(),
-            [](const IPotential *a, const IPotential *b){ return a->getCutRadius() < b->getCutRadius(); }
+            [](const APotential *a, const APotential *b){ return a->getCutRadius() < b->getCutRadius(); }
         ))->getCutRadius()
     },
     thermostat{thermostat}
@@ -57,7 +57,7 @@ void md::AtomicSystem::run(
     double cutRadius = (*std::min_element(
         potentials.begin(),
         potentials.end(),
-        [](const IPotential *a, const IPotential *b){ return a->getCutRadius() < b->getCutRadius(); }
+        [](const APotential *a, const APotential *b){ return a->getCutRadius() < b->getCutRadius(); }
     ))->getCutRadius();
     Vector cellSize = neighboursList.getCellSize();
     double minCellSize = *std::min_element(cellSize.begin(), cellSize.end());
@@ -85,10 +85,9 @@ void md::AtomicSystem::run(
         }
         maxDistanceForNeighboursRefresh -= 2 * maxVelocity * timeStep;
 
-        std::for_each(atoms.begin(), atoms.end(), [](Atom& atom){ atom.setAcceleration(Vector{}); });
         for (auto potential: potentials)
         {
-            potential->computeAndSetAccelerations(neighboursList.getPairs());
+            potential->computeAndSetAccelerations(neighboursList.getPairs(), atoms);
         }
 
         neighboursList.getParallelCellGroups().exchangeAccelerations();

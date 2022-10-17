@@ -2,15 +2,16 @@
 #ifndef TAHD_MOCK_POTENTIAL_H
 #define TAHD_MOCK_POTENTIAL_H
 
-#include "Potential/IPotential.hpp"
+#include "Potential/APotential.hpp"
 
-class MockPotential: public md::IPotential
+class MockPotential: public md::APotential
 {
     double cutR;
+protected:
+    void computeAndSetAccelerations(std::vector<md::AtomPair>& atomPairs) const override;
 public:
     MockPotential(double cutRadius);
     ~MockPotential() override;
-    void computeAndSetAccelerations(std::vector<md::AtomPair>& atomPairs) const override;
 	double getCutRadius() const noexcept override;
 };
 

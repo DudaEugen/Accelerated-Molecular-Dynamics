@@ -7,11 +7,14 @@
 
 namespace md
 {
-	class IPotential
+	class APotential
 	{
-	public:
-		virtual ~IPotential() = 0;
+		void discardAccelerations(std::vector<Atom>& atoms) const;
+	protected:
 		virtual void computeAndSetAccelerations(std::vector<AtomPair>& atomPairs) const = 0;
+	public:
+		virtual ~APotential() = 0;
+		void computeAndSetAccelerations(std::vector<AtomPair>& atomPairs, std::vector<Atom>& atoms) const;
 		virtual double getCutRadius() const noexcept = 0;
 	};
 }

@@ -3,7 +3,7 @@
 #define TAHD_CELL_COLLECTION_H
 
 #include "PartOfSystem/Cell.hpp"
-#include "Potential/IPotential.hpp"
+#include "Potential/APotential.hpp"
 
 namespace md
 {
