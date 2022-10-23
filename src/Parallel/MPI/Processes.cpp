@@ -49,10 +49,10 @@ void md::Processes::gatherToAll(std::vector<double>& data, std::vector<int>& sen
 	
 	std::vector<int> offsets = std::vector<int>(count);
 	std::size_t summOffset = 0;
-	for (auto [count, offset]: utils::zip::Zip(sendCounts, offsets))
+	for (auto [sendCount, offset]: utils::zip::Zip(sendCounts, offsets))
 	{
 		offset = summOffset;
-		summOffset += count;
+		summOffset += sendCount;
 	}
 
 	auto sendBuf = std::vector<double>(sendCounts[rank]);
