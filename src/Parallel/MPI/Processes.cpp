@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <exception>
+#include <numeric>
 #include "mpi.h"
 #include "Parallel/MPI/Processes.hpp"
 #include "IndexedZip.hpp"
@@ -13,7 +14,7 @@ md::Processes::Processes()
 int md::Processes::defineCount()
 {
 	int count;
-	MPI_Comm_rank(MPI_COMM_WORLD, &count);
+	MPI_Comm_size(MPI_COMM_WORLD, &count);
 	return count;
 }
 
@@ -36,20 +37,22 @@ unsigned md::Processes::getRank() const noexcept
 
 void md::Processes::broadcast(std::vector<double>& data) const
 {
-	MPI_Bcast(static_cast<void*>(data.data()), count, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+	MPI_Bcast(static_cast<void*>(data.data()), data.size(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
 }
 
 void md::Processes::gatherToAll(std::vector<double>& data, std::vector<int>& sendCounts) const
 {
 	if (sendCounts.size() != getCount())
 		throw std::runtime_error("Incorrect sendCounts");
+	if (static_cast<std::size_t>(std::reduce(sendCounts.begin(), sendCounts.end(), 0)) != data.size())
+		throw std::runtime_error("Incorrect sendCounts or data size");
 	
 	std::vector<int> offsets = std::vector<int>(count);
 	std::size_t summOffset = 0;
-	for (auto [count, offset]: utils::zip::Zip(sendCounts, offsets))
+	for (auto [sendCount, offset]: utils::zip::Zip(sendCounts, offsets))
 	{
 		offset = summOffset;
-		summOffset += count;
+		summOffset += sendCount;
 	}
 
 	auto sendBuf = std::vector<double>(sendCounts[rank]);

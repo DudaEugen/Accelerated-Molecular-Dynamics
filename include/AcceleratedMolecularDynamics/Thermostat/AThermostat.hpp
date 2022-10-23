@@ -3,7 +3,7 @@
 #define TAHD_ABSTRACT_THERMOSTAT_H
 
 #include <vector>
-#include "PartOfSystem/AtomGroup.hpp"
+#include "Atoms/Atom.hpp"
 
 namespace md
 {
@@ -15,6 +15,7 @@ namespace md
 	public:
 		AThermostat(double temperature) noexcept;
 		virtual ~AThermostat() = 0;
+		double getTemperature() const noexcept;
 		void setTemperature(double newTemperature) noexcept;
 		virtual void heatExchange(std::vector<Atom> &atoms) const = 0;
 	};

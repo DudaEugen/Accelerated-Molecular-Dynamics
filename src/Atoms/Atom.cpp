@@ -52,6 +52,7 @@ md::Atom::Atom(
 md::Atom::Atom(const Atom& other)
 	: Atom{other.chemElement, other.position, other.velocity, other.isFrozen()}
 {
+	acceleration = other.acceleration;
 }
 
 md::Atom::~Atom()

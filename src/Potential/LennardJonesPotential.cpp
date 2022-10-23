@@ -21,7 +21,7 @@ void md::LennardJonesPotential::computeAndSetAccelerations(std::vector<AtomPair>
 		double distance = atomPair.getDistance();
 		if (distance < cutRadius && isCorrectElements(atomPair))
 		{
-			Vector force = 24 * kElementaryCharge * 0.0001 * eps *
+			Vector force = 24 * eps *
 				( 1 - 2*pow(rm/distance, 6) ) * pow(rm / distance, 8) / std::pow(rm, 2) *
 				atomPair.getProjections();
 

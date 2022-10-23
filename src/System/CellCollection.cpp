@@ -25,7 +25,7 @@ void md::CellCollection::constructCells(
                 {
                     return a.getPosition().normalize()[index] < b.getPosition().normalize()[index];
                 });
-            double minProj = max->getPosition()[index];
+            double minProj = min->getPosition()[index];
             double maxProj = max->getPosition()[index];
             firstCellPosition[index] = minProj - 0.5 * cellProj - extraCells * cellProj;
             number = 2 * extraCells + 1 + static_cast<std::size_t>(std::ceil((maxProj - minProj) / cellProj));
@@ -106,11 +106,12 @@ md::Position md::CellCollection::getCellCenterPositionByIndex(std::size_t index)
 {
     md::Position position{};
     std::size_t cellsInLayers = cells.size();
+    std::size_t remainder = index;
     for(std::int8_t i = kDimensionalNumber - 1; i >= 0; --i)
     {
         cellsInLayers /= cellNumberInDirection[i];
-        position[i] = cellSize[i] * index / cellsInLayers + cellSize[i]/2;
-        index %= cellNumberInDirection[i];
+        position[i] = firstCellPosition[i] + (remainder / cellsInLayers) * cellSize[i] + cellSize[i]/2;
+        remainder %= cellsInLayers;
     }
     return position.normalize();
 }

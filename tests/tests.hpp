@@ -9,6 +9,8 @@
 
 void testVector();
 
+void testParallel();
+
 void testElement();
 
 void testMoveAlgorithm();

@@ -3,7 +3,7 @@
 #define TAHD_CELL_COLLECTION_H
 
 #include "PartOfSystem/Cell.hpp"
-#include "Potential/IPotential.hpp"
+#include "Potential/APotential.hpp"
 
 namespace md
 {
@@ -29,7 +29,7 @@ namespace md
         CellCollection(
             std::vector<Atom>& atoms,
             double minCellLinearSize,
-            std::uint8_t extraCells = 3
+            std::uint8_t extraCells = 2
         );
         std::size_t defineContainingCellIndex(Position::ConstPass position) const;
         std::size_t getIndex(const Cell& cell) const;

@@ -9,14 +9,14 @@ namespace md
 {
 	class BerendsenThermostat: public AThermostat
 	{
-        double phononsFrequency;
+        double debyeTemperature;
         const std::function<bool(const Atom&)> isAtomFromDissipativeLeyer;
 
 	public:
 		BerendsenThermostat(
             double temperature,
             const std::function<bool(const Atom&)>& isAtomFromDissipativeLeyer,
-            double phononsFrequency
+            double debyeTemperature
         ) noexcept;
 		~BerendsenThermostat() = default;
 

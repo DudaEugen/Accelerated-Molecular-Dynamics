@@ -7,4 +7,12 @@ md::AThermostat::AThermostat(double temperature) noexcept
 
 md::AThermostat::~AThermostat() = default;
 
-void md::AThermostat::setTemperature(double newTemperature) noexcept { temperature = newTemperature; }
+double md::AThermostat::getTemperature() const noexcept
+{
+	return temperature;
+}
+
+void md::AThermostat::setTemperature(double newTemperature) noexcept
+{ 
+	temperature = newTemperature;
+}

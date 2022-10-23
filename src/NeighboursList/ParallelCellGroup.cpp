@@ -10,8 +10,8 @@ std::size_t md::ParallelCellGroup::firstSubscriberedCellIndex(std::size_t proces
 std::size_t md::ParallelCellGroup::subscriberedCellCount(std::size_t processRank) const
 {
     if (processRank != (processes.getCount()-1))
-        return firstSubscriberedCellIndex(processes.getRank() + 1) - firstSubscriberedCellIndex();
-    return totalCellsCount - firstSubscriberedCellIndex();
+        return firstSubscriberedCellIndex(processRank + 1) - firstSubscriberedCellIndex(processRank);
+    return totalCellsCount - firstSubscriberedCellIndex(processRank);
 }
 
 std::size_t md::ParallelCellGroup::firstSubscriberedCellIndex() const
@@ -27,7 +27,7 @@ std::size_t md::ParallelCellGroup::subscriberedCellCount() const
 void md::ParallelCellGroup::exchangeAccelerations()
 {
     if (!sendCounts.size() || !atoms.size() || !totalCellsCount)
-        throw std::runtime_error("ParalleCellGroup isn't refreshed");
+        throw std::runtime_error("ParallelCellGroup isn't refreshed");
     processes.exchangeAccelerations(atoms, sendCounts);
 }
 
