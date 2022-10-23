@@ -3,7 +3,7 @@
 #define TAHD_ABSTRACT_THERMOSTAT_H
 
 #include <vector>
-#include "PartOfSystem/AtomGroup.hpp"
+#include "Atoms/Atom.hpp"
 
 namespace md
 {
