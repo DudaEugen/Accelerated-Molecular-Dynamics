@@ -66,7 +66,12 @@ void md::NeighboursList::refresh(std::vector<md::Atom>& atoms)
 
             for (auto neighbour: neighbours)
             {
-                if (cells.getIndex(*neighbour) > cellIndex)
+                std::size_t neighbourIndex = cells.getIndex(*neighbour);
+                if (
+                    neighbourIndex > cellIndex ||
+                    neighbourIndex < firstSubscribedCellIndex ||
+                    neighbourIndex >= (firstSubscribedCellIndex + subscribedCellsCount)
+                )
                 {
                     for (auto at: neighbour->getAtoms())
                     {
