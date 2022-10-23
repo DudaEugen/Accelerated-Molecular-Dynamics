@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <exception>
+#include <numeric>
 #include "mpi.h"
 #include "Parallel/MPI/Processes.hpp"
 #include "IndexedZip.hpp"
@@ -43,6 +44,8 @@ void md::Processes::gatherToAll(std::vector<double>& data, std::vector<int>& sen
 {
 	if (sendCounts.size() != getCount())
 		throw std::runtime_error("Incorrect sendCounts");
+	if (static_cast<std::size_t>(std::reduce(sendCounts.begin(), sendCounts.end(), 0)) != data.size())
+		throw std::runtime_error("Incorrect sendCounts or data size");
 	
 	std::vector<int> offsets = std::vector<int>(count);
 	std::size_t summOffset = 0;
