@@ -2,7 +2,7 @@
 #ifndef TAHD_MORZE_POTENTIAL_H
 #define TAHD_MORZE_POTENTIAL_H
 
-#include "Potential/APairPotential.hpp"
+#include "Potential/PairPotential/APairPotential.hpp"
 
 namespace md
 {

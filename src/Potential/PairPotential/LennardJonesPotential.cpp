@@ -1,4 +1,4 @@
-#include "Potential/LennardJonesPotential.hpp"
+#include "Potential/PairPotential/LennardJonesPotential.hpp"
 #include <cmath>
 
 md::LennardJonesPotential::LennardJonesPotential(element first, element second, double eps, double rm, double cutRadius)

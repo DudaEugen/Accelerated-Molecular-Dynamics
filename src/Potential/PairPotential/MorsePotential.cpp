@@ -1,4 +1,4 @@
-#include "Potential/MorsePotential.hpp"
+#include "Potential/PairPotential/MorsePotential.hpp"
 #include <cmath>
 
 md::MorsePotential::MorsePotential(element first, element second, double De, double re, double a, double cutRadius)

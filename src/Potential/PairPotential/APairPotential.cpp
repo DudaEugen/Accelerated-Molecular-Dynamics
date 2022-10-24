@@ -1,4 +1,4 @@
-#include "Potential/APairPotential.hpp"
+#include "Potential/PairPotential/APairPotential.hpp"
 
 md::APairPotential::APairPotential(element first, element second, double cutRadius) noexcept
 	: elements{first, second}, cutRadius{cutRadius}
