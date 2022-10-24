@@ -14,19 +14,10 @@ md::LennardJonesPotential::LennardJonesPotential(element el, double eps, double 
 md::LennardJonesPotential::~LennardJonesPotential() {}
 
 
-void md::LennardJonesPotential::computeAndSetAccelerations(std::vector<AtomPair>& atomPairs) const
+md::Vector md::LennardJonesPotential::computeForce(const AtomPair& pair) const
 {
-	for (auto& atomPair: atomPairs)
-	{
-		double distance = atomPair.getDistance();
-		if (distance < cutRadius && isCorrectElements(atomPair))
-		{
-			Vector force = 24 * eps *
-				( 1 - 2*pow(rm/distance, 6) ) * pow(rm / distance, 8) / std::pow(rm, 2) *
-				atomPair.getProjections();
-
-			atomPair.getFirst().addAcceleration(force / atomPair.getFirst().mass);
-			atomPair.getSecond().addAcceleration(-force / atomPair.getSecond().mass);
-		}
-	}
+	double distance = pair.getDistance();
+	return 24 * eps *
+		(1 - 2*std::pow(rm/distance, 6)) * std::pow(rm / distance, 8) / std::pow(rm, 2) *
+		pair.getProjections();
 }

@@ -87,7 +87,7 @@ void md::AtomicSystem::run(
 
         for (auto potential: potentials)
         {
-            potential->computeAndSetAccelerations(neighboursList.getPairs(), atoms);
+            potential->computeAndSetAccelerations(neighboursList, atoms);
         }
 
         neighboursList.getParallelCellGroups().exchangeAccelerations();

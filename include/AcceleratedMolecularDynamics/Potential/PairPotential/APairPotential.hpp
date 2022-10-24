@@ -3,7 +3,6 @@
 #define TAHD_ABSTRACT_PAIR_POTENTIAL_H
 
 #include "Potential/APotential.hpp"
-#include "Atoms/AtomPair.hpp"
 
 namespace md
 {
@@ -14,6 +13,9 @@ namespace md
 		std::pair<element, element> elements;
 
 		bool isCorrectElements(const AtomPair& atomPair) const noexcept;
+		void computeAndSetAccelerations(NeighboursList& neighboursList) const override;
+		// Compute force that acts on the first atom
+		virtual Vector computeForce(const AtomPair& pair) const = 0;
 	public:
 		APairPotential(element first, element second, double cutRadius) noexcept;
 		virtual ~APairPotential() = default;

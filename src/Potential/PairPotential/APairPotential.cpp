@@ -18,6 +18,22 @@ bool md::APairPotential::isCorrectElements(const md::AtomPair& atomPair) const n
 	);
 }
 
+
+void md::APairPotential::computeAndSetAccelerations(md::NeighboursList& neighboursList) const
+{
+	for (auto& atomPair: neighboursList.getPairs())
+	{
+		double distance = atomPair.getDistance();
+		if (distance < getCutRadius() && isCorrectElements(atomPair))
+		{
+			Vector force = computeForce(atomPair);
+
+			atomPair.getFirst().addAcceleration(force / atomPair.getFirst().mass);
+			atomPair.getSecond().addAcceleration(-force / atomPair.getSecond().mass);
+		}
+	}
+}
+
 double md::APairPotential::getCutRadius() const noexcept
 {
 	return cutRadius;

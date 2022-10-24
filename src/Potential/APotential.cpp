@@ -4,12 +4,12 @@
 md::APotential::~APotential() = default;
 
 void md::APotential::computeAndSetAccelerations(
-    std::vector<AtomPair>& atomPairs,
+    NeighboursList& neighboursList,
     std::vector<Atom>& atoms
 ) const
 {
     discardAccelerations(atoms);
-    computeAndSetAccelerations(atomPairs);
+    computeAndSetAccelerations(neighboursList);
 }
 
 void md::APotential::discardAccelerations(std::vector<Atom>& atoms) const

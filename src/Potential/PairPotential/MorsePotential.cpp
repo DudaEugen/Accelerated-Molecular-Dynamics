@@ -13,19 +13,10 @@ md::MorsePotential::MorsePotential(element el, double De, double re, double a, d
 
 md::MorsePotential::~MorsePotential() {}
 
-void md::MorsePotential::computeAndSetAccelerations(std::vector<AtomPair>& atomPairs) const
+md::Vector md::MorsePotential::computeForce(const AtomPair& pair) const
 {
-	for (auto& atomPair: atomPairs)
-	{
-		double distance = atomPair.getDistance();
-		if (distance < cutRadius && isCorrectElements(atomPair))
-		{
-			Vector force = 2 * De * a * 
-				( exp(-a*(distance - re)) - exp(-2*a* (distance - re)) ) / distance * 
-				atomPair.getProjections();
-
-			atomPair.getFirst().addAcceleration(force / atomPair.getFirst().mass);
-			atomPair.getSecond().addAcceleration(-force / atomPair.getSecond().mass);
-		}
-	}
+	double distance = pair.getDistance();
+	return 2 * De * a * 
+		(std::exp(-a*(distance - re)) - std::exp(-2*a* (distance - re))) / distance * 
+		pair.getProjections();
 }
