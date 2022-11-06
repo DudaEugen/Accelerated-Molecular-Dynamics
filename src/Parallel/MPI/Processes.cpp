@@ -40,13 +40,13 @@ void md::Processes::broadcast(std::vector<double>& data) const
 	MPI_Bcast(static_cast<void*>(data.data()), data.size(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
 }
 
-void md::Processes::gatherToAll(std::vector<double>& data, std::vector<int>& sendCounts) const
+void md::Processes::gatherToAll(std::vector<double>& data, const std::vector<int>& sendCounts) const
 {
 	if (sendCounts.size() != getCount())
 		throw std::runtime_error("Incorrect sendCounts");
 	if (static_cast<std::size_t>(std::reduce(sendCounts.begin(), sendCounts.end(), 0)) != data.size())
 		throw std::runtime_error("Incorrect sendCounts or data size");
-	
+
 	std::vector<int> offsets = std::vector<int>(count);
 	std::size_t summOffset = 0;
 	for (auto [sendCount, offset]: utils::zip::Zip(sendCounts, offsets))
@@ -72,6 +72,11 @@ void md::Processes::gatherToAll(std::vector<double>& data, std::vector<int>& sen
 		MPI_DOUBLE,
 		MPI_COMM_WORLD
 	);
+}
+
+void md::Processes::exchangeValues(std::vector<double>& values, const std::vector<int>& sendCounts) const
+{
+	gatherToAll(values, sendCounts);
 }
 
 void md::Processes::setVelocities(std::vector<Atom>& atoms) const
