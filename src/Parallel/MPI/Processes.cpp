@@ -3,7 +3,6 @@
 #include <numeric>
 #include "mpi.h"
 #include "Parallel/MPI/Processes.hpp"
-#include "IndexedZip.hpp"
 #include "Zip.hpp"
 
 md::Processes::Processes()
@@ -35,9 +34,9 @@ unsigned md::Processes::getRank() const noexcept
 	return static_cast<unsigned>(rank);
 }
 
-void md::Processes::broadcast(std::vector<double>& data) const
+void md::Processes::broadcast(std::vector<double>& data, unsigned root) const
 {
-	MPI_Bcast(static_cast<void*>(data.data()), data.size(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+	MPI_Bcast(static_cast<void*>(data.data()), data.size(), MPI_DOUBLE, root, MPI_COMM_WORLD);
 }
 
 void md::Processes::gatherToAll(std::vector<double>& data, const std::vector<int>& sendCounts) const
@@ -74,58 +73,91 @@ void md::Processes::gatherToAll(std::vector<double>& data, const std::vector<int
 	);
 }
 
-void md::Processes::exchangeValues(std::vector<double>& values, const std::vector<int>& sendCounts) const
+void md::Processes::broadcast(std::vector<Vector>& data, unsigned root) const
 {
-	gatherToAll(values, sendCounts);
+	auto values = convertVectorsToValues(data);
+	broadcast(values, root);
+
+	auto result = convertValuesToVectors(values);
+	std::copy(result.begin(), result.end(), data.begin());
 }
 
-void md::Processes::setVelocities(std::vector<Atom>& atoms) const
+void md::Processes::gatherToAll(std::vector<Vector>& data, const std::vector<int>& sendCounts) const
 {
-	auto velocities = std::vector<double>();
-	for (auto& atom: atoms)
+	std::vector<int> redefinedSendCounts{sendCounts};
+	std::transform(
+		sendCounts.begin(),
+		sendCounts.end(),
+		redefinedSendCounts.begin(),
+		[](int count){ return count * kDimensionalNumber; }
+	);
+
+	auto values = convertVectorsToValues(data);
+	gatherToAll(values, redefinedSendCounts);
+
+	auto result = convertValuesToVectors(values);
+	std::copy(result.begin(), result.end(), data.begin());
+}
+
+std::vector<double> md::Processes::convertVectorsToValues(const std::vector<md::Vector> vectors) const
+{
+	std::vector<double> result;
+	result.reserve(vectors.size() * kDimensionalNumber);
+	for (md::Vector::ConstPass vector: vectors)
 	{
-		for (auto proj: atom.getVelocity())
+		for (double value: vector)
 		{
-			velocities.push_back(proj);
+			result.push_back(value);
 		}
 	}
-	broadcast(velocities);
-	for (auto [index, atom]: utils::zip::IndexedZip(atoms))
+	return result;
+}
+
+std::vector<md::Vector> md::Processes::convertValuesToVectors(const std::vector<double> values) const
+{
+	std::vector<Vector> result;
+	std::size_t vectorsCount = values.size() / kDimensionalNumber;
+	result.reserve(vectorsCount);
+	for (std::size_t index = 0; index < vectorsCount; ++index)
 	{
-		Vector velocity;
+		Vector vector;
 		for (std::uint8_t projIndex = 0; projIndex < kDimensionalNumber; ++projIndex)
 		{
-			velocity[projIndex] = velocities[index*kDimensionalNumber + projIndex];
+			vector[projIndex] = values[index*kDimensionalNumber + projIndex];
 		}
+		result.push_back(vector);
+	}
+	return result;
+}
+
+void md::Processes::setVelocities(std::vector<Atom>& atoms, unsigned root) const
+{
+	std::vector<Vector> velocities(atoms.size());
+	std::transform(
+		atoms.begin(),
+		atoms.end(),
+		velocities.begin(),
+		[](const Atom& atom){ return atom.getVelocity(); }
+	);
+	broadcast(velocities, root);
+	for (auto [atom, velocity]: utils::zip::Zip(atoms, std::as_const(velocities)))
+	{
 		atom.setVelocity(velocity);
 	}
 }
 
 void md::Processes::exchangeAccelerations(std::vector<Atom*>& atoms, const std::vector<int>& sendCounts) const
 {
-
-	std::vector<int> redefinedSendCounts{sendCounts};
-	for (auto& count: redefinedSendCounts)
+	std::vector<Vector> accelerations(atoms.size());
+	std::transform(
+		atoms.begin(),
+		atoms.end(),
+		accelerations.begin(),
+		[](Atom const * const atom){ return atom->getAcceleration(); }
+	);
+	gatherToAll(accelerations, sendCounts);
+	for (auto [atom, acceleration]: utils::zip::Zip(atoms, std::as_const(accelerations)))
 	{
-		count *= kDimensionalNumber;
-	}
-
-	auto accelerations = std::vector<double>();
-	for (auto atom: atoms)
-	{
-		for (auto proj: atom->getAcceleration())
-		{
-			accelerations.push_back(proj);
-		}
-	}
-	gatherToAll(accelerations, redefinedSendCounts);
-	for (auto [index, atom]: utils::zip::IndexedZip(std::as_const(atoms)))
-	{
-		Vector acceleration;
-		for (std::uint8_t projIndex = 0; projIndex < kDimensionalNumber; ++projIndex)
-		{
-			acceleration[projIndex] = accelerations[index*kDimensionalNumber + projIndex];
-		}
 		atom->setAcceleration(acceleration);
 	}
 }

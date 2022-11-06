@@ -46,7 +46,7 @@ void md::ParallelCellGroup::exchangeValues(
             valueVector.push_back(value->second);
         }
     }
-    processes.exchangeValues(valueVector, sendCounts);
+    processes.gatherToAll(valueVector, sendCounts);
     for (auto [index, atom]: utils::zip::IndexedZip(atoms))
     {
         values[atom] = valueVector[index];
