@@ -85,9 +85,10 @@ void md::AtomicSystem::run(
         }
         maxDistanceForNeighboursRefresh -= 2 * maxVelocity * timeStep;
 
+        std::for_each(atoms.begin(), atoms.end(), [](Atom& atom){ atom.setAcceleration(Vector{}); });
         for (auto potential: potentials)
         {
-            potential->computeAndSetAccelerations(neighboursList, atoms);
+            potential->addAccelerations(neighboursList);
         }
 
         neighboursList.getParallelCellGroups().exchangeAccelerations();

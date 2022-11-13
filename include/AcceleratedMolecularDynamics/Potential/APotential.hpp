@@ -9,12 +9,9 @@ namespace md
 {
 	class APotential
 	{
-		void discardAccelerations(std::vector<Atom>& atoms) const;
-	protected:
-		virtual void computeAndSetAccelerations(NeighboursList& neighboursList) const = 0;
 	public:
 		virtual ~APotential() = 0;
-		void computeAndSetAccelerations(NeighboursList& neighboursList, std::vector<Atom>& atoms) const;
+		virtual void addAccelerations(NeighboursList& neighboursList) const = 0;
 		virtual double getCutRadius() const noexcept = 0;
 	};
 }

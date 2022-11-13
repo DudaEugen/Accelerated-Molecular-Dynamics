@@ -19,7 +19,7 @@ bool md::APairPotential::isCorrectElements(const md::AtomPair& atomPair) const n
 }
 
 
-void md::APairPotential::computeAndSetAccelerations(md::NeighboursList& neighboursList) const
+void md::APairPotential::addAccelerations(md::NeighboursList& neighboursList) const
 {
 	for (auto& atomPair: neighboursList.getPairs())
 	{
