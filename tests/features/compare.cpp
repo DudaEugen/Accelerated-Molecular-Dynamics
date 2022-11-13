@@ -24,5 +24,5 @@ bool equalAll(const std::vector<md::Vector>& vectors, int symbolCountAfterPoint)
 	}
 	
 	return equal(vectors[0], vectors[1]) &&
-		   equalAll(std::vector<md::Vector>(vectors.begin() + 2, vectors.end()), symbolCountAfterPoint);
+		   equalAll(std::vector<md::Vector>(vectors.cbegin() + 2, vectors.cend()), symbolCountAfterPoint);
 }

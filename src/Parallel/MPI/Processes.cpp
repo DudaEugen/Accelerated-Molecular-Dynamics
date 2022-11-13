@@ -43,7 +43,7 @@ void md::Processes::gatherToAll(std::vector<double>& data, const std::vector<int
 {
 	if (sendCounts.size() != getCount())
 		throw std::runtime_error("Incorrect sendCounts");
-	if (static_cast<std::size_t>(std::reduce(sendCounts.begin(), sendCounts.end(), 0)) != data.size())
+	if (static_cast<std::size_t>(std::reduce(sendCounts.cbegin(), sendCounts.cend(), 0)) != data.size())
 		throw std::runtime_error("Incorrect sendCounts or data size");
 
 	std::vector<int> offsets = std::vector<int>(count);
@@ -56,8 +56,8 @@ void md::Processes::gatherToAll(std::vector<double>& data, const std::vector<int
 
 	auto sendBuf = std::vector<double>(sendCounts[rank]);
 	std::copy(
-		data.begin() + offsets[rank],
-		(rank == count - 1) ? data.end() : (data.begin() + offsets[rank + 1]),
+		data.cbegin() + offsets[rank],
+		(rank == count - 1) ? data.end() : (data.cbegin() + offsets[rank + 1]),
 		sendBuf.begin()
 	);
 
@@ -79,15 +79,15 @@ void md::Processes::broadcast(std::vector<Vector>& data, unsigned root) const
 	broadcast(values, root);
 
 	auto result = convertValuesToVectors(values);
-	std::copy(result.begin(), result.end(), data.begin());
+	std::copy(result.cbegin(), result.cend(), data.begin());
 }
 
 void md::Processes::gatherToAll(std::vector<Vector>& data, const std::vector<int>& sendCounts) const
 {
 	std::vector<int> redefinedSendCounts{sendCounts};
 	std::transform(
-		sendCounts.begin(),
-		sendCounts.end(),
+		sendCounts.cbegin(),
+		sendCounts.cend(),
 		redefinedSendCounts.begin(),
 		[](int count){ return count * kDimensionalNumber; }
 	);
@@ -96,7 +96,7 @@ void md::Processes::gatherToAll(std::vector<Vector>& data, const std::vector<int
 	gatherToAll(values, redefinedSendCounts);
 
 	auto result = convertValuesToVectors(values);
-	std::copy(result.begin(), result.end(), data.begin());
+	std::copy(result.cbegin(), result.cend(), data.begin());
 }
 
 std::vector<double> md::Processes::convertVectorsToValues(const std::vector<md::Vector> vectors) const
@@ -134,8 +134,8 @@ void md::Processes::setVelocities(std::vector<Atom>& atoms, unsigned root) const
 {
 	std::vector<Vector> velocities(atoms.size());
 	std::transform(
-		atoms.begin(),
-		atoms.end(),
+		atoms.cbegin(),
+		atoms.cend(),
 		velocities.begin(),
 		[](const Atom& atom){ return atom.getVelocity(); }
 	);
