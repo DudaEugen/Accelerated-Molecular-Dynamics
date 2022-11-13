@@ -85,6 +85,7 @@ void md::APotentialEAM::addAccelerations(NeighboursList& neighboursList) const
         }
         embeddingFunctionDerivatives[atom] = embeddingFunctionDerivative()(summ);
     }
+    neighboursList.getParallelCellGroups().exchangeValues(embeddingFunctionDerivatives);
 
     for (auto& [atom, pairs] : embeddingAtoms)
     {
