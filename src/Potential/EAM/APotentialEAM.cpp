@@ -62,6 +62,18 @@ void md::APotentialEAM::addAccelerations(NeighboursList& neighboursList) const
     auto embeddingAtoms = std::unordered_map<
         Atom*, std::vector<std::pair<AtomPair*, const APotentialEAM::AEmbeddingTerm*>>
     >();
+
+    std::size_t firstCellIndex = neighboursList.getParallelCellGroups().firstSubscriberedCellIndex();
+    std::size_t afterLastCellIndex = firstCellIndex + 
+        neighboursList.getParallelCellGroups().subscriberedCellCount();
+    for (std::size_t cellIndex = firstCellIndex; cellIndex < afterLastCellIndex; ++cellIndex )
+    {
+        for (auto atomPtr : neighboursList.getCellAtoms(cellIndex))
+        {
+            embeddingAtoms[atomPtr];
+        }
+    }
+
     for (auto& atomPair: neighboursList.getPairs())
     {
         for (auto embeddingTerm: embeddingTerms)
@@ -69,8 +81,16 @@ void md::APotentialEAM::addAccelerations(NeighboursList& neighboursList) const
             if (embeddingTerm->isCorrectElements(atomPair))
             {
                 auto pair = std::pair(&atomPair, embeddingTerm);
-                embeddingAtoms[&atomPair.getFirst()].push_back(pair);
-                embeddingAtoms[&atomPair.getSecond()].push_back(pair);
+                auto firstIt = embeddingAtoms.find(&atomPair.getFirst());
+                if (firstIt != embeddingAtoms.end())
+                {
+                    firstIt->second.push_back(pair);
+                }
+                auto secondIt = embeddingAtoms.find(&atomPair.getSecond());
+                if (secondIt != embeddingAtoms.end())
+                {
+                    secondIt->second.push_back(pair);
+                }
             }
         }
     }

@@ -83,6 +83,12 @@ void md::NeighboursList::refresh(std::vector<md::Atom>& atoms)
     }
 }
 
+
+std::vector<md::Atom*>& md::NeighboursList::getCellAtoms(std::size_t cellIndex) noexcept
+{
+    return cells.getCellByIndex(cellIndex).getAtoms();
+}
+
 md::Vector md::NeighboursList::getCellSize() const noexcept
 {
     return cells.getCellSize();
