@@ -92,11 +92,13 @@ void md::APotentialEAM::addAccelerations(NeighboursList& neighboursList) const
         for (auto pair: pairs)
         {
             AtomPair& atomPair = *pair.first;
-            Atom& first = atomPair.getFirst();
-            Atom& second = atomPair.getSecond();
-            Vector derivative = pair.second->computeTermDerivative(atomPair);
-            first.addAcceleration(derivative * embeddingFunctionDerivatives[atom] / first.mass);
-            second.addAcceleration(-derivative * embeddingFunctionDerivatives[atom] / second.mass);
+            Atom* first = &atomPair.getFirst();
+            Atom* second = &atomPair.getSecond();
+            double termDerivative = pair.second->computeTermDerivative(atomPair);
+            Vector distanceDerivative = atomPair.getProjections() / atomPair.getDistance();
+            Vector derivative = termDerivative * distanceDerivative * (atom == first ? 1 : -1);
+            atom->addAcceleration(derivative * embeddingFunctionDerivatives[first] / atom->mass);
+            atom->addAcceleration(-derivative * embeddingFunctionDerivatives[second] / atom->mass);
         }
     }
 

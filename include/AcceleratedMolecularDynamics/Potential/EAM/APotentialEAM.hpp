@@ -21,7 +21,7 @@ namespace md
             bool isCorrectElements(const AtomPair& atomPair) const noexcept;
             double getCutRadius() const noexcept;
             virtual double computeTerm(const AtomPair& atomPair) const = 0;
-            virtual Vector computeTermDerivative(const AtomPair& atomPair) const = 0;
+            virtual double computeTermDerivative(const AtomPair& atomPair) const = 0;
         };
 
 		APairPotential const * const pairTerm;
