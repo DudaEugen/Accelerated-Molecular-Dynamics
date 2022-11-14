@@ -30,16 +30,19 @@ double md::APotentialEAM::AEmbeddingTerm::getCutRadius() const noexcept
 md::APotentialEAM::AEmbeddingTerm::~AEmbeddingTerm() = default;
 
 md::APotentialEAM::APotentialEAM(
-    APairPotential* pairPotential,
+    const std::vector<const APairPotential*>& pairPotentials,
     const std::vector<const AEmbeddingTerm*>& terms
 ) noexcept
-    : pairTerm{ pairPotential }, embeddingTerms{ terms }
+    : pairTerms{ pairPotentials }, embeddingTerms{ terms }
 {
 }
 
 md::APotentialEAM::~APotentialEAM()
 {
-    delete pairTerm;
+    for (auto term: pairTerms)
+    {
+        delete term;
+    }
     for (auto term: embeddingTerms)
     {
         delete term;
@@ -56,7 +59,15 @@ double md::APotentialEAM::getCutRadius() const noexcept
             return first->getCutRadius() < second->getCutRadius();
         }
     ))->getCutRadius();
-    return std::max(maxEmbeddingCutRadius, pairTerm->getCutRadius());
+    auto maxPairCutRadius = (*std::max_element(
+        pairTerms.cbegin(),
+        pairTerms.cend(),
+        [](const APairPotential* first, const APairPotential* second)
+        {
+            return first->getCutRadius() < second->getCutRadius();
+        }
+    ))->getCutRadius();
+    return std::max(maxEmbeddingCutRadius, maxPairCutRadius);
 }
 
 void md::APotentialEAM::addAccelerations(NeighboursList& neighboursList) const
@@ -124,5 +135,8 @@ void md::APotentialEAM::addAccelerations(NeighboursList& neighboursList) const
         }
     }
 
-    pairTerm->addAccelerations(neighboursList);
+    for (auto pairTerm: pairTerms)
+    {
+        pairTerm->addAccelerations(neighboursList);
+    }
 }

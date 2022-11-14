@@ -24,13 +24,13 @@ namespace md
             virtual double computeTermDerivative(const AtomPair& atomPair) const = 0;
         };
 
-		APairPotential const * const pairTerm;
+		const std::vector<const APairPotential*> pairTerms;
         const std::vector<const AEmbeddingTerm*> embeddingTerms;
 
         virtual std::function<double(double)> embeddingFunctionDerivative() const = 0;
 	public:
 		APotentialEAM(
-            APairPotential* pairPotential,
+            const std::vector<const APairPotential*>& pairPotentials,
             const std::vector<const AEmbeddingTerm*>& terms
         ) noexcept;
 		virtual ~APotentialEAM();
