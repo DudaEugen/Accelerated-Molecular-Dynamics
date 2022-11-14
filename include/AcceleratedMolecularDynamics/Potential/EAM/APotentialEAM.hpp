@@ -33,7 +33,7 @@ namespace md
             APairPotential* pairPotential,
             const std::vector<const AEmbeddingTerm*>& terms
         ) noexcept;
-		~APotentialEAM();
+		virtual ~APotentialEAM();
         void addAccelerations(NeighboursList& neighboursList) const override;
 		double getCutRadius() const noexcept override;
 	};

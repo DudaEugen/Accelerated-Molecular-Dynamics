@@ -27,6 +27,8 @@ double md::APotentialEAM::AEmbeddingTerm::getCutRadius() const noexcept
     return cutRadius;
 }
 
+md::APotentialEAM::AEmbeddingTerm::~AEmbeddingTerm() = default;
+
 md::APotentialEAM::APotentialEAM(
     APairPotential* pairPotential,
     const std::vector<const AEmbeddingTerm*>& terms
