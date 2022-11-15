@@ -24,13 +24,13 @@ md::AtomicSystem::AtomicSystem(
     neighboursList{
         atoms,
         (*std::min_element(
-            potentials.begin(),
-            potentials.end(),
+            potentials.cbegin(),
+            potentials.cend(),
             [](const APotential *a, const APotential *b){ return a->getCutRadius() < b->getCutRadius(); }
         ))->getCutRadius(),
         1.2 * (*std::min_element(
-            potentials.begin(),
-            potentials.end(),
+            potentials.cbegin(),
+            potentials.cend(),
             [](const APotential *a, const APotential *b){ return a->getCutRadius() < b->getCutRadius(); }
         ))->getCutRadius()
     },
@@ -55,20 +55,20 @@ void md::AtomicSystem::run(
 )
 {
     double cutRadius = (*std::min_element(
-        potentials.begin(),
-        potentials.end(),
+        potentials.cbegin(),
+        potentials.cend(),
         [](const APotential *a, const APotential *b){ return a->getCutRadius() < b->getCutRadius(); }
     ))->getCutRadius();
     Vector cellSize = neighboursList.getCellSize();
-    double minCellSize = *std::min_element(cellSize.begin(), cellSize.end());
+    double minCellSize = *std::min_element(cellSize.cbegin(), cellSize.cend());
 
     double maxDistanceForNeighboursRefresh = -1;
     std::uint64_t stepIndex = 0;
     for (double currentTime = 0; currentTime < time; currentTime += timeStep)
     {
         double maxVelocity = (*std::max_element(
-            atoms.begin(),
-            atoms.end(),
+            atoms.cbegin(),
+            atoms.cend(),
             [](const Atom& first, const Atom& second)
             {
                 return first.getVelocity().absoluteValue() < second.getVelocity().absoluteValue();
@@ -85,9 +85,10 @@ void md::AtomicSystem::run(
         }
         maxDistanceForNeighboursRefresh -= 2 * maxVelocity * timeStep;
 
+        std::for_each(atoms.begin(), atoms.end(), [](Atom& atom){ atom.setAcceleration(Vector{}); });
         for (auto potential: potentials)
         {
-            potential->computeAndSetAccelerations(neighboursList.getPairs(), atoms);
+            potential->addAccelerations(neighboursList);
         }
 
         neighboursList.getParallelCellGroups().exchangeAccelerations();
@@ -107,7 +108,7 @@ void md::AtomicSystem::run(
 void md::AtomicSystem::setRandomVelocities()
 {
     double mass = std::accumulate(
-        atoms.begin(), atoms.end(), .0, [](double acc, const Atom& atom){ return acc + atom.mass; }
+        atoms.cbegin(), atoms.cend(), .0, [](double acc, const Atom& atom){ return acc + atom.mass; }
     ) / atoms.size();
     double standartDeviation = std::sqrt(kBoltzmann * thermostat->getTemperature() / mass);
     auto rand = std::bind( 

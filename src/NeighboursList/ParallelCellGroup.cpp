@@ -1,5 +1,6 @@
 #include <cmath>
 #include "NeighboursList/ParallelCellGroup.hpp"
+#include "IndexedZip.hpp"
 
 std::size_t md::ParallelCellGroup::firstSubscriberedCellIndex(std::size_t processRank) const
 {
@@ -29,6 +30,27 @@ void md::ParallelCellGroup::exchangeAccelerations()
     if (!sendCounts.size() || !atoms.size() || !totalCellsCount)
         throw std::runtime_error("ParallelCellGroup isn't refreshed");
     processes.exchangeAccelerations(atoms, sendCounts);
+}
+
+void md::ParallelCellGroup::exchangeValues(
+    std::unordered_map<Atom*, double>& values
+)
+{
+    std::vector<double> valueVector;
+    valueVector.reserve(atoms.size());
+    for (md::Atom* atomPtr: atoms)
+    {
+        auto value = values.find(atomPtr);
+        if (value != values.end())
+        {
+            valueVector.push_back(value->second);
+        }
+    }
+    processes.gatherToAll(valueVector, sendCounts);
+    for (auto [index, atom]: utils::zip::IndexedZip(atoms))
+    {
+        values[atom] = valueVector[index];
+    }
 }
 
 void md::ParallelCellGroup::refresh(CellCollection& cells)

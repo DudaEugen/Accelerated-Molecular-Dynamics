@@ -7,6 +7,6 @@ MockPotential::MockPotential(double cutRadius)
 
 MockPotential::~MockPotential() {}
 
-void MockPotential::computeAndSetAccelerations(std::vector<md::AtomPair>& atomPairs) const { return; }
+void MockPotential::addAccelerations(md::NeighboursList& neighboursList) const { return; }
 
 double MockPotential::getCutRadius() const noexcept { return cutR; }

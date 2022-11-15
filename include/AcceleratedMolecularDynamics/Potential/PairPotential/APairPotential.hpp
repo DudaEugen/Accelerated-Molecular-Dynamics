@@ -3,20 +3,21 @@
 #define TAHD_ABSTRACT_PAIR_POTENTIAL_H
 
 #include "Potential/APotential.hpp"
-#include "Atoms/AtomPair.hpp"
 
 namespace md
 {
 	class APairPotential: public APotential
 	{
-	protected:
 		double cutRadius;
 		std::pair<element, element> elements;
-
+	protected:
 		bool isCorrectElements(const AtomPair& atomPair) const noexcept;
+		// Compute force that acts on the first atom
+		virtual Vector computeForce(const AtomPair& pair) const = 0;
 	public:
 		APairPotential(element first, element second, double cutRadius) noexcept;
 		virtual ~APairPotential() = default;
+		void addAccelerations(NeighboursList& neighboursList) const override;
 		double getCutRadius() const noexcept override;
 	};
 }

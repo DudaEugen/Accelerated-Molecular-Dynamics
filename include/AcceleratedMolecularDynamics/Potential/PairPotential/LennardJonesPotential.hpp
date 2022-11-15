@@ -2,7 +2,7 @@
 #ifndef TAHD_MORZE_POTENTIAL_H
 #define TAHD_MORZE_POTENTIAL_H
 
-#include "Potential/APairPotential.hpp"
+#include "Potential/PairPotential/APairPotential.hpp"
 
 namespace md
 {
@@ -11,7 +11,7 @@ namespace md
 		double eps;
 		double rm;
 	protected:
-		void computeAndSetAccelerations(std::vector<AtomPair>& atomPairs) const override;
+		Vector computeForce(const AtomPair& pair) const override;
 	public:
 		LennardJonesPotential(element first, element second, double eps, double rm, double cutRadius);
 		LennardJonesPotential(element el, double eps, double rm, double cutRadius);

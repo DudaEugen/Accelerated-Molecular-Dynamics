@@ -2,7 +2,7 @@
 #ifndef TAHD_MORZE_POTENTIAL_H
 #define TAHD_MORZE_POTENTIAL_H
 
-#include "Potential/APairPotential.hpp"
+#include "Potential/PairPotential/APairPotential.hpp"
 
 namespace md
 {
@@ -12,7 +12,7 @@ namespace md
 		double re;
 		double a;
 	protected:
-		void computeAndSetAccelerations(std::vector<AtomPair>& atomPairs) const override;
+		Vector computeForce(const AtomPair& pair) const override;
 	public:
 		MorsePotential(element el, double De, double re, double a, double cutRadius);
 		MorsePotential(element first, element second, double De, double re, double a, double cutRadius);

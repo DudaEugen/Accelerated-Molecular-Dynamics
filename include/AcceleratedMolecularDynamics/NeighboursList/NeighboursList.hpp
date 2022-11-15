@@ -28,6 +28,7 @@ namespace md
         void refresh(std::vector<Atom>& atoms);
         Vector getCellSize() const noexcept;
         ParallelCellGroup& getParallelCellGroups() noexcept;
+        std::vector<Atom*>& getCellAtoms(std::size_t cellIndex) noexcept;
     };
 }
 

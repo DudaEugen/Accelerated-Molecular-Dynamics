@@ -7,11 +7,10 @@
 class MockPotential: public md::APotential
 {
     double cutR;
-protected:
-    void computeAndSetAccelerations(std::vector<md::AtomPair>& atomPairs) const override;
 public:
     MockPotential(double cutRadius);
     ~MockPotential() override;
+    void addAccelerations(md::NeighboursList& neighboursList) const override;
 	double getCutRadius() const noexcept override;
 };
 

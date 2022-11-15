@@ -3,6 +3,7 @@
 #define TAHD_PARALLEL_CELL_GROUP_H
 
 #include <vector>
+#include <unordered_map>
 #include "Parallel/MPI/Processes.hpp"
 #include "System/CellCollection.hpp"
 
@@ -21,6 +22,7 @@ namespace md
         std::size_t firstSubscriberedCellIndex() const;
         std::size_t subscriberedCellCount() const;
         void exchangeAccelerations();
+        void exchangeValues(std::unordered_map<Atom*, double>& values);
         void refresh(CellCollection& cells);
     };
 }

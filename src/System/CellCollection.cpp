@@ -19,8 +19,8 @@ void md::CellCollection::constructCells(
         {
             cellProj = minCellLinearSize;
             const auto &[min, max] = std::minmax_element(
-                atoms.begin(),
-                atoms.end(),
+                atoms.cbegin(),
+                atoms.cend(),
                 [index](const Atom &a, const Atom &b)
                 {
                     return a.getPosition().normalize()[index] < b.getPosition().normalize()[index];
@@ -146,7 +146,7 @@ std::vector<md::Vector> md::CellCollection::offsets() const
     std::vector<Vector> result;
     for (auto &offset : offsetIndexes())
     {
-        if (std::any_of(offset.begin(), offset.end(), [](std::uint8_t v){return v != 0;}))
+        if (std::any_of(offset.cbegin(), offset.cend(), [](std::uint8_t v){return v != 0;}))
         {
             Vector offsetVector;
             for (std::uint8_t i = 0; i < kDimensionalNumber; ++i)
