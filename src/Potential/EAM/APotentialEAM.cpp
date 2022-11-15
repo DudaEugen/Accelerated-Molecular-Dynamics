@@ -128,7 +128,8 @@ void md::APotentialEAM::addAccelerations(NeighboursList& neighboursList) const
             Atom* first = &atomPair.getFirst();
             Atom* second = &atomPair.getSecond();
             double termDerivative = pair.second->computeTermDerivative(atomPair);
-            Vector distanceDerivative = atomPair.getProjections() / atomPair.getDistance();
+            // minus for many-body terms
+            Vector distanceDerivative = -atomPair.getProjections() / atomPair.getDistance();
             Vector derivative = termDerivative * distanceDerivative * (atom == first ? 1 : -1);
             atom->addAcceleration(derivative * embeddingFunctionDerivatives[first] / atom->mass);
             atom->addAcceleration(-derivative * embeddingFunctionDerivatives[second] / atom->mass);
