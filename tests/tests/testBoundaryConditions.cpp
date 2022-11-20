@@ -148,7 +148,7 @@ namespace testBoundaryConditionsClass
     void infiniteSpace()
     {
         IDimensionsCondition* conditions[kDimensionalNumber];
-        for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
+        for (std::uint8_t i = 0; i < kDimensionalNumber; ++i) {
             conditions[i] = new InfiniteDimension();
         }
         BoundaryConditions::setConditions(conditions);
@@ -172,7 +172,7 @@ namespace testBoundaryConditionsClass
     {
         double size = randomDouble<1, 10>();
         IDimensionsCondition* conditions[kDimensionalNumber];
-        for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
+        for (std::uint8_t i = 0; i < kDimensionalNumber; ++i) {
             if (randomDouble<-1, 1>() > 0)
             {
                 conditions[i] = new InfiniteDimension();
@@ -185,12 +185,12 @@ namespace testBoundaryConditionsClass
         Position secondPosition = randomPosition();
 
         Vector firstNormalize;
-        for (uint8_t i = 0; i < kDimensionalNumber; ++i)
+        for (std::uint8_t i = 0; i < kDimensionalNumber; ++i)
         {
             firstNormalize[i] = conditions[i]->normalizeProjection(firstPosition[i]);
         }
         Vector difference;
-        for (uint8_t i = 0; i < kDimensionalNumber; ++i)
+        for (std::uint8_t i = 0; i < kDimensionalNumber; ++i)
         {
             difference[i] = conditions[i]->normalizeProjectionsDifference(
                 firstPosition[i], secondPosition[i]

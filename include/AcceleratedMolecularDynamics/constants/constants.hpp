@@ -2,11 +2,12 @@
 #ifndef TAHD_CONSTANTS_H
 #define TAHD_CONSTANTS_H
 
+#include <cstdint>
 #include <array>
 
 namespace md
 {
-	inline constexpr uint8_t kDimensionalNumber = 3;
+	inline constexpr std::uint8_t kDimensionalNumber = 3;
 
 	// Generate mass for random isotope of element for an any atom if false
 	// The probabilities for each isotope are determined in Elements.hpp
@@ -14,7 +15,7 @@ namespace md
 
 	namespace constants_implementation
 	{
-		inline constexpr uint8_t kMaxSizeForValuePassing = 3;
+		inline constexpr std::uint8_t kMaxSizeForValuePassing = 3;
 
 		template<class T, class R>
 		constexpr std::enable_if_t<

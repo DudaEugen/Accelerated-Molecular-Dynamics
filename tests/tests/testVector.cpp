@@ -355,7 +355,7 @@ namespace testPositionClass
 		{
 			Vector space = randomVector<1, 100>();
 			IDimensionsCondition* conditions[kDimensionalNumber];
-			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
+			for (std::uint8_t i = 0; i < kDimensionalNumber; ++i) {
 				conditions[i] = new PeriodicDimension(space[i]);
 			}
 			BoundaryConditions::setConditions(conditions);
@@ -369,7 +369,7 @@ namespace testPositionClass
 		{
 			Vector values = randomVector();
 			IDimensionsCondition* conditions[kDimensionalNumber];
-			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
+			for (std::uint8_t i = 0; i < kDimensionalNumber; ++i) {
 				conditions[i] = new PeriodicDimension(randomDouble(), values[i]);
 			}
 			BoundaryConditions::setConditions(conditions);
@@ -379,7 +379,7 @@ namespace testPositionClass
 			resetBoundaryConditions();
 
 			IDimensionsCondition* newConditions[kDimensionalNumber];
-			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
+			for (std::uint8_t i = 0; i < kDimensionalNumber; ++i) {
 				newConditions[i] = new PeriodicDimension(randomDouble());
 			}
 			BoundaryConditions::setConditions(newConditions);
@@ -391,7 +391,7 @@ namespace testPositionClass
 
 		void infiniteSpace()
 		{
-			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
+			for (std::uint8_t i = 0; i < kDimensionalNumber; ++i) {
 				assert(Position::spaceSize()[i] == std::numeric_limits<double>::infinity());
 				assert(Position::minimalValue()[i] == -std::numeric_limits<double>::infinity());
 			}
@@ -418,7 +418,7 @@ namespace testPositionClass
 		{
 			double size = randomDouble<1, 10>();
 			IDimensionsCondition* conditions[kDimensionalNumber];
-			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
+			for (std::uint8_t i = 0; i < kDimensionalNumber; ++i) {
 				conditions[i] = new PeriodicDimension(size);
 			}
 			BoundaryConditions::setConditions(conditions);
@@ -451,7 +451,7 @@ namespace testPositionClass
 		{
 			double size = randomDouble<1, 10>();
 			IDimensionsCondition* conditions[kDimensionalNumber];
-			for (uint8_t i = 0; i < kDimensionalNumber; ++i) {
+			for (std::uint8_t i = 0; i < kDimensionalNumber; ++i) {
 				conditions[i] = new PeriodicDimension(size);
 			}
 			BoundaryConditions::setConditions(conditions);
