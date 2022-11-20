@@ -22,9 +22,8 @@ md::AcklandPotential::PairTerm::PairTerm(
 {
 }
 
-double md::AcklandPotential::PairTerm::derivative(const AtomPair& atomPair) const
+double md::AcklandPotential::PairTerm::derivative(double distance) const
 {
-    double distance = atomPair.getDistance();
     return std::accumulate(
         parameters.cbegin(),
         parameters.cend(),
@@ -61,9 +60,8 @@ md::AcklandPotential::EmbeddingTerm::EmbeddingTerm(
 {
 }
 
-double md::AcklandPotential::EmbeddingTerm::computeTerm(const AtomPair& atomPair) const
+double md::AcklandPotential::EmbeddingTerm::computeTerm(double distance) const
 {
-    double distance = atomPair.getDistance();
     return std::accumulate(
         parameters.cbegin(),
         parameters.cend(),
@@ -80,9 +78,8 @@ double md::AcklandPotential::EmbeddingTerm::computeTerm(const AtomPair& atomPair
     );
 }
 
-double md::AcklandPotential::EmbeddingTerm::computeTermDerivative(const AtomPair& atomPair) const
+double md::AcklandPotential::EmbeddingTerm::computeTermDerivative(double distance) const
 {
-    double distance = atomPair.getDistance();
     return std::accumulate(
         parameters.cbegin(),
         parameters.cend(),

@@ -13,8 +13,7 @@ md::MorsePotential::MorsePotential(element el, double De, double re, double a, d
 
 md::MorsePotential::~MorsePotential() {}
 
-double md::MorsePotential::derivative(const AtomPair& pair) const
+double md::MorsePotential::derivative(double distance) const
 {
-	double distance = pair.getDistance();
 	return 2*De*a*(std::exp(-a*(distance - re)) - std::exp(-2*a* (distance - re)));
 }

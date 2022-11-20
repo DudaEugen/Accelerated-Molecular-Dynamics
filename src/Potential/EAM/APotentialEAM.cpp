@@ -114,7 +114,7 @@ void md::APotentialEAM::addAccelerations(NeighboursList& neighboursList) const
         double summ = 0;
         for (auto pair: pairs)
         {
-            summ += pair.second->computeTerm(*pair.first);
+            summ += pair.second->computeTerm(pair.first->getDistance());
         }
         embeddingFunctionDerivatives[atom] = embeddingFunctionDerivative()(summ);
     }
@@ -127,7 +127,7 @@ void md::APotentialEAM::addAccelerations(NeighboursList& neighboursList) const
             AtomPair& atomPair = *pair.first;
             Atom* first = &atomPair.getFirst();
             Atom* second = &atomPair.getSecond();
-            double termDerivative = pair.second->computeTermDerivative(atomPair);
+            double termDerivative = pair.second->computeTermDerivative(atomPair.getDistance());
             // minus for many-body terms
             Vector distanceDerivative = -atomPair.getProjections() / atomPair.getDistance();
             Vector derivative = termDerivative * distanceDerivative * (atom == first ? 1 : -1);

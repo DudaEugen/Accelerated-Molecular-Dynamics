@@ -12,7 +12,7 @@ namespace md
 		double re;
 		double a;
 	protected:
-		double derivative(const AtomPair& pair) const override;
+		double derivative(double distance) const override;
 	public:
 		MorsePotential(element el, double De, double re, double a, double cutRadius);
 		MorsePotential(element first, element second, double De, double re, double a, double cutRadius);

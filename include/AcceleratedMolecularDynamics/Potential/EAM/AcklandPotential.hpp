@@ -29,7 +29,7 @@ namespace md
             std::array<Parameters, 6> parameters;
 
         protected:
-            double derivative(const AtomPair& pair) const override;
+            double derivative(double distance) const override;
         public:
             PairTerm(element first, element second, const std::array<Parameters, 6>& parameters);
             ~PairTerm() override;
@@ -47,8 +47,8 @@ namespace md
             );
             ~EmbeddingTerm() override;
 
-            double computeTerm(const AtomPair& atomPair) const override;
-            double computeTermDerivative(const AtomPair& atomPair) const override;
+            double computeTerm(double distance) const override;
+            double computeTermDerivative(double distance) const override;
         };
 
         std::function<double(double)> embeddingFunctionDerivative() const override;
