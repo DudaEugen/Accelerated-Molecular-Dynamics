@@ -12,6 +12,7 @@ namespace md
 		double re;
 		double a;
 	protected:
+		double energy(double distance) const override;
 		double derivative(double distance) const override;
 	public:
 		MorsePotential(element el, double De, double re, double a, double cutRadius);

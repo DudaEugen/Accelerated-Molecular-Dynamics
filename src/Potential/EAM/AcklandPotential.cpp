@@ -22,6 +22,24 @@ md::AcklandPotential::PairTerm::PairTerm(
 {
 }
 
+double md::AcklandPotential::PairTerm::energy(double distance) const
+{
+	return std::accumulate(
+        parameters.cbegin(),
+        parameters.cend(),
+        .0,
+        [distance](double acc, const Parameters& params)
+        {
+            double diff = params.distance - distance;
+            if (diff < 0)
+            {
+                return acc;
+            }
+            return acc + params.factor * std::pow(diff, 3);
+        } 
+    );
+}
+
 double md::AcklandPotential::PairTerm::derivative(double distance) const
 {
     return std::accumulate(

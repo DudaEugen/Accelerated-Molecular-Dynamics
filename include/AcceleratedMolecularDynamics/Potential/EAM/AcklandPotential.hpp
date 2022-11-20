@@ -29,6 +29,7 @@ namespace md
             std::array<Parameters, 6> parameters;
 
         protected:
+            double energy(double distance) const override;
             double derivative(double distance) const override;
         public:
             PairTerm(element first, element second, const std::array<Parameters, 6>& parameters);

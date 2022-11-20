@@ -13,6 +13,11 @@ md::LennardJonesPotential::LennardJonesPotential(element el, double eps, double 
 
 md::LennardJonesPotential::~LennardJonesPotential() {}
 
+double md::LennardJonesPotential::energy(double distance) const
+{
+	double param = std::pow(rm/distance, 6);
+	return 4*eps*param*(param - 1);
+}
 
 double md::LennardJonesPotential::derivative(double distance) const
 {

@@ -13,6 +13,12 @@ md::MorsePotential::MorsePotential(element el, double De, double re, double a, d
 
 md::MorsePotential::~MorsePotential() {}
 
+
+double md::MorsePotential::energy(double distance) const
+{
+	return De*(std::exp(-2*a*(distance - re)) - std::exp(-a*(distance - re)));
+}
+
 double md::MorsePotential::derivative(double distance) const
 {
 	return 2*De*a*(std::exp(-a*(distance - re)) - std::exp(-2*a* (distance - re)));

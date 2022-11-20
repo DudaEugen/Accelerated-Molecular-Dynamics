@@ -12,6 +12,7 @@ namespace md
 		std::pair<element, element> elements;
 	protected:
 		bool isCorrectElements(const AtomPair& atomPair) const noexcept;
+		virtual double energy(double distance) const = 0;
 		virtual double derivative(double distance) const = 0;
 	public:
 		APairPotential(element first, element second, double cutRadius) noexcept;
