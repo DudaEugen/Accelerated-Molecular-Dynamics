@@ -14,10 +14,8 @@ md::LennardJonesPotential::LennardJonesPotential(element el, double eps, double 
 md::LennardJonesPotential::~LennardJonesPotential() {}
 
 
-md::Vector md::LennardJonesPotential::computeForce(const AtomPair& pair) const
+double md::LennardJonesPotential::derivative(const AtomPair& pair) const
 {
 	double distance = pair.getDistance();
-	return 24 * eps *
-		(1 - 2*std::pow(rm/distance, 6)) * std::pow(rm / distance, 8) / std::pow(rm, 2) *
-		pair.getProjections();
+	return 24*eps*(1 - 2*std::pow(rm/distance, 6)) * std::pow(rm / distance, 7) / rm;
 }

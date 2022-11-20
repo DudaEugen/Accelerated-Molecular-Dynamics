@@ -29,7 +29,7 @@ namespace md
             std::array<Parameters, 6> parameters;
 
         protected:
-            Vector computeForce(const AtomPair& pair) const override;
+            double derivative(const AtomPair& pair) const override;
         public:
             PairTerm(element first, element second, const std::array<Parameters, 6>& parameters);
             ~PairTerm() override;

@@ -26,7 +26,7 @@ void md::APairPotential::addAccelerations(md::NeighboursList& neighboursList) co
 		double distance = atomPair.getDistance();
 		if (distance < getCutRadius() && isCorrectElements(atomPair))
 		{
-			Vector force = computeForce(atomPair);
+			Vector force = derivative(atomPair) * atomPair.getProjections()/atomPair.getDistance();
 
 			atomPair.getFirst().addAcceleration(force / atomPair.getFirst().mass);
 			atomPair.getSecond().addAcceleration(-force / atomPair.getSecond().mass);

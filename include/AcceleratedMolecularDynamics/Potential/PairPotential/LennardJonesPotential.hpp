@@ -11,7 +11,7 @@ namespace md
 		double eps;
 		double rm;
 	protected:
-		Vector computeForce(const AtomPair& pair) const override;
+		double derivative(const AtomPair& pair) const override;
 	public:
 		LennardJonesPotential(element first, element second, double eps, double rm, double cutRadius);
 		LennardJonesPotential(element el, double eps, double rm, double cutRadius);

@@ -22,10 +22,10 @@ md::AcklandPotential::PairTerm::PairTerm(
 {
 }
 
-md::Vector md::AcklandPotential::PairTerm::computeForce(const AtomPair& atomPair) const
+double md::AcklandPotential::PairTerm::derivative(const AtomPair& atomPair) const
 {
     double distance = atomPair.getDistance();
-    double derivative = std::accumulate(
+    return std::accumulate(
         parameters.cbegin(),
         parameters.cend(),
         .0,
@@ -39,7 +39,6 @@ md::Vector md::AcklandPotential::PairTerm::computeForce(const AtomPair& atomPair
             return acc + 3*params.factor * std::pow(diff, 2);
         } 
     );
-    return derivative * atomPair.getProjections() / atomPair.getDistance();
 }
 
 md::AcklandPotential::EmbeddingTerm::~EmbeddingTerm() {}
