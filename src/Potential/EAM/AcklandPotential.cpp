@@ -114,6 +114,11 @@ double md::AcklandPotential::EmbeddingTerm::computeTermDerivative(double distanc
     );
 }
 
+std::function<double(double)> md::AcklandPotential::embeddingFunction() const
+{
+    return [](double value){ return std::sqrt(value); };
+}
+
 std::function<double(double)> md::AcklandPotential::embeddingFunctionDerivative() const
 {
     return [](double value){ return 0.5/std::sqrt(value); };

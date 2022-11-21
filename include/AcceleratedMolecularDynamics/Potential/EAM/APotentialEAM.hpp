@@ -27,6 +27,7 @@ namespace md
 		const std::vector<const APairPotential*> pairTerms;
         const std::vector<const AEmbeddingTerm*> embeddingTerms;
 
+        virtual std::function<double(double)> embeddingFunction() const = 0;
         virtual std::function<double(double)> embeddingFunctionDerivative() const = 0;
 	public:
 		APotentialEAM(

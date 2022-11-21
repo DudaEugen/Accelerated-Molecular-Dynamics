@@ -52,6 +52,7 @@ namespace md
             double computeTermDerivative(double distance) const override;
         };
 
+        std::function<double(double)> embeddingFunction() const override;
         std::function<double(double)> embeddingFunctionDerivative() const override;
 
         static std::vector<const APairPotential*> constractPairTerms(
