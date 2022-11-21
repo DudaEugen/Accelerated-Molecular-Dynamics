@@ -2,7 +2,6 @@
 #ifndef TAHD_BASE_FUNCTION_H
 #define TAHD_BASE_FUNCTION_H
 
-#include <functional>
 #include "CalculationOfDerivatives/Functions.hpp"
 
 namespace md
@@ -10,8 +9,8 @@ namespace md
     class IBaseFunction
     {
     public:
-        virtual std::function<double(double)> function() const = 0;
-        virtual std::function<double(double)> derivative() const = 0;
+        virtual double function(double value) const = 0;
+        virtual double derivative(double value) const = 0;
         virtual ~IBaseFunction() = 0;
     };
 
@@ -29,13 +28,13 @@ namespace md
             func{ utils::fcd::setParameters(function, params) }
         {
         }
-        std::function<double(double)> function() const override
+        double function(double value) const override
         {
-            return func;
+            return func(value);
         }
-        std::function<double(double)> derivative() const override
+        double derivative(double value) const override
         {
-            return utils::fcd::derivative(func);
+            return utils::fcd::derivative(func)(value);
         }
     };
 }
