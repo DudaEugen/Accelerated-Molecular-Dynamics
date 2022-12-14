@@ -14,17 +14,18 @@ namespace md
         virtual ~IBaseFunction() = 0;
     };
 
-    template<class T, class U>
-    struct Function: public IBaseFunction
+    template<class T>
+    class Function: public IBaseFunction
     {
     private:
-        U func;
+        using argType = decltype(utils::fcd::setParameters(std::declval<T>(), std::vector<double>()));
+        argType func;
 
     public:
-        Function(T function): func{ function }
+        Function(const T& function): func{ function }
         {
         }
-        Function(T function, const std::vector<double>& params): 
+        Function(const T& function, const std::vector<double>& params): 
             func{ utils::fcd::setParameters(function, params) }
         {
         }
@@ -37,6 +38,20 @@ namespace md
             return utils::fcd::derivative(func)(value);
         }
     };
+
+    inline constexpr auto P0 = utils::fcd::Parameter<0>();
+    inline constexpr auto P1 = utils::fcd::Parameter<1>();
+    inline constexpr auto P2 = utils::fcd::Parameter<2>();
+    inline constexpr auto P3 = utils::fcd::Parameter<2>();
+    inline constexpr auto P4 = utils::fcd::Parameter<2>();
+    inline constexpr auto P5 = utils::fcd::Parameter<2>();
+    inline constexpr auto P6 = utils::fcd::Parameter<2>();
+    inline constexpr auto P7 = utils::fcd::Parameter<2>();
+    inline constexpr auto P8 = utils::fcd::Parameter<2>();
+    inline constexpr auto P9 = utils::fcd::Parameter<2>();
+    inline constexpr auto P10 = utils::fcd::Parameter<2>();
+    inline constexpr auto P11 = utils::fcd::Parameter<2>();
+    inline constexpr auto X = utils::fcd::Variable();
 }
 
 #endif	//TAHD_BASE_FUNCTION_H

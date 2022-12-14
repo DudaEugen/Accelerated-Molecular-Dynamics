@@ -12,50 +12,29 @@ md::AcklandPotential::PairTerm::PairTerm(
     : APairPotential{
         first,
         second,
+        new md::Function(
+            P0*utils::fcd::power<3>(X-P1)*utils::fcd::heavisideStep(X-P1) + 
+            P2*utils::fcd::power<3>(X-P3)*utils::fcd::heavisideStep(X-P3) + 
+            P4*utils::fcd::power<3>(X-P5)*utils::fcd::heavisideStep(X-P5) + 
+            P6*utils::fcd::power<3>(X-P7)*utils::fcd::heavisideStep(X-P7) + 
+            P8*utils::fcd::power<3>(X-P9)*utils::fcd::heavisideStep(X-P9) + 
+            P10*utils::fcd::power<3>(X-P11)*utils::fcd::heavisideStep(X-P11),
+            std::vector<double>({
+                parameters[0].factor, parameters[0].distance,
+                parameters[1].factor, parameters[1].distance,
+                parameters[2].factor, parameters[2].distance,
+                parameters[3].factor, parameters[3].distance,
+                parameters[4].factor, parameters[4].distance,
+                parameters[5].factor, parameters[5].distance
+            })
+        ),
         std::max_element(
             parameters.begin(),
             parameters.end(),
             [](const Parameters& f, const Parameters& s){ return f.distance < s.distance; }
         )->distance
-    },
-    parameters{ parameters }
+    }
 {
-}
-
-double md::AcklandPotential::PairTerm::energy(double distance) const
-{
-	return std::accumulate(
-        parameters.cbegin(),
-        parameters.cend(),
-        .0,
-        [distance](double acc, const Parameters& params)
-        {
-            double diff = params.distance - distance;
-            if (diff < 0)
-            {
-                return acc;
-            }
-            return acc + params.factor * std::pow(diff, 3);
-        } 
-    );
-}
-
-double md::AcklandPotential::PairTerm::derivative(double distance) const
-{
-    return std::accumulate(
-        parameters.cbegin(),
-        parameters.cend(),
-        .0,
-        [distance](double acc, const Parameters& params)
-        {
-            double diff = params.distance - distance;
-            if (diff < 0)
-            {
-                return acc;
-            }
-            return acc + 3*params.factor * std::pow(diff, 2);
-        } 
-    );
 }
 
 md::AcklandPotential::EmbeddingTerm::~EmbeddingTerm() {}
