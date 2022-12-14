@@ -101,6 +101,12 @@ namespace utils::fcd::implementation
     }
 
     template<class T>
+    constexpr auto derivativeHeavisideStep(const T& arg) noexcept
+    {
+        return ZeroConstanta();
+    }
+
+    template<class T>
     constexpr auto derivativeNoFunction(const T& arg) noexcept
     {
         if constexpr (std::is_same_v<std::decay_t<T>, Variable>)
@@ -132,6 +138,8 @@ namespace utils::fcd::implementation
             return derivativeExponential(arg);
         else if constexpr (T::Name == FunctionName::LogarithmNatural)
             return derivativeLg(arg);
+        else if constexpr (T::Name == FunctionName::HeavisideStep)
+            return derivativeHeavisideStep(arg);
     }
 }
 

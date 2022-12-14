@@ -152,6 +152,17 @@ namespace utils::fcd
         >(argument);
     }
 
+    template<class T>
+    constexpr auto heavisideStep(const T& argument)
+    {
+        return implementation::createFunction<
+            implementation::FunctionName::HeavisideStep,
+            T,
+            implementation::UnusedArgument,
+            implementation::UnusedParameter
+        >(argument);
+    }
+
     template<std::uint8_t I, class T>
     constexpr auto logarithm(const T& argument)
     {

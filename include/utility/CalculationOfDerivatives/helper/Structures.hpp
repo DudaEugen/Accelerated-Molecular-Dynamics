@@ -19,6 +19,7 @@ namespace utils::fcd::implementation
         Power,
         Root,
         Exponential,
+        HeavisideStep,
         Summ,
         Product,
         DynamicSumm,
@@ -264,6 +265,25 @@ namespace utils::fcd::implementation
         {
             static_assert(I > 1, "base of degree must be greater than 1");
             return pow(I, this->argument(arg, dynamicParameterValue));
+        }
+    };
+
+    template<class T>
+    struct Function<FunctionName::HeavisideStep, T, UnusedArgument, UnusedParameter>:
+        NoDynamicFunction<FunctionName::HeavisideStep, T, UnusedArgument, UnusedParameter>
+    {
+        static constexpr auto Type = FunctionType::OneArgument;
+
+        Function(const T& arg) noexcept : Function::NoDynamicFunction{ arg } {}
+
+        double operator() (double arg, const std::vector<double>* dynamicParameters = nullptr) const
+        {
+            return this->argument(arg, dynamicParameters) > 0 ? 1 : 0;
+        }
+
+        double operator() (double arg, double dynamicParameterValue) const
+        {
+            return this->argument(arg, dynamicParameterValue) > 0 ? 1 : 0;
         }
     };
 
