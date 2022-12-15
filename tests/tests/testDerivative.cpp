@@ -94,6 +94,12 @@ void testDerivativeFunctions()
     auto f10 = fcd::power<3>(fcd::Variable()) - fcd::Variable() - 5;
 	assert(equal(f10(x), pow(x, 3) - x - 5, 10));
 	assert(equal(fcd::derivative<2>(f10)(x), 6*x, 10));
+
+	auto f11 = fcd::power<3>(fcd::Variable())*fcd::heavisideStep(fcd::Variable());
+	assert(equal(f11(std::abs(x)), pow(std::abs(x), 3), 10));
+	assert(equal(f11(-std::abs(x)), 0, 10));
+	assert(equal(fcd::derivative(f11)(std::abs(x)), 3*pow(std::abs(x), 2), 10));
+	assert(equal(fcd::derivative(f11)(-std::abs(x)), 0, 10));
 }
 
 void testDerivativeWithParameters()

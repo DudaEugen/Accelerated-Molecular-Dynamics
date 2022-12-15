@@ -20,13 +20,14 @@ namespace md
 
             bool isCorrectElements(const AtomPair& atomPair) const noexcept;
             double getCutRadius() const noexcept;
-            virtual double computeTerm(const AtomPair& atomPair) const = 0;
-            virtual double computeTermDerivative(const AtomPair& atomPair) const = 0;
+            virtual double computeTerm(double distance) const = 0;
+            virtual double computeTermDerivative(double distance) const = 0;
         };
 
 		const std::vector<const APairPotential*> pairTerms;
         const std::vector<const AEmbeddingTerm*> embeddingTerms;
 
+        virtual std::function<double(double)> embeddingFunction() const = 0;
         virtual std::function<double(double)> embeddingFunctionDerivative() const = 0;
 	public:
 		APotentialEAM(

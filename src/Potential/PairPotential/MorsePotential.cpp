@@ -1,8 +1,15 @@
 #include "Potential/PairPotential/MorsePotential.hpp"
-#include <cmath>
 
 md::MorsePotential::MorsePotential(element first, element second, double De, double re, double a, double cutRadius)
-	: APairPotential{first, second, cutRadius}, De{De}, re{re}, a{a}
+	: APairPotential{
+		first,
+		second,
+		new md::Function(
+			P0*utils::fcd::power<2>(1 - utils::fcd::exponenta(-P1*X + P1*P2)),
+			std::vector<double>{De, a, re}
+		),
+		cutRadius
+	}
 {
 }
 
@@ -12,11 +19,3 @@ md::MorsePotential::MorsePotential(element el, double De, double re, double a, d
 }
 
 md::MorsePotential::~MorsePotential() {}
-
-md::Vector md::MorsePotential::computeForce(const AtomPair& pair) const
-{
-	double distance = pair.getDistance();
-	return 2 * De * a * 
-		(std::exp(-a*(distance - re)) - std::exp(-2*a* (distance - re))) / distance * 
-		pair.getProjections();
-}

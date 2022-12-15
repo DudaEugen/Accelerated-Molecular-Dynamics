@@ -10,6 +10,10 @@ namespace utils::fcd
     template<std::uint8_t Index>
     implementation::Constanta setParameters(const Parameter<Index> func, const std::vector<double>& params)
     {
+        if (params.size() <= Index)
+        {
+            throw std::runtime_error("params vector is too small for function for derivatives");
+        }
         return implementation::Constanta(params[Index]);
     }
 

@@ -12,34 +12,29 @@ md::AcklandPotential::PairTerm::PairTerm(
     : APairPotential{
         first,
         second,
+        new md::Function(
+            P0*utils::fcd::power<3>(X-P1)*utils::fcd::heavisideStep(X-P1) + 
+            P2*utils::fcd::power<3>(X-P3)*utils::fcd::heavisideStep(X-P3) + 
+            P4*utils::fcd::power<3>(X-P5)*utils::fcd::heavisideStep(X-P5) + 
+            P6*utils::fcd::power<3>(X-P7)*utils::fcd::heavisideStep(X-P7) + 
+            P8*utils::fcd::power<3>(X-P9)*utils::fcd::heavisideStep(X-P9) + 
+            P10*utils::fcd::power<3>(X-P11)*utils::fcd::heavisideStep(X-P11),
+            std::vector<double>({
+                parameters[0].factor, parameters[0].distance,
+                parameters[1].factor, parameters[1].distance,
+                parameters[2].factor, parameters[2].distance,
+                parameters[3].factor, parameters[3].distance,
+                parameters[4].factor, parameters[4].distance,
+                parameters[5].factor, parameters[5].distance
+            })
+        ),
         std::max_element(
             parameters.begin(),
             parameters.end(),
             [](const Parameters& f, const Parameters& s){ return f.distance < s.distance; }
         )->distance
-    },
-    parameters{ parameters }
+    }
 {
-}
-
-md::Vector md::AcklandPotential::PairTerm::computeForce(const AtomPair& atomPair) const
-{
-    double distance = atomPair.getDistance();
-    double derivative = std::accumulate(
-        parameters.cbegin(),
-        parameters.cend(),
-        .0,
-        [distance](double acc, const Parameters& params)
-        {
-            double diff = params.distance - distance;
-            if (diff < 0)
-            {
-                return acc;
-            }
-            return acc + 3*params.factor * std::pow(diff, 2);
-        } 
-    );
-    return derivative * atomPair.getProjections() / atomPair.getDistance();
 }
 
 md::AcklandPotential::EmbeddingTerm::~EmbeddingTerm() {}
@@ -62,9 +57,8 @@ md::AcklandPotential::EmbeddingTerm::EmbeddingTerm(
 {
 }
 
-double md::AcklandPotential::EmbeddingTerm::computeTerm(const AtomPair& atomPair) const
+double md::AcklandPotential::EmbeddingTerm::computeTerm(double distance) const
 {
-    double distance = atomPair.getDistance();
     return std::accumulate(
         parameters.cbegin(),
         parameters.cend(),
@@ -81,9 +75,8 @@ double md::AcklandPotential::EmbeddingTerm::computeTerm(const AtomPair& atomPair
     );
 }
 
-double md::AcklandPotential::EmbeddingTerm::computeTermDerivative(const AtomPair& atomPair) const
+double md::AcklandPotential::EmbeddingTerm::computeTermDerivative(double distance) const
 {
-    double distance = atomPair.getDistance();
     return std::accumulate(
         parameters.cbegin(),
         parameters.cend(),
@@ -98,6 +91,11 @@ double md::AcklandPotential::EmbeddingTerm::computeTermDerivative(const AtomPair
             return acc + 3*params.factor * std::pow(diff, 2);
         } 
     );
+}
+
+std::function<double(double)> md::AcklandPotential::embeddingFunction() const
+{
+    return [](double value){ return std::sqrt(value); };
 }
 
 std::function<double(double)> md::AcklandPotential::embeddingFunctionDerivative() const
